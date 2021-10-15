@@ -1,0 +1,51 @@
+[
+    {
+        "order" : 1,
+        "name" : "NorthFace",
+    },
+    {
+        "order" : 2,
+        "name" : "Mammot",
+    },
+    {
+        "order" : 3,
+        "name" : "StoveRUS",
+    },
+    {
+        "order" : 4,
+        "name" : "Gerber",
+    },
+    {
+        "order" : 5,
+        "name" : "MadeTough",
+    },
+    {
+        "order" : 6,
+        "name" : "Apple",
+    },
+    {
+        "order" : 7,
+        "name" : "PowerUp",
+    },
+    {
+        "order" : 8,
+        "name" : "MEC",
+    },
+    {
+        "order" : 9,
+        "name" : "Nikon",
+    },
+    {
+        "order" : 10,
+        "name" : "Northern",
+    },
+    {
+        "order" : 11,
+        "name" : "Polo",
+    },
+    {
+        "order" : 12,
+        "name" : "Nike",
+    }
+]
+

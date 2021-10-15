@@ -1,0 +1,98 @@
+[
+	{
+		"opacity" : 0.5,
+		"visitationOrder" : 1,
+		"red" : 0.92485547065734863,
+		"name" : "Tents",
+		"blue" : 0.5,
+		"green" : 0.89595377445220947
+	},
+	{
+		"opacity" : 0.10000000000000001,
+		"visitationOrder" : 2,
+		"red" : 0.90000000000000002,
+		"name" : "SleepingKit",
+		"blue" : 0.10000000000000001,
+		"green" : 0.10000000000000001
+	},
+	{
+		"opacity" : 0.40000000000000002,
+		"visitationOrder" : 3,
+		"red" : 0,
+		"name" : "CookingKit",
+		"blue" : 0.85260117053985596,
+		"green" : 0
+	},
+	{
+		"opacity" : 0.40000000000000002,
+		"visitationOrder" : 4,
+		"red" : 1,
+		"name" : "Knives",
+		"blue" : 1,
+		"green" : 0.41040462255477905
+	},
+	{
+		"opacity" : 0.53468209505081177,
+		"visitationOrder" : 5,
+		"red" : 0.060693640261888504,
+		"name" : "Tools",
+		"blue" : 0.10000000000000001,
+		"green" : 0.9190751314163208
+	},
+	{
+		"opacity" : 0.52601158618927002,
+		"visitationOrder" : 6,
+		"red" : 0.90000000000000002,
+		"name" : "Tech",
+		"blue" : 0.10000000000000001,
+		"green" : 0.89595377445220947
+	},
+	{
+		"opacity" : 0.10000000000000001,
+		"visitationOrder" : 7,
+		"red" : 0.90000000000000002,
+		"name" : "Portable Chargers",
+		"blue" : 0.10000000000000001,
+		"green" : 0.10000000000000001
+	},
+	{
+		"opacity" : 0.10000000000000001,
+		"visitationOrder" : 8,
+		"red" : 0.90000000000000002,
+		"name" : "Backpacks",
+		"blue" : 0.10000000000000001,
+		"green" : 0.10000000000000001
+	},
+	{
+		"opacity" : 0.28901734948158264,
+		"visitationOrder" : 9,
+		"red" : 1,
+		"name" : "Cameras",
+		"blue" : 0.50578033924102783,
+		"green" : 0
+	},
+	{
+		"opacity" : 0.54335260391235352,
+		"visitationOrder" : 10,
+		"red" : 1,
+		"name" : "DrySacs",
+		"blue" : 0.10000000000000001,
+		"green" : 0.10000000000000001
+	},
+	{
+		"opacity" : 0.10000000000000001,
+		"visitationOrder" : 11,
+		"red" : 0,
+		"name" : "Clothes",
+		"blue" : 0.67919075489044189,
+		"green" : 0.65606933832168579
+	},
+	{
+		"opacity" : 0.28034681081771851,
+		"visitationOrder" : 12,
+		"red" : 1,
+		"name" : "FootWear",
+		"blue" : 0.53757226467132568,
+		"green" : 0
+	}
+]

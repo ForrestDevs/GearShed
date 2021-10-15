@@ -1,0 +1,98 @@
+[
+	{
+		"onList" : true,
+		"quantity" : 1,
+		"isAvailable" : true,
+		"categoryName" : "Tents",
+        "brandName" : "NorthFace",
+		"name" : "Ve 25"
+	},
+	{
+		"onList" : true,
+		"quantity" : 1,
+		"isAvailable" : true,
+		"categoryName" : "SleepingKit",
+        "brandName" : "Mammot",
+		"name" : "Winter SleepingBag"
+	},
+	{
+		"onList" : true,
+		"quantity" : 1,
+		"isAvailable" : true,
+		"categoryName" : "CookingKit",
+        "brandName" : "StoveRUS",
+		"name" : "Portable Gas Stove"
+	},
+	{
+		"onList" : true,
+		"quantity" : 1,
+		"isAvailable" : true,
+		"categoryName" : "Knives",
+        "brandName" : "Gerber",
+		"name" : "Bear Grills Knife"
+	},
+	{
+		"onList" : true,
+		"quantity" : 3,
+		"isAvailable" : true,
+		"categoryName" : "Tools",
+        "brandName" : "MadeTough",
+		"name" : "Axe"
+	},
+	{
+		"onList" : true,
+		"quantity" : 1,
+		"isAvailable" : true,
+		"categoryName" : "Tech",
+        "brandName" : "Apple",
+		"name" : "IPhone"
+	},
+	{
+		"onList" : true,
+		"quantity" : 6,
+		"isAvailable" : true,
+		"categoryName" : "Portable Chargers",
+        "brandName" : "PowerUp",
+		"name" : "2000Mah Power Bank"
+	},
+	{
+		"onList" : true,
+		"quantity" : 1,
+		"isAvailable" : true,
+		"categoryName" : "Backpacks",
+        "brandName" : "MEC",
+		"name" : "Trailblazer"
+	},
+	{
+		"onList" : true,
+		"quantity" : 1,
+		"isAvailable" : true,
+		"categoryName" : "Cameras",
+        "brandName" : "Nikon",
+		"name" : "DSLR Camera"
+	},
+	{
+		"onList" : true,
+		"quantity" : 1,
+		"isAvailable" : true,
+		"categoryName" : "DrySacs",
+        "brandName" : "Northern",
+		"name" : "50L DryBag"
+	},
+	{
+		"onList" : true,
+		"quantity" : 1,
+		"isAvailable" : true,
+		"categoryName" : "Clothes",
+        "brandName" : "Polo",
+		"name" : "White Tee"
+	},
+	{
+		"onList" : true,
+		"quantity" : 1,
+		"isAvailable" : true,
+		"categoryName" : "Footwear",
+        "brandName" : "Nike",
+		"name" : "Trail Shoe"
+	}
+]
