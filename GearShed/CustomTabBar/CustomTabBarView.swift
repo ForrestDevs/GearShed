@@ -10,8 +10,11 @@ import SwiftUI
 struct CustomTabBarView: View {
     
     let tabs: [TabBarItem]
+    
     @Binding var selection: TabBarItem
+    
     @Namespace private var namespace
+    
     @State var localSelection: TabBarItem
     
     var body: some View {
@@ -21,23 +24,11 @@ struct CustomTabBarView: View {
                     localSelection = value
                 }
             })
-    }
-}
-
-struct CustomTabBarView_Previews: PreviewProvider {
-    
-    static let tabs: [TabBarItem] = [
-        .shed, .trips, .settings
-    ]
-    
-    static var previews: some View {
-        VStack {
-            Spacer()
-            CustomTabBarView(tabs: tabs, selection: .constant(tabs.first!), localSelection: tabs.first!)
-        }
         
     }
 }
+
+
 
 extension CustomTabBarView {
     
@@ -114,13 +105,28 @@ extension CustomTabBarView {
             }
         }
         .padding(6)
-        .background(Color.white.ignoresSafeArea(edges: .bottom))
+        .background(Color.theme.background.ignoresSafeArea(edges: .bottom))
         .cornerRadius(10)
         .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 5)
         .padding(.horizontal)
         
     }
     
+}
+
+struct CustomTabBarView_Previews: PreviewProvider {
+    
+    static let tabs: [TabBarItem] = [
+        .shed, .trips, .home
+    ]
+    
+    static var previews: some View {
+        VStack {
+            Spacer()
+            CustomTabBarView(tabs: tabs, selection: .constant(tabs.first!), localSelection: tabs.first!)
+        }
+        
+    }
 }
 
 

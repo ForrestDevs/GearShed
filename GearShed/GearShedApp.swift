@@ -16,23 +16,27 @@ struct GearShedApp: App {
 
     var body: some Scene {
         WindowGroup {
+            
+            //Test3()
+            
             AppTabBarView()
                 .environment(\.managedObjectContext, persistentStore.context)
                 .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification),
                                      perform: handleResignActive)
                 .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification),
                                      perform: handleBecomeActive)
+            
+            
         }
     }
     
     func handleResignActive(_ note: Notification) {
-        // when going into background, save Core Data and shutdown timer
+        // when going into background, save Core Data
         persistentStore.saveContext()
     }
     
     func handleBecomeActive(_ note: Notification) {
-        // when app becomes active, restart timer if it was running previously
-        // also update the meaning of Today because we may be transitioning to
-        // active on a different day than when we were pushed into the background
+        // when app reopens do this...
+        
     }
 }

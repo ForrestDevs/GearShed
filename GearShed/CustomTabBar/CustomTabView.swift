@@ -35,7 +35,7 @@ struct CustomTabView <Content:View>: View {
 struct CustomTabBarContainerView_Previews: PreviewProvider {
     
     static let tabs: [TabBarItem] = [
-        .shed, .trips, .settings
+        .shed, .trips, .home
     ]
     
     static var previews: some View {

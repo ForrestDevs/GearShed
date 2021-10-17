@@ -27,7 +27,6 @@ extension Trip {
         }
     }
     
-    
     // items: fronts Core Data attribute items_ that is an NSSet, and turns it into
     // a Swift array
     var items: [Item] {

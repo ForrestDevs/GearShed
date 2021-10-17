@@ -16,15 +16,14 @@ import SwiftUI
 // messages about unsatisfiable constraints in the console when displaying a contextMenu.
 // that's apparently a SwiftUI problem that seems to not be present in XCode 12/iOS 14 so much
 
-/// Builds out a context menu for an Item that can be used in the shopping list
-/// or the purchased list to quickly move the item to the other list, toggle the state
+/// Builds out a context menu for an Item that can be used in the main gear shed
+/// to quickly move the item to the other list, toggle the state
 /// of the availability, and delete the item.
 /// - Parameter item: the Item to which this menu is attached
 /// - Parameter deletionTrigger: a closure to call to set state variables and put up an "Are you sure?" alert before allowing deletion of the item
 /// - Returns: Void
 @ViewBuilder
-func itemContextMenu(item: Item,
-										 deletionTrigger: @escaping () -> Void) -> some View {
+func itemContextMenu(item: Item, deletionTrigger: @escaping () -> Void) -> some View {
 	
 	Button(action: { item.toggleOnListStatus() }) {
 		Text(item.onList ? "Move to Purchased" : "Move to ShoppingList")

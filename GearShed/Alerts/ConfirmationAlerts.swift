@@ -109,6 +109,9 @@ struct ConfirmDeleteBrandAlert: ConfirmationAlertProtocol {
 
 // MARK: - Confirm DELETE TRIP Alert
 struct ConfirmDeleteTripAlert: ConfirmationAlertProtocol {
+    
+    //@StateObject private var viewModel = TripsViewModel()
+    
     var id = UUID()
     
     var trip: Trip
@@ -116,11 +119,11 @@ struct ConfirmDeleteTripAlert: ConfirmationAlertProtocol {
     var title: String { "Delete \'\(trip.name)\'?" }
     
     var message: String {
-        "Are you sure you want to delete the Brand named \'\(trip.name)\'? All items at this brand will be moved to the Unknown Brand.  This action cannot be undone."
+        "Are you sure you want to delete the Trip named \(trip.name)?  This action cannot be undone."
     }
     
     func destructiveAction() {
-        Trip.delete(trip)
+        //viewModel.deleteTrip(trip: trip)
     }
     
     var destructiveCompletion: (() -> Void)?

@@ -7,6 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		08371B25271A42890072AD94 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B24271A42890072AD94 /* TestView.swift */; };
+		08371B2A271AA4DB0072AD94 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B29271AA4DB0072AD94 /* HomeView.swift */; };
+		08371B30271AB4940072AD94 /* Blur.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B2F271AB4940072AD94 /* Blur.swift */; };
+		08371B32271B722C0072AD94 /* SearchBarView1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B31271B722C0072AD94 /* SearchBarView1.swift */; };
+		08371B3B271B72BF0072AD94 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B35271B72BF0072AD94 /* Date.swift */; };
+		08371B3C271B72BF0072AD94 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B36271B72BF0072AD94 /* Double.swift */; };
+		08371B3D271B72BF0072AD94 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B37271B72BF0072AD94 /* Color.swift */; };
+		08371B3F271B72BF0072AD94 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B39271B72BF0072AD94 /* UIApplication.swift */; };
+		08371B40271B72BF0072AD94 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B3A271B72BF0072AD94 /* String.swift */; };
+		08371B48271BB1DC0072AD94 /* TripContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B47271BB1DC0072AD94 /* TripContextMenu.swift */; };
+		08371B4A271BB2F30072AD94 /* TripVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B49271BB2F30072AD94 /* TripVM.swift */; };
+		08371B50271BC5010072AD94 /* MainCatelogVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B4F271BC5010072AD94 /* MainCatelogVM.swift */; };
+		08371B56271C8ABD0072AD94 /* Sorting+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B55271C8ABD0072AD94 /* Sorting+Extension.swift */; };
 		08C7D8A0270F3D1800EC3984 /* GearShedApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C7D89F270F3D1800EC3984 /* GearShedApp.swift */; };
 		08C7D8A2270F3D1800EC3984 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C7D8A1270F3D1800EC3984 /* MainView.swift */; };
 		08C7D8A4270F3D1D00EC3984 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08C7D8A3270F3D1D00EC3984 /* Assets.xcassets */; };
@@ -56,7 +69,7 @@
 		08C7D918270F6E1600EC3984 /* items.json in Resources */ = {isa = PBXBuildFile; fileRef = 08C7D915270F6E1600EC3984 /* items.json */; };
 		08C7D91A270F70F400EC3984 /* TripListDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C7D919270F70F400EC3984 /* TripListDisplay.swift */; };
 		08C7D91C270F719B00EC3984 /* ItemRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C7D91B270F719B00EC3984 /* ItemRowView.swift */; };
-		08C7D920270F72F700EC3984 /* ContextMenuBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C7D91E270F72F700EC3984 /* ContextMenuBuilder.swift */; };
+		08C7D920270F72F700EC3984 /* ItemContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C7D91E270F72F700EC3984 /* ItemContextMenu.swift */; };
 		08C7D921270F72F700EC3984 /* SectionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C7D91F270F72F700EC3984 /* SectionData.swift */; };
 		08C7D923270F7AFC00EC3984 /* EditableTripData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C7D922270F7AFC00EC3984 /* EditableTripData.swift */; };
 		08C7D925270F7BFB00EC3984 /* Trip+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C7D924270F7BFB00EC3984 /* Trip+Extension.swift */; };
@@ -76,6 +89,19 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		08371B24271A42890072AD94 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
+		08371B29271AA4DB0072AD94 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		08371B2F271AB4940072AD94 /* Blur.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Blur.swift; sourceTree = "<group>"; };
+		08371B31271B722C0072AD94 /* SearchBarView1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchBarView1.swift; path = "../../../../Downloads/SwiftUI-Crypto-MVVM-CoreData-Combine-main/SwiftfulCrypto/Core/Components/SearchBarView1.swift"; sourceTree = "<group>"; };
+		08371B35271B72BF0072AD94 /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		08371B36271B72BF0072AD94 /* Double.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
+		08371B37271B72BF0072AD94 /* Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		08371B39271B72BF0072AD94 /* UIApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
+		08371B3A271B72BF0072AD94 /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		08371B47271BB1DC0072AD94 /* TripContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripContextMenu.swift; sourceTree = "<group>"; };
+		08371B49271BB2F30072AD94 /* TripVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripVM.swift; sourceTree = "<group>"; };
+		08371B4F271BC5010072AD94 /* MainCatelogVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCatelogVM.swift; sourceTree = "<group>"; };
+		08371B55271C8ABD0072AD94 /* Sorting+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sorting+Extension.swift"; sourceTree = "<group>"; };
 		08C7D89C270F3D1800EC3984 /* GearShed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GearShed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08C7D89F270F3D1800EC3984 /* GearShedApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GearShedApp.swift; sourceTree = "<group>"; };
 		08C7D8A1270F3D1800EC3984 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -127,7 +153,7 @@
 		08C7D915270F6E1600EC3984 /* items.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = items.json; sourceTree = "<group>"; };
 		08C7D919270F70F400EC3984 /* TripListDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripListDisplay.swift; sourceTree = "<group>"; };
 		08C7D91B270F719B00EC3984 /* ItemRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemRowView.swift; sourceTree = "<group>"; };
-		08C7D91E270F72F700EC3984 /* ContextMenuBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextMenuBuilder.swift; sourceTree = "<group>"; };
+		08C7D91E270F72F700EC3984 /* ItemContextMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemContextMenu.swift; sourceTree = "<group>"; };
 		08C7D91F270F72F700EC3984 /* SectionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionData.swift; sourceTree = "<group>"; };
 		08C7D922270F7AFC00EC3984 /* EditableTripData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditableTripData.swift; sourceTree = "<group>"; };
 		08C7D924270F7BFB00EC3984 /* Trip+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Trip+Extension.swift"; sourceTree = "<group>"; };
@@ -157,6 +183,67 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		08371B27271AA4B40072AD94 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				08371B29271AA4DB0072AD94 /* HomeView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		08371B43271BB0070072AD94 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				08371B44271BB0280072AD94 /* ViewModel */,
+				08371B27271AA4B40072AD94 /* View */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		08371B44271BB0280072AD94 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		08371B45271BB03F0072AD94 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				08C7D8B9270F41F300EC3984 /* TripsTabView.swift */,
+				08C7D926270F7DC200EC3984 /* TripRowView.swift */,
+				08C7D919270F70F400EC3984 /* TripListDisplay.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		08371B46271BB0470072AD94 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				08371B49271BB2F30072AD94 /* TripVM.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		08371B51271BD4D60072AD94 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				08C7D8B7270F41CC00EC3984 /* MainCatelogView.swift */,
+				08C7D903270F68EE00EC3984 /* ItemListDisplay.swift */,
+				08C7D91B270F719B00EC3984 /* ItemRowView.swift */,
+				08C7D8FA270F66EB00EC3984 /* AddOrModifyItemView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		08371B52271BD4DE0072AD94 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				08371B4F271BC5010072AD94 /* MainCatelogVM.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		08C7D893270F3D1700EC3984 = {
 			isa = PBXGroup;
 			children = (
@@ -178,6 +265,7 @@
 			children = (
 				08C7D89F270F3D1800EC3984 /* GearShedApp.swift */,
 				08C7D8BF270F434400EC3984 /* CoreData */,
+				08371B43271BB0070072AD94 /* Home */,
 				08C7D8B5270F418F00EC3984 /* MainCatelog */,
 				08C7D8B3270F416B00EC3984 /* Trips */,
 				08C7D8B6270F419E00EC3984 /* Preferences */,
@@ -208,8 +296,8 @@
 		08C7D8B3270F416B00EC3984 /* Trips */ = {
 			isa = PBXGroup;
 			children = (
-				08C7D8B9270F41F300EC3984 /* TripsTabView.swift */,
-				08C7D92A270F83AC00EC3984 /* List Of Trips */,
+				08371B46271BB0470072AD94 /* ViewModel */,
+				08371B45271BB03F0072AD94 /* View */,
 				08C7D92B270F840A00EC3984 /* AddNewTrip */,
 				08C7D92C270F841B00EC3984 /* ModifyExistingTrip */,
 			);
@@ -219,8 +307,8 @@
 		08C7D8B5270F418F00EC3984 /* MainCatelog */ = {
 			isa = PBXGroup;
 			children = (
-				08C7D8B7270F41CC00EC3984 /* MainCatelogView.swift */,
-				08C7D91D270F72CD00EC3984 /* Items */,
+				08371B52271BD4DE0072AD94 /* ViewModel */,
+				08371B51271BD4D60072AD94 /* Views */,
 				08C7D8D4270F480E00EC3984 /* Brands */,
 				08C7D8CF270F480D00EC3984 /* Categories */,
 			);
@@ -243,6 +331,7 @@
 				08C7D8AA270F3D1D00EC3984 /* GearShed.xcdatamodeld */,
 				08C7D8E1270F485200EC3984 /* EditableItemData.swift */,
 				08C7D922270F7AFC00EC3984 /* EditableTripData.swift */,
+				08C7D91F270F72F700EC3984 /* SectionData.swift */,
 				08C7D905270F6D0600EC3984 /* Extensions */,
 			);
 			path = CoreData;
@@ -251,6 +340,11 @@
 		08C7D8C0270F475A00EC3984 /* Convenience Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				08371B37271B72BF0072AD94 /* Color.swift */,
+				08371B35271B72BF0072AD94 /* Date.swift */,
+				08371B36271B72BF0072AD94 /* Double.swift */,
+				08371B3A271B72BF0072AD94 /* String.swift */,
+				08371B39271B72BF0072AD94 /* UIApplication.swift */,
 				08C7D8C1270F475A00EC3984 /* String+Extensions.swift */,
 				08C7D8C2270F475A00EC3984 /* Sequence+Extensions.swift */,
 				08C7D8C3270F475A00EC3984 /* View+Extensions.swift */,
@@ -258,6 +352,7 @@
 				08C7D8C5270F475A00EC3984 /* NotificationName+Extensions.swift */,
 				08C7D8C6270F475A00EC3984 /* Date+Extensions.swift */,
 				08C7D8C7270F475A00EC3984 /* NSManagedObject+Extensions.swift */,
+				08371B55271C8ABD0072AD94 /* Sorting+Extension.swift */,
 			);
 			path = "Convenience Extensions";
 			sourceTree = "<group>";
@@ -286,6 +381,7 @@
 		08C7D8E7270F65E100EC3984 /* General Purpose Views */ = {
 			isa = PBXGroup;
 			children = (
+				08371B31271B722C0072AD94 /* SearchBarView1.swift */,
 				08C7D8E8270F65E100EC3984 /* EmptyTripView.swift */,
 				08C7D8EC270F65E100EC3984 /* EmptyCatelogView.swift */,
 				08C7D8E9270F65E100EC3984 /* SearchBarView.swift */,
@@ -304,6 +400,8 @@
 			children = (
 				08C7D8FD270F680400EC3984 /* ConfirmationAlerts.swift */,
 				08C7D8FF270F680400EC3984 /* ConfirmationAlertProtocol.swift */,
+				08C7D91E270F72F700EC3984 /* ItemContextMenu.swift */,
+				08371B47271BB1DC0072AD94 /* TripContextMenu.swift */,
 			);
 			path = Alerts;
 			sourceTree = "<group>";
@@ -327,27 +425,6 @@
 				08C7D90F270F6DFC00EC3984 /* CategoryCodableProxy.swift */,
 			);
 			path = CodeableProxies;
-			sourceTree = "<group>";
-		};
-		08C7D91D270F72CD00EC3984 /* Items */ = {
-			isa = PBXGroup;
-			children = (
-				08C7D903270F68EE00EC3984 /* ItemListDisplay.swift */,
-				08C7D91B270F719B00EC3984 /* ItemRowView.swift */,
-				08C7D8FA270F66EB00EC3984 /* AddOrModifyItemView.swift */,
-				08C7D91E270F72F700EC3984 /* ContextMenuBuilder.swift */,
-				08C7D91F270F72F700EC3984 /* SectionData.swift */,
-			);
-			path = Items;
-			sourceTree = "<group>";
-		};
-		08C7D92A270F83AC00EC3984 /* List Of Trips */ = {
-			isa = PBXGroup;
-			children = (
-				08C7D919270F70F400EC3984 /* TripListDisplay.swift */,
-				08C7D926270F7DC200EC3984 /* TripRowView.swift */,
-			);
-			path = "List Of Trips";
 			sourceTree = "<group>";
 		};
 		08C7D92B270F840A00EC3984 /* AddNewTrip */ = {
@@ -384,9 +461,11 @@
 		08ED0FE32719ECEA0072CB90 /* Unused  */ = {
 			isa = PBXGroup;
 			children = (
+				08371B2F271AB4940072AD94 /* Blur.swift */,
 				08C7D8A1270F3D1800EC3984 /* MainView.swift */,
 				08ED0FE4271A2C8A0072CB90 /* UnusedCode.swift */,
 				08ED0FE6271A34EE0072CB90 /* NewTest.swift */,
+				08371B24271A42890072AD94 /* TestView.swift */,
 			);
 			path = "Unused ";
 			sourceTree = "<group>";
@@ -407,6 +486,8 @@
 			dependencies = (
 			);
 			name = GearShed;
+			packageProductDependencies = (
+			);
 			productName = GearShed;
 			productReference = 08C7D89C270F3D1800EC3984 /* GearShed.app */;
 			productType = "com.apple.product-type.application";
@@ -434,6 +515,8 @@
 				Base,
 			);
 			mainGroup = 08C7D893270F3D1700EC3984;
+			packageReferences = (
+			);
 			productRefGroup = 08C7D89D270F3D1800EC3984 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -463,6 +546,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08371B25271A42890072AD94 /* TestView.swift in Sources */,
 				08C7D91C270F719B00EC3984 /* ItemRowView.swift in Sources */,
 				08C7D8F8270F65E100EC3984 /* SLSectionHeaderView.swift in Sources */,
 				08C7D8F6270F65E100EC3984 /* SLSimpleHeaderView.swift in Sources */,
@@ -470,6 +554,8 @@
 				08C7D8AC270F3D1D00EC3984 /* GearShed.xcdatamodeld in Sources */,
 				08C7D92E270F844C00EC3984 /* AddTripView.swift in Sources */,
 				08C7D902270F680400EC3984 /* ConfirmationAlertProtocol.swift in Sources */,
+				08371B3F271B72BF0072AD94 /* UIApplication.swift in Sources */,
+				08371B2A271AA4DB0072AD94 /* HomeView.swift in Sources */,
 				08C7D8DE270F480E00EC3984 /* AddOrModifyBrandView.swift in Sources */,
 				08C7D90B270F6D1D00EC3984 /* Brand+Extension.swift in Sources */,
 				08C7D8BE270F42AD00EC3984 /* DevTools.swift in Sources */,
@@ -479,22 +565,31 @@
 				08C7D93E2710EEEE00EC3984 /* AddItemToTripSheet.swift in Sources */,
 				08ED0FE5271A2C8A0072CB90 /* UnusedCode.swift in Sources */,
 				08C7D900270F680400EC3984 /* ConfirmationAlerts.swift in Sources */,
-				08C7D920270F72F700EC3984 /* ContextMenuBuilder.swift in Sources */,
+				08C7D920270F72F700EC3984 /* ItemContextMenu.swift in Sources */,
+				08371B3B271B72BF0072AD94 /* Date.swift in Sources */,
 				08C7D8D8270F480E00EC3984 /* CategorysTabView.swift in Sources */,
+				08371B48271BB1DC0072AD94 /* TripContextMenu.swift in Sources */,
+				08371B3D271B72BF0072AD94 /* Color.swift in Sources */,
 				08C7D8CB270F475A00EC3984 /* Bundle+Extensions.swift in Sources */,
 				08C7D8C9270F475A00EC3984 /* Sequence+Extensions.swift in Sources */,
+				08371B3C271B72BF0072AD94 /* Double.swift in Sources */,
 				08C7D8DC270F480E00EC3984 /* BrandRowView.swift in Sources */,
 				08C7D91A270F70F400EC3984 /* TripListDisplay.swift in Sources */,
+				08371B50271BC5010072AD94 /* MainCatelogVM.swift in Sources */,
 				08C7D912270F6DFC00EC3984 /* CategoryCodableProxy.swift in Sources */,
 				08C7D8D9270F480E00EC3984 /* LocationsListViewModel.swift in Sources */,
 				08C7D8F1270F65E100EC3984 /* EmptyTripView.swift in Sources */,
 				08C7D8A9270F3D1D00EC3984 /* PersistentStore.swift in Sources */,
 				08C7D925270F7BFB00EC3984 /* Trip+Extension.swift in Sources */,
+				08371B56271C8ABD0072AD94 /* Sorting+Extension.swift in Sources */,
 				08C7D8F5270F65E100EC3984 /* EmptyCatelogView.swift in Sources */,
 				08C7D8F3270F65E100EC3984 /* SLSliderControl.swift in Sources */,
+				08371B30271AB4940072AD94 /* Blur.swift in Sources */,
 				08C7D8CE270F475A00EC3984 /* NSManagedObject+Extensions.swift in Sources */,
 				08C7D921270F72F700EC3984 /* SectionData.swift in Sources */,
 				08C7D910270F6DFC00EC3984 /* BrandCodableProxy.swift in Sources */,
+				08371B32271B722C0072AD94 /* SearchBarView1.swift in Sources */,
+				08371B40271B72BF0072AD94 /* String.swift in Sources */,
 				08C7D904270F68EE00EC3984 /* ItemListDisplay.swift in Sources */,
 				08C7D8DD270F480E00EC3984 /* BrandsTabView.swift in Sources */,
 				08C7D8F9270F65E100EC3984 /* SelectionIndicatorView.swift in Sources */,
@@ -514,6 +609,7 @@
 				08C7D8BA270F41F300EC3984 /* TripsTabView.swift in Sources */,
 				08C7D923270F7AFC00EC3984 /* EditableTripData.swift in Sources */,
 				08C7D8DB270F480E00EC3984 /* AddOrModifyCategoryView.swift in Sources */,
+				08371B4A271BB2F30072AD94 /* TripVM.swift in Sources */,
 				08C7D930270F846500EC3984 /* TripItemsSelector.swift in Sources */,
 				08ED0FE7271A34EE0072CB90 /* NewTest.swift in Sources */,
 				08C7D8F2270F65E100EC3984 /* SearchBarView.swift in Sources */,

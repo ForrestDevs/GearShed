@@ -14,10 +14,13 @@ import SwiftUI
 
 struct AppTabBarView: View {
 
-    @State private var tabSelection: TabBarItem = .shed
+    @State private var tabSelection: TabBarItem = .home
     
     var body: some View {
         CustomTabView(selection: $tabSelection) {
+        
+            NavigationView { HomeView() }
+                .tabBarItem(tab: .home, selection: $tabSelection)
             
             NavigationView { MainCatelogView() }
                 .tabBarItem(tab: .shed, selection: $tabSelection)
@@ -25,8 +28,6 @@ struct AppTabBarView: View {
             NavigationView { TripsTabView() }
                 .tabBarItem(tab: .trips, selection: $tabSelection)
             
-            NavigationView { PreferencesTabView() }
-                .tabBarItem(tab: .settings, selection: $tabSelection)
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }

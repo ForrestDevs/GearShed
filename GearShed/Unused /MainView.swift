@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-struct MainView: View {
+struct MainViewTest: View {
     @SceneStorage("selectedView") var selectedView: String?
     
     var body: some View {

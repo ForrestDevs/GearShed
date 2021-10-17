@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TripsTabView: View {
+    @StateObject private var viewModel = TripVM()
     static let tag: String? = "Trips"
     
     // this is the @FetchRequest that ties this view to CoreData Trips
@@ -37,8 +38,8 @@ struct TripsTabView: View {
                 TripListDisplay()
             }
         }
-        .navigationBarTitle("Trips")
-        .toolbar { ToolbarItem(placement: .navigationBarTrailing, content: addNewButton) }
+        .navigationBarTitle("Trips", displayMode: .inline)
+        .toolbar { ToolbarItem(placement: .navigationBarTrailing, content: addNewTripButton) }
         .sheet(isPresented: $isAddNewTripSheetShowing) {
             NavigationView {
                 AddTripView()
@@ -64,13 +65,13 @@ struct TripsTabView: View {
     }
     
     // defines the usual "+" button to add a Trip
-    func addNewButton() -> some View {
+    private func addNewTripButton() -> some View {
         Button(action: { isAddNewTripSheetShowing = true }) {
             Image(systemName: "plus")
                 .font(.title2)
+                .foregroundColor(Color.theme.green)
         }
     }
-    
 }
 
 

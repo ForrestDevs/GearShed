@@ -1,14 +1,16 @@
 //
 //  AddorModifyItemView.swift
-//  ShoppingList
+//  GearShed
 //
-//  Created by Jerry on 5/3/20.
-//  Copyright © 2020 Jerry. All rights reserved.
+//  Created by Luke Forrest Gannon
+//  Copyright © 2020 All rights reserved.
 //
 
 import SwiftUI
 
 struct AddOrModifyItemView: View {
+    
+    @StateObject private var viewModel = MainCatelogVM()
     
 	// we use this so we can dismiss ourself (sometimes we're in a Sheet, sometimes
 	// in a NavigationLink)
@@ -107,8 +109,8 @@ struct AddOrModifyItemView: View {
             
             // Item Management (Delete), if present
             if editableItemData.representsExistingItem {
-                Section(header: Text("Shopping Item Management").sectionHeader()) {
-                    SLCenteredButton(title: "Delete This Shopping Item",
+                Section(header: Text("Item Management").sectionHeader()) {
+                    SLCenteredButton(title: "Delete This Item",
                         action: { confirmDeleteItemAlert =
                             ConfirmDeleteItemAlert(item: editableItemData.associatedItem,
                                   destructiveCompletion: { presentationMode.wrappedValue.dismiss() })
@@ -186,7 +188,11 @@ struct AddOrModifyItemView: View {
 	// the cancel button
 	func cancelButton() -> some View {
 		Button("Cancel",
-					 action: { presentationMode.wrappedValue.dismiss() })
+					 action: {
+                        //viewModel.isAddNewItemSheetShowing = false
+                        presentationMode.wrappedValue.dismiss()
+                        
+                     })
 	}
     
 	

@@ -11,7 +11,7 @@ import CoreData
 import SwiftUI
 
 extension Item {
-	
+    
 	/* Discussion
 	
 	update 25 December: better reorganization and removal of previous misconceptions!
@@ -109,6 +109,12 @@ extension Item {
 		get { name_ ?? "Not Available" }
 		set { name_ = newValue }
 	}
+    
+    // the name.  this fronts a Core Data optional attribute
+    var detail: String {
+        get { detail_ ?? "Not Available" }
+        set { detail_ = newValue }
+    }
 	
 	// whether the item is available.  this fronts a Core Data boolean
 	var isAvailable: Bool { isAvailable_ }

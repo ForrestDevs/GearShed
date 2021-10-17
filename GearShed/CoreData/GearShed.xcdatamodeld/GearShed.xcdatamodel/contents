@@ -18,6 +18,7 @@
     </entity>
     <entity name="Item" representedClassName="Item" syncable="YES" codeGenerationType="class">
         <attribute name="dateLastPurchased_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="detail_" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="isAvailable_" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="name_" optional="YES" attributeType="String"/>
@@ -35,7 +36,7 @@
     <elements>
         <element name="Brand" positionX="-146.3314819335938" positionY="-268.5347290039062" width="128" height="103"/>
         <element name="Category" positionX="-148.1810913085938" positionY="-156.2005615234375" width="128" height="163"/>
-        <element name="Item" positionX="43.33013916015625" positionY="-290.6490478515625" width="128" height="178"/>
+        <element name="Item" positionX="43.33013916015625" positionY="-290.6490478515625" width="128" height="193"/>
         <element name="Trip" positionX="269.1407470703125" positionY="-157.0157775878906" width="128" height="88"/>
     </elements>
 </model>
