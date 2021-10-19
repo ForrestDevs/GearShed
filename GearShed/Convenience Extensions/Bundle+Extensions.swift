@@ -1,8 +1,9 @@
 //
 //  Bundle+Extensions.swift
-//  ShoppingList
+//  GearShed
 //
-//  Created by Jerry on 5/15/20.
+//  Created by Luke Forrest Gannon on 18/10/21
+//  Copyright © 2021 All rights reserved.
 //
 
 import Foundation

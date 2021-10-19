@@ -1,9 +1,9 @@
 //
 //  SearchBar.swift
-//  ToDoList
+//  GearShed
 //
-//  Created by Simon Ng on 15/4/2020.
-//  Copyright © 2020 AppCoda. All rights reserved.
+//  Created by Luke Forrest Gannon on 18/10/21
+//  Copyright © 2021 All rights reserved.
 //
 
 import SwiftUI

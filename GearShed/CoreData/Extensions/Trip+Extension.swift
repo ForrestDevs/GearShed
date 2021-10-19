@@ -1,9 +1,9 @@
 //
 //  Trip+Extension.swift
-//  ShoppingList
+//  GearShed
 //
-//  Created by Luke Forrest Gannon on 2021-10-04.
-//  Copyright © 2021 Jerry. All rights reserved.
+//  Created by Luke Forrest Gannon on 18/10/21
+//  Copyright © 2021 All rights reserved.
 //
 
 import SwiftUI

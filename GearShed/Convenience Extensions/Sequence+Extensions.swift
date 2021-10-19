@@ -1,9 +1,9 @@
 //
 //  Sequence+Extensions.swift
-//  ShoppingList
+//  GearShed
 //
-//  Created by Jerry on 6/4/20.
-//  Copyright © 2020 Jerry. All rights reserved.
+//  Created by Luke Forrest Gannon on 18/10/21
+//  Copyright © 2021 All rights reserved.
 //
 
 import Foundation

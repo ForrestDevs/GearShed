@@ -1,8 +1,9 @@
 //
 //  CustomTabBarContainerView.swift
-//  GearShedV1
+//  GearShed
 //
-//  Created by Luke Forrest Gannon on 2021-10-13.
+//  Created by Luke Forrest Gannon on 18/10/21
+//  Copyright © 2021 All rights reserved.
 //
 
 import SwiftUI

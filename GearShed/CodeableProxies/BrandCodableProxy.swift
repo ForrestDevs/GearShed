@@ -1,8 +1,9 @@
 //
 //  BrandCodableProxy.swift
-//  ShoppingList
+//  GearShed
 //
-//  Created by Luke Forrest Gannon on 2021-09-30.
+//  Created by Luke Forrest Gannon on 18/10/21
+//  Copyright © 2021 All rights reserved.
 //  
 //
 

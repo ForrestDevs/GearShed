@@ -1,8 +1,9 @@
 //
 //  Color.swift
-//  SwiftfulCrypto
+//  GearShed
 //
-//  Created by Nick Sarno on 5/8/21.
+//  Created by Luke Forrest Gannon on 18/10/21
+//  Copyright © 2021 All rights reserved.
 //
 
 import Foundation
