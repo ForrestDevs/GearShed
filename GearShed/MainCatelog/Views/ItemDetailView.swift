@@ -41,6 +41,7 @@ struct ItemDetailView: View {
             Spacer()
         }
         .padding()
+        .navigationTitle(item.name)
     }
 }
 

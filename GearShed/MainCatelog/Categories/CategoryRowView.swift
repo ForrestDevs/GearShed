@@ -94,14 +94,17 @@ struct CategoryDetailView: View {
     
     @FetchRequest private var items: FetchedResults<Item>
     
+    var categoryName: Category
+    
     init(category: Category) {
         let request = Item.allItemsFR(at: category)
         _items = FetchRequest(fetchRequest: request)
+        self.categoryName = category
     }
     
     var body: some View {
         VStack(spacing:0) {
-            StatBar2()
+            StatBar4()
             
             ScrollView(.vertical, showsIndicators: false) {
                 ForEach(items) { item in
@@ -115,7 +118,7 @@ struct CategoryDetailView: View {
             Spacer(minLength: 60)
                 
         }
-        //.navigationTitle(category.name)
+        .navigationTitle(categoryName.name)
     }
 }
 

@@ -86,9 +86,12 @@ struct BrandDetailView: View {
     
     @FetchRequest private var items: FetchedResults<Item>
     
+    var brandName: Brand
+    
     init(brand: Brand) {
         let request = Item.allItemsFR(at: brand)
         _items = FetchRequest(fetchRequest: request)
+        self.brandName = brand
     }
     
     var body: some View {
@@ -106,7 +109,7 @@ struct BrandDetailView: View {
                 .opacity(0)
             Spacer(minLength: 60)
         }
-        //.navigationTitle(category.name)
+        .navigationTitle(brandName.name)
     }
 }
 

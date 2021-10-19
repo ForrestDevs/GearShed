@@ -46,7 +46,6 @@ struct MainCatelogView: View {
             .fullScreenCover(isPresented: $viewModel.isAddNewItemSheetShowing){AddOrModifyItemView().environment(\.managedObjectContext, PersistentStore.shared.context)}
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading, content: viewModel.leadingButton)
-                   
                 ToolbarItem(placement: .navigationBarTrailing, content: viewModel.trailingButtons)
             }
             .onAppear {
