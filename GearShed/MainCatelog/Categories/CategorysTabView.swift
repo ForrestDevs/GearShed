@@ -11,7 +11,7 @@ import SwiftUI
 struct CategoriesTabView: View {
 	
 	// this is the @FetchRequest that ties this view to CoreData Categories
-	@FetchRequest(fetchRequest: Category.allCategorysFR())
+	@FetchRequest(fetchRequest: MainCatelogVM.allCategorysFR())
 	private var categories: FetchedResults<Category>
 	
 	// local state to trigger a sheet to appear to add a new category
@@ -45,16 +45,16 @@ struct CategoriesTabView: View {
 			
 			
 			// 2. then the list of categories
-			Form {
-				Section(header: Text("Categorys Listed: \(categories.count)").sectionHeader()) {
-					ForEach(categories) { category in
-						NavigationLink(destination: AddOrModifyCategoryView(category: category)) {
-							CategoryRowView(rowData: CategoryRowData(category: category))
-								.contextMenu { contextMenuButton(for: category) }
-						} // end of NavigationLink
-					} // end of ForEach
-				} // end of Section
-			} // end of Form
+			//Form {
+			//	Section(header: Text("Categorys Listed: \(categories.count)").sectionHeader()) {
+			//		ForEach(categories) { category in
+			//			NavigationLink(destination: AddOrModifyCategoryView(category: category)) //{
+            //                CategoryRowView(category: category, rowData: //CategoryRowData(category: category))
+			//					.contextMenu { contextMenuButton(for: category) }
+			//			} // end of NavigationLink
+			//		} // end of ForEach
+			//	} // end of Section
+			//} // end of Form
 			//				.id(listDisplayID)
 			
 		} // end of VStack

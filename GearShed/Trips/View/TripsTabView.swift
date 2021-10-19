@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TripsTabView: View {
+    
     @StateObject private var viewModel = TripVM()
     static let tag: String? = "Trips"
     

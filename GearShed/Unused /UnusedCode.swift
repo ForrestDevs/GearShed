@@ -544,7 +544,147 @@
  // cleanly without any highlighting
 //    @Binding var listDisplayID: UUID
  
+ /*ScrollView(.horizontal, showsIndicators: false) {
+     
+     HStack (spacing: 30){
+         Text("CATEGORIES")
+             .font(.title)
+             .bold()
+         Text("BRANDS")
+             .font(.title)
+             .bold()
+         Text("TAGS")
+             .font(.title)
+             .bold()
+         Text("WISHLIST")
+             .font(.title)
+             .bold()
+     }
+     .padding(.horizontal, 30)
+ }*/
  
+ /*HStack {
+     
+     Button {viewModel.isAddNewItemSheetShowing.toggle()} label: {
+         Image(systemName: "plus")
+             .foregroundColor(Color.theme.accent)
+     }
+     
+     NavigationLink(destination: AllItemsView()) {
+         HStack {
+             Text("All Items")
+                 .font(.headline)
+                 .foregroundColor(Color.theme.accent)
+             
+             Spacer()
+                 
+             Text("\(viewModel.allItems.count)")
+                 .font(.headline)
+                 .padding(.horizontal, 30)
+         }
+     }
+ }
+ //.padding(.horizontal, 20)
+ //.padding(.top, 10)*/
+ 
+ //.navigationBarTitle("All Items", displayMode: .inline)
+ //.navigationBarColor(UIColor.blue)
+ /*.toolbar {
+     ToolbarItem(placement: .navigationBarTrailing, content: viewModel.trailingButtons)
+ }*/
+ 
+ func handleOnAppear() {
+     // what follows here is a kludge for a very special case:
+     // -- we were in the ShoppingListTabView
+     // -- we navigate to this Add/ModifyItem view for an Item X at Category Y
+     // -- we use the tab bar to move to the Categorys tab
+     // -- we select Category Y and navigate to its Add/ModifyCategory view
+     // -- we tap Item X listed for Category Y, opening a second Add/ModifyItem view for Item X
+     // -- we delete Item X in this second Add/ModifyItem view
+     // -- we use the tab bar to come back to the shopping list tab, and
+     // -- this view is now what's on-screen, showing us an item that was deleted underneath us (!)
+     //
+     // the only thing that makes sense is to dismiss ourself in the case that we were instantiated
+     // with a real item (editableData.id != nil) but that item does not exist anymore.
+     
+     if editableItemData.representsExistingItem && Item.object(withID: editableItemData.id!) == nil {
+         presentationMode.wrappedValue.dismiss()
+     }
+     
+     // by the way, this applies symmetrically to opening an Add/ModifyItem view from the
+     // Add/ModifyCategory view, then tabbing over to the shopping list, looking at a second
+     // Add/ModifyItem view there and deleting.  the first Add/ModifyItem view will get the
+     // same treatment in this code, getting dismissed when it tries to come back on screen.
+     
+     // ADDITIONAL DISCUSSION:
+     //
+     // apart from the delete operation, when two instances of the Add/ModifyItem view are
+     // active, any edits made to item data in one will not be replicated in the other, because
+     // these views copy data to their local @State variable editableData, and that is what
+     // gets edited.  so if you do a partial edit in one of the views, when you visit the second
+     // view, you will not see those changes.  this is a natural side-effect of doing an edit
+     // on a draft copy of the data and not doing a live edit.  we are aware of the problem
+     // and may look to fix this in the future.  (two strategies come to mind: a live edit of an
+     // ObservableObject, which then means we have to rethink combining the add and modify
+     // functions; or always doing the Add/Modify view as a .sheet so that you cannot so easily
+     // navigate elsewhere in the app and make edits underneath this view.)
+     
+     // a third possibility offered by user jjatie on 7 Jan, 2021, on the Apple Developer's Forum
+     //   https://developer.apple.com/forums/thread/670564
+     // suggests tapping into the NotificationCenter to watch for changes in the NSManaged
+     // context, and checking to see if the Item is among those in the notification's
+     // userInfo[NSManagedObjectContext.NotificationKey.deletedObjectIDs].
 
+ }
+ 
+ //// EDIT CATEGORIES
+ //NavigationLink(destination: CategoriesTabView()) {
+ //    Text("Edit Categories")
+ //    .foregroundColor(Color.blue)
+ //    .padding(10)
+ //}
+ ////EDIT BRANDS
+ //NavigationLink(destination: BrandsTabView()) {
+ //    Text("Edit Brands")
+ //    .foregroundColor(Color.blue)
+ //    .padding(10)
+ //}
+ 
+ // a toggle button to change section display mechanisms
+ //func sectionDisplayButton() -> some View {
+ //    Button() { self.multiSectionDisplay.toggle() }
+ //    label: { Image(systemName: multiSectionDisplay ? "tray.2" : "tray")
+ //            .font(.title2)
+ //    }
+ //}
+ 
+ // parameters to control triggering an Alert and defining what action
+ // to take upon confirmation
+ //@State private var confirmDeleteItemAlert: ConfirmDeleteItemAlert?
+ 
+ /* /////////////////////////// */
+ //Create a state var for the category picker section
+ //@State private var categoryChooser = 0
+ //Create a state var for the brand picker section
+ //@State private var brandChooser = 0
+ /* /////////////////////////// */
+ 
+ // Brand Section
+ //Section(header: Text("Brand").sectionHeader()) {
+ //    Picker(selection: $editableItemData.brand, label: SLFormLabelText(labelText: "Brand: ")) {
+ //        ForEach(brands) { brand in
+ //            Text(brand.name).tag(brand)
+ //        }
+ //    }
+ //}
+ 
+ // Category Section
+  //Section(header: Text("Category").sectionHeader()) {
+  //   Picker(selection: $editableItemData.category, label: SLFormLabelText(labelText: "Category: ")) {
+  //        ForEach(categorys) { category in
+  //            Text(category.name).tag(category)
+  //      }
+  //   }
+  //}
  
  */

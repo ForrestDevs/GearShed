@@ -17,6 +17,15 @@ struct TabBarItemsPreferenceKey: PreferenceKey {
     }
 }
 
+struct TabBarHiddenPreferenceKey: PreferenceKey {
+    
+    static var defaultValue: Bool = false
+    
+    static func reduce(value: inout Bool, nextValue: () -> Bool) {
+        value = nextValue()
+    }
+}
+
 struct TabBarItemViewModifier: ViewModifier {
     
     let tab: TabBarItem
@@ -31,8 +40,11 @@ struct TabBarItemViewModifier: ViewModifier {
 
 
 extension View {
+    
     func tabBarItem(tab: TabBarItem, selection: Binding<TabBarItem>) -> some View {
         modifier(TabBarItemViewModifier(tab: tab, selection: selection))
     }
+    
+    //func tabBarHidden
 }
 

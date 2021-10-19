@@ -20,6 +20,17 @@
 		08371B4A271BB2F30072AD94 /* TripVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B49271BB2F30072AD94 /* TripVM.swift */; };
 		08371B50271BC5010072AD94 /* MainCatelogVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B4F271BC5010072AD94 /* MainCatelogVM.swift */; };
 		08371B56271C8ABD0072AD94 /* Sorting+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B55271C8ABD0072AD94 /* Sorting+Extension.swift */; };
+		08371B5B271D0B1C0072AD94 /* NavBarColorModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B5A271D0B1B0072AD94 /* NavBarColorModifier.swift */; };
+		08371B5D271DFEA20072AD94 /* AllItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B5C271DFEA20072AD94 /* AllItemsView.swift */; };
+		08371B5F271DFEC90072AD94 /* AllCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B5E271DFEC90072AD94 /* AllCategoryView.swift */; };
+		08371B61271DFED90072AD94 /* AllBrandView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B60271DFED90072AD94 /* AllBrandView.swift */; };
+		08371B63271DFEE60072AD94 /* AllTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B62271DFEE60072AD94 /* AllTagView.swift */; };
+		08371B65271DFEF80072AD94 /* AllWishListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B64271DFEF80072AD94 /* AllWishListView.swift */; };
+		08371B69271E029B0072AD94 /* TagRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B68271E029B0072AD94 /* TagRowView.swift */; };
+		08371B6C271E030B0072AD94 /* Tag+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B6B271E030B0072AD94 /* Tag+Extension.swift */; };
+		08371B6E271E08A20072AD94 /* tags.json in Resources */ = {isa = PBXBuildFile; fileRef = 08371B6D271E08A20072AD94 /* tags.json */; };
+		08371B70271E56C00072AD94 /* AddOrModifyTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B6F271E56C00072AD94 /* AddOrModifyTagView.swift */; };
+		08371B72271E5B6D0072AD94 /* ItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B71271E5B6D0072AD94 /* ItemDetailView.swift */; };
 		08C7D8A0270F3D1800EC3984 /* GearShedApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C7D89F270F3D1800EC3984 /* GearShedApp.swift */; };
 		08C7D8A2270F3D1800EC3984 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C7D8A1270F3D1800EC3984 /* MainView.swift */; };
 		08C7D8A4270F3D1D00EC3984 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08C7D8A3270F3D1D00EC3984 /* Assets.xcassets */; };
@@ -102,6 +113,17 @@
 		08371B49271BB2F30072AD94 /* TripVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripVM.swift; sourceTree = "<group>"; };
 		08371B4F271BC5010072AD94 /* MainCatelogVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCatelogVM.swift; sourceTree = "<group>"; };
 		08371B55271C8ABD0072AD94 /* Sorting+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sorting+Extension.swift"; sourceTree = "<group>"; };
+		08371B5A271D0B1B0072AD94 /* NavBarColorModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavBarColorModifier.swift; sourceTree = "<group>"; };
+		08371B5C271DFEA20072AD94 /* AllItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllItemsView.swift; sourceTree = "<group>"; };
+		08371B5E271DFEC90072AD94 /* AllCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllCategoryView.swift; sourceTree = "<group>"; };
+		08371B60271DFED90072AD94 /* AllBrandView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllBrandView.swift; sourceTree = "<group>"; };
+		08371B62271DFEE60072AD94 /* AllTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllTagView.swift; sourceTree = "<group>"; };
+		08371B64271DFEF80072AD94 /* AllWishListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllWishListView.swift; sourceTree = "<group>"; };
+		08371B68271E029B0072AD94 /* TagRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagRowView.swift; sourceTree = "<group>"; };
+		08371B6B271E030B0072AD94 /* Tag+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tag+Extension.swift"; sourceTree = "<group>"; };
+		08371B6D271E08A20072AD94 /* tags.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = tags.json; sourceTree = "<group>"; };
+		08371B6F271E56C00072AD94 /* AddOrModifyTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOrModifyTagView.swift; sourceTree = "<group>"; };
+		08371B71271E5B6D0072AD94 /* ItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailView.swift; sourceTree = "<group>"; };
 		08C7D89C270F3D1800EC3984 /* GearShed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GearShed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08C7D89F270F3D1800EC3984 /* GearShedApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GearShedApp.swift; sourceTree = "<group>"; };
 		08C7D8A1270F3D1800EC3984 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -231,7 +253,9 @@
 				08C7D8B7270F41CC00EC3984 /* MainCatelogView.swift */,
 				08C7D903270F68EE00EC3984 /* ItemListDisplay.swift */,
 				08C7D91B270F719B00EC3984 /* ItemRowView.swift */,
+				08371B71271E5B6D0072AD94 /* ItemDetailView.swift */,
 				08C7D8FA270F66EB00EC3984 /* AddOrModifyItemView.swift */,
+				08371B66271DFEFE0072AD94 /* PickerViews */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -242,6 +266,27 @@
 				08371B4F271BC5010072AD94 /* MainCatelogVM.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		08371B66271DFEFE0072AD94 /* PickerViews */ = {
+			isa = PBXGroup;
+			children = (
+				08371B5C271DFEA20072AD94 /* AllItemsView.swift */,
+				08371B5E271DFEC90072AD94 /* AllCategoryView.swift */,
+				08371B60271DFED90072AD94 /* AllBrandView.swift */,
+				08371B62271DFEE60072AD94 /* AllTagView.swift */,
+				08371B64271DFEF80072AD94 /* AllWishListView.swift */,
+			);
+			path = PickerViews;
+			sourceTree = "<group>";
+		};
+		08371B67271E02820072AD94 /* Tags */ = {
+			isa = PBXGroup;
+			children = (
+				08371B68271E029B0072AD94 /* TagRowView.swift */,
+				08371B6F271E56C00072AD94 /* AddOrModifyTagView.swift */,
+			);
+			path = Tags;
 			sourceTree = "<group>";
 		};
 		08C7D893270F3D1700EC3984 = {
@@ -278,6 +323,7 @@
 				08C7D8A3270F3D1D00EC3984 /* Assets.xcassets */,
 				08C7D8AD270F3D1D00EC3984 /* Info.plist */,
 				08C7D914270F6E1600EC3984 /* brands.json */,
+				08371B6D271E08A20072AD94 /* tags.json */,
 				08C7D913270F6E1600EC3984 /* categorys.json */,
 				08C7D915270F6E1600EC3984 /* items.json */,
 				08C7D8A5270F3D1D00EC3984 /* Preview Content */,
@@ -310,6 +356,7 @@
 				08371B52271BD4DE0072AD94 /* ViewModel */,
 				08371B51271BD4D60072AD94 /* Views */,
 				08C7D8D4270F480E00EC3984 /* Brands */,
+				08371B67271E02820072AD94 /* Tags */,
 				08C7D8CF270F480D00EC3984 /* Categories */,
 			);
 			path = MainCatelog;
@@ -353,6 +400,7 @@
 				08C7D8C6270F475A00EC3984 /* Date+Extensions.swift */,
 				08C7D8C7270F475A00EC3984 /* NSManagedObject+Extensions.swift */,
 				08371B55271C8ABD0072AD94 /* Sorting+Extension.swift */,
+				08371B5A271D0B1B0072AD94 /* NavBarColorModifier.swift */,
 			);
 			path = "Convenience Extensions";
 			sourceTree = "<group>";
@@ -413,6 +461,7 @@
 				08C7D924270F7BFB00EC3984 /* Trip+Extension.swift */,
 				08C7D908270F6D1D00EC3984 /* Brand+Extension.swift */,
 				08C7D907270F6D1D00EC3984 /* Category+Extensions.swift */,
+				08371B6B271E030B0072AD94 /* Tag+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -533,6 +582,7 @@
 			files = (
 				08C7D8A7270F3D1D00EC3984 /* Preview Assets.xcassets in Resources */,
 				08C7D917270F6E1600EC3984 /* brands.json in Resources */,
+				08371B6E271E08A20072AD94 /* tags.json in Resources */,
 				08C7D918270F6E1600EC3984 /* items.json in Resources */,
 				08C7D8A4270F3D1D00EC3984 /* Assets.xcassets in Resources */,
 				08C7D916270F6E1600EC3984 /* categorys.json in Resources */,
@@ -547,6 +597,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				08371B25271A42890072AD94 /* TestView.swift in Sources */,
+				08371B70271E56C00072AD94 /* AddOrModifyTagView.swift in Sources */,
 				08C7D91C270F719B00EC3984 /* ItemRowView.swift in Sources */,
 				08C7D8F8270F65E100EC3984 /* SLSectionHeaderView.swift in Sources */,
 				08C7D8F6270F65E100EC3984 /* SLSimpleHeaderView.swift in Sources */,
@@ -556,11 +607,15 @@
 				08C7D902270F680400EC3984 /* ConfirmationAlertProtocol.swift in Sources */,
 				08371B3F271B72BF0072AD94 /* UIApplication.swift in Sources */,
 				08371B2A271AA4DB0072AD94 /* HomeView.swift in Sources */,
+				08371B61271DFED90072AD94 /* AllBrandView.swift in Sources */,
+				08371B65271DFEF80072AD94 /* AllWishListView.swift in Sources */,
+				08371B6C271E030B0072AD94 /* Tag+Extension.swift in Sources */,
 				08C7D8DE270F480E00EC3984 /* AddOrModifyBrandView.swift in Sources */,
 				08C7D90B270F6D1D00EC3984 /* Brand+Extension.swift in Sources */,
 				08C7D8BE270F42AD00EC3984 /* DevTools.swift in Sources */,
 				08ED0FD72719DA490072CB90 /* ViewModel.swift in Sources */,
 				08C7D8CC270F475A00EC3984 /* NotificationName+Extensions.swift in Sources */,
+				08371B5F271DFEC90072AD94 /* AllCategoryView.swift in Sources */,
 				08C7D8CA270F475A00EC3984 /* View+Extensions.swift in Sources */,
 				08C7D93E2710EEEE00EC3984 /* AddItemToTripSheet.swift in Sources */,
 				08ED0FE5271A2C8A0072CB90 /* UnusedCode.swift in Sources */,
@@ -595,6 +650,7 @@
 				08C7D8F9270F65E100EC3984 /* SelectionIndicatorView.swift in Sources */,
 				08C7D8B8270F41CC00EC3984 /* MainCatelogView.swift in Sources */,
 				08ED0FDF2719EAE10072CB90 /* CustomTabBarView.swift in Sources */,
+				08371B63271DFEE60072AD94 /* AllTagView.swift in Sources */,
 				08C7D909270F6D1D00EC3984 /* Item+Extensions.swift in Sources */,
 				08C7D8DA270F480E00EC3984 /* CategoryRowView.swift in Sources */,
 				08ED0FDE2719EAE10072CB90 /* TabBarItem.swift in Sources */,
@@ -608,8 +664,11 @@
 				08C7D929270F7F7500EC3984 /* TripDetailView.swift in Sources */,
 				08C7D8BA270F41F300EC3984 /* TripsTabView.swift in Sources */,
 				08C7D923270F7AFC00EC3984 /* EditableTripData.swift in Sources */,
+				08371B5B271D0B1C0072AD94 /* NavBarColorModifier.swift in Sources */,
 				08C7D8DB270F480E00EC3984 /* AddOrModifyCategoryView.swift in Sources */,
+				08371B69271E029B0072AD94 /* TagRowView.swift in Sources */,
 				08371B4A271BB2F30072AD94 /* TripVM.swift in Sources */,
+				08371B72271E5B6D0072AD94 /* ItemDetailView.swift in Sources */,
 				08C7D930270F846500EC3984 /* TripItemsSelector.swift in Sources */,
 				08ED0FE7271A34EE0072CB90 /* NewTest.swift in Sources */,
 				08C7D8F2270F65E100EC3984 /* SearchBarView.swift in Sources */,
@@ -620,6 +679,7 @@
 				08C7D8F7270F65E100EC3984 /* SLCenteredButton.swift in Sources */,
 				08C7D8BC270F422800EC3984 /* PreferencesTabView.swift in Sources */,
 				08C7D927270F7DC200EC3984 /* TripRowView.swift in Sources */,
+				08371B5D271DFEA20072AD94 /* AllItemsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

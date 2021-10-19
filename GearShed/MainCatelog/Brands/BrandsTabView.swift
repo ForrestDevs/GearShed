@@ -10,7 +10,7 @@ import SwiftUI
 struct BrandsTabView: View {
     
     // this is the @FetchRequest that ties this view to CoreData Brands
-    @FetchRequest(fetchRequest: Brand.allBrandsFR())
+    @FetchRequest(fetchRequest: MainCatelogVM.allBrandsFR())
     private var brands: FetchedResults<Brand>
     
     
@@ -46,16 +46,16 @@ struct BrandsTabView: View {
             
             
             // 2. then the list of brands
-            Form {
-                Section(header: Text("Brands Listed: \(brands.count)").sectionHeader()) {
-                    ForEach(brands) { brand in
-                        NavigationLink(destination: AddOrModifyBrandView(brand: brand)) {
-                            BrandRowView(rowData: BrandRowData(brand: brand))
-                                .contextMenu { contextMenuButton(for: brand) }
-                        } // end of NavigationLink
-                    } // end of ForEach
-                } // end of Section
-            } // end of Form
+            //Form {
+            //    Section(header: Text("Brands Listed: \(brands.count)").sectionHeader()) {
+            //        ForEach(brands) { brand in
+            //            NavigationLink(destination: AddOrModifyBrandView(brand: brand)) {
+            //                BrandRowView(rowData: BrandRowData(brand: brand))
+            //                    .contextMenu { contextMenuButton(for: brand) }
+            //            } // end of NavigationLink
+            //        } // end of ForEach
+            //    } // end of Section
+            //} // end of Form
             //                .id(listDisplayID)
             
         } // end of VStack

@@ -107,6 +107,32 @@ struct ConfirmDeleteBrandAlert: ConfirmationAlertProtocol {
     
 }
 
+// MARK: - Confirm DELETE Tag Alert
+struct ConfirmDeleteTagAlert: ConfirmationAlertProtocol {
+    var id = UUID()
+    
+    var tag: Tag
+    
+    var title: String { "Delete \'\(tag.name)\'?" }
+    
+    var message: String {
+        "Are you sure you want to delete the Tag named \(tag.name)? All items at this tag will be moved to the Unknown Tag.  This action cannot be undone."
+    }
+    
+    func destructiveAction() {
+        Tag.delete(tag)
+    }
+    
+    var destructiveCompletion: (() -> Void)?
+    var nonDestructiveCompletion: (() -> Void)?
+    
+    init(tag: Tag, destructiveCompletion: (() -> Void)? = nil) {
+        self.tag = tag
+        self.destructiveCompletion = destructiveCompletion
+    }
+    
+}
+
 // MARK: - Confirm DELETE TRIP Alert
 struct ConfirmDeleteTripAlert: ConfirmationAlertProtocol {
     

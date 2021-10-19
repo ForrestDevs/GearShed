@@ -13,21 +13,15 @@ import SwiftUI
 struct AddOrModifyBrandView: View {
     @Environment(\.presentationMode) var presentationMode
     
+    @StateObject private var viewModel = MainCatelogVM()
+    
     // all editableData is packaged here. its initial values are set using
     // a custom init.
     @State private var editableData: EditableItemData
     var brand: Brand?
     
-    // parameter to control triggering an Alert and defining what action
-    // to take upon confirmation
-    @State private var confirmDeleteBrandAlert: ConfirmDeleteBrandAlert?
-    
-    // trigger for adding a new item at this Brand
-    //@State private var isAddNewItemSheetShowing = false
-    
     // custom init to set up editable data
     init(brand: Brand? = nil) {
-//        print("AddorModifyBrandView initialized")
         _editableData = State(initialValue: EditableItemData(brand: brand))
         self.brand = brand
     }
@@ -48,7 +42,7 @@ struct AddOrModifyBrandView: View {
             if editableData.representsExistingBrand && !editableData.associatedBrand.isUnknownBrand {
                 Section(header: Text("Brand Management").sectionHeader()) {
                     SLCenteredButton(title: "Delete This Brand",
-                                    action: { confirmDeleteBrandAlert = ConfirmDeleteBrandAlert(
+                                     action: { viewModel.confirmDeleteBrandAlert = ConfirmDeleteBrandAlert(
                                     brand: editableData.associatedBrand,
                                     destructiveCompletion: { presentationMode.wrappedValue.dismiss() }) }
                     )
@@ -70,14 +64,7 @@ struct AddOrModifyBrandView: View {
             ToolbarItem(placement: .cancellationAction, content: cancelButton)
             ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!editableData.canBrandBeSaved) }
         }
-        .alert(item: $confirmDeleteBrandAlert) { item in item.alert() }
-        /*.sheet(isPresented: $isAddNewItemSheetShowing) {
-            NavigationView {
-                AddOrModifyItemView()
-                    .environment(\.managedObjectContext, PersistentStore.shared.context)
-            }
-        }*/
-
+        .alert(item: $viewModel.confirmDeleteBrandAlert) { item in item.alert() }
     }
     
     func barTitle() -> Text {

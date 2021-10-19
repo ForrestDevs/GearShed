@@ -77,14 +77,15 @@ extension CustomTabBarView {
     private func tabView2(tab: TabBarItem) -> some View {
         VStack {
             Image(systemName: tab.iconName)
-                .font(.subheadline)
+                .font(.headline)
             Text(tab.title)
-                .font(.system(size: 10, weight: .semibold, design: .rounded))
+                .font(.headline)
+                //.font(.system(size: 10, weight: .semibold, design: .rounded))
         }
-        .foregroundColor(localSelection == tab ? tab.color : Color.gray)
+        .foregroundColor(localSelection == tab ? tab.color : Color.black)
         .padding(.vertical, 8)
         .frame(maxWidth: .infinity)
-        .background(
+        /*.background(
             ZStack {
                 if localSelection == tab {
                     RoundedRectangle(cornerRadius: 10)
@@ -92,7 +93,7 @@ extension CustomTabBarView {
                         .matchedGeometryEffect(id: "background_rectangle", in: namespace)
                 }
             }
-        )
+        )*/
     }
     
     private var tabBarVersion2: some View {
@@ -105,7 +106,7 @@ extension CustomTabBarView {
             }
         }
         .padding(6)
-        .background(Color.theme.background.ignoresSafeArea(edges: .bottom))
+        .background(Color.theme.green.ignoresSafeArea(edges: .bottom))
         .cornerRadius(10)
         .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 5)
         .padding(.horizontal)

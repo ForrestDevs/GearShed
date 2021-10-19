@@ -1,9 +1,9 @@
 //
 //  EditableItemData.swift
-//  ShoppingList
+//  GearShed
 //
-//  Created by Jerry on 6/28/20.
-//  Copyright © 2020 Jerry. All rights reserved.
+//  Created by Luke Forrest Gannon
+//  Copyright © 2020 All rights reserved.
 //
 
 import Foundation
@@ -22,15 +22,16 @@ struct EditableItemData {
 	var id: UUID? = nil
 	// all of the values here provide suitable defaults for a new item
 	var name: String = ""
-	var quantity: Int = 1
+	var weight: Int = 0
+    var details: String = ""
+    
 	var category = Category.unknownCategory()
     var brand = Brand.unknownBrand()
+    var tag = Tag.unknownTag()
+    
 	var onList: Bool = true
 	var isAvailable = true
 	var dateText = "" // for display only, not actually editable
-	
-    
-    var itemTrips = [Trip]()
     
 
 	// this copies all the editable data from an incoming Item.  this looks fairly
@@ -42,18 +43,16 @@ struct EditableItemData {
 	// with how SwiftUI updates views and its interaction with a @FetchRequest.  this is the
 	// one, remaining issue with SwiftUI i hope to understand real soon.
     
-    init(itemTripsInit: Item?) {
-        if let item = itemTripsInit {
-            itemTrips = item.trips
-        }
-    }
-    
 	init(item: Item) {
 		id = item.id
 		name = item.name
-		quantity = Int(item.weight)
+		weight = Int(item.weight)
+        details = item.detail
+        
 		category = item.category
         brand = item.brand
+        tag = item.tag
+        
 		onList = item.onList
 		isAvailable = item.isAvailable
 		if item.hasBeenPurchased {
@@ -61,7 +60,7 @@ struct EditableItemData {
 		}
 	}
 	
-    init(initialItemName: String?, category: Category? = nil, brand: Brand? = nil) {
+    init(initialItemName: String?, category: Category? = nil, brand: Brand? = nil, tag: Tag? = nil) {
 		if let name = initialItemName, name.count > 0 {
 			self.name = name
 		}
@@ -70,6 +69,9 @@ struct EditableItemData {
 		}
         if let brand = brand {
             self.brand = brand
+        }
+        if let tag = tag {
+            self.tag = tag
         }
 	}
 	
@@ -92,8 +94,6 @@ struct EditableItemData {
     var order: Int = 50
     
     // this copies all the editable data from an incoming Brand
-    // updated 17-Apr to copy the id (obvious regression issue)
-    // and also updated to allow nil argument ...
     init(brand: Brand?) {
         if let brand = brand {
             idBrand = brand.id!
@@ -122,8 +122,6 @@ struct EditableItemData {
     var color: Color = .green    // we keep a Color; a category has RGB-A components
     
     // this copies all the editable data from an incoming Category
-    // updated 17-Apr to copy the id (obvious regression issue)
-    // and also updated to allow nil argument ...
     init(category: Category?) {
         if let category = category {
             idCategory = category.id!
@@ -141,6 +139,31 @@ struct EditableItemData {
     // useful to know the associated category (which we'll force unwrap, so
     // be sure you check representsExistingCategory first (!)
     var associatedCategory: Category { Category.object(withID: idCategory!)! }
+    
+    // MARK: - Tag Stuff
+    
+    // the id of the tag, if any, associated with this data collection
+    // (nil if data for a new item that does not yet exist)
+    var idTag: UUID? = nil
+    // all of the values here provide suitable defaults for a new Category
+    var tagName: String = ""
+    
+    // this copies all the editable data from an incoming Tag
+    init(tag: Tag?) {
+        if let tag = tag {
+            idTag = tag.id!
+            tagName = tag.name
+        }
+    }
+    
+    // to do a save/commit of an Item, it must have a non-empty name
+    var canTagBeSaved: Bool { tagName.count > 0 }
+    
+    // useful to know if this is associated with an existing Category
+    var representsExistingTag: Bool { idTag != nil && Tag.object(withID: idTag!) != nil }
+    // useful to know the associated category (which we'll force unwrap, so
+    // be sure you check representsExistingCategory first (!)
+    var associatedTag: Tag { Tag.object(withID: idTag!)! }
 }
 
 

@@ -15,39 +15,55 @@ struct ItemRowView: View {
 	@ObservedObject var item: Item
 	
 	var body: some View {
-        NavigationLink(destination: AddOrModifyItemView(editableItem: item)) {
+        NavigationLink(destination: ItemDetailView(item: item)) {
             HStack {
                 Image(systemName: "square.fill")
                     .resizable()
                     .font(.title)
                     .frame(width: 35, height: 35)
-                    .foregroundColor(.blue)
+                    .foregroundColor(Color.theme.background)
                     .padding(.horizontal,4)
-                // Name and Brand
+                
+                // Name, Brand, Details
                 VStack (alignment: .leading) {
-                    Text(item.name)
-                        .font(.headline)
-                        .foregroundColor(Color.theme.accent)
+                    
+                    HStack {
+                        Text(item.name)
+                            .font(.headline)
+                            .foregroundColor(Color.theme.accent)
+                        
+                        Text("|")
+                        
+                        Text(item.brandName)
+                            .font(.headline)
+                            .foregroundColor(Color.theme.accent)
+                    }
                     
                     Text(item.detail)
                         .font(.caption)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(Color.theme.secondaryText)
                 }
                 
                 Spacer()
                 
-                // quantity at the right
-                Text("\(item.weight)")
-                    .font(.caption)
-                    .bold()
-                    .foregroundColor(Color(.blue))
-                    .padding(.horizontal)
-                
+                VStack {
+                    // quantity at the right
+                    Text("\(item.weight) g")
+                        .font(.caption)
+                        .bold()
+                        .foregroundColor(Color.theme.green)
+                        .padding(.horizontal)
+                    Text("100$")
+                        .font(.caption)
+                }
             }
             .padding(.horizontal)
         }
 	}
+    
 }
+
+
 
 
 

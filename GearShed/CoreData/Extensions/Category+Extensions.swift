@@ -79,19 +79,6 @@ extension Category: Comparable {
 		}
 	}
 
-	// MARK: - Useful Fetch Request
-	
-	// a fetch request we can use in views to get all categorys, sorted in visitation order.
-	// by default, you get all categorys; setting onList = true returns only categorys that
-	// have at least one of its shopping items currently on the shopping list
-	class func allCategorysFR(onList: Bool = false) -> NSFetchRequest<Category> {
-		let request: NSFetchRequest<Category> = Category.fetchRequest()
-		request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
-		if onList {
-			request.predicate = NSPredicate(format: "ANY items_.onList_ == true")
-		}
-		return request
-	}
 
 	// MARK: - Class Functions
 	

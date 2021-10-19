@@ -1,110 +1,25 @@
 //
-//  CategoryRowView.swift
-//  ShoppingList
+//  AllWishListView.swift
+//  GearShed
 //
-//  Created by Jerry on 6/1/20.
-//  Copyright © 2020 Jerry. All rights reserved.
+//  Created by Luke Forrest Gannon on 2021-10-18.
 //
 
 import SwiftUI
 
-// MARK: - CategoryRowData Definition
-// this is a struct to transport all the incoming data about a Category that we
-// will display.  see the commentary over in EditableItemData.swift and
-// SelectableItemRowView.swift about why we do this.
-struct CategoryRowData {
-	let name: String
-	let itemCount: Int
-	let visitationOrder: Int
-	let uiColor: UIColor
-	
-	init(category: Category) {
-		name = category.name
-		itemCount = category.itemCount
-		visitationOrder = category.visitationOrder
-		uiColor = category.uiColor
-	}
-}
-
-// MARK: - CategoryRowView
-
-struct CategoryRowViewOld: View {
-    var rowData: CategoryRowData
-
-	var body: some View {
-		HStack {
-			// color bar at left (new in this code)
-			Color(rowData.uiColor)
-				.frame(width: 10, height: 36)
-			
-			VStack(alignment: .leading) {
-				Text(rowData.name)
-					.font(.headline)
-				Text(subtitle())
-					.font(.caption)
-			}
-			if rowData.visitationOrder != kUnknownCategoryVisitationOrder {
-				//Spacer()
-				//Text(String(rowData.visitationOrder))
-			}
-		} // end of HStack
-	} // end of body: some View
-	
-	func subtitle() -> String {
-		if rowData.itemCount == 1 {
-			return "1 item"
-		} else {
-			return "\(rowData.itemCount) items"
-		}
-	}
-	
-}
-
-struct CategoryRowView: View {
-    
-    var category: Category
-    
-    //var rowData: CategoryRowData
-
-    var body: some View {
-        
-        HStack {
-            NavigationLink(destination: CategoryDetailView(category: category)) {
-                HStack{
-                    Text(category.name)
-                        .font(.headline)
-                    Spacer()
-                    Text("\(category.itemCount)")
-                        .font(.headline)
-                }
-            }
-            
-            Button {} label: {
-                Image(systemName: "square.and.pencil")
-            }
-            
-        }
-        .padding(.horizontal, 20)
-    }
-}
-
-struct CategoryDetailView: View {
+struct AllWishListView: View {
     
     @StateObject private var viewModel = MainCatelogVM()
     
-    @FetchRequest private var items: FetchedResults<Item>
-    
-    init(category: Category) {
-        let request = Item.allItemsFR(at: category)
-        _items = FetchRequest(fetchRequest: request)
-    }
-    
+    @State private var selected = 0
+
     var body: some View {
-        VStack(spacing:0) {
-            StatBar2()
+        VStack (spacing: 0) {
             
+            StatBar1()
+                        
             ScrollView(.vertical, showsIndicators: false) {
-                ForEach(items) { item in
+                ForEach(viewModel.allItems) { item in
                     ItemRowView(item: item)
                 }
             }
@@ -113,13 +28,17 @@ struct CategoryDetailView: View {
                 .frame(height: 1)
                 .opacity(0)
             Spacer(minLength: 60)
-                
         }
-        //.navigationTitle(category.name)
     }
 }
 
-struct StatBar2: View {
+struct AllWishListView_Previews: PreviewProvider {
+    static var previews: some View {
+        AllWishListView()
+    }
+}
+
+struct StatBar1: View {
     
     @StateObject private var viewModel = MainCatelogVM()
 
@@ -185,4 +104,3 @@ struct StatBar2: View {
 
     }
 }
-

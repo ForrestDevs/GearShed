@@ -62,19 +62,7 @@ extension Brand: Comparable {
     // simplified test of "is the unknown brand"
     var isUnknownBrand: Bool { order_ == kUnknownBrandVisitationOrder }
     
-    // MARK: - Useful Fetch Request
     
-    // a fetch request we can use in views to get all brands, sorted in visitation order.
-    // by default, you get all brands; setting onList = true returns only brands that
-    // have at least one of its shopping items currently on the shopping list
-    class func allBrandsFR(onList: Bool = false) -> NSFetchRequest<Brand> {
-        let request: NSFetchRequest<Brand> = Brand.fetchRequest()
-        request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
-        if onList {
-            request.predicate = NSPredicate(format: "ANY items_.onList_ == true")
-        }
-        return request
-    }
 
     // MARK: - Class Functions
     

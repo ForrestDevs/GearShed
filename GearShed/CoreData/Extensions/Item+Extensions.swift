@@ -163,6 +163,18 @@ extension Item {
         }
     }
     
+    // an item's associated tag.  this fronts a Core Data optional attribute.
+    // if you change an item's brand, the old and the new Brand may want to
+    // know that some of their computed properties could be invalidated
+    var tag: Tag {
+        get { tag_! }
+        set {
+            tag_?.objectWillChange.send()
+            tag_ = newValue
+            tag_?.objectWillChange.send()
+        }
+    }
+    
     // items: fronts Core Data attribute trips_ that is an NSSet, and turns it into
     // a Swift array
     var trips: [Trip] {
@@ -294,7 +306,7 @@ extension Item {
     
 	private func updateValues(from editableData: EditableItemData) {
 		name_ = editableData.name
-		weight_ = Int32(editableData.quantity)
+		weight_ = Int32(editableData.weight)
 		onList_ = editableData.onList
 		isAvailable_ = editableData.isAvailable
 		category = editableData.category

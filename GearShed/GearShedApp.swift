@@ -19,12 +19,14 @@ struct GearShedApp: App {
             
             //Test3()
             
-            AppTabBarView()
-                .environment(\.managedObjectContext, persistentStore.context)
-                .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification),
-                                     perform: handleResignActive)
-                .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification),
-                                     perform: handleBecomeActive)
+                AppTabBarView()
+                    .environment(\.managedObjectContext, persistentStore.context)
+                    .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification),
+                                         perform: handleResignActive)
+                    .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification),
+                                         perform: handleBecomeActive)
+            
+            
             
             
         }

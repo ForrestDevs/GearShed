@@ -39,3 +39,66 @@ struct AppTabBarView_Previews: PreviewProvider {
     }
 }
 
+struct AppTabBarView1: View {
+
+    @State private var tabSelection: TabBarItem = .home
+    
+    var body: some View {
+        NavigationView{
+            CustomTabView(selection: $tabSelection) {
+            
+                HomeView()
+                    .offset(y: 50)
+                    .tabBarItem(tab: .home, selection: $tabSelection)
+                    .tag(TabBarItem.home)
+                
+                MainCatelogView()
+                    .offset(y: 100)
+                    .tabBarItem(tab: .shed, selection: $tabSelection)
+                    .tag(TabBarItem.shed)
+
+                                
+                TripsTabView()
+                    .offset(y: 100)
+                    .tabBarItem(tab: .trips, selection: $tabSelection)
+                    .tag(TabBarItem.trips)
+
+                
+            }
+            //.navigationBarTitle(returnNaviBarTitle(tabSelection: self.tabSelection))
+            //.navigationViewStyle(StackNavigationViewStyle())
+        }
+
+    }
+
+        
+    func returnNaviBarTitle(tabSelection: TabBarItem) -> String {
+        switch tabSelection {
+            case .home: return "Tab1"
+            case .shed: return "Tab2"
+            case .trips: return "Tab2"
+        }
+    }
+}
+
+struct AppTabBarView2: View {
+
+    @State private var tabSelection: TabBarItem = .home
+    
+    var body: some View {
+        TabView(selection: $tabSelection) {
+            
+            NavigationView { HomeView() }
+                .tabItem({ Label("Home", systemImage: "house") })
+
+               
+            NavigationView { MainCatelogView() }
+                .tabItem({ Label("GearShed", systemImage: "house") })
+
+            NavigationView { TripsTabView() }
+                .tabItem({ Label("GearList", systemImage: "airplane") })
+
+        }
+    }
+}
+

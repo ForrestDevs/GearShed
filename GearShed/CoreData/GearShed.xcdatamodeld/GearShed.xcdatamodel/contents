@@ -26,7 +26,13 @@
         <attribute name="weight_" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="brand_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Brand" inverseName="items_" inverseEntity="Brand"/>
         <relationship name="category_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="items_" inverseEntity="Category"/>
+        <relationship name="tag_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Tag" inverseName="items_" inverseEntity="Tag"/>
         <relationship name="trips_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Trip" inverseName="items_" inverseEntity="Trip"/>
+    </entity>
+    <entity name="Tag" representedClassName="Tag" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name_" optional="YES" attributeType="String"/>
+        <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="tag_" inverseEntity="Item"/>
     </entity>
     <entity name="Trip" representedClassName="Trip" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
@@ -34,9 +40,10 @@
         <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="trips_" inverseEntity="Item"/>
     </entity>
     <elements>
-        <element name="Brand" positionX="-146.3314819335938" positionY="-268.5347290039062" width="128" height="103"/>
-        <element name="Category" positionX="-148.1810913085938" positionY="-156.2005615234375" width="128" height="163"/>
-        <element name="Item" positionX="43.33013916015625" positionY="-290.6490478515625" width="128" height="193"/>
-        <element name="Trip" positionX="269.1407470703125" positionY="-157.0157775878906" width="128" height="88"/>
+        <element name="Brand" positionX="-261.9915771484376" positionY="-283.9469757080078" width="128" height="103"/>
+        <element name="Category" positionX="-256.6453247070313" positionY="-159.5028686523438" width="128" height="163"/>
+        <element name="Item" positionX="107.546875" positionY="-268.4366455078125" width="128" height="208"/>
+        <element name="Trip" positionX="284.164794921875" positionY="-251.5426635742188" width="128" height="88"/>
+        <element name="Tag" positionX="-246.4386596679688" positionY="26.8985595703125" width="128" height="88"/>
     </elements>
 </model>

@@ -42,17 +42,17 @@ struct ItemListDisplay: View {
         var completedSectionData = [SectionData]()
         
         if displayBy == 0 {
-            completedSectionData.append(SectionData(title:"", items: viewModel.itemsInCatelog))
+            completedSectionData.append(SectionData(title:"", items: viewModel.allItems))
         } else if displayBy == 1 {
             // otherwise, one section for each category, please.  break the data out by category first
-            let dictionaryByCategory = Dictionary(grouping: viewModel.itemsInCatelog, by: { $0.category })
+            let dictionaryByCategory = Dictionary(grouping: viewModel.allItems, by: { $0.category })
             // then reassemble the sections by sorted keys of this dictionary
             for key in dictionaryByCategory.keys.sorted() {
                 completedSectionData.append(SectionData(title: key.name, items: dictionaryByCategory[key]!))
             }
         } else if displayBy == 2 {
             // otherwise, one section for each brand, please.  break the data out by brand first
-            let dictionaryByBrand = Dictionary(grouping: viewModel.itemsInCatelog, by: { $0.brand })
+            let dictionaryByBrand = Dictionary(grouping: viewModel.allItems, by: { $0.brand })
             // then reassemble the sections by sorted keys of this dictionary
             for key in dictionaryByBrand.keys.sorted() {
                 completedSectionData.append(SectionData(title: key.name, items: dictionaryByBrand[key]!))
