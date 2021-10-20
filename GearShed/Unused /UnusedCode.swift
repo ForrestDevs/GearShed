@@ -972,8 +972,114 @@
  // you might want the new item to go to the Purchased item list (?)
  //var addItemToShoppingList: Bool = true
  
- 
- 
+ // OLD ADD OR MODIFY ITEM VIEW
+ /*var bodyOld: some View {
+     NavigationView {
+         Form {
+             
+             // Section 1. Basic Information Fields
+             Section(header: Text("Basic Information").sectionHeader()) {
+                 HStack(alignment: .firstTextBaseline) {
+                     SLFormLabelText(labelText: "Name: ")
+                     TextField("Item name", text: $editableItemData.name)
+                 }
+             }
+             Section(header: Text("Category").sectionHeader()) {
+                 
+                 DisclosureGroup("Category", isExpanded: $viewModel.expandedCategory) {
+                     NavigationLink(destination: AddCategoryView()) {
+                         Text("Add New Category")
+                     }
+                     ForEach(categorys) { category in
+                         Text(category.name).tag(category)
+                             .onTapGesture {
+                                 editableItemData.category = category
+                                 viewModel.expandedCategory.toggle()
+                             }
+                     }
+                 }
+             }
+             Section(header: Text("Brand").sectionHeader()) {
+
+                 DisclosureGroup("Brand", isExpanded: $viewModel.expandedBrand) {
+                     NavigationLink(destination: AddBrandView()) {
+                         Text("Add New Brand")
+                     }
+                     ForEach(brands) { brand in
+                         Text(brand.name).tag(brand)
+                             .onTapGesture {
+                                 editableItemData.brand = brand
+                                 viewModel.expandedBrand.toggle()
+                             }
+                     }
+                 }
+             }
+             /*Section(header: Text("Tag").sectionHeader()) {
+
+                 DisclosureGroup("Tag", isExpanded: $viewModel.expandedTag) {
+                     NavigationLink(destination: AddOrModifyTagView()) {
+                         Text("Add New Tag")
+                     }
+                     ForEach(tags) { tag in
+                         Text(tag.name).tag(tag)
+                             .onTapGesture {
+                                 editableItemData.tag = tag
+                                 viewModel.expandedTag.toggle()
+                             }
+                     }
+                 }
+             }*/
+
+             // Item Stats
+             Section (header: Text("Item Stats").sectionHeader()) {
+                 Stepper(value: $editableItemData.quantity, in: 1...10) {
+                     HStack {
+                         SLFormLabelText(labelText: "Quantity: ")
+                         Text("\(editableItemData.quantity)")
+                     }
+                 }
+             }
+             
+             HStack(alignment: .firstTextBaseline) {
+                 Toggle(isOn: $editableItemData.onList) {
+                     SLFormLabelText(labelText: "Wishlist Item: ")
+                 }
+             }
+             
+             // Item Details
+             Section (header: Text("Item Details").sectionHeader()) {
+                 TextEditor(text: $editableItemData.details)
+             }
+             
+             // Item Management (Delete), if present
+             if editableItemData.representsExistingItem {
+                 Section(header: Text("Item Management").sectionHeader()) {
+                     SLCenteredButton(title: "Delete This Item",
+                                      action: { viewModel.confirmDeleteItemAlert =
+                             ConfirmDeleteItemAlert(item: editableItemData.associatedItem,
+                                   destructiveCompletion: { presentationMode.wrappedValue.dismiss() })
+                                                      })
+                         .foregroundColor(Color.red)
+                 }
+             }
+         }
+         .navigationBarTitle(barTitle(), displayMode: .inline)
+         .navigationBarBackButtonHidden(true)
+         .toolbar {
+             ToolbarItem(placement: .cancellationAction) { cancelButton() }
+             ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!editableItemData.canBeSaved) }
+         }
+         .onAppear {
+             logAppear(title: "AddOrModifyItemView")
+         }
+         .onDisappear {
+             logDisappear(title: "AddOrModifyItemView")
+             PersistentStore.shared.saveContext()
+         }
+         .alert(item: $viewModel.confirmDeleteItemAlert) { item in item.alert() }
+     }
+     
+ }*/
  
  
  

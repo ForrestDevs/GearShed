@@ -30,6 +30,16 @@ struct AddOrModifyItemView: View {
     
     // Environment state to dismiss page
 	@Environment(\.presentationMode) var presentationMode
+    
+    //@State var itemNameTextFieldTapped: Bool = false
+    
+    @State private var selectedBrandName: String = "Choose a Brand"
+    
+    @State private var selectedCategoryName: String = "Choose a Category"
+    
+    @State private var selectedBrand: Bool = false
+    
+    @State private var selectedCategory: Bool = false
 	
 	// custom init here to set up editableData state
     init(editableItem: Item? = nil, initialItemName: String? = nil, category: Category? = nil, brand: Brand? = nil/*, tag: Tag? = nil*/) {
@@ -44,221 +54,188 @@ struct AddOrModifyItemView: View {
 		}
 	}
 	
-	/*var bodyOld: some View {
-        NavigationView {
-            Form {
-                
-                // Section 1. Basic Information Fields
-                Section(header: Text("Basic Information").sectionHeader()) {
-                    HStack(alignment: .firstTextBaseline) {
-                        SLFormLabelText(labelText: "Name: ")
-                        TextField("Item name", text: $editableItemData.name)
-                    }
-                }
-                Section(header: Text("Category").sectionHeader()) {
-                    
-                    DisclosureGroup("Category", isExpanded: $viewModel.expandedCategory) {
-                        NavigationLink(destination: AddCategoryView()) {
-                            Text("Add New Category")
-                        }
-                        ForEach(categorys) { category in
-                            Text(category.name).tag(category)
-                                .onTapGesture {
-                                    editableItemData.category = category
-                                    viewModel.expandedCategory.toggle()
-                                }
-                        }
-                    }
-                }
-                Section(header: Text("Brand").sectionHeader()) {
-
-                    DisclosureGroup("Brand", isExpanded: $viewModel.expandedBrand) {
-                        NavigationLink(destination: AddBrandView()) {
-                            Text("Add New Brand")
-                        }
-                        ForEach(brands) { brand in
-                            Text(brand.name).tag(brand)
-                                .onTapGesture {
-                                    editableItemData.brand = brand
-                                    viewModel.expandedBrand.toggle()
-                                }
-                        }
-                    }
-                }
-                /*Section(header: Text("Tag").sectionHeader()) {
-
-                    DisclosureGroup("Tag", isExpanded: $viewModel.expandedTag) {
-                        NavigationLink(destination: AddOrModifyTagView()) {
-                            Text("Add New Tag")
-                        }
-                        ForEach(tags) { tag in
-                            Text(tag.name).tag(tag)
-                                .onTapGesture {
-                                    editableItemData.tag = tag
-                                    viewModel.expandedTag.toggle()
-                                }
-                        }
-                    }
-                }*/
- 
-                // Item Stats
-                Section (header: Text("Item Stats").sectionHeader()) {
-                    Stepper(value: $editableItemData.quantity, in: 1...10) {
-                        HStack {
-                            SLFormLabelText(labelText: "Quantity: ")
-                            Text("\(editableItemData.quantity)")
-                        }
-                    }
-                }
-                
-                HStack(alignment: .firstTextBaseline) {
-                    Toggle(isOn: $editableItemData.onList) {
-                        SLFormLabelText(labelText: "Wishlist Item: ")
-                    }
-                }
-                
-                // Item Details
-                Section (header: Text("Item Details").sectionHeader()) {
-                    TextEditor(text: $editableItemData.details) 
-                }
-                
-                // Item Management (Delete), if present
-                if editableItemData.representsExistingItem {
-                    Section(header: Text("Item Management").sectionHeader()) {
-                        SLCenteredButton(title: "Delete This Item",
-                                         action: { viewModel.confirmDeleteItemAlert =
-                                ConfirmDeleteItemAlert(item: editableItemData.associatedItem,
-                                      destructiveCompletion: { presentationMode.wrappedValue.dismiss() })
-                                                         })
-                            .foregroundColor(Color.red)
-                    }
-                }
-            }
-            .navigationBarTitle(barTitle(), displayMode: .inline)
-            .navigationBarBackButtonHidden(true)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) { cancelButton() }
-                ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!editableItemData.canBeSaved) }
-            }
-            .onAppear {
-                logAppear(title: "AddOrModifyItemView")
-            }
-            .onDisappear {
-                logDisappear(title: "AddOrModifyItemView")
-                PersistentStore.shared.saveContext()
-            }
-            .alert(item: $viewModel.confirmDeleteItemAlert) { item in item.alert() }
-        }
-		
-	}*/
+	
     
     var body: some View {
         NavigationView {
-            VStack (alignment: .leading, spacing: 0) {
-                
-                Text("Item Name")
-                
-                HStack(alignment: .firstTextBaseline) {
-                    SLFormLabelText(labelText: "Name: ")
-                    TextField(editableItemData.name, text: $editableItemData.name)
-                }
-                
-                Text("Item Stats")
-                
-                HStack(alignment: .firstTextBaseline) {
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack (alignment: .leading, spacing: 20) {
                     
-                    TextField(editableItemData.weight, text: $editableItemData.weight)
-                    
-                    TextField(editableItemData.price, text: $editableItemData.price)
-                }
-                
-                Text("Category - Brand")
-                
-                HStack {
-                    
-                    DisclosureGroup(editableItemData.categoryName, isExpanded: $viewModel.expandedCategory) {
-                        NavigationLink(destination: AddCategoryView()) {
-                            Text("Add New Category")
-                        }
-                        ForEach(categorys) { category in
-                            Text(category.name).tag(category)
-                                .onTapGesture {
-                                    editableItemData.category = category
-                                    viewModel.expandedCategory.toggle()
-                                }
-                        }
-                    }
-                    
-                    DisclosureGroup(editableItemData.brandName, isExpanded: $viewModel.expandedBrand) {
-                        NavigationLink(destination: AddBrandView()) {
-                            Text("Add New Brand")
-                        }
-                        ForEach(brands) { brand in
-                            Text(brand.name).tag(brand)
-                                .onTapGesture {
-                                    editableItemData.brand = brand
-                                    viewModel.expandedBrand.toggle()
-                                }
-                        }
-                    }
-                    
-                    /*
-                    DisclosureGroup("Tag", isExpanded: $viewModel.expandedTag) {
-                        NavigationLink(destination: AddOrModifyTagView()) {
-                            Text("Add New Tag")
-                        }
-                        ForEach(tags) { tag in
-                            Text(tag.name).tag(tag)
-                                .onTapGesture {
-                                    editableItemData.tag = tag
-                                    viewModel.expandedTag.toggle()
-                                }
-                        }
-                    }
-                    */
-                }
-                
-                Text("Quantity")
-                
-                Stepper(value: $editableItemData.quantity, in: 1...50) {
-                    HStack {
-                        SLFormLabelText(labelText: "Quantity: ")
-                        Text("\(editableItemData.quantity)")
-                    }
-                }
-                
-                Toggle(isOn: $editableItemData.onList) {
-                    SLFormLabelText(labelText: "Wishlist Item: ")
-                }
-                
-                TextEditor(text: $editableItemData.details)
-                
-                // Item Management (Delete), if present
-                /*if editableItemData.representsExistingItem {
-                    Section(header: Text("Item Management").sectionHeader()) {
+                    VStack (alignment: .leading, spacing: 10) {
+                        Text("Item Name:")
+                            .font(.subheadline)
+                            .bold()
+                            .foregroundColor(Color.theme.green)
                         
-                        SLCenteredButton(title: "Delete This Item", action: { viewModel.confirmDeleteItemAlert =
-                            ConfirmDeleteItemAlert(item: editableItemData.associatedItem,
-                                destructiveCompletion: { presentationMode.wrappedValue.dismiss() })
-                        })
-                        .foregroundColor(Color.red)
+                        TextField(editableItemData.name, text: $editableItemData.name).onTapGesture {
+                            //itemNameTextFieldTapped = true
+                        }
+                        Rectangle()
+                            .frame(maxWidth: .infinity)
+                            .frame(maxHeight: 2)
+                            .foregroundColor(Color.theme.green)
                     }
-                }*/
+                    
+                    VStack (alignment: .leading, spacing: 20) {
+                        Text("Item Stats:")
+                            .font(.subheadline)
+                            .bold()
+                            .foregroundColor(Color.theme.green)
+                        
+                        HStack(alignment: .firstTextBaseline) {
+                            
+                            TextField(editableItemData.weight, text: $editableItemData.weight)
+                            
+                            TextField(editableItemData.price, text: $editableItemData.price)
+                        }
+                    }
+                    
+                    VStack (alignment: .leading, spacing: 10) {
+                        Text("Category - Brand")
+                            .font(.subheadline)
+                            .bold()
+                            .foregroundColor(Color.theme.green)
+                        
+                        HStack (alignment: .firstTextBaseline, spacing: 10) {
+                            
+                            DisclosureGroup(selectedCategoryName, isExpanded: $viewModel.expandedCategory) {
+                                VStack(alignment: .leading) {
+                                    NavigationLink(destination: AddCategoryView()) {
+                                        Text("Add New Category")
+                                            .font(.caption)
+                                            .foregroundColor(Color.theme.secondaryText)
+                                    }
+                                    ForEach(categorys) { category in
+                                        HStack (spacing: 5) {
+                                            if selectedCategory {
+                                                Image(systemName: "checkmark")
+                                                    .foregroundColor(Color.theme.green)
+                                            }
+                                            Text(category.name).tag(category)
+                                                .font(.caption)
+                                                .foregroundColor(Color.theme.secondaryText)
+                                                .onTapGesture {
+                                                    editableItemData.category = category
+                                                    selectedCategory.toggle()
+                                                    selectedCategoryName = category.name
+                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                                        viewModel.expandedCategory.toggle()
+                                                    }
+                                                }
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            DisclosureGroup(selectedBrandName, isExpanded: $viewModel.expandedBrand) {
+                                VStack(alignment: .leading) {
+                                    NavigationLink(destination: AddBrandView()) {
+                                        Text("Add New Brand")
+                                            .font(.title3)
+                                            .foregroundColor(Color.theme.secondaryText)
+                                    }
+                                    ForEach(brands) { brand in
+                                        HStack {
+                                            if selectedBrand {
+                                                Image(systemName: "checkmark")
+                                                    .foregroundColor(Color.theme.green)
+                                            }
+                                            Text(brand.name).tag(brand)
+                                                .font(.title3)
+                                                .foregroundColor(Color.theme.secondaryText)
+                                                .onTapGesture {
+                                                    editableItemData.brand = brand
+                                                    selectedBrand.toggle()
+                                                    selectedBrandName = brand.name
+                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                                        viewModel.expandedBrand.toggle()
+                                                    }
+                                                }
+                                        }
+                                    }
+                                }
+                            }
+                            
+
+                            
+                            /*
+                            DisclosureGroup("Tag", isExpanded: $viewModel.expandedTag) {
+                                NavigationLink(destination: AddOrModifyTagView()) {
+                                    Text("Add New Tag")
+                                }
+                                ForEach(tags) { tag in
+                                    Text(tag.name).tag(tag)
+                                        .onTapGesture {
+                                            editableItemData.tag = tag
+                                            viewModel.expandedTag.toggle()
+                                        }
+                                }
+                            }
+                            */
+                        }
+                    }
+                    
+                    VStack (alignment: .leading, spacing: 10) {
+                        Text("Quantity")
+                            .font(.subheadline)
+                            .bold()
+                            .foregroundColor(Color.theme.green)
+                        
+                        Stepper(value: $editableItemData.quantity, in: 1...50) {
+                            HStack {
+                                Spacer()
+                                Text("\(editableItemData.quantity)")
+                                Spacer()
+                            }
+                        }
+                    }
+                    
+                    Toggle(isOn: $editableItemData.onList) {
+                        Text("Wishlist Item")
+                            .font(.subheadline)
+                            .bold()
+                            .foregroundColor(Color.theme.green)
+                    }
+                    
+                    VStack (alignment: .leading, spacing: 10) {
+                        Text("Item Details:")
+                            .font(.subheadline)
+                            .bold()
+                            .foregroundColor(Color.theme.green)
+                        TextEditor(text: $editableItemData.details)
+                            .border(Color.theme.green)
+                    }
+                    
+                    
+                    // Item Management (Delete), if present
+                    if editableItemData.representsExistingItem {
+                        Section(header: Text("Item Management").sectionHeader()) {
+                            
+                            SLCenteredButton(title: "Delete This Item", action: { viewModel.confirmDeleteItemAlert =
+                                ConfirmDeleteItemAlert(item: editableItemData.associatedItem,
+                                    destructiveCompletion: { presentationMode.wrappedValue.dismiss() })
+                            })
+                            .foregroundColor(Color.red)
+                        }
+                    }
+                }
+                .padding()
+                .navigationBarTitle(barTitle(), displayMode: .inline)
+                .navigationBarBackButtonHidden(true)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) { cancelButton() }
+                    ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!editableItemData.canBeSaved) }
+                }
+                .onAppear {
+                    logAppear(title: "AddOrModifyItemView")
+                }
+                .onDisappear {
+                    logDisappear(title: "AddOrModifyItemView")
+                    PersistentStore.shared.saveContext()
+                }
+                .alert(item: $viewModel.confirmDeleteItemAlert) { item in item.alert() }
             }
-            .navigationBarTitle(barTitle(), displayMode: .inline)
-            .navigationBarBackButtonHidden(true)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) { cancelButton() }
-                ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!editableItemData.canBeSaved) }
-            }
-            .onAppear {
-                logAppear(title: "AddOrModifyItemView")
-            }
-            .onDisappear {
-                logDisappear(title: "AddOrModifyItemView")
-                PersistentStore.shared.saveContext()
-            }
-            .alert(item: $viewModel.confirmDeleteItemAlert) { item in item.alert() }
+            
         }
         
     }
@@ -286,6 +263,12 @@ struct AddOrModifyItemView: View {
 		presentationMode.wrappedValue.dismiss()
 	}
 	
+}
+
+struct AddOrModifyItemView_Previews: PreviewProvider {
+    static var previews: some View {
+        AddOrModifyItemView()
+    }
 }
 
 

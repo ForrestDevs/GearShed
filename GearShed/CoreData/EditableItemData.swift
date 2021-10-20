@@ -23,8 +23,8 @@ struct EditableItemData {
 	// all of the values here provide suitable defaults for a new item
 	var name: String = ""
     
-	var weight: String = "Item Weight"
-    var price: String = "Item Price"
+	var weight: String = ""
+    var price: String = ""
     var quantity: Int = 1
     var details: String = ""
     
@@ -96,7 +96,7 @@ struct EditableItemData {
     // (nil if data for a new item that does not yet exist)
     var idBrand: UUID? = nil
     // all of the values here provide suitable defaults for a new Brand
-    var brandName: String = "Choose a Brand"
+    var brandName: String = ""
     var order: Int = 50
     
     // this copies all the editable data from an incoming Brand
@@ -123,7 +123,7 @@ struct EditableItemData {
     // (nil if data for a new item that does not yet exist)
     var idCategory: UUID? = nil
     // all of the values here provide suitable defaults for a new Category
-    var categoryName: String = "Choose a Category"
+    var categoryName: String = ""
     var visitationOrder: Int = 50
     
     // this copies all the editable data from an incoming Category
@@ -150,7 +150,7 @@ struct EditableItemData {
     // (nil if data for a new item that does not yet exist)
     var idTag: UUID? = nil
     // all of the values here provide suitable defaults for a new Category
-    var tagName: String = "Choose a Tag"
+    var tagName: String = ""
     
     // this copies all the editable data from an incoming Category
     init(tag: Tag?) {
