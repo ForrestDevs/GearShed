@@ -22,14 +22,17 @@ struct EditableItemData {
 	var id: UUID? = nil
 	// all of the values here provide suitable defaults for a new item
 	var name: String = ""
-	var weight: Int = 0
+    
+	var weight: String = "Item Weight"
+    var price: String = "Item Price"
+    var quantity: Int = 1
     var details: String = ""
     
 	var category = Category.unknownCategory()
     var brand = Brand.unknownBrand()
-    var tag = Tag.unknownTag()
+    //var tag = Tag.unknownTag()
     
-	var onList: Bool = true
+	var onList: Bool = false
 	var isAvailable = true
 	var dateText = "" // for display only, not actually editable
     
@@ -46,12 +49,15 @@ struct EditableItemData {
 	init(item: Item) {
 		id = item.id
 		name = item.name
-		weight = Int(item.weight)
+        
+		weight = item.weight
+        price = item.price
+        quantity = item.quantity
+        
         details = item.detail
         
 		category = item.category
         brand = item.brand
-        tag = item.tag
         
 		onList = item.onList
 		isAvailable = item.isAvailable
@@ -60,7 +66,7 @@ struct EditableItemData {
 		}
 	}
 	
-    init(initialItemName: String?, category: Category? = nil, brand: Brand? = nil, tag: Tag? = nil) {
+    init(initialItemName: String?, category: Category? = nil, brand: Brand? = nil/*, tag: Tag? = nil*/) {
 		if let name = initialItemName, name.count > 0 {
 			self.name = name
 		}
@@ -70,9 +76,9 @@ struct EditableItemData {
         if let brand = brand {
             self.brand = brand
         }
-        if let tag = tag {
+        /*if let tag = tag {
             self.tag = tag
-        }
+        }*/
 	}
 	
 	// to do a save/commit of an Item, it must have a non-empty name
@@ -90,7 +96,7 @@ struct EditableItemData {
     // (nil if data for a new item that does not yet exist)
     var idBrand: UUID? = nil
     // all of the values here provide suitable defaults for a new Brand
-    var brandName: String = ""
+    var brandName: String = "Choose a Brand"
     var order: Int = 50
     
     // this copies all the editable data from an incoming Brand
@@ -117,9 +123,8 @@ struct EditableItemData {
     // (nil if data for a new item that does not yet exist)
     var idCategory: UUID? = nil
     // all of the values here provide suitable defaults for a new Category
-    var categoryName: String = ""
+    var categoryName: String = "Choose a Category"
     var visitationOrder: Int = 50
-    var color: Color = .green    // we keep a Color; a category has RGB-A components
     
     // this copies all the editable data from an incoming Category
     init(category: Category?) {
@@ -127,7 +132,6 @@ struct EditableItemData {
             idCategory = category.id!
             categoryName = category.name
             visitationOrder = Int(category.visitationOrder)
-            color = Color(category.uiColor)
         }
     }
     
@@ -142,13 +146,13 @@ struct EditableItemData {
     
     // MARK: - Tag Stuff
     
-    // the id of the tag, if any, associated with this data collection
+    // the id of the Category, if any, associated with this data collection
     // (nil if data for a new item that does not yet exist)
     var idTag: UUID? = nil
     // all of the values here provide suitable defaults for a new Category
-    var tagName: String = ""
+    var tagName: String = "Choose a Tag"
     
-    // this copies all the editable data from an incoming Tag
+    // this copies all the editable data from an incoming Category
     init(tag: Tag?) {
         if let tag = tag {
             idTag = tag.id!
@@ -164,6 +168,8 @@ struct EditableItemData {
     // useful to know the associated category (which we'll force unwrap, so
     // be sure you check representsExistingCategory first (!)
     var associatedTag: Tag { Tag.object(withID: idTag!)! }
+    
+    
 }
 
 

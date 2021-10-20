@@ -13,17 +13,9 @@ import Foundation
 struct CategoryCodableProxy: Codable {
 	var name: String
 	var visitationOrder: Int
-	var red: Double
-	var green: Double
-	var blue: Double
-	var opacity: Double
 
 	init(from category: Category) {
 		name = category.name
 		visitationOrder = category.visitationOrder
-		red = category.red_
-		green = category.green_
-		blue = category.blue_
-		opacity = category.opacity_
 	}
 }

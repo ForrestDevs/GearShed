@@ -26,9 +26,6 @@ struct TripItemsSelector: View {
     
     var body: some View {
         HStack {
-            // Color Bar
-            Color(item.uiColor)
-                .frame(width: 10, height: 36)
             // Item Name and Category
             VStack(alignment: .leading) {
                 

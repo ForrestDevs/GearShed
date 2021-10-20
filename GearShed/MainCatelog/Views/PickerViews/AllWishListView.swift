@@ -20,7 +20,7 @@ struct AllWishListView: View {
             StatBar1()
                         
             ScrollView(.vertical, showsIndicators: false) {
-                ForEach(viewModel.allItems) { item in
+                ForEach(viewModel.allItemsInWishList) { item in
                     ItemRowView(item: item)
                 }
             }
@@ -33,75 +33,3 @@ struct AllWishListView: View {
     }
 }
 
-struct AllWishListView_Previews: PreviewProvider {
-    static var previews: some View {
-        AllWishListView()
-    }
-}
-
-struct StatBar1: View {
-    
-    @StateObject private var viewModel = MainCatelogVM()
-
-    var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            
-            HStack (spacing: 30){
-                HStack {
-                    Rectangle()
-                        .frame(width: 2, height: 50)
-                        .foregroundColor(Color.theme.accent)
-                    VStack (alignment: .leading, spacing: 0) {
-                        Text("Items")
-                            .font(.headline)
-                            .foregroundColor(Color.theme.accent)
-                        Text("\(viewModel.allItems.count)")
-                            .font(.headline)
-                            .foregroundColor(Color.theme.accent)
-                    }
-                }
-                HStack {
-                    Rectangle()
-                        .frame(width: 2, height: 50)
-                        .foregroundColor(Color.theme.accent)
-                    VStack (alignment: .leading, spacing: 0) {
-                        Text("Weight")
-                            .font(.headline)
-                            .foregroundColor(Color.theme.accent)
-                        Text("\(viewModel.allItems.count)")
-                            .font(.headline)
-                            .foregroundColor(Color.theme.accent)
-                    }
-                }
-                HStack {
-                    Rectangle()
-                        .frame(width: 2, height: 50)
-                        .foregroundColor(Color.theme.accent)
-                    VStack (alignment: .leading, spacing: 0) {
-                        Text("Cost")
-                            .font(.headline)
-                            .foregroundColor(Color.theme.accent)
-                        Text("\(viewModel.allItems.count)")
-                            .font(.headline)
-                            .foregroundColor(Color.theme.accent)
-                    }
-                }
-                HStack {
-                    Rectangle()
-                        .frame(width: 2, height: 50)
-                        .foregroundColor(Color.theme.accent)
-                    VStack (alignment: .leading, spacing: 0) {
-                        Text("Favourites")
-                            .font(.headline)
-                            .foregroundColor(Color.theme.accent)
-                        Text("\(viewModel.allItems.count)")
-                            .font(.headline)
-                            .foregroundColor(Color.theme.accent)
-                    }
-                }
-            }
-            .padding(.horizontal, 30)
-        }
-
-    }
-}

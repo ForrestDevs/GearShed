@@ -106,7 +106,7 @@ extension CustomTabBarView {
                     }
             }
         }
-        .padding(6)
+        //.padding(6)
         .background(Color.theme.green.ignoresSafeArea(edges: .bottom))
         .cornerRadius(10)
         .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 5)

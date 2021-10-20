@@ -13,7 +13,10 @@ import CoreData
 final class MainCatelogVM: ObservableObject {
     
     // Array that is initialized with all Items whenever the ViewModel is called
-    @Published var allItems: [Item] = []
+    @Published var allItemsInShed: [Item] = []
+    
+    // Array that is initialized with all Items whenever the ViewModel is called
+    @Published var allItemsInWishList: [Item] = []
     
     // Array that is initialized with all Categories whenever the ViewModel is called
     @Published var itemInCategory: [Item] = []
@@ -31,15 +34,22 @@ final class MainCatelogVM: ObservableObject {
     @Published var allTags: [Tag] = []
     
     // Local state to trigger showing a sheet to add a new item in MainCatelog
-    @Published var isAddNewItemSheetShowing = false
+    @Published var isAddNewItemShowing = false
+    
+    // Local state to trigger showing a view to Edit Item
+    @Published var isEditItemShowing = false
+    
+    // Local state to trigger showing a view to Edit Brand
+    @Published var isEditBrandShowing = false
+    
+    // Local state to trigger showing a view to Edit Category
+    @Published var isEditCategoryShowing = false
     
     @Published var expandedCategory = false
-    @Published var expandedBrand = false
-    @Published var expandedTag = false
     
-    // Local state for if we are a multi-section display or not.  the default here is false,
-    // but an eager developer could easily store this default value in UserDefaults (?)
-    //@Published var multiSectionDisplay: Bool = true
+    @Published var expandedBrand = false
+    
+    @Published var expandedTag = false
     
     // Local state for if we are a multi-section display or not.  the default here is false,
     // but an eager developer could easily store this default value in UserDefaults (?)
@@ -59,12 +69,13 @@ final class MainCatelogVM: ObservableObject {
     
     // parameter to control triggering an Alert and defining what action
     // to take upon confirmation
-    @Published var confirmDeleteTagAlert: ConfirmDeleteTagAlert?
+    //@Published var confirmDeleteTagAlert: ConfirmDeleteTagAlert?
     
     // Local state to hold Search Text Value in Main Catelog
     @Published var searchText: String = ""
 
     init () {
+        getItems(onList: false)
         getItems(onList: true)
         getCategories()
         getBrands()
@@ -81,7 +92,11 @@ final class MainCatelogVM: ObservableObject {
         request.predicate = filter
         
         do {
-            allItems = try PersistentStore.shared.context.fetch(request)
+            if onList == false {
+                allItemsInShed = try PersistentStore.shared.context.fetch(request)
+            } else {
+                allItemsInWishList = try PersistentStore.shared.context.fetch(request)
+            }
         } catch let error {
             print("Error fetching. \(error.localizedDescription)")
         }
@@ -198,22 +213,25 @@ final class MainCatelogVM: ObservableObject {
     // Add New Button
     func trailingButtons() -> some View {
         HStack {
-            Button {self.isAddNewItemSheetShowing.toggle()}
-                label: { Text("Add Gear")
-                        .font(.title2)
-                        .italic()
-                        .foregroundColor(Color.theme.green)
-                }
+            Button {self.isAddNewItemShowing.toggle()} label: { Image(systemName: "plus") }
         }
-        
     }
-        
+    
+    func editBrandButton() -> some View {
+        Button { self.isEditBrandShowing.toggle() } label: { Image(systemName: "slider.horizontal.3") }
+    }
+    
+    func editCategoryButton() -> some View {
+        Button { self.isEditCategoryShowing.toggle() } label: { Image(systemName: "slider.horizontal.3") }
+    }
+    
+    func editItemButton() -> some View {
+        Button { self.isEditItemShowing.toggle() } label: { Image(systemName: "slider.horizontal.3") }
+    }
+    
     // a toggle button to share gear list
     func leadingButton() -> some View {
-        Button() { self.showDisplayAction.toggle() }
-        label: { Image(systemName: "square.and.arrow.up")
-                .font(.title2)
-        }
+        Button() { self.showDisplayAction.toggle() } label: { Image(systemName: "square.and.arrow.up") }
     }
     
 }

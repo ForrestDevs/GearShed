@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct AddOrModifyTagView: View {
+/*struct AddOrModifyTagView: View {
     
     @Environment(\.presentationMode) var presentationMode
     
@@ -84,4 +84,4 @@ struct AddOrModifyTagView: View {
         presentationMode.wrappedValue.dismiss()
         Tag.updateData(using: editableData)
     }
-}
+}*/

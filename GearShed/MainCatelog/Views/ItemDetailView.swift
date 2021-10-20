@@ -34,80 +34,17 @@ struct ItemDetailView: View {
             Text(item.categoryName)
                 .font(.caption)
                        
-            StatBar4()
+            StatBar1()
             
             //SPForDetailView(selected: $selected)
             
             Spacer()
         }
         .padding()
-        .navigationTitle(item.name)
-    }
-}
-
-struct StatBar4: View {
-    
-    @StateObject private var viewModel = MainCatelogVM()
-
-    var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack (spacing: 30){
-                HStack {
-                    Rectangle()
-                        .frame(width: 2, height: 40)
-                        .foregroundColor(Color.theme.accent)
-                    VStack (alignment: .leading, spacing: 0) {
-                        Text("Weight")
-                            .font(.subheadline)
-                            .foregroundColor(Color.theme.accent)
-                        Text("\(viewModel.allItems.count) g")
-                            .font(.subheadline)
-                            .foregroundColor(Color.theme.accent)
-                    }
-                }
-                HStack {
-                    Rectangle()
-                        .frame(width: 2, height: 40)
-                        .foregroundColor(Color.theme.accent)
-                    VStack (alignment: .leading, spacing: 0) {
-                        Text("Trips")
-                            .font(.subheadline)
-                            .foregroundColor(Color.theme.accent)
-                        Text("\(viewModel.allItems.count)")
-                            .font(.subheadline)
-                            .foregroundColor(Color.theme.accent)
-                    }
-                }
-                HStack {
-                    Rectangle()
-                        .frame(width: 2, height: 40)
-                        .foregroundColor(Color.theme.accent)
-                    VStack (alignment: .leading, spacing: 0) {
-                        Text("Acquired")
-                            .font(.subheadline)
-                            .foregroundColor(Color.theme.accent)
-                        Text("\(viewModel.allItems.count)")
-                            .font(.subheadline)
-                            .foregroundColor(Color.theme.accent)
-                    }
-                }
-                HStack {
-                    Rectangle()
-                        .frame(width: 2, height: 40)
-                        .foregroundColor(Color.theme.accent)
-                    VStack (alignment: .leading, spacing: 0) {
-                        Text("Investment")
-                            .font(.subheadline)
-                            .foregroundColor(Color.theme.accent)
-                        Text("$\(viewModel.allItems.count)")
-                            .font(.subheadline)
-                            .foregroundColor(Color.theme.accent)
-                    }
-                }
-            }
-            .padding(.horizontal, 30)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing, content: viewModel.editItemButton)
         }
-
+        .fullScreenCover(isPresented: $viewModel.isEditItemShowing){AddOrModifyItemView(editableItem: item).environment(\.managedObjectContext, PersistentStore.shared.context)}
     }
 }
 

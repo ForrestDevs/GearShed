@@ -10,7 +10,8 @@ import SwiftUI
 
 // MARK: - View Definition
 
-struct AddOrModifyBrandView: View {
+struct AddBrandView: View {
+    
     @Environment(\.presentationMode) var presentationMode
     
     @StateObject private var viewModel = MainCatelogVM()
@@ -27,53 +28,45 @@ struct AddOrModifyBrandView: View {
     }
 
     var body: some View {
-        Form {
-            // 1: Name
-            Section(header: Text("Basic Information").sectionHeader()) {
-                HStack {
-                    SLFormLabelText(labelText: "Name: ")
-                    TextField("Brand name", text: $editableData.brandName)
+            Form {
+                // 1: Name
+                Section(header: Text("Basic Information").sectionHeader()) {
+                    HStack {
+                        SLFormLabelText(labelText: "Name: ")
+                        TextField("Brand name", text: $editableData.brandName)
+                    }
+                    
+
+                } // end of Section 1
+                
+                // Section 2: Delete button, if present (must be editing a user brand)
+                if editableData.representsExistingBrand && !editableData.associatedBrand.isUnknownBrand {
+                    Section(header: Text("Brand Management").sectionHeader()) {
+                        SLCenteredButton(title: "Delete This Brand",
+                                         action: { viewModel.confirmDeleteBrandAlert = ConfirmDeleteBrandAlert(
+                                        brand: editableData.associatedBrand,
+                                        destructiveCompletion: { presentationMode.wrappedValue.dismiss() }) }
+                        )
+                        .foregroundColor(Color.red)
+                    }
                 }
                 
-
-            } // end of Section 1
-            
-            // Section 2: Delete button, if present (must be editing a user brand)
-            if editableData.representsExistingBrand && !editableData.associatedBrand.isUnknownBrand {
-                Section(header: Text("Brand Management").sectionHeader()) {
-                    SLCenteredButton(title: "Delete This Brand",
-                                     action: { viewModel.confirmDeleteBrandAlert = ConfirmDeleteBrandAlert(
-                                    brand: editableData.associatedBrand,
-                                    destructiveCompletion: { presentationMode.wrappedValue.dismiss() }) }
-                    )
-                    .foregroundColor(Color.red)
-                }
+                // Section 3: Items assigned to this Brand, if we are editing a Brand
+                //if editableData.representsExistingBrand {
+                //    SimpleItemsListForBrand(brand: editableData.associatedBrand/*,
+                //                                    isAddNewItemSheetShowing: $isAddNewItemSheetShowing*/)
+                //}
+                
+            } // end of Form
+            .onDisappear { PersistentStore.shared.saveContext() }
+            .navigationBarTitle("Add New Brand", displayMode: .inline)
+            .navigationBarBackButtonHidden(true)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction, content: cancelButton)
+                ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!editableData.canBrandBeSaved) }
             }
-            
-            // Section 3: Items assigned to this Brand, if we are editing a Brand
-            if editableData.representsExistingBrand {
-                SimpleItemsListForBrand(brand: editableData.associatedBrand/*,
-                                                isAddNewItemSheetShowing: $isAddNewItemSheetShowing*/)
-            }
-            
-        } // end of Form
-        .onDisappear { PersistentStore.shared.saveContext() }
-        .navigationBarTitle(barTitle(), displayMode: .inline)
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .cancellationAction, content: cancelButton)
-            ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!editableData.canBrandBeSaved) }
-        }
-        .alert(item: $viewModel.confirmDeleteBrandAlert) { item in item.alert() }
-    }
-    
-    func barTitle() -> Text {
-        return editableData.representsExistingBrand ? Text("Modify Brand") : Text("Add New Brand")
-    }
-    
-    func deleteAndDismiss(_ brand: Brand) {
-        Brand.delete(brand)
-        presentationMode.wrappedValue.dismiss()
+            .alert(item: $viewModel.confirmDeleteBrandAlert) { item in item.alert() }
+       
     }
 
     // the cancel button

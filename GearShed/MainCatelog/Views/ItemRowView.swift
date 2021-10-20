@@ -53,8 +53,6 @@ struct ItemRowView: View {
                         .bold()
                         .foregroundColor(Color.theme.green)
                         .padding(.horizontal)
-                    Text("100$")
-                        .font(.caption)
                 }
             }
             .padding(.horizontal)

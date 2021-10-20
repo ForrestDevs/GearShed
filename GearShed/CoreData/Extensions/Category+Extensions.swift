@@ -61,23 +61,7 @@ extension Category: Comparable {
 	// simplified test of "is the unknown category"
 	var isUnknownCategory: Bool { visitationOrder_ == kUnknownCategoryVisitationOrder }
 	
-	// this collects the four uiColor components into a single uiColor.
-	// if you change a category's uiColor, its associated items will want to
-	// know that their uiColor computed properties have been invalidated
-	var uiColor: UIColor {
-		get {
-			UIColor(red: CGFloat(red_), green: CGFloat(green_), blue: CGFloat(blue_), alpha: CGFloat(opacity_))
-		}
-		set {
-			if let components = newValue.cgColor.components {
-				red_ = Double(components[0])
-				green_ = Double(components[1])
-				blue_ = Double(components[2])
-				opacity_ = Double(components[3])
-				items.forEach({ $0.objectWillChange.send() })
-			}
-		}
-	}
+	
 
 
 	// MARK: - Class Functions
@@ -111,10 +95,6 @@ extension Category: Comparable {
 	class func createUnknownCategory() -> Category {
 		let unknownCategory = addNewCategory()
 		unknownCategory.name_ = kUnknownCategoryName
-		unknownCategory.red_ = 0.5
-		unknownCategory.green_ = 0.5
-		unknownCategory.blue_ = 0.5
-		unknownCategory.opacity_ = 0.5
 		unknownCategory.visitationOrder_ = kUnknownCategoryVisitationOrder
 		return unknownCategory
 	}
@@ -183,17 +163,7 @@ extension Category: Comparable {
 		// we first make these changes directly in Core Data
 		name_ = editableData.categoryName
 		visitationOrder_ = Int32(editableData.visitationOrder)
-		if let components = editableData.color.cgColor?.components {
-			red_ = Double(components[0])
-			green_ = Double(components[1])
-			blue_ = Double(components[2])
-			opacity_ = Double(components[3])
-		} else {
-			red_ = 0.0
-			green_ = 1.0
-			blue_ = 0.0
-			opacity_ = 0.5
-		}
+
 		
 		// one more thing: items associated with this category may want to know about
 		// (some of) these changes.  reason: items rely on knowing some computed

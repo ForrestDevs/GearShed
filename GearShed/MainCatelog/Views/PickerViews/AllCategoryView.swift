@@ -28,8 +28,3 @@ struct AllCategoryView: View {
     }
 }
 
-struct AllCategoryView_Previews: PreviewProvider {
-    static var previews: some View {
-        AllCategoryView()
-    }
-}

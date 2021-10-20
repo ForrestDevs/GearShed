@@ -687,4 +687,295 @@
   //   }
   //}
  
+ // Section 3: Items assigned to this Category, if we are editing a Category
+ if editableData.representsExistingCategory {
+     SimpleItemsList(category: editableData.associatedCategory/*,
+                                     isAddNewItemSheetShowing: $isAddNewItemSheetShowing*/)
+ }
+ 
+ struct SimpleItemsList: View {
+     
+     @FetchRequest    private var items: FetchedResults<Item>
+     @State private var listDisplayID = UUID()
+     //@Binding var isAddNewItemSheetShowing: Bool
+     
+     init(category: Category/*, isAddNewItemSheetShowing: Binding<Bool>*/) {
+         let request = Item.allItemsFR(at: category)
+         _items = FetchRequest(fetchRequest: request)
+         //_isAddNewItemSheetShowing = isAddNewItemSheetShowing
+     }
+     
+     var body: some View {
+         Section(header: ItemsListHeader()) {
+             ForEach(items) { item in
+                 NavigationLink(destination: AddOrModifyItemView(editableItem: item)) {
+                     Text(item.name)
+                 }
+             }
+         }
+ //        .id(listDisplayID)
+         .onAppear { listDisplayID = UUID() }
+     }
+     
+     func ItemsListHeader() -> some View {
+         HStack {
+             Text("At this Category: \(items.count) items").sectionHeader()
+             Spacer()
+             
+             //Button {
+             //    isAddNewItemSheetShowing = true
+             //} label: {
+             //    Image(systemName: "plus")
+             //        .font(.title2)
+             //}
+         }
+     }
+ }
+ 
+ // Local state for if we are a multi-section display or not.  the default here is false,
+ // but an eager developer could easily store this default value in UserDefaults (?)
+ //@Published var multiSectionDisplay: Bool = true
+ 
+ struct CategoryRowViewOld: View {
+     var rowData: CategoryRowData
+
+     var body: some View {
+         HStack {
+             // color bar at left (new in this code)
+             Color(rowData.uiColor)
+                 .frame(width: 10, height: 36)
+             
+             VStack(alignment: .leading) {
+                 Text(rowData.name)
+                     .font(.headline)
+                 Text(subtitle())
+                     .font(.caption)
+             }
+             if rowData.visitationOrder != kUnknownCategoryVisitationOrder {
+                 //Spacer()
+                 //Text(String(rowData.visitationOrder))
+             }
+         } // end of HStack
+     } // end of body: some View
+     
+     func subtitle() -> String {
+         if rowData.itemCount == 1 {
+             return "1 item"
+         } else {
+             return "\(rowData.itemCount) items"
+         }
+     }
+     
+ }
+ 
+ // MARK: - CategoryRowData Definition
+ // this is a struct to transport all the incoming data about a Category that we
+ // will display.  see the commentary over in EditableItemData.swift and
+ // SelectableItemRowView.swift about why we do this.
+ struct CategoryRowData {
+     let name: String
+     let itemCount: Int
+     let visitationOrder: Int
+     let uiColor: UIColor
+     
+     init(category: Category) {
+         name = category.name
+         itemCount = category.itemCount
+         visitationOrder = category.visitationOrder
+         uiColor = category.uiColor
+     }
+ }
+ 
+ // MARK: - BrandRowData Definition
+ // this is a struct to transport all the incoming data about a Brand that we
+ // will display.  see the commentary over in EditableItemData.swift and
+ // SelectableItemRowView.swift about why we do this.
+ struct BrandRowData {
+     let name: String
+     let itemCount: Int
+     let order: Int
+     
+     init(brand: Brand) {
+         name = brand.name
+         itemCount = brand.itemCount
+         order = brand.order
+     }
+ }
+
+ // MARK: - BrandRowView
+
+ struct BrandRowViewOld: View {
+      var rowData: BrandRowData
+
+     var body: some View {
+         HStack {
+             VStack(alignment: .leading) {
+                 Text(rowData.name)
+                     .font(.headline)
+                 Text(subtitle())
+                     .font(.caption)
+             }
+             if rowData.order != kUnknownBrandVisitationOrder {
+                 //Spacer()
+                 //Text(String(rowData.order))
+             }
+         } // end of HStack
+     } // end of body: some View
+     
+     func subtitle() -> String {
+         if rowData.itemCount == 1 {
+             return "1 item"
+         } else {
+             return "\(rowData.itemCount) items"
+         }
+     }
+     
+ }
+ 
+ x// MARK: CustomPopOverz
+ 
+ struct PopOverView: View {
+     
+     @State var graphicalDate: Bool = false
+     @State var showPicker: Bool = false
+     
+     @State var show: Bool = false
+     
+     var colors = ["Red", "Green", "Blue", "Tartan"]
+     
+     @State private var selectedColor = "Red"
+     
+     var body: some View {
+         
+         NavigationView{
+             
+             List {
+                 
+                 Toggle(isOn: $showPicker) {
+                     Text("Show Picker")
+                 }
+                 
+                 Toggle(isOn: $graphicalDate) {
+                     Text("Show Graphical Data Picker")
+                 }
+             }
+             .navigationTitle("Popovers")
+             .toolbar {
+                 ToolbarItem(placement: .navigationBarLeading) {
+                     Button {
+                         withAnimation {
+                             show.toggle()
+                         }
+                     } label: {
+                         Image(systemName: "slider.horizontal.below.square.fill.and.square")
+                     }
+                 }
+             }
+             
+         }
+         .toolBarPopover(show: $show, placement: .leading) {
+             Picker("Please choose a color", selection: $selectedColor) {
+                 ForEach(colors, id: \.self) {
+                     Text($0)
+                 }
+             }
+         }
+     }
+ }
+
+ extension View {
+     
+     func toolBarPopover<Content: View>(show: Binding<Bool>,placement: Placement = .leading ,@ViewBuilder content: @escaping ()->Content)->some View {
+         self
+             .frame(maxWidth: .infinity, maxHeight: .infinity)
+             .overlay(
+             
+                 ZStack {
+                     if show.wrappedValue {
+                         content()
+                             .padding()
+                             .background(Color.white.clipShape(PopOverArrowShape(placement: placement)))
+                             .shadow(color: Color.primary.opacity(0.05), radius: 5, x: 5, y: 5)
+                             .shadow(color: Color.primary.opacity(0.05), radius: 5, x: -5, y: -5)
+                             .padding(.horizontal, 35)
+                             // Moving from top...
+                             // Approx NavBar Height....
+                             .offset(y: 25)
+                             .offset(x: placement == .leading ? -20 : 20)
+                         
+                     }
+                 }, alignment: placement == .leading ? .topLeading : .topTrailing
+             )
+     }
+ }
+
+ enum Placement{
+     case leading
+     case trailing
+ }
+
+ struct PopOverArrowShape: Shape {
+     
+     var placement: Placement
+     
+     func path(in rect: CGRect) -> Path {
+         return Path{path in
+         
+             let pt1 = CGPoint(x: 0, y: 0)
+             let pt2 = CGPoint(x: 50, y: 50)
+             let pt3 = CGPoint(x: rect.width, y: rect.height)
+             let pt4 = CGPoint(x: 0, y: rect.height)
+         
+             // Drawing Arcs with raduis..
+             path.move(to: pt4)
+             path.addArc(tangent1End: pt1, tangent2End: pt2, radius: 15)
+             path.addArc(tangent1End: pt2, tangent2End: pt3, radius: 15)
+             path.addArc(tangent1End: pt3, tangent2End: pt4, radius: 15)
+             path.addArc(tangent1End: pt4, tangent2End: pt1, radius: 15)
+             
+             //Arrow...
+             path.move(to: pt1)
+             path.addLine(to: CGPoint(x: placement == .leading ? 10 : rect.width - 10, y: 0))
+             path.addLine(to: CGPoint(x: placement == .leading ? 15 : rect.width - 15, y: 0))
+             path.addLine(to: CGPoint(x: placement == .leading ? 25 : rect.width - 25, y: -15))
+             path.addLine(to: CGPoint(x: placement == .leading ? 40 : rect.width - 40, y: 0))
+         }
+     }
+ }
+ 
+ // this collects the four uiColor components into a single uiColor.
+ // if you change a category's uiColor, its associated items will want to
+ // know that their uiColor computed properties have been invalidated
+ var uiColor: UIColor {
+     get {
+         UIColor(red: CGFloat(red_), green: CGFloat(green_), blue: CGFloat(blue_), alpha: CGFloat(opacity_))
+     }
+     set {
+         if let components = newValue.cgColor.components {
+             red_ = Double(components[0])
+             green_ = Double(components[1])
+             blue_ = Double(components[2])
+             opacity_ = Double(components[3])
+             items.forEach({ $0.objectWillChange.send() })
+         }
+     }
+ }
+ 
+ // the color = the color of its associated category
+ var uiColor: UIColor {
+     category_?.uiColor ?? UIColor(displayP3Red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
+ }
+ 
+ // addItemToShoppingList just means that by default, a new item will be added to
+ // the shopping list, and so this is initialized to true.
+ // however, if inserting a new item from the Purchased item list, perhaps
+ // you might want the new item to go to the Purchased item list (?)
+ //var addItemToShoppingList: Bool = true
+ 
+ 
+ 
+ 
+ 
+ 
+ 
  */

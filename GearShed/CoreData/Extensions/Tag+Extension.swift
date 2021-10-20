@@ -93,13 +93,13 @@ extension Tag {
         // retrieve the context of this Brand and get a list of
         // all items for this brand so we can work with them
         let context = tag.managedObjectContext
-        let itemsAtThisTag = tag.items
+        //let itemsAtThisTag = tag.items
         
         // reset tag associated with each of these to the unknownBrand
         // (which in turn, removes the current association with tag). additionally,
         // this could affect each item's computed properties
-        let theUnknownTag = Tag.unknownTag()
-        itemsAtThisTag.forEach({ $0.tag = theUnknownTag })
+        //let theUnknownTag = Tag.unknownTag()
+        //itemsAtThisTag.forEach({ $0.tag = theUnknownTag })
         // now finish the deletion and save
         context?.delete(tag)
         try? context?.save()
@@ -138,5 +138,5 @@ extension Tag {
         items.forEach({ $0.objectWillChange.send() })
     }
     
-} // end of extension Brand
+} // end of extension Brand*/
 

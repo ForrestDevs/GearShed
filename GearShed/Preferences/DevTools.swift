@@ -113,7 +113,9 @@ func insertNewItems(from codableItems: [ItemCodableProxy]) {
     for codableItem in codableItems {
         let newItem = Item.addNewItem() // new UUID is created here
         newItem.name = codableItem.name
-        newItem.weight = codableItem.quantity
+        newItem.quantity = codableItem.quantity
+        newItem.weight = codableItem.weight
+        newItem.price = codableItem.price
         newItem.onList = codableItem.onList
         newItem.isAvailable_ = codableItem.isAvailable
         newItem.dateLastPurchased_ = nil // never purchased
@@ -143,10 +145,6 @@ func insertNewCategorys(from codableCategorys: [CategoryCodableProxy]) {
         let newCategory = Category.addNewCategory() // new UUID created here
         newCategory.name = codableCategory.name
         newCategory.visitationOrder = codableCategory.visitationOrder
-        newCategory.red_ = codableCategory.red
-        newCategory.green_ = codableCategory.green
-        newCategory.blue_ = codableCategory.blue
-        newCategory.opacity_ = codableCategory.opacity
     }
 }
 

@@ -17,7 +17,11 @@ struct ItemCodableProxy: Codable {
 	var name: String
 	var onList: Bool
 	var isAvailable: Bool
+    
 	var quantity: Int
+    var price: String
+    var weight: String
+    
 	var categoryName: String
     var brandName: String
     //var trips: NSSet
@@ -26,7 +30,11 @@ struct ItemCodableProxy: Codable {
 		name = item.name
 		onList = item.onList
 		isAvailable = item.isAvailable
-		quantity = item.weight
+        
+		quantity = item.quantity
+        weight = item.weight
+        price = item.price
+        
 		categoryName = item.categoryName
         brandName = item.brandName
 	}

@@ -6,9 +6,9 @@
 //  Copyright © 2021 All rights reserved.
 //
 
-import SwiftUI
+//import SwiftUI
 
-struct BrandsTabView: View {
+/*struct BrandsTabView: View {
     
     // this is the @FetchRequest that ties this view to CoreData Brands
     @FetchRequest(fetchRequest: MainCatelogVM.allBrandsFR())
@@ -39,7 +39,7 @@ struct BrandsTabView: View {
             //        .padding(10)
             }
             .sheet(isPresented: $isAddNewBrandSheetShowing) {
-                NavigationView { AddOrModifyBrandView() }
+                NavigationView { AddBrandView() }
             }
             
             Rectangle()
@@ -108,4 +108,4 @@ struct BrandsTabView: View {
         }
     }
     
-}
+}*/

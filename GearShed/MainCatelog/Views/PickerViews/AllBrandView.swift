@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct AllBrandView: View {
+    
     @StateObject private var viewModel = MainCatelogVM()
 
     var body: some View {
@@ -28,8 +29,3 @@ struct AllBrandView: View {
     }
 }
 
-struct AllBrandView_Previews: PreviewProvider {
-    static var previews: some View {
-        AllBrandView()
-    }
-}

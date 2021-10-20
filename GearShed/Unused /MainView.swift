@@ -4,7 +4,7 @@
 //
 //  Created by Luke Forrest Gannon on 2021-10-07.
 //
-import SwiftUI
+/*import SwiftUI
 
 struct MainViewTest: View {
     @SceneStorage("selectedView") var selectedView: String?
@@ -32,7 +32,7 @@ struct MainViewTest: View {
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }
-}
+}*/
 
 
 

@@ -134,10 +134,22 @@ extension Item {
 	
 	// quantity of the item.   this fronts a Core Data optional attribute
 	// but we need to do an Int <--> Int32 conversion
-	var weight: Int {
-		get { Int(weight_) }
-		set { weight_ = Int32(newValue) }
+	var quantity: Int {
+		get { Int(quantity_) }
+		set { quantity_ = Int32(newValue) }
 	}
+    
+    // the price.  this fronts a Core Data optional attribute
+    var weight: String {
+        get { weight_ ?? "" }
+        set { weight_ = newValue }
+    }
+    
+    // the price.  this fronts a Core Data optional attribute
+    var price: String {
+        get { price_ ?? "" }
+        set { price_ = newValue }
+    }
 	
 	// an item's associated category.  this fronts a Core Data optional attribute.
 	// if you change an item's category, the old and the new Category may want to
@@ -163,17 +175,15 @@ extension Item {
         }
     }
     
-    // an item's associated tag.  this fronts a Core Data optional attribute.
-    // if you change an item's brand, the old and the new Brand may want to
-    // know that some of their computed properties could be invalidated
-    var tag: Tag {
-        get { tag_! }
-        set {
-            tag_?.objectWillChange.send()
-            tag_ = newValue
-            tag_?.objectWillChange.send()
+    // items: fronts Core Data attribute tags_ that is an NSSet, and turns it into
+    // a Swift array
+    var tags: [Tag] {
+        if let tags = tags_ as? Set<Tag> {
+            return tags.sorted(by: { $0.name < $1.name })
         }
+        return []
     }
+    
     
     // items: fronts Core Data attribute trips_ that is an NSSet, and turns it into
     // a Swift array
@@ -193,10 +203,7 @@ extension Item {
     // the name of its associated brand
     var brandName: String { brand_?.name_ ?? "Not Available" }
 	
-	// the color = the color of its associated category
-	var uiColor: UIColor {
-		category_?.uiColor ?? UIColor(displayP3Red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
-	}
+	
 	
 	
 	// MARK: - Useful Fetch Requests
@@ -276,6 +283,7 @@ extension Item {
 		// by resetting its (real, Core Data) category to nil
 		item.category_ = nil
         item.brand_ = nil
+        item.tags_ = nil
 		// now delete and save
 		let context = item.managedObjectContext
 		context?.delete(item)
@@ -306,7 +314,9 @@ extension Item {
     
 	private func updateValues(from editableData: EditableItemData) {
 		name_ = editableData.name
-		weight_ = Int32(editableData.weight)
+		quantity_ = Int32(editableData.quantity)
+        weight_ = editableData.weight
+        price_ = editableData.price
 		onList_ = editableData.onList
 		isAvailable_ = editableData.isAvailable
 		category = editableData.category

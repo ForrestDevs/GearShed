@@ -5,36 +5,22 @@
 //  Created by Luke Forrest Gannon on 18/10/21
 //  Copyright © 2021 All rights reserved.
 //
-
+/*
 import SwiftUI
-
-// MARK: - TagRowData Definition
-// this is a struct to transport all the incoming data about a Tag that we
-// will display.  see the commentary over in EditableItemData.swift and
-// SelectableItemRowView.swift about why we do this.
-struct TagRowData {
-    let name: String
-    let itemCount: Int
-    
-    init(tag: Tag) {
-        name = tag.name
-        itemCount = tag.itemCount
-    }
-}
 
 struct TagRowView: View {
     
-    var rowData: TagRowData
+    @ObservedObject var tag: Tag
 
     var body: some View {
         
         HStack {
             NavigationLink(destination: EmptyView()) {
                 HStack{
-                    Text(rowData.name)
+                    Text(tag.name)
                         .font(.headline)
                     Spacer()
-                    Text("\(rowData.itemCount)")
+                    Text("\(tag.itemCount)")
                         .font(.headline)
                 }
             }
@@ -48,4 +34,4 @@ struct TagRowView: View {
     }
 }
 
-
+*/

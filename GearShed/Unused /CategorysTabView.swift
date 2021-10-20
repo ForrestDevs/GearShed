@@ -6,9 +6,9 @@
 //  Copyright © 2021 All rights reserved.
 //
 
-import SwiftUI
+//import SwiftUI
 
-struct CategoriesTabView: View {
+/*struct CategoriesTabView: View {
 	
 	// this is the @FetchRequest that ties this view to CoreData Categories
 	@FetchRequest(fetchRequest: MainCatelogVM.allCategorysFR())
@@ -37,7 +37,7 @@ struct CategoriesTabView: View {
 			//		.padding(10)
 			}
 			.sheet(isPresented: $isAddNewCategorySheetShowing) {
-				NavigationView { AddOrModifyCategoryView() }
+				NavigationView { AddCategoryView() }
 			}
 			
 			Rectangle()
@@ -107,4 +107,4 @@ struct CategoriesTabView: View {
 		}
 	}
 	
-}
+}*/

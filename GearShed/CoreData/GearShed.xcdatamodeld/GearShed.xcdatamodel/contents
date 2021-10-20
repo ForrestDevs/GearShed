@@ -7,12 +7,8 @@
         <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="brand_" inverseEntity="Item"/>
     </entity>
     <entity name="Category" representedClassName="Category" syncable="YES" codeGenerationType="class">
-        <attribute name="blue_" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="green_" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name_" optional="YES" attributeType="String"/>
-        <attribute name="opacity_" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="red_" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="visitationOrder_" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="category_" inverseEntity="Item"/>
     </entity>
@@ -23,16 +19,18 @@
         <attribute name="isAvailable_" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="name_" optional="YES" attributeType="String"/>
         <attribute name="onList_" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="weight_" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="price_" optional="YES" attributeType="String"/>
+        <attribute name="quantity_" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="weight_" optional="YES" attributeType="String"/>
         <relationship name="brand_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Brand" inverseName="items_" inverseEntity="Brand"/>
         <relationship name="category_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="items_" inverseEntity="Category"/>
-        <relationship name="tag_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Tag" inverseName="items_" inverseEntity="Tag"/>
+        <relationship name="tags_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tag" inverseName="items_" inverseEntity="Tag"/>
         <relationship name="trips_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Trip" inverseName="items_" inverseEntity="Trip"/>
     </entity>
     <entity name="Tag" representedClassName="Tag" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name_" optional="YES" attributeType="String"/>
-        <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="tag_" inverseEntity="Item"/>
+        <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="tags_" inverseEntity="Item"/>
     </entity>
     <entity name="Trip" representedClassName="Trip" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
@@ -40,10 +38,10 @@
         <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="trips_" inverseEntity="Item"/>
     </entity>
     <elements>
-        <element name="Brand" positionX="-261.9915771484376" positionY="-283.9469757080078" width="128" height="103"/>
-        <element name="Category" positionX="-256.6453247070313" positionY="-159.5028686523438" width="128" height="163"/>
-        <element name="Item" positionX="107.546875" positionY="-268.4366455078125" width="128" height="208"/>
-        <element name="Trip" positionX="284.164794921875" positionY="-251.5426635742188" width="128" height="88"/>
-        <element name="Tag" positionX="-246.4386596679688" positionY="26.8985595703125" width="128" height="88"/>
+        <element name="Brand" positionX="-110.1112060546876" positionY="-294.1738128662109" width="128" height="103"/>
+        <element name="Category" positionX="-106.5554809570313" positionY="-166.3906250000001" width="128" height="103"/>
+        <element name="Item" positionX="107.546875" positionY="-268.4366455078125" width="128" height="238"/>
+        <element name="Tag" positionX="296.6350708007812" positionY="-274.2279357910156" width="128" height="88"/>
+        <element name="Trip" positionX="328.475341796875" positionY="-148.1725158691407" width="128" height="88"/>
     </elements>
 </model>

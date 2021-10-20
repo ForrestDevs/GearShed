@@ -109,7 +109,7 @@ struct ConfirmDeleteBrandAlert: ConfirmationAlertProtocol {
 }
 
 // MARK: - Confirm DELETE Tag Alert
-struct ConfirmDeleteTagAlert: ConfirmationAlertProtocol {
+/*struct ConfirmDeleteTagAlert: ConfirmationAlertProtocol {
     var id = UUID()
     
     var tag: Tag
@@ -132,7 +132,7 @@ struct ConfirmDeleteTagAlert: ConfirmationAlertProtocol {
         self.destructiveCompletion = destructiveCompletion
     }
     
-}
+}*/
 
 // MARK: - Confirm DELETE TRIP Alert
 struct ConfirmDeleteTripAlert: ConfirmationAlertProtocol {

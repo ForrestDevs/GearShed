@@ -13,7 +13,7 @@ struct AllTagView: View {
 
     var body: some View {
         VStack {
-            ScrollView(.vertical, showsIndicators: false) {
+            /*ScrollView(.vertical, showsIndicators: false) {
                 ForEach(viewModel.allTags) { tag in
                     TagRowView(rowData: TagRowData(tag: tag))
                         .padding(.top, 10)
@@ -23,13 +23,7 @@ struct AllTagView: View {
             Rectangle()
                 .frame(height: 1)
                 .opacity(0)
-            Spacer(minLength: 50)
+            Spacer(minLength: 50)*/
         }
-    }
-}
-
-struct AllTagView_Previews: PreviewProvider {
-    static var previews: some View {
-        AllTagView()
     }
 }
