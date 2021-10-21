@@ -79,7 +79,8 @@ struct PreferencesTabView: View {
                 
                 Button("Write database as JSON") {
                     writeAsJSON(items: Item.allItems(), to: kItemsFilename)
-                    writeAsJSON(items: Category.allCategorys(userCategorysOnly: true), to: kCategorysFilename)
+                    writeAsJSON(items: Category.allCategories(userCategorysOnly: true), to: kCategorysFilename)
+                    writeAsJSON(items: Brand.allBrands(userBrandsOnly: true), to: kBrandsFilename)
                 }
                 .padding(.bottom, 20)
                 

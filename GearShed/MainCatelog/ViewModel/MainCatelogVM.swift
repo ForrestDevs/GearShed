@@ -25,7 +25,7 @@ final class MainCatelogVM: ObservableObject {
     @Published var itemInBrand: [Item] = []
     
     // Array that is initialized with all Categories whenever the ViewModel is called
-    @Published var allCategories: [Category] = []
+    @Published var allUserCategories: [Category] = []
     
     // Array that is initialized with all Categories whenever the ViewModel is called
     @Published var allBrands: [Brand] = []
@@ -35,6 +35,8 @@ final class MainCatelogVM: ObservableObject {
     
     // Local state to trigger showing a sheet to add a new item in MainCatelog
     @Published var isAddNewItemShowing = false
+    
+    @Published var selectedCategory: Category? = nil
     
     // Local state to trigger showing a view to Edit Item
     @Published var isEditItemShowing = false
@@ -77,7 +79,7 @@ final class MainCatelogVM: ObservableObject {
     init () {
         getItems(onList: false)
         getItems(onList: true)
-        getCategories()
+        getUserCategories(unknCategoryName: kUnknownCategoryName)
         getBrands()
         getTags()
     }
@@ -102,14 +104,17 @@ final class MainCatelogVM: ObservableObject {
         }
     }
     
-    func getCategories() {
+    func getUserCategories(unknCategoryName: String) {
         let request = NSFetchRequest<Category>(entityName: "Category")
         
         let sort = [NSSortDescriptor(key: "name_", ascending: true)]
         request.sortDescriptors = sort
         
+        let filter = NSPredicate(format: "NOT name_ == %@", unknCategoryName)
+        request.predicate = filter
+        
         do {
-            allCategories = try PersistentStore.shared.context.fetch(request)
+            allUserCategories = try PersistentStore.shared.context.fetch(request)
         } catch let error {
             print("Error fetching. \(error.localizedDescription)")
         }
@@ -231,7 +236,23 @@ final class MainCatelogVM: ObservableObject {
     
     // a toggle button to share gear list
     func leadingButton() -> some View {
-        Button() { self.showDisplayAction.toggle() } label: { Image(systemName: "square.and.arrow.up") }
+        Button() {
+            self.showDisplayAction.toggle()
+            writeAsJSON(items: Item.allItems(), to: kItemsFilename)
+            writeAsJSON(items: Category.allCategories(userCategorysOnly: true), to: kCategorysFilename)
+            writeAsJSON(items: Brand.allBrands(userBrandsOnly: true), to: kBrandsFilename)
+        } label: {
+            Image(systemName: "square.and.arrow.up")
+                /*.fileExporter(isPresented: $showDisplayAction, documents: [kItemsFilename,kBrandsFilename,kCategorysFilename] , contentType: .json) { result in
+                    switch result {
+                        case .success(let url):
+                            print("Saved to \(url)")
+                        case .failure(let error):
+                            print(error.localizedDescription)
+                        }
+                }*/
+            
+        }
     }
     
 }

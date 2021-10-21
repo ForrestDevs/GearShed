@@ -102,7 +102,7 @@ func insertNewItems(from codableItems: [ItemCodableProxy]) {
     
     // get all Categorys that are not the unknown category
     // group by name for lookup below when adding an item to a category
-    let categorys = Category.allCategorys(userCategorysOnly: true)
+    let categorys = Category.allCategories(userCategorysOnly: true)
     let name2Category = Dictionary(grouping: categorys, by: { $0.name })
     
     // get all Brands that are not the unknown brand

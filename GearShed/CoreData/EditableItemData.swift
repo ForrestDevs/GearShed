@@ -17,6 +17,8 @@ import SwiftUI
 // Item.update(using editableData: EditableItemData)
 
 struct EditableItemData {
+    
+    @StateObject private var viewModel = MainCatelogVM()
 	// the id of the Item, if any, associated with this data collection
 	// (nil if data for a new item that does not yet exist)
 	var id: UUID? = nil
@@ -29,6 +31,8 @@ struct EditableItemData {
     var details: String = ""
     
 	var category = Category.unknownCategory()
+    //var selectedCategory = viewModel.selectedCategory
+    
     var brand = Brand.unknownBrand()
     //var tag = Tag.unknownTag()
     
@@ -57,6 +61,7 @@ struct EditableItemData {
         details = item.detail
         
 		category = item.category
+        //selectedCategory = viewModel.selectedCategory
         brand = item.brand
         
 		onList = item.onList
@@ -66,7 +71,7 @@ struct EditableItemData {
 		}
 	}
 	
-    init(initialItemName: String?, category: Category? = nil, brand: Brand? = nil/*, tag: Tag? = nil*/) {
+    init(initialItemName: String?, category: Category? = nil, brand: Brand? = nil/*, selectedCategory: Category? = nil*/) {
 		if let name = initialItemName, name.count > 0 {
 			self.name = name
 		}
@@ -76,9 +81,9 @@ struct EditableItemData {
         if let brand = brand {
             self.brand = brand
         }
-        /*if let tag = tag {
-            self.tag = tag
-        }*/
+        //if let selectedCategory = selectedCategory {
+        //    self.selectedCategory = selectedCategory
+        //}
 	}
 	
 	// to do a save/commit of an Item, it must have a non-empty name

@@ -72,14 +72,14 @@ extension Category: Comparable {
 
 	// return a list of all categorys, optionally returning only user-defined category
 	// (i.e., excluding the unknown category)
-	class func allCategorys(userCategorysOnly: Bool) -> [Category] {
-		var allCategorys = allObjects(context: PersistentStore.shared.context) as! [Category]
+	class func allCategories(userCategorysOnly: Bool) -> [Category] {
+		var allCategories = allObjects(context: PersistentStore.shared.context) as! [Category]
 		if userCategorysOnly {
-			if let index = allCategorys.firstIndex(where: { $0.isUnknownCategory }) {
-				allCategorys.remove(at: index)
+			if let index = allCategories.firstIndex(where: { $0.isUnknownCategory }) {
+				allCategories.remove(at: index)
 			}
 		}
-		return allCategorys
+		return allCategories
 	}
 
 	// creates a new Category having an id, but then it's the user's responsibility

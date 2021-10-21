@@ -31,27 +31,33 @@ struct AddOrModifyItemView: View {
     // Environment state to dismiss page
 	@Environment(\.presentationMode) var presentationMode
     
-    //@State var itemNameTextFieldTapped: Bool = false
+    private var selectedCategoryName: String
     
-    @State private var selectedBrandName: String = "Choose a Brand"
+    private var selectedBrandName: String
     
-    @State private var selectedCategoryName: String = "Choose a Category"
+    @State private var altCategorySelected: Bool = false
     
-    @State private var selectedBrand: Bool = false
+    @State private var altBrandSelected: Bool = false
     
-    @State private var selectedCategory: Bool = false
+    @State private var altCategoryName: String = ""
+    
+    @State private var altBrandName: String = ""
+
+
 	
 	// custom init here to set up editableData state
-    init(editableItem: Item? = nil, initialItemName: String? = nil, category: Category? = nil, brand: Brand? = nil/*, tag: Tag? = nil*/) {
+    init(editableItem: Item? = nil, initialItemName: String? = nil, category: Category? = nil, brand: Brand? = nil) {
 		// initialize the editableData struct for the incoming item, if any; and
 		// also carry in whatever might be a suggested Item name for a new Item
 		if let item = editableItem {
 			_editableItemData = State(initialValue: EditableItemData(item: item))
 		} else {
 			// here's we'll see if a suggested name for adding a new item was supplied
-            let initialValue = EditableItemData(initialItemName: initialItemName, category: category,  brand: brand/*, tag: tag*/)
+            let initialValue = EditableItemData(initialItemName: initialItemName, category: category,  brand: brand)
 			_editableItemData = State(initialValue: initialValue)
 		}
+        selectedCategoryName = category?.name ?? "Choose a category"
+        selectedBrandName = brand?.name ?? "Choose a brand"
 	}
 	
 	
@@ -97,81 +103,52 @@ struct AddOrModifyItemView: View {
                             .foregroundColor(Color.theme.green)
                         
                         HStack (alignment: .firstTextBaseline, spacing: 10) {
-                            
-                            DisclosureGroup(selectedCategoryName, isExpanded: $viewModel.expandedCategory) {
+                            DisclosureGroup("\(discolsureCategoryTitle())", isExpanded: $viewModel.expandedCategory) {
                                 VStack(alignment: .leading) {
                                     NavigationLink(destination: AddCategoryView()) {
                                         Text("Add New Category")
-                                            .font(.caption)
-                                            .foregroundColor(Color.theme.secondaryText)
+                                            .font(.subheadline)
+                                            //.foregroundColor(Color.theme.green)
                                     }
                                     ForEach(categorys) { category in
-                                        HStack (spacing: 5) {
-                                            if selectedCategory {
-                                                Image(systemName: "checkmark")
-                                                    .foregroundColor(Color.theme.green)
-                                            }
-                                            Text(category.name).tag(category)
-                                                .font(.caption)
-                                                .foregroundColor(Color.theme.secondaryText)
-                                                .onTapGesture {
-                                                    editableItemData.category = category
-                                                    selectedCategory.toggle()
-                                                    selectedCategoryName = category.name
-                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                                        viewModel.expandedCategory.toggle()
-                                                    }
+                                        Text(category.name).tag(category)
+                                            .font(.subheadline)
+                                            //.foregroundColor(Color.theme.secondaryText)
+                                            .onTapGesture {
+                                                editableItemData.category = category
+                                                altCategorySelected = true
+                                                altCategoryName = category.name
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                                    viewModel.expandedCategory.toggle()
                                                 }
-                                        }
+                                            }
                                     }
                                 }
                             }
                             
-                            DisclosureGroup(selectedBrandName, isExpanded: $viewModel.expandedBrand) {
+                            DisclosureGroup("\(discolsureBrandTitle())", isExpanded: $viewModel.expandedBrand) {
                                 VStack(alignment: .leading) {
                                     NavigationLink(destination: AddBrandView()) {
                                         Text("Add New Brand")
-                                            .font(.title3)
-                                            .foregroundColor(Color.theme.secondaryText)
+                                            .font(.subheadline)
+                                            //.foregroundColor(Color.theme.secondaryText)
                                     }
                                     ForEach(brands) { brand in
-                                        HStack {
-                                            if selectedBrand {
-                                                Image(systemName: "checkmark")
-                                                    .foregroundColor(Color.theme.green)
-                                            }
-                                            Text(brand.name).tag(brand)
-                                                .font(.title3)
-                                                .foregroundColor(Color.theme.secondaryText)
-                                                .onTapGesture {
-                                                    editableItemData.brand = brand
-                                                    selectedBrand.toggle()
-                                                    selectedBrandName = brand.name
-                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                                        viewModel.expandedBrand.toggle()
-                                                    }
+                                        Text(brand.name).tag(brand)
+                                            .font(.subheadline)
+                                            //.foregroundColor(Color.theme.secondaryText)
+                                            .onTapGesture {
+                                                editableItemData.brand = brand
+                                                altBrandSelected = true
+                                                altBrandName = brand.name
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                                    viewModel.expandedBrand.toggle()
+                                                    //altBrandSelected.toggle()
                                                 }
-                                        }
+                                            }
                                     }
                                 }
                             }
-                            
-
-                            
-                            /*
-                            DisclosureGroup("Tag", isExpanded: $viewModel.expandedTag) {
-                                NavigationLink(destination: AddOrModifyTagView()) {
-                                    Text("Add New Tag")
-                                }
-                                ForEach(tags) { tag in
-                                    Text(tag.name).tag(tag)
-                                        .onTapGesture {
-                                            editableItemData.tag = tag
-                                            viewModel.expandedTag.toggle()
-                                        }
-                                }
-                            }
-                            */
                         }
                     }
                     
@@ -206,7 +183,6 @@ struct AddOrModifyItemView: View {
                             .border(Color.theme.green)
                     }
                     
-                    
                     // Item Management (Delete), if present
                     if editableItemData.representsExistingItem {
                         Section(header: Text("Item Management").sectionHeader()) {
@@ -218,6 +194,7 @@ struct AddOrModifyItemView: View {
                             .foregroundColor(Color.red)
                         }
                     }
+                    
                 }
                 .padding()
                 .navigationBarTitle(barTitle(), displayMode: .inline)
@@ -235,11 +212,25 @@ struct AddOrModifyItemView: View {
                 }
                 .alert(item: $viewModel.confirmDeleteItemAlert) { item in item.alert() }
             }
-            
         }
-        
     }
-		
+    
+    func discolsureCategoryTitle() -> String {
+        if !altCategorySelected {
+            return selectedCategoryName
+        } else {
+            return altCategoryName
+        }
+    }
+    
+    func discolsureBrandTitle() -> String {
+        if !altBrandSelected {
+            return selectedBrandName
+        } else {
+            return altBrandName
+        }
+    }
+    
 	func barTitle() -> Text {
 		return editableItemData.representsExistingItem ? Text("Modify Item") : Text("Add New Item")
 	}

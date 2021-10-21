@@ -42,7 +42,7 @@ struct MainCatelogView: View {
                 
                 
             } // end of VStack
-            .navigationBarTitle("GearShed", displayMode: .inline)
+            .navigationBarTitle("Gear Shed", displayMode: .inline)
             .fullScreenCover(isPresented: $viewModel.isAddNewItemShowing){AddOrModifyItemView().environment(\.managedObjectContext, PersistentStore.shared.context)}
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading, content: viewModel.leadingButton)
@@ -70,14 +70,14 @@ struct SPForShedView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
                 
-                Button { self.selected = 0}
-                    label: { Text("ITEM")
-                        //.fontWeight(self.selected == 0 ? .bold : .regular)
-                                //.padding(.vertical,12)
-                                .padding(.horizontal,10)
-                                //.background(self.selected == 0 ? Color.white : Color.clear)
-                }
-                .foregroundColor(self.selected == 0 ? .white : .black)
+                //Button { self.selected = 0}
+                //    label: { Text("ITEM")
+                //        //.fontWeight(self.selected == 0 ? .bold : .regular)
+                //                //.padding(.vertical,12)
+                //                .padding(.horizontal,10)
+                //                //.background(self.selected == 0 ? Color.white : Color.clear)
+                //}
+                //.foregroundColor(self.selected == 0 ? .white : .black)
                 
                 Button { self.selected = 1}
                     label: { Text("CATEGORY")
