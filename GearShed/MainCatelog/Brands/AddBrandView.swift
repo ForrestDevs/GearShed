@@ -107,7 +107,7 @@ struct SimpleItemsListForBrand: View {
     var body: some View {
         Section(header: ItemsListHeader()) {
             ForEach(items) { item in
-                NavigationLink(destination: AddOrModifyItemView(editableItem: item)) {
+                NavigationLink(destination: AddItemView(editableItem: item)) {
                     Text(item.name)
                 }
             }

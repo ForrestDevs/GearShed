@@ -12,7 +12,11 @@ struct AllWishListView: View {
     
     @StateObject private var viewModel = MainCatelogVM()
     
-    @State private var selected = 0
+    // FetchRequest To Keep List of categories Updated
+    @FetchRequest(fetchRequest: MainCatelogVM.allItemsInWishListFR())
+    private var allWishListItems: FetchedResults<Item>
+    
+    //@State private var selected = 0
 
     var body: some View {
         VStack (spacing: 0) {
@@ -20,7 +24,7 @@ struct AllWishListView: View {
             StatBar1()
                         
             ScrollView(.vertical, showsIndicators: false) {
-                ForEach(viewModel.allItemsInWishList) { item in
+                ForEach(allWishListItems) { item in
                     ItemRowView(item: item)
                 }
             }

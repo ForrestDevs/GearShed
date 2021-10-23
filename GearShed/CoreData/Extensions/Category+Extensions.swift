@@ -10,14 +10,13 @@ import SwiftUI
 import CoreData
 
 // constants
-let kUnknownCategoryName = "Unknown Category"
-let kUnknownCategoryVisitationOrder: Int32 = INT32_MAX
+let kUnknownCategoryName = "Uncategorized"
 
 extension Category: Comparable {
 	
-	// add Comparable conformance: sort by visitation order
+	// add Comparable conformance: sort by name
 	public static func < (lhs: Category, rhs: Category) -> Bool {
-		lhs.visitationOrder_ < rhs.visitationOrder_
+		lhs.name < rhs.name
 	}
 	
 	// MARK: - Computed properties
@@ -35,17 +34,6 @@ extension Category: Comparable {
 		}
 	}
 	
-	// visitationOrder: fronts Core Data attribute visitationOrder_ that is Int32
-	// if you change an category's visitationOrder, its associated items may want to
-	// know that some of their computed visitationOrder property has been invalidated
-	var visitationOrder: Int {
-		get { Int(visitationOrder_) }
-		set {
-			visitationOrder_ = Int32(newValue)
-			items.forEach({ $0.objectWillChange.send() })
-		}
-	}
-	
 	// items: fronts Core Data attribute items_ that is an NSSet, and turns it into
 	// a Swift array
 	var items: [Item] {
@@ -59,18 +47,15 @@ extension Category: Comparable {
 	var itemCount: Int { items_?.count ?? 0 }
 	
 	// simplified test of "is the unknown category"
-	var isUnknownCategory: Bool { visitationOrder_ == kUnknownCategoryVisitationOrder }
+	var isUnknownCategory: Bool { name_ == kUnknownCategoryName }
 	
-	
-
-
-	// MARK: - Class Functions
+    // MARK: - Class Functions
 	
 	class func count() -> Int {
 		return count(context: PersistentStore.shared.context)
 	}
 
-	// return a list of all categorys, optionally returning only user-defined category
+	// return a list of all categories, optionally returning only user-defined category
 	// (i.e., excluding the unknown category)
 	class func allCategories(userCategorysOnly: Bool) -> [Category] {
 		var allCategories = allObjects(context: PersistentStore.shared.context) as! [Category]
@@ -92,37 +77,29 @@ extension Category: Comparable {
 	
 	// parameters for the Unknown Category.  call this only upon startup if
 	// the Core Data database has not yet been initialized
-	class func createUnknownCategory() -> Category {
+	class func createUnknownCategory() {
 		let unknownCategory = addNewCategory()
 		unknownCategory.name_ = kUnknownCategoryName
-		unknownCategory.visitationOrder_ = kUnknownCategoryVisitationOrder
-		return unknownCategory
+        PersistentStore.shared.saveContext()
+        //return unknownCategory
 	}
-
-	class func unknownCategory() -> Category {
-		// we only keep one "UnknownCategory" in the data store.  you can find it because its
-		// visitationOrder is the largest 32-bit integer. to make the app work, however, we need this
-		// default category to exist!
-		//
-		// so if we ever need to get the unknown category from the database, we will fetch it;
-		// and if it's not there, we will create it then.
-		let fetchRequest: NSFetchRequest<Category> = Category.fetchRequest()
-		fetchRequest.predicate = NSPredicate(format: "visitationOrder_ == %d", kUnknownCategoryVisitationOrder)
-		do {
-			let categorys = try PersistentStore.shared.context.fetch(fetchRequest)
-			if categorys.count >= 1 { // there should be no more than one
-				return categorys[0]
-			} else {
-				return createUnknownCategory()
-			}
-		} catch let error as NSError {
-			fatalError("Error fetching unknown category: \(error.localizedDescription), \(error.userInfo)")
-		}
-	}
+    
+    class func theUnknownCategory() -> Category {
+        
+        let fetchRequest: NSFetchRequest<Category> = Category.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "name_ == %@", kUnknownCategoryName)
+        
+        do {
+            let category = try PersistentStore.shared.context.fetch(fetchRequest)
+            return category[0]
+        } catch let error as NSError {
+            fatalError("Error fetching unknown category: //\(error.localizedDescription), \(error.userInfo)")
+        }
+    }
 	
 	class func delete(_ category: Category) {
 		// you cannot delete the unknownCategory
-		guard category.visitationOrder_ != kUnknownCategoryVisitationOrder else { return }
+		guard category.name_ != kUnknownCategoryName else { return }
 
 		// retrieve the context of this Category and get a list of
 		// all items for this category so we can work with them
@@ -132,8 +109,8 @@ extension Category: Comparable {
 		// reset category associated with each of these to the unknownCategory
 		// (which in turn, removes the current association with category). additionally,
 		// this could affect each item's computed properties
-		let theUnknownCategory = Category.unknownCategory()
-		itemsAtThisCategory.forEach({ $0.category = theUnknownCategory })
+        let theUnknownCategory = Category.theUnknownCategory()
+        itemsAtThisCategory.forEach({ $0.category = theUnknownCategory })
 		// now finish the deletion and save
 		context?.delete(category)
 		try? context?.save()
@@ -162,15 +139,11 @@ extension Category: Comparable {
 		
 		// we first make these changes directly in Core Data
 		name_ = editableData.categoryName
-		visitationOrder_ = Int32(editableData.visitationOrder)
-
-		
 		// one more thing: items associated with this category may want to know about
 		// (some of) these changes.  reason: items rely on knowing some computed
 		// properties such as uiColor, categoryName, and visitationOrder.
 		// usually, what i would do is this, to be sure that anyone who is
 		// observing an Item as an @ObservedObject knows about the Category update:
-		
 		items.forEach({ $0.objectWillChange.send() })
 	}
 	

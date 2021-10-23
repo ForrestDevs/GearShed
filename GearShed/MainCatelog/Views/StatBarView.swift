@@ -72,6 +72,8 @@ struct StatBar1: View {
     }
 }
 
+
+
 struct StatBar: View {
     
     @StateObject private var viewModel = MainCatelogVM()
@@ -135,5 +137,22 @@ struct StatBar: View {
             .padding(.horizontal, 30)
         }
 
+    }
+    
+    func totalWeight() -> String {
+        
+        let totalWeight: String = ""
+        
+        var totalWeightNum: Int = 0
+        
+        let nf = NumberFormatter()
+        nf.numberStyle = .decimal
+        let x = nf.number(from: "1,234")?.intValue
+        
+        for item in viewModel.allItemsInShed {
+            item.weight
+        }
+        
+       return totalWeight
     }
 }

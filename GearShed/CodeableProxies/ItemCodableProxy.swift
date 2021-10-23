@@ -16,7 +16,7 @@ import Foundation
 struct ItemCodableProxy: Codable {
 	var name: String
 	var onList: Bool
-	var isAvailable: Bool
+	var isFavourite: Bool
     
 	var quantity: Int
     var price: String
@@ -29,7 +29,7 @@ struct ItemCodableProxy: Codable {
 	init(from item: Item) {
 		name = item.name
 		onList = item.onList
-		isAvailable = item.isAvailable
+        isFavourite = item.isFavourite
         
 		quantity = item.quantity
         weight = item.weight

@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct AddOrModifyItemView: View {
+struct AddItemView: View {
     
     @StateObject private var viewModel = MainCatelogVM()
     
@@ -17,16 +17,12 @@ struct AddOrModifyItemView: View {
     @State private var editableItemData: EditableItemData
     
     // FetchRequest To Keep Picker Updated
-    @FetchRequest(fetchRequest: MainCatelogVM.allCategorysFR())
+    @FetchRequest(fetchRequest: MainCatelogVM.allCategoriesFR())
     private var categorys: FetchedResults<Category>
     
     // FetchRequest To Keep Picker Updated
     @FetchRequest(fetchRequest: MainCatelogVM.allBrandsFR())
     private var brands: FetchedResults<Brand>
-    
-    // FetchRequest To Keep Picker Updated
-    @FetchRequest(fetchRequest: MainCatelogVM.allTagsFR())
-    private var tags: FetchedResults<Tag>
     
     // Environment state to dismiss page
 	@Environment(\.presentationMode) var presentationMode
@@ -46,14 +42,14 @@ struct AddOrModifyItemView: View {
 
 	
 	// custom init here to set up editableData state
-    init(editableItem: Item? = nil, initialItemName: String? = nil, category: Category? = nil, brand: Brand? = nil) {
+    init(editableItem: Item? = nil, initialItemName: String? = nil, initialItemDetails: String? = nil, category: Category? = nil, brand: Brand? = nil) {
 		// initialize the editableData struct for the incoming item, if any; and
 		// also carry in whatever might be a suggested Item name for a new Item
 		if let item = editableItem {
 			_editableItemData = State(initialValue: EditableItemData(item: item))
 		} else {
 			// here's we'll see if a suggested name for adding a new item was supplied
-            let initialValue = EditableItemData(initialItemName: initialItemName, category: category,  brand: brand)
+            let initialValue = EditableItemData(initialItemName: initialItemName, initialItemDetails: initialItemDetails, category: category,  brand: brand)
 			_editableItemData = State(initialValue: initialValue)
 		}
         selectedCategoryName = category?.name ?? "Choose a category"
@@ -73,12 +69,12 @@ struct AddOrModifyItemView: View {
                             .bold()
                             .foregroundColor(Color.theme.green)
                         
-                        TextField(editableItemData.name, text: $editableItemData.name).onTapGesture {
-                            //itemNameTextFieldTapped = true
-                        }
+                        TextField("Item Name", text: $editableItemData.name)
+                            //.textFieldStyle(.roundedBorder)
+                        
                         Rectangle()
                             .frame(maxWidth: .infinity)
-                            .frame(maxHeight: 2)
+                            .frame(maxHeight: 1)
                             .foregroundColor(Color.theme.green)
                     }
                     
@@ -90,9 +86,26 @@ struct AddOrModifyItemView: View {
                         
                         HStack(alignment: .firstTextBaseline) {
                             
-                            TextField(editableItemData.weight, text: $editableItemData.weight)
+                            VStack {
+                                
+                                TextField("Item Weight", text: $editableItemData.weight)
+                                
+                                Rectangle()
+                                    .frame(maxWidth: .infinity)
+                                    .frame(maxHeight: 1)
+                                    .foregroundColor(Color.theme.green)
+                                
+                            }
                             
-                            TextField(editableItemData.price, text: $editableItemData.price)
+                            VStack {
+                                
+                                TextField("Item Cost", text: $editableItemData.price)
+                                
+                                Rectangle()
+                                    .frame(maxWidth: .infinity)
+                                    .frame(maxHeight: 1)
+                                    .foregroundColor(Color.theme.green)
+                            }
                         }
                     }
                     
@@ -118,7 +131,7 @@ struct AddOrModifyItemView: View {
                                                 editableItemData.category = category
                                                 altCategorySelected = true
                                                 altCategoryName = category.name
-                                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                                                     viewModel.expandedCategory.toggle()
                                                 }
                                             }
@@ -141,7 +154,7 @@ struct AddOrModifyItemView: View {
                                                 editableItemData.brand = brand
                                                 altBrandSelected = true
                                                 altBrandName = brand.name
-                                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                                                     viewModel.expandedBrand.toggle()
                                                     //altBrandSelected.toggle()
                                                 }
@@ -152,7 +165,7 @@ struct AddOrModifyItemView: View {
                         }
                     }
                     
-                    VStack (alignment: .leading, spacing: 10) {
+                    /*VStack (alignment: .leading, spacing: 10) {
                         Text("Quantity")
                             .font(.subheadline)
                             .bold()
@@ -165,7 +178,7 @@ struct AddOrModifyItemView: View {
                                 Spacer()
                             }
                         }
-                    }
+                    }*/
                     
                     Toggle(isOn: $editableItemData.onList) {
                         Text("Wishlist Item")
@@ -179,22 +192,13 @@ struct AddOrModifyItemView: View {
                             .font(.subheadline)
                             .bold()
                             .foregroundColor(Color.theme.green)
-                        TextEditor(text: $editableItemData.details)
-                            .border(Color.theme.green)
-                    }
-                    
-                    // Item Management (Delete), if present
-                    if editableItemData.representsExistingItem {
-                        Section(header: Text("Item Management").sectionHeader()) {
-                            
-                            SLCenteredButton(title: "Delete This Item", action: { viewModel.confirmDeleteItemAlert =
-                                ConfirmDeleteItemAlert(item: editableItemData.associatedItem,
-                                    destructiveCompletion: { presentationMode.wrappedValue.dismiss() })
-                            })
-                            .foregroundColor(Color.red)
+                        VStack {
+                            TextEditor(text: $editableItemData.details)
+                            Spacer()
+                            Spacer()
                         }
+                        .border(Color.theme.green)
                     }
-                    
                 }
                 .padding()
                 .navigationBarTitle(barTitle(), displayMode: .inline)
@@ -258,7 +262,7 @@ struct AddOrModifyItemView: View {
 
 struct AddOrModifyItemView_Previews: PreviewProvider {
     static var previews: some View {
-        AddOrModifyItemView()
+        AddItemView()
     }
 }
 

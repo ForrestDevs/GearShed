@@ -117,7 +117,7 @@ func insertNewItems(from codableItems: [ItemCodableProxy]) {
         newItem.weight = codableItem.weight
         newItem.price = codableItem.price
         newItem.onList = codableItem.onList
-        newItem.isAvailable_ = codableItem.isAvailable
+        newItem.isFavourite_ = codableItem.isFavourite
         newItem.dateLastPurchased_ = nil // never purchased
         
         // look up matching category by name
@@ -125,7 +125,7 @@ func insertNewItems(from codableItems: [ItemCodableProxy]) {
         if let category = name2Category[codableItem.categoryName]?.first {
             newItem.category = category
         } else {
-            newItem.category = Category.unknownCategory() // if necessary, this creates the Unknown Category
+            newItem.category = Category.theUnknownCategory() // if necessary, this creates the Unknown Category
         }
         
         // look up matching brand by name
@@ -133,7 +133,7 @@ func insertNewItems(from codableItems: [ItemCodableProxy]) {
         if let brand = name2Brand[codableItem.brandName]?.first {
             newItem.brand = brand
         } else {
-            newItem.brand = Brand.unknownBrand() // if necessary, this creates the Unknown Brand
+            newItem.brand = Brand.theUnknownBrand() // if necessary, this creates the Unknown Brand
         }
         
     }
@@ -144,7 +144,6 @@ func insertNewCategorys(from codableCategorys: [CategoryCodableProxy]) {
     for codableCategory in codableCategorys {
         let newCategory = Category.addNewCategory() // new UUID created here
         newCategory.name = codableCategory.name
-        newCategory.visitationOrder = codableCategory.visitationOrder
     }
 }
 
@@ -153,7 +152,6 @@ func insertNewBrands(from codableBrands: [BrandCodableProxy]) {
     for codableBrand in codableBrands {
         let newBrand = Brand.addNewBrand() // new UUID created here
         newBrand.name = codableBrand.name
-        newBrand.order = codableBrand.order
     }
 }
 

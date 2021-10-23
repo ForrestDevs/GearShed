@@ -30,7 +30,7 @@ struct CategoryDetailView: View {
             
             ScrollView(.vertical, showsIndicators: false) {
                 ForEach(items) { item in
-                    ItemRowViewInCategory(item: item)
+                    ItemRowView(item: item)
                 }
             }
             //.padding(.top, 20)

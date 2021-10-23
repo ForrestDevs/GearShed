@@ -32,7 +32,7 @@ struct BrandDetailView: View {
             
             ScrollView(.vertical, showsIndicators: false) {
                 ForEach(items) { item in
-                    ItemRowViewInBrand(item: item)
+                    ItemRowView(item: item)
                 }
             }
             Rectangle()

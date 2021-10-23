@@ -1,50 +1,38 @@
 [
 	{
-		"visitationOrder" : 1,
 		"name" : "Tents"
 	},
 	{
-		"visitationOrder" : 2,
 		"name" : "SleepingKit"
 	},
 	{
-		"visitationOrder" : 3,
 		"name" : "CookingKit"
 	},
 	{
-		"visitationOrder" : 4,
 		"name" : "Knives"
 	},
 	{
-		"visitationOrder" : 5,
 		"name" : "Tools"
 	},
 	{
-		"visitationOrder" : 6,
 		"name" : "Tech"
 	},
 	{
-		"visitationOrder" : 7,
 		"name" : "Portable Chargers"
 	},
 	{
-		"visitationOrder" : 8,
 		"name" : "Backpacks"
 	},
 	{
-		"visitationOrder" : 9,
 		"name" : "Cameras"
 	},
 	{
-		"visitationOrder" : 10,
 		"name" : "DrySacs"
 	},
 	{
-		"visitationOrder" : 11,
 		"name" : "Clothes"
 	},
 	{
-		"visitationOrder" : 12,
 		"name" : "FootWear"
 	}
 ]

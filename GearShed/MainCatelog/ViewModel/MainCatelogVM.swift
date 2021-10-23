@@ -79,7 +79,7 @@ final class MainCatelogVM: ObservableObject {
     init () {
         getItems(onList: false)
         getItems(onList: true)
-        getUserCategories(unknCategoryName: kUnknownCategoryName)
+        getUserCategories()
         getBrands()
         getTags()
     }
@@ -104,7 +104,7 @@ final class MainCatelogVM: ObservableObject {
         }
     }
     
-    func getUserCategories(unknCategoryName: String) {
+    func getUserCategories(unknCategoryName: String = kUnknownCategoryName) {
         let request = NSFetchRequest<Category>(entityName: "Category")
         
         let sort = [NSSortDescriptor(key: "name_", ascending: true)]
@@ -183,12 +183,42 @@ final class MainCatelogVM: ObservableObject {
     // a fetch request we can use in views to get all categorys, sorted by name.
     // by default, you get all categorys; setting onList = true returns only categorys that
     // have at least one of its shopping items currently on the shopping list
-    class func allCategorysFR(onList: Bool = false) -> NSFetchRequest<Category> {
+    class func allCategoriesFR(onList: Bool = false) -> NSFetchRequest<Category> {
         let request: NSFetchRequest<Category> = Category.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
         if onList {
             request.predicate = NSPredicate(format: "ANY items_.onList_ == true")
         }
+        return request
+    }
+    
+    class func allItemsInWishListFR(onList: Bool = true) -> NSFetchRequest<Item> {
+        let request: NSFetchRequest<Item> = Item.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
+        request.predicate = NSPredicate(format: "onList_ == %d", onList)
+        return request
+    }
+    
+    class func allFavItemsFR(isFavourite: Bool = true) -> NSFetchRequest<Item> {
+        let request: NSFetchRequest<Item> = Item.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
+        request.predicate = NSPredicate(format: "isFavourite_ == %d", isFavourite)
+        return request
+    }
+    
+    // a fetch request we can use in views to get all User categoriess, excluding the Unknown
+    // category, sorted by name by default; setting onList = true returns only categorys that
+    // have at least one of its item currently in the Gear Shed list
+    class func allUserCategoriesFR(unknCategoryName: String = kUnknownCategoryName) -> NSFetchRequest<Category> {
+        
+        let request = NSFetchRequest<Category>(entityName: "Category")
+        
+        let sort = [NSSortDescriptor(key: "name_", ascending: true)]
+        request.sortDescriptors = sort
+        
+        let filter = NSPredicate(format: "NOT name_ == %@", unknCategoryName)
+        request.predicate = filter
+        
         return request
     }
     
@@ -201,6 +231,22 @@ final class MainCatelogVM: ObservableObject {
         if onList {
             request.predicate = NSPredicate(format: "ANY items_.onList_ == true")
         }
+        return request
+    }
+    
+    // a fetch request we can use in views to get all User categoriess, excluding the Unknown
+    // category, sorted by name by default; setting onList = true returns only categorys that
+    // have at least one of its item currently in the Gear Shed list
+    class func allUserBrandsFR(unknBrandName: String) -> NSFetchRequest<Brand> {
+        
+        let request = NSFetchRequest<Brand>(entityName: "Brand")
+        
+        let sort = [NSSortDescriptor(key: "name_", ascending: true)]
+        request.sortDescriptors = sort
+        
+        let filter = NSPredicate(format: "NOT name_ == %@", unknBrandName)
+        request.predicate = filter
+        
         return request
     }
     
@@ -236,10 +282,10 @@ final class MainCatelogVM: ObservableObject {
     
     // a toggle button to share gear list
     func leadingButton() -> some View {
-        Button() {
+        Button() { [self] in
             self.showDisplayAction.toggle()
             writeAsJSON(items: Item.allItems(), to: kItemsFilename)
-            writeAsJSON(items: Category.allCategories(userCategorysOnly: true), to: kCategorysFilename)
+            writeAsJSON(items: allUserCategories, to: kCategorysFilename)
             writeAsJSON(items: Brand.allBrands(userBrandsOnly: true), to: kBrandsFilename)
         } label: {
             Image(systemName: "square.and.arrow.up")

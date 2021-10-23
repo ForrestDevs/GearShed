@@ -12,18 +12,31 @@ struct AllCategoryView: View {
     
     @StateObject private var viewModel = MainCatelogVM()
     
+    // FetchRequest To Keep List of categories Updated
+    @FetchRequest(fetchRequest: MainCatelogVM.allCategoriesFR())
+    private var allCategories: FetchedResults<Category>
+    
     @State var selectedCategory: Category? = nil
 
     var body: some View {
         VStack {
             ZStack {
+                
                 ScrollView(.vertical, showsIndicators: false) {
                     
                     HStack {
                         NavigationLink(destination: AllItemsView()) {
-                            Text("All")
-                                .font(.headline)
-                                .padding(.horizontal, 50)
+                            
+                            HStack {
+                                Text("All")
+                                    .font(.headline)
+                                Text("|")
+                                    .font(.headline)
+                                Text("\(allCategories.count) Sheds")
+                                    .font(.headline) 
+                            }
+                            .padding(.horizontal, 50)
+                            
                             Spacer()
                             Text("\(viewModel.allItemsInShed.count)")
                                 .font(.headline)
@@ -33,8 +46,7 @@ struct AllCategoryView: View {
                     .padding(.horizontal)
                     .padding(.top, 15)
 
-                                    
-                    HStack {
+                    /*HStack {
                         Button {viewModel.isAddNewItemShowing.toggle()} label: {
                             Image(systemName: "plus")
                         }
@@ -50,15 +62,9 @@ struct AllCategoryView: View {
                         }
                     }
                     .padding(.horizontal)
-                    .padding(.top, 15)
+                    .padding(.top, 15)*/
                     
-                    ForEach(viewModel.allUserCategories) { category in
-                        
-                        //if category.name = kUnknownCategoryName {
-                        //    continue
-                        //} else {
-                        //
-                        //}
+                    ForEach(allCategories) { category in
                         HStack (alignment: .firstTextBaseline, spacing: 10) {
                             Button {
                                 selectedCategory = category
@@ -72,6 +78,7 @@ struct AllCategoryView: View {
                         .padding(.horizontal)
                         
                     }
+                    
                 }
                 
                 VStack {
@@ -80,18 +87,24 @@ struct AllCategoryView: View {
                         Spacer()
                         Button {viewModel.isEditCategoryShowing.toggle()}
                         label: {
-                            Text("+")
-                                .font(.largeTitle)
-                                .frame(width: 57, height: 50)
-                                .foregroundColor(Color.white)
-                                .padding(.bottom, 7)
+                            VStack{
+                                Text("Add")
+                                    .font(.system(size: 12, weight: .regular))
+                                    .foregroundColor(Color.theme.background)
+                                    
+                                Text("Shed")
+                                    .font(.system(size: 12, weight: .regular))
+                                    .foregroundColor(Color.theme.background)
+                            }
                         }
-                        .background(Color.theme.green)
+                        .frame(width: 55, height: 55)
+                        .background(Color.theme.accent)
                         .cornerRadius(38.5)
                         .padding()
-                        .shadow(color: Color.black.opacity(0.3), radius: 3,x: 3,y: 3)
+                        .shadow(color: Color.theme.accent.opacity(0.3), radius: 3,x: 3,y: 3)
                     }
                 }
+                
             }
             Rectangle()
                 .frame(height: 1)
@@ -99,7 +112,7 @@ struct AllCategoryView: View {
             Spacer(minLength: 50)
         }
         .fullScreenCover(isPresented: $viewModel.isAddNewItemShowing) {
-            AddOrModifyItemView(category: selectedCategory).environment(\.managedObjectContext, PersistentStore.shared.context)
+            AddItemView(category: selectedCategory).environment(\.managedObjectContext, PersistentStore.shared.context)
         }
         .fullScreenCover(isPresented: $viewModel.isEditCategoryShowing) {
             NavigationView {
@@ -109,3 +122,8 @@ struct AllCategoryView: View {
     }
 }
 
+
+    /*.font(.largeTitle)
+    .frame(width: 57, height: 50)
+    .foregroundColor(Color.white)
+    .padding(.bottom, 7)*/

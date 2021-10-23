@@ -8,14 +8,19 @@
 
 import SwiftUI
 
-struct AllTagView: View {
+struct AllFavouriteView: View {
+    
     @StateObject private var viewModel = MainCatelogVM()
+    
+    // FetchRequest To Keep List of categories Updated
+    @FetchRequest(fetchRequest: MainCatelogVM.allFavItemsFR())
+    private var allFavItems: FetchedResults<Item>
 
     var body: some View {
         VStack {
-            /*ScrollView(.vertical, showsIndicators: false) {
-                ForEach(viewModel.allTags) { tag in
-                    TagRowView(rowData: TagRowData(tag: tag))
+            ScrollView(.vertical, showsIndicators: false) {
+                ForEach(allFavItems) { item in
+                    ItemRowView(item: item)
                         .padding(.top, 10)
                 }
             }
@@ -23,7 +28,7 @@ struct AllTagView: View {
             Rectangle()
                 .frame(height: 1)
                 .opacity(0)
-            Spacer(minLength: 50)*/
+            Spacer(minLength: 50)
         }
     }
 }

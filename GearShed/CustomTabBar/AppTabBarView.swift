@@ -90,14 +90,14 @@ struct AppTabBarView2: View {
         TabView(selection: $tabSelection) {
             
             NavigationView { HomeView() }
-                .tabItem({ Label("Home", systemImage: "house") })
+                .tabItem({ Label("Home", systemImage: "list.bullet") })
 
                
             NavigationView { MainCatelogView() }
-                .tabItem({ Label("GearShed", systemImage: "house") })
+                .tabItem({ Label("Gear Shed", systemImage: "house") })
 
             NavigationView { TripsTabView() }
-                .tabItem({ Label("GearList", systemImage: "airplane") })
+                .tabItem({ Label("Gear List", systemImage: "figure.walk") })
 
         }
     }

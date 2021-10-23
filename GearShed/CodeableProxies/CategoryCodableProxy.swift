@@ -12,10 +12,8 @@ import Foundation
 // that we would import or export in such a way that the result is Codable
 struct CategoryCodableProxy: Codable {
 	var name: String
-	var visitationOrder: Int
 
 	init(from category: Category) {
 		name = category.name
-		visitationOrder = category.visitationOrder
 	}
 }

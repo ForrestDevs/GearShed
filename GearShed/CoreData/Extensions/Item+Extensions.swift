@@ -110,16 +110,16 @@ extension Item {
 		set { name_ = newValue }
 	}
     
-    // the name.  this fronts a Core Data optional attribute
+    // the details.  this fronts a Core Data optional attribute
     var detail: String {
         get { detail_ ?? "Not Available" }
         set { detail_ = newValue }
     }
 	
-	// whether the item is available.  this fronts a Core Data boolean
-	var isAvailable: Bool { isAvailable_ }
+	// whether the item is a favourtie or not.  this fronts a Core Data boolean
+	var isFavourite: Bool { isFavourite_ }
 	
-	// whether the item is on the list.  this fronts a Core Data boolean,
+	// whether the item is on the list or wishlist.  this fronts a Core Data boolean,
 	// but when changed from true to false, it signals a purchase, so update
 	// the lastDatePurchased
 	var onList: Bool { 
@@ -175,7 +175,7 @@ extension Item {
         }
     }
     
-    // items: fronts Core Data attribute tags_ that is an NSSet, and turns it into
+    // tags: fronts Core Data attribute tags_ that is an NSSet, and turns it into
     // a Swift array
     var tags: [Tag] {
         if let tags = tags_ as? Set<Tag> {
@@ -185,7 +185,7 @@ extension Item {
     }
     
     
-    // items: fronts Core Data attribute trips_ that is an NSSet, and turns it into
+    // trips: fronts Core Data attribute trips_ that is an NSSet, and turns it into
     // a Swift array
     var trips: [Trip] {
         if let trips = trips_ as? Set<Trip> {
@@ -194,7 +194,7 @@ extension Item {
         return []
     }
     
-    // itemCount: computed property from Core Data trips_
+    // tripCount: computed property from Core Data trips_
     var tripCount: Int { trips_?.count ?? 0 }
     
 	// the name of its associated category
@@ -299,8 +299,8 @@ extension Item {
 	// MARK: - Object Methods
 	
 	// toggles the availability flag for an item
-	func toggleAvailableStatus() {
-		isAvailable_ = !isAvailable_
+	func toggleFavouriteStatus() {
+        isFavourite_ = !isFavourite_
 	}
 
 	// changes onList flag for an item
@@ -308,17 +308,18 @@ extension Item {
 		onList = !onList
 	}
 
-	func markAvailable() {
-		isAvailable_ = true
+	func markFavourite() {
+		isFavourite_ = true
 	}
     
 	private func updateValues(from editableData: EditableItemData) {
 		name_ = editableData.name
+        detail_ = editableData.details
 		quantity_ = Int32(editableData.quantity)
         weight_ = editableData.weight
         price_ = editableData.price
 		onList_ = editableData.onList
-		isAvailable_ = editableData.isAvailable
+        isFavourite_ = editableData.isFavourite
 		category = editableData.category
         brand = editableData.brand
         

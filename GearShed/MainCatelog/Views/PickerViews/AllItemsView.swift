@@ -25,12 +25,22 @@ struct AllItemsView: View {
                     Section {
                         ForEach(section.items) { item in
                             ItemRowView(item: item)
+                                .padding(.bottom, 5)
                         }
                     } header: {
-                        HStack {
-                            Text(section.title)
-                            Spacer()
-                        }.padding(.horizontal)
+                        VStack (spacing: 0) {
+                            
+                            HStack {
+                                Text(section.title)
+                                    .font(.headline)
+                                Spacer()
+                            }
+                            
+                            Rectangle()
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 1)
+                        }
+                        .padding(.horizontal)
                     }
                 }
             }

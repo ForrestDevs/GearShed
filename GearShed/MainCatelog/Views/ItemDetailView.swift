@@ -44,7 +44,7 @@ struct ItemDetailView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing, content: viewModel.editItemButton)
         }
-        .fullScreenCover(isPresented: $viewModel.isEditItemShowing){AddOrModifyItemView(editableItem: item).environment(\.managedObjectContext, PersistentStore.shared.context)}
+        .fullScreenCover(isPresented: $viewModel.isEditItemShowing){ModifyItemView(editableItem: item).environment(\.managedObjectContext, PersistentStore.shared.context)}
     }
 }
 

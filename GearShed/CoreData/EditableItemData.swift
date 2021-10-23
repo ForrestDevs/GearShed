@@ -28,16 +28,15 @@ struct EditableItemData {
 	var weight: String = ""
     var price: String = ""
     var quantity: Int = 1
-    var details: String = ""
+    var details: String = "Item Details"
     
-	var category = Category.unknownCategory()
-    //var selectedCategory = viewModel.selectedCategory
+	var category = Category.theUnknownCategory()
+    var brand = Brand.theUnknownBrand()
     
-    var brand = Brand.unknownBrand()
     //var tag = Tag.unknownTag()
     
 	var onList: Bool = false
-	var isAvailable = true
+	var isFavourite = false
 	var dateText = "" // for display only, not actually editable
     
 
@@ -61,29 +60,28 @@ struct EditableItemData {
         details = item.detail
         
 		category = item.category
-        //selectedCategory = viewModel.selectedCategory
         brand = item.brand
         
 		onList = item.onList
-		isAvailable = item.isAvailable
+        isFavourite = item.isFavourite
 		if item.hasBeenPurchased {
 			dateText = item.dateLastPurchased.dateText(style: .medium)
 		}
 	}
 	
-    init(initialItemName: String?, category: Category? = nil, brand: Brand? = nil/*, selectedCategory: Category? = nil*/) {
+    init(initialItemName: String?, initialItemDetails: String?, category: Category? = nil, brand: Brand? = nil) {
 		if let name = initialItemName, name.count > 0 {
 			self.name = name
 		}
+        if let details = initialItemDetails, details.count > 0 {
+            self.details = details
+        }
 		if let category = category {
 			self.category = category
 		}
         if let brand = brand {
             self.brand = brand
         }
-        //if let selectedCategory = selectedCategory {
-        //    self.selectedCategory = selectedCategory
-        //}
 	}
 	
 	// to do a save/commit of an Item, it must have a non-empty name
@@ -102,14 +100,12 @@ struct EditableItemData {
     var idBrand: UUID? = nil
     // all of the values here provide suitable defaults for a new Brand
     var brandName: String = ""
-    var order: Int = 50
     
     // this copies all the editable data from an incoming Brand
     init(brand: Brand?) {
         if let brand = brand {
             idBrand = brand.id!
             brandName = brand.name
-            order = Int(brand.order)
         }
     }
     
@@ -129,14 +125,12 @@ struct EditableItemData {
     var idCategory: UUID? = nil
     // all of the values here provide suitable defaults for a new Category
     var categoryName: String = ""
-    var visitationOrder: Int = 50
     
     // this copies all the editable data from an incoming Category
     init(category: Category?) {
         if let category = category {
             idCategory = category.id!
             categoryName = category.name
-            visitationOrder = Int(category.visitationOrder)
         }
     }
     

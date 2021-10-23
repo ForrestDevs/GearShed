@@ -13,52 +13,66 @@ struct ItemRowView: View {
 
     // we treat the item as an @ObservedObject: we want to get redrawn if any property changes.
 	@ObservedObject var item: Item
+    
+    @State var isFavourited: Bool = false
 	
 	var body: some View {
-        NavigationLink(destination: ItemDetailView(item: item)) {
-            HStack {
-                Image(systemName: "square.fill")
-                    .resizable()
-                    .font(.title)
-                    .frame(width: 35, height: 35)
-                    .foregroundColor(Color.theme.background)
-                    .padding(.horizontal,4)
-                
-                // Name, Brand, Details
-                VStack (alignment: .leading) {
-                    
-                    HStack {
-                        Text(item.name)
-                            .font(.headline)
-                            .foregroundColor(Color.theme.accent)
+        
+        HStack (alignment: .firstTextBaseline , spacing: 15) {
+            
+            Image(systemName: item.isFavourite ? "heart.fill" : "heart")
+                .resizable()
+                .frame(width: 13, height: 12)
+                .foregroundColor(Color.theme.green)
+                .padding(.vertical, -1)
+                .onTapGesture {
+                    isFavourited.toggle()
+                    item.toggleFavouriteStatus()
+                }
+            
+            NavigationLink(destination: ItemDetailView(item: item)) {
+                HStack {
+                    // Name, Brand, Details
+                    VStack (alignment: .leading) {
                         
-                        Text("|")
+                        HStack {
+                            Text(item.brandName)
+                                //.font(.headline)
+                                .foregroundColor(Color.theme.accent)
+                            
+                            Text("|")
+                            
+                            Text(item.name)
+                                //.font(.headline)
+                                .foregroundColor(Color.theme.accent)
+                            
+                            Text("|")
+                                .foregroundColor(Color.theme.accent)
+                            
+                            // quantity at the right
+                            Text("\(item.weight) g")
+                                .font(.system(size: 15))
+                                //.bold()
+                                .foregroundColor(Color.theme.green)
+                                //.padding(.horizontal)
+                        }
                         
-                        Text(item.brandName)
-                            .font(.headline)
-                            .foregroundColor(Color.theme.accent)
+                        Text(item.detail)
+                            .font(.caption)
+                            .foregroundColor(Color.theme.secondaryText)
+                        
+                        
                     }
                     
-                    Text(item.detail)
-                        .font(.caption)
-                        .foregroundColor(Color.theme.secondaryText)
-                }
-                
-                Spacer()
-                
-                VStack {
-                    // quantity at the right
-                    Text("\(item.weight) g")
-                        .font(.caption)
-                        .bold()
-                        .foregroundColor(Color.theme.green)
-                        .padding(.horizontal)
+                    Spacer()
+                    
+                    
                 }
             }
-            .padding(.horizontal)
+            
         }
-	}
-    
+        .padding(.horizontal)
+    }
 }
 
 

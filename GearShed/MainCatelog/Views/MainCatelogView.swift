@@ -8,9 +8,21 @@
 
 import SwiftUI
 
+extension AnyTransition {
+    static var moveAndFade: AnyTransition {
+        let insertion = AnyTransition.move(edge: .trailing)
+            .combined(with: .opacity)
+        let removal = AnyTransition.scale
+            .combined(with: .opacity)
+        return .asymmetric(insertion: insertion, removal: removal)
+    }
+}
+
 struct MainCatelogView: View {
     
     @StateObject private var viewModel = MainCatelogVM()
+    
+    @State private var dragOffset = CGSize.zero
     
     @State var displayBy = 1
     
@@ -23,17 +35,59 @@ struct MainCatelogView: View {
                 
                 SPForShedView(selected: $selected)
                    
-                if self.selected == 0 {
-                    AllItemsView()
-                } else if self.selected == 1 {
+                if self.selected == 1 {
                     AllCategoryView()
+                        .transition(.moveAndFade)
+                        .offset(dragOffset)
+                                        .gesture(
+                                            DragGesture()
+                                                .onChanged { gesture in
+                                                    dragOffset = gesture.translation
+                                                }
+                                                .onEnded { gesture in
+                                                    dragOffset = .zero
+                                                }
+                                        )
                 }
                 else if self.selected == 2 {
                     AllBrandView()
+                        .transition(.moveAndFade)
+                        .offset(dragOffset)
+                                        .gesture(
+                                            DragGesture()
+                                                .onChanged { gesture in
+                                                    dragOffset = gesture.translation
+                                                }
+                                                .onEnded { gesture in
+                                                    dragOffset = .zero
+                                                }
+                                        )
                 } else if self.selected == 3 {
-                    AllTagView()
+                    AllFavouriteView()
+                        .transition(.moveAndFade)
+                        .offset(dragOffset)
+                        .gesture(
+                            DragGesture()
+                                .onChanged { gesture in
+                                    dragOffset = gesture.translation
+                                }
+                                .onEnded { gesture in
+                                    dragOffset = .zero
+                                }
+                        )
                 } else {
                     AllWishListView()
+                        .transition(.moveAndFade)
+                        .offset(dragOffset)
+                                        .gesture(
+                                            DragGesture()
+                                                .onChanged { gesture in
+                                                    dragOffset = gesture.translation
+                                                }
+                                                .onEnded { gesture in
+                                                    dragOffset = .zero
+                                                }
+                                        )
                 }
                 
                 
@@ -43,7 +97,7 @@ struct MainCatelogView: View {
                 
             } // end of VStack
             .navigationBarTitle("Gear Shed", displayMode: .inline)
-            .fullScreenCover(isPresented: $viewModel.isAddNewItemShowing){AddOrModifyItemView().environment(\.managedObjectContext, PersistentStore.shared.context)}
+            .fullScreenCover(isPresented: $viewModel.isAddNewItemShowing){AddItemView().environment(\.managedObjectContext, PersistentStore.shared.context)}
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading, content: viewModel.leadingButton)
                 ToolbarItem(placement: .navigationBarTrailing, content: viewModel.trailingButtons)
@@ -79,8 +133,12 @@ struct SPForShedView: View {
                 //}
                 //.foregroundColor(self.selected == 0 ? .white : .black)
                 
-                Button { self.selected = 1}
-                    label: { Text("CATEGORY")
+                Button {
+                    withAnimation {
+                        self.selected = 1
+                    }
+                }
+                    label: { Text("SHED")
                         //.fontWeight(self.selected == 1 ? .bold : .regular)
                                 //.padding(.vertical,12)
                                 .padding(.horizontal,10)
@@ -88,7 +146,9 @@ struct SPForShedView: View {
                 }
                 .foregroundColor(self.selected == 1 ? .white : .black)
                 
-                Button { self.selected = 2 }
+                Button { withAnimation {
+                    self.selected = 2
+                } }
                     label: { Text("BRAND")
                         //.fontWeight(self.selected == 2 ? .bold : .regular)
                                 //.padding(.vertical,12)
@@ -97,8 +157,10 @@ struct SPForShedView: View {
                 }
                 .foregroundColor(self.selected == 2 ? .white : .black)
                 
-                Button { self.selected = 3}
-                    label: { Text("TAG")
+                Button { withAnimation {
+                    self.selected = 3
+                }}
+                    label: { Text("FAVOURITE")
                                 //.fontWeight(self.selected == 3 ? .bold : .regular)
                                 //.padding(.vertical,12)
                                 .padding(.horizontal,10)
@@ -106,7 +168,9 @@ struct SPForShedView: View {
                 }
                 .foregroundColor(self.selected == 3 ? .white : .black)
                 
-                Button { self.selected = 4}
+                Button {withAnimation {
+                    self.selected = 4
+                }}
                     label: { Text("WISHLIST")
                         //.fontWeight(self.selected == 4 ? .bold : .regular)
                                 //.padding(.vertical,12)
@@ -126,36 +190,7 @@ struct SPForShedView: View {
 
 
 
-/*struct Temp: View {
-    
-    var body: some View {
-        //SearchBarView1(searchText: $viewModel.searchText)
-        Rectangle()
-        .frame(width: 0.01 ,height: 0.01)
-        .actionSheet(isPresented: $viewModel.showDisplayAction) {
-            ActionSheet(title: Text("Display:"), buttons: [
-                .default(Text("All Items")) {displayBy = 0},
-                .default(Text("Grouped by Category")) {displayBy = 1},
-                .default(Text("Grouped by Brand")) {displayBy = 2}
-            ])
-        }
-            .padding(.bottom, 10)
-        
-        if viewModel.itemsInCatelog.count == 0 {
-            EmptyCatelogView()
-        } else {
-            ItemListDisplay(displayBy: $displayBy)
-        }
 
-        Rectangle()
-            .frame(height: 1)
-            .padding(.top, 5)
-        
-        Spacer(minLength: 80)
-    }
-    
-    
-}*/
 
 
 

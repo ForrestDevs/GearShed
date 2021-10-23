@@ -30,9 +30,9 @@ func itemContextMenu(item: Item, deletionTrigger: @escaping () -> Void) -> some 
 		Image(systemName: item.onList ? "purchased" : "cart")
 	}
 	
-	Button(action: { item.toggleAvailableStatus() }) {
-		Text(item.isAvailable ? "Mark as Unavailable" : "Mark as Available")
-		Image(systemName: item.isAvailable ? "pencil.slash" : "pencil")
+	Button(action: { item.toggleFavouriteStatus() }) {
+		Text(item.isFavourite ? "Mark as Favorite" : "Mark as Favorite")
+		Image(systemName: item.isFavourite ? "pencil.slash" : "pencil")
 	}
 	
 	Button(action: { deletionTrigger() }) {

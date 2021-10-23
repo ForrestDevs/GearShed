@@ -108,12 +108,16 @@ struct MainView1 : View {
             
             // Content
             ScrollView {
-                
-                ForEach(1..<10) { item in
-                    RoundedRectangle(cornerRadius: 10)
-                        .foregroundColor(.blue)
-                        .frame(width: 350, height: 100)
-                }
+                Spacer()
+                Spacer()
+                Spacer()
+                Spacer()
+
+                //ForEach(1..<10) { item in
+                //    RoundedRectangle(cornerRadius: 10)
+                //        .foregroundColor(.blue)
+                //        .frame(width: 350, height: 100)
+                //}
             }
         }
         .navigationBarTitle("")

@@ -13,10 +13,8 @@ import Foundation
 // that we would import or export in such a way that the result is Codable
 struct BrandCodableProxy: Codable {
     var name: String
-    var order: Int
 
     init(from brand: Brand) {
         name = brand.name
-        order = brand.order
     }
 }

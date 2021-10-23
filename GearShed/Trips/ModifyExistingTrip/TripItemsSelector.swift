@@ -29,7 +29,7 @@ struct TripItemsSelector: View {
             // Item Name and Category
             VStack(alignment: .leading) {
                 
-                if item.isAvailable {
+                if item.isFavourite {
                     Text(item.name)
                 } else {
                     Text(item.name)

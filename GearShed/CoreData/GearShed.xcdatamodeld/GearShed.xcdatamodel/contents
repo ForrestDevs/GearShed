@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20G165" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19461" systemVersion="20G165" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
     <entity name="Brand" representedClassName="Brand" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name_" optional="YES" attributeType="String"/>
-        <attribute name="order_" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="brand_" inverseEntity="Item"/>
     </entity>
     <entity name="Category" representedClassName="Category" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name_" optional="YES" attributeType="String"/>
-        <attribute name="visitationOrder_" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="category_" inverseEntity="Item"/>
     </entity>
     <entity name="Item" representedClassName="Item" syncable="YES" codeGenerationType="class">
         <attribute name="dateLastPurchased_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="detail_" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="isAvailable_" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isFavourite_" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="name_" optional="YES" attributeType="String"/>
         <attribute name="onList_" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="price_" optional="YES" attributeType="String"/>
@@ -38,10 +36,10 @@
         <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="trips_" inverseEntity="Item"/>
     </entity>
     <elements>
-        <element name="Brand" positionX="-110.1112060546876" positionY="-294.1738128662109" width="128" height="103"/>
-        <element name="Category" positionX="-106.5554809570313" positionY="-166.3906250000001" width="128" height="103"/>
-        <element name="Item" positionX="107.546875" positionY="-268.4366455078125" width="128" height="238"/>
-        <element name="Tag" positionX="296.6350708007812" positionY="-274.2279357910156" width="128" height="88"/>
-        <element name="Trip" positionX="328.475341796875" positionY="-148.1725158691407" width="128" height="88"/>
+        <element name="Brand" positionX="-74.7701416015626" positionY="-290.924331665039" width="128" height="88"/>
+        <element name="Category" positionX="-86.36578369140631" positionY="-169.1634216308595" width="128" height="88"/>
+        <element name="Item" positionX="107.546875" positionY="-305.0498657226562" width="128" height="238"/>
+        <element name="Tag" positionX="289.8245239257812" positionY="-303.9589233398438" width="128" height="88"/>
+        <element name="Trip" positionX="314.958251953125" positionY="-186.2705688476563" width="128" height="88"/>
     </elements>
 </model>

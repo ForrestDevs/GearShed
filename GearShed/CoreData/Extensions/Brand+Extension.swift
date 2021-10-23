@@ -12,15 +12,15 @@ import CoreData
 
 // constants
 let kUnknownBrandName = "Unknown Brand"
-let kUnknownBrandVisitationOrder: Int32 = INT32_MAX
 
 extension Brand: Comparable {
     
-    // add Comparable conformance: sort by order
+    // add Comparable conformance: sort by name
     public static func < (lhs: Brand, rhs: Brand) -> Bool {
-        lhs.order_ < rhs.order_
+        lhs.name < rhs.name
     }
     
+
     // MARK: - Computed properties
     
     // ** please see the associated discussion over in Item+Extensions.swift **
@@ -36,16 +36,7 @@ extension Brand: Comparable {
         }
     }
     
-    // order: fronts Core Data attribute order_ that is Int32
-    // if you change an brand's order, its associated items may want to
-    // know that some of their computed order property has been invalidated
-    var order: Int {
-        get { Int(order_) }
-        set {
-            order_ = Int32(newValue)
-            items.forEach({ $0.objectWillChange.send() })
-        }
-    }
+
     
     // items: fronts Core Data attribute items_ that is an NSSet, and turns it into
     // a Swift array
@@ -60,7 +51,7 @@ extension Brand: Comparable {
     var itemCount: Int { items_?.count ?? 0 }
     
     // simplified test of "is the unknown brand"
-    var isUnknownBrand: Bool { order_ == kUnknownBrandVisitationOrder }
+    var isUnknownBrand: Bool { name == kUnknownBrandName }
     
     
 
@@ -92,14 +83,14 @@ extension Brand: Comparable {
     
     // parameters for the Unknown Brand.  call this only upon startup if
     // the Core Data database has not yet been initialized
-    class func createUnknownBrand() -> Brand {
+    class func createUnknownBrand() {
         let unknownBrand = addNewBrand()
         unknownBrand.name_ = kUnknownBrandName
-        unknownBrand.order_ = kUnknownBrandVisitationOrder
-        return unknownBrand
+        PersistentStore.shared.saveContext()
+        //return unknownBrand
     }
 
-    class func unknownBrand() -> Brand {
+    /*class func unknownBrand() -> Brand {
         // we only keep one "UnknownBrand" in the data store.  you can find it because its
         // order is the largest 32-bit integer. to make the app work, however, we need this
         // default brand to exist!
@@ -107,7 +98,7 @@ extension Brand: Comparable {
         // so if we ever need to get the unknown brand from the database, we will fetch it;
         // and if it's not there, we will create it then.
         let fetchRequest: NSFetchRequest<Brand> = Brand.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "order_ == %d", kUnknownBrandVisitationOrder)
+        fetchRequest.predicate = NSPredicate(format: "name_ == %d", kUnknownBrandName)
         do {
             let brands = try PersistentStore.shared.context.fetch(fetchRequest)
             if brands.count >= 1 { // there should be no more than one
@@ -118,11 +109,30 @@ extension Brand: Comparable {
         } catch let error as NSError {
             fatalError("Error fetching unknown brand: \(error.localizedDescription), \(error.userInfo)")
         }
+    }*/
+
+    
+    class func theUnknownBrand() -> Brand {
+        
+        let fetchRequest: NSFetchRequest<Brand> = Brand.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "name_ == %@", kUnknownBrandName)
+       
+        do {
+            let brand = try PersistentStore.shared.context.fetch(fetchRequest)
+            /*if brand.count >= 1 {
+                return brand[0]
+            } else {
+                return createUnknownBrand()
+            }*/
+            return brand[0]
+        } catch let error as NSError {
+            fatalError("Error fetching unknown category: //\(error.localizedDescription), \(error.userInfo)")
+        }
     }
     
     class func delete(_ brand: Brand) {
         // you cannot delete the unknownBrand
-        guard brand.order_ != kUnknownBrandVisitationOrder else { return }
+        guard brand.name_ != kUnknownBrandName else { return }
 
         // retrieve the context of this Brand and get a list of
         // all items for this brand so we can work with them
@@ -132,7 +142,7 @@ extension Brand: Comparable {
         // reset brand associated with each of these to the unknownBrand
         // (which in turn, removes the current association with brand). additionally,
         // this could affect each item's computed properties
-        let theUnknownBrand = Brand.unknownBrand()
+        let theUnknownBrand = Brand.theUnknownBrand()
         itemsAtThisBrand.forEach({ $0.brand = theUnknownBrand })
         // now finish the deletion and save
         context?.delete(brand)
@@ -162,7 +172,6 @@ extension Brand: Comparable {
         
         // we first make these changes directly in Core Data
         name_ = editableData.brandName
-        order_ = Int32(editableData.order)
         
         // one more thing: items associated with this brand may want to know about
         // (some of) these changes.  reason: items rely on knowing some computed

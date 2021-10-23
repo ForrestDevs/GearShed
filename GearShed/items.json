@@ -4,7 +4,7 @@
 		"quantity" : 1,
         "weight" : "10",
         "price" : "100",
-		"isAvailable" : true,
+		"isFavourite" : false,
 		"categoryName" : "Tents",
         "brandName" : "NorthFace",
 		"name" : "Ve 25"
@@ -14,7 +14,7 @@
 		"quantity" : 1,
         "weight" : "10",
         "price" : "100",
-		"isAvailable" : true,
+		"isFavourite" : true,
 		"categoryName" : "SleepingKit",
         "brandName" : "Mammot",
 		"name" : "Winter SleepingBag"
@@ -24,7 +24,7 @@
 		"quantity" : 1,
         "weight" : "10",
         "price" : "100",
-		"isAvailable" : true,
+		"isFavourite" : false,
 		"categoryName" : "CookingKit",
         "brandName" : "StoveRUS",
 		"name" : "Portable Gas Stove"
@@ -34,7 +34,7 @@
 		"quantity" : 1,
         "weight" : "10",
         "price" : "100",
-		"isAvailable" : true,
+		"isFavourite" : true,
 		"categoryName" : "Knives",
         "brandName" : "Gerber",
 		"name" : "Bear Grills Knife"
@@ -44,7 +44,7 @@
 		"quantity" : 3,
         "weight" : "10",
         "price" : "100",
-		"isAvailable" : true,
+		"isFavourite" : false,
 		"categoryName" : "Tools",
         "brandName" : "MadeTough",
 		"name" : "Axe"
@@ -54,7 +54,7 @@
 		"quantity" : 1,
         "weight" : "10",
         "price" : "100",
-		"isAvailable" : true,
+		"isFavourite" : true,
 		"categoryName" : "Tech",
         "brandName" : "Apple",
 		"name" : "IPhone"
@@ -64,7 +64,7 @@
 		"quantity" : 6,
         "weight" : "10",
         "price" : "100",
-		"isAvailable" : true,
+		"isFavourite" : false,
 		"categoryName" : "Portable Chargers",
         "brandName" : "PowerUp",
 		"name" : "2000Mah Power Bank"
@@ -74,7 +74,7 @@
 		"quantity" : 1,
         "weight" : "10",
         "price" : "100",
-		"isAvailable" : true,
+		"isFavourite" : false,
 		"categoryName" : "Backpacks",
         "brandName" : "MEC",
 		"name" : "Trailblazer"
@@ -84,7 +84,7 @@
 		"quantity" : 1,
         "weight" : "10",
         "price" : "100",
-		"isAvailable" : true,
+		"isFavourite" : true,
 		"categoryName" : "Cameras",
         "brandName" : "Nikon",
 		"name" : "DSLR Camera"
@@ -94,7 +94,7 @@
 		"quantity" : 1,
         "weight" : "10",
         "price" : "100",
-		"isAvailable" : true,
+		"isFavourite" : false,
 		"categoryName" : "DrySacs",
         "brandName" : "Northern",
 		"name" : "50L DryBag"
@@ -104,7 +104,7 @@
 		"quantity" : 1,
         "weight" : "10",
         "price" : "100",
-		"isAvailable" : true,
+		"isFavourite" : false,
 		"categoryName" : "Clothes",
         "brandName" : "Polo",
 		"name" : "White Tee"
@@ -114,9 +114,10 @@
 		"quantity" : 1,
         "weight" : "10",
         "price" : "100",
-		"isAvailable" : true,
-		"categoryName" : "Footwear",
+		"isFavourite" : true,
+		"categoryName" : "FootWear",
         "brandName" : "Nike",
 		"name" : "Trail Shoe"
 	}
 ]
+

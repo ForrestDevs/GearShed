@@ -6,7 +6,7 @@
 //  Copyright © 2021 All rights reserved.
 //
 
-import Foundation
+/*import Foundation
 import SwiftUI
 
 struct ItemListDisplay: View {
@@ -60,7 +60,7 @@ struct ItemListDisplay: View {
         }
         return completedSectionData
     }
-}
+}*/
 
 
 

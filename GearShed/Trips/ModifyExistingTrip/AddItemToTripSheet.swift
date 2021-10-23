@@ -91,7 +91,7 @@ struct AddItemToTripSheet: View {
             // if you want to change the sorting when this is a single section to "by name"
             // then comment out the .sorted() qualifier -- itemsToBePurchased is already sorted by //name
             let sortedItems = itemsToBePurchased
-                .sorted(by: { $0.category.visitationOrder < $1.category.visitationOrder })
+                .sorted(by: { $0.category.name < $1.category.name })
             return [SectionData(title: "", items: sortedItems)
             ]
         }

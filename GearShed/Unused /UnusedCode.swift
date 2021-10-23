@@ -1081,6 +1081,123 @@
      
  }*/
  
+ // we only keep one "UnknownCategory" in the data store.  you can find it because its
+ // visitationOrder is the largest 32-bit integer. to make the app work, however, we need this
+ // default category to exist!
+ //
+ // so if we ever need to get the unknown category from the database, we will fetch it;
+ // and if it's not there, we will create it then.
+ //let fetchRequest: NSFetchRequest<Category> = Category.fetchRequest()
+ //
+ //fetchRequest.predicate = NSPredicate(format: "name_ == %d", kUnknownCategoryName)
+ //
+ //do {
+ //    let categories = try PersistentStore.shared.context.fetch(fetchRequest)
+ //    if categories.count == 1 { // there should be no more than one
+ //        return categories[0]
+ //    } else if categories.count == 0 {
+ //        return createUnknownCategory()
+ //    }
+ //} catch let error as NSError {
+ //    fatalError("Error fetching unknown category: \(error.localizedDescription), \(error.userInfo)")
+ //}
+ 
+ 
+ /*class func unknownCategoryFR(unknCategoryName: String = kUnknownCategoryName) -> NSFetchRequest<Category> {
+
+     let request = NSFetchRequest<Category>(entityName: "Category")
+     
+     let filter = NSPredicate(format: "name_ == %d", unknCategoryName)
+     request.predicate = filter
+     
+     return request
+
+ }*/
+ 
+ class func unknownBrandFR(unknBrandName: String = kUnknownBrandName) -> NSFetchRequest<Brand> {
+
+     let request = NSFetchRequest<Brand>(entityName: "Brand")
+     
+     let filter = NSPredicate(format: "name_ == %d", unknBrandName)
+     request.predicate = filter
+     
+     return request
+
+ }
+ 
+ 
+ /*
+ The persistent container for the application. This implementation
+ creates and returns a container, having loaded the store for the
+ application to it. This property is optional since there are legitimate
+ error conditions that could cause the creation of the store to fail.
+ */
+ 
+ // choose here whether you want the cloud or not
+ // -- when i install this on a device, i may want the cloud (you will need an Apple Developer
+ //    account to use the cloud an add the right entitlements to your project);
+ // -- for some initial testing on the simulator, i may use the cloud;
+ // -- but for basic app building in the simulator, i prefer a non-cloud store.
+ // by the way: using NSPersistentCloudKitContainer in the simulator works fine,
+ // but you will see lots of console traffic about sync transactions.  those are not
+ // errors, but it will clog up your console window.
+ //
+ // by the way, just choosing to use NSPersistentCloudKitContainer is not enough by itself.
+ // you will have to make some changes in the project settings. see
+ //    https://developer.apple.com/documentation/coredata/mirroring_a_core_data_store_with_cloudkit/setting_up_core_data_with_cloudkit
+ 
+ 
+ // let container = NSPersistentCloudKitContainer(name: "ShoppingList")
+
+ // some of what follows are suggestions by "Apple Staff" on the Apple Developer Forums
+ // for the case when you have an NSPersistentCloudKitContainer and iCloud synching
+ // https://developer.apple.com/forums/thread/650173
+ // you'll also see there how to use this code with the new XCode 12 App/Scene structure
+ // that replaced the AppDelegate/SceneDelegate of XCode 11 and iOS 13.  additionally,
+ // follow along with this discussion https://developer.apple.com/forums/thread/650876
+ 
+ // (1) Enable history tracking.  this seems to be important when you have more than one persistent
+ // store in your app (e.g., when using the cloud) and you want to do any sort of cross-store
+ // syncing.  See WWDC 2019 Session 209, "Making Apps with Core Data."
+ // also, once you use NSPersistentCloudKitContainer and turn these on, then you should leave
+ // these on, even if you just now want to use what's on-disk with NSPersistentContainer and
+ // without cloud access.
+ /*struct Temp: View {
+     
+     var body: some View {
+         //SearchBarView1(searchText: $viewModel.searchText)
+         Rectangle()
+         .frame(width: 0.01 ,height: 0.01)
+         .actionSheet(isPresented: $viewModel.showDisplayAction) {
+             ActionSheet(title: Text("Display:"), buttons: [
+                 .default(Text("All Items")) {displayBy = 0},
+                 .default(Text("Grouped by Category")) {displayBy = 1},
+                 .default(Text("Grouped by Brand")) {displayBy = 2}
+             ])
+         }
+             .padding(.bottom, 10)
+         
+         if viewModel.itemsInCatelog.count == 0 {
+             EmptyCatelogView()
+         } else {
+             ItemListDisplay(displayBy: $displayBy)
+         }
+
+         Rectangle()
+             .frame(height: 1)
+             .padding(.top, 5)
+         
+         Spacer(minLength: 80)
+     }
+     
+     
+ }*/
+ 
+ 
+ 
+ 
+ 
+ 
  
  
  
