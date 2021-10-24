@@ -12,28 +12,59 @@ import SwiftUI
 @main
 struct GearShedApp: App {
     
-    @AppStorage("isFirstLaunch") var isFirstLaunch: Bool = true
-    
     // we create the PersistentStore here (although it will be created lazily anyway)
-    @StateObject var persistentStore = PersistentStore.shared
+    //@StateObject var persistentStore = PersistentStore.shared
     
+    @AppStorage("isFirstLaunch") var isFirstLaunch: Bool = true
+    @AppStorage("lastReviewRequest") var lastReviewRequest: TimeInterval?
+    @StateObject var persistentStore: PersistentStore
+    @StateObject var unlockManager: UnlockManager
+    @Environment(\.scenePhase) private var scenePhase
+    
+    var askForReview: Bool {
+        if let lastReviewRequest = lastReviewRequest {
+            let lastReviewDistance = Date().timeIntervalSinceReferenceDate - lastReviewRequest
+            // Ask only every 5 days for a review
+            if  lastReviewDistance < 5*24*60*60 {
+                return false
+            }
+        }
+        return true
+    }
+
     init() {
+        let persistentStore = PersistentStore()
+        let unlockManager = UnlockManager(persistentStore: persistentStore)
+        
+        _persistentStore = StateObject(wrappedValue: persistentStore)
+        _unlockManager = StateObject(wrappedValue: unlockManager)
+        
+        // If app is loaded for the first time - create the Unknown Brand+Category,
+        // then set to false so duplicates arent created every time.
         if isFirstLaunch == true {
             Category.createUnknownCategory()
             Brand.createUnknownBrand()
             isFirstLaunch = false
         }
+        
     }
     
     var body: some Scene {
         WindowGroup {
-            
             AppTabBarView()
                 .environment(\.managedObjectContext, persistentStore.context)
+                .environmentObject(persistentStore)
+                .environmentObject(unlockManager)
                 .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification),
                                         perform: handleResignActive)
                 .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification),
                                         perform: handleBecomeActive)
+                .onChange(of: scenePhase, perform: { newScenePhase in
+                    if newScenePhase == .active && askForReview {
+                        lastReviewRequest = Date().timeIntervalSinceReferenceDate
+                        persistentStore.appLaunched()
+                    }
+                })
         }
     }
     
@@ -45,34 +76,6 @@ struct GearShedApp: App {
     func handleBecomeActive(_ note: Notification) {
         // when app reopens do this...
     }
+    
 }
 
-
-
-
-struct TestView70: View {
-
-    @Environment (\.presentationMode) var presentationMode
-
-    //isFirstLaunch will default to true until it is set to false in the sheet and
-    //then stored in UserDefaults
-    @AppStorage("isFirstLaunch") var isFirstLaunch: Bool = true
-
-    var body: some View {
-        VStack(spacing: 40) {
-            Text("Welcome")
-            Button("Reset") {
-                isFirstLaunch = true
-            }
-            Text("is first launch? \(isFirstLaunch ? "YES" : "NO")")
-        }
-        .sheet(isPresented: $isFirstLaunch) {
-            VStack(spacing: 40) {
-                Text("Sheet")
-                Button("Ok") {
-                    isFirstLaunch = false
-                }
-            }
-        }
-    }
-}

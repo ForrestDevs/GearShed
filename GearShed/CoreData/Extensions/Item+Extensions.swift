@@ -11,7 +11,6 @@ import CoreData
 import SwiftUI
 
 extension Item {
-    
 	/* Discussion
 	
 	update 25 December: better reorganization and removal of previous misconceptions!
@@ -208,10 +207,13 @@ extension Item {
 	
 	// MARK: - Useful Fetch Requests
 	
-	class func allItemsFR(at category: Category) -> NSFetchRequest<Item> {
+    class func allItemsFR(at category: Category, onList: Bool = false) -> NSFetchRequest<Item> {
 		let request: NSFetchRequest<Item> = Item.fetchRequest()
+        let p1 = NSPredicate(format: "category_ == %@", category)
+        let p2 = NSPredicate(format: "onList_ == %d", onList)
+        let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [p1, p2])
 		request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
-		request.predicate = NSPredicate(format: "category_ == %@", category)
+		request.predicate = predicate
 		return request
 	}
     
@@ -258,16 +260,27 @@ extension Item {
 	// Identifiable objects, this makes sure we give the entity a unique id, then
 	// hand it back so the user can fill in what's important to them.
 	class func addNewItem() -> Item {
-		let context = PersistentStore.shared.context
-		let newItem = Item(context: context)
-		newItem.id = UUID()
-		return newItem
+        
+        let context = PersistentStore.shared.context
+        let newItem = Item(context: context)
+        newItem.id = UUID()
+        return newItem
+        
+        /*let canCreate = PersistentStore.fullVersionUnlocked ||
+            PersistentStore.count(for: Item.fetchRequest()) < 3
+        if canCreate {
+            let context = PersistentStore.shared.context
+            let newItem = Item(context: context)
+            newItem.id = UUID()
+            return newItem
+        } else {
+            showingUnlockView.toggle()
+        }*/
 	}
 	
 	// updates data for an Item that the user has directed from an Add or Modify View.
 	// if the incoming data is not associated with an item, we need to create it first
 	class func updateData(using editableData: EditableItemData) {
-		
 		// if we can find an Item with the right id, use it, else create one
 		if let id = editableData.id,
         let item = Item.object(id: id, context: PersistentStore.shared.context) {
