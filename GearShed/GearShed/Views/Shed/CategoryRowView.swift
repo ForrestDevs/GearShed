@@ -10,7 +10,7 @@ import SwiftUI
 
 struct CategoryRowView: View {
     
-   @StateObject private var viewModel = MainCatelogVM()
+   //@StateObject private var viewModel = MainCatelogVM()
     
     @ObservedObject var category: Category
 
@@ -20,12 +20,12 @@ struct CategoryRowView: View {
                 Text(category.name)
                     .font(.headline)
                 Spacer()
-                Text("\(viewModel.itemInCategory.count)")
+                Text("\(category.items.count)")
                     .font(.headline)
             }
         }
         .padding(.horizontal, 20)
-        .onAppear(perform: {viewModel.getCategoryItems(category: category)})
+        //.onAppear(perform: {viewModel.getCategoryItems(category: category)})
     }
 }
 

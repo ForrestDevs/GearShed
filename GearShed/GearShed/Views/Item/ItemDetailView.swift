@@ -10,67 +10,21 @@ import SwiftUI
 
 struct ItemDetailView: View {
     
-    @StateObject  private var viewModel = MainCatelogVM()
+    @EnvironmentObject var persistentStore: PersistentStore
+        
+    @ObservedObject var item: Item
+    
+    @State private var isEditItemShowing: Bool = false
         
     @State private var selected = 1
     
     @State private var regret: Bool = false
     
-    var item: Item
-
     var body: some View {
         VStack (alignment: .leading) {
-            
             VStack {
-                // Fav, Brand, Name
-                HStack {
-                    
-                    Image(systemName: item.isFavourite ? "heart.fill" : "heart")
-                        .resizable()
-                        .frame(width: 13, height: 12)
-                        .foregroundColor(Color.theme.green)
-                        .padding(.vertical, -1)
-                    
-                    Text(item.brandName)
-                        .font(.headline)
-                        .bold()
-                        .foregroundColor(Color.theme.green)
-                    Text(item.name)
-                        .font(.headline)
-                        .bold()
-                        .foregroundColor(Color.theme.green)
-                    
-                    Spacer()
-
-                }
-                
-                HStack {
-                    
-                    VStack (alignment: .leading) {
-                        // Price + Weight
-                        HStack {
-                            Text("10g")
-                                .font(.subheadline)
-                                .foregroundColor(Color.theme.accent)
-                            
-                            Text("$100")
-                                .font(.subheadline)
-                                .foregroundColor(Color.theme.accent)
-                        }
-                       
-                        // Regret Toggle
-                        Toggle("Regret",isOn: $regret)
-                            .toggleStyle(CheckmarkToggleStyle())
-                    }
-                    .padding(.horizontal,20)
-                    
-                    Spacer()
-                    
-                    Rectangle()
-                        .frame(width: 100, height: 100)
-                        .foregroundColor(Color.gray)
-                }
-                
+                titleBar
+                detailsBar
             }
             .padding(.horizontal)
             
@@ -95,9 +49,66 @@ struct ItemDetailView: View {
         }
         .navigationTitle("\(item.categoryName)")
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing, content: viewModel.editItemButton)
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button { self.isEditItemShowing.toggle() } label: { Image(systemName: "slider.horizontal.3") }
+            }
         }
-        .fullScreenCover(isPresented: $viewModel.isEditItemShowing){ModifyItemView(editableItem: item).environment(\.managedObjectContext, PersistentStore.shared.context)}
+        .fullScreenCover(isPresented: $isEditItemShowing){
+            ModifyItemView(persistentStore: persistentStore ,editableItem: item).environment(\.managedObjectContext, PersistentStore.shared.context)
+        }
+    }
+    
+    var titleBar: some View {
+        // Fav, Brand, Name
+        HStack {
+            
+            Image(systemName: item.isFavourite ? "heart.fill" : "heart")
+                .resizable()
+                .frame(width: 13, height: 12)
+                .foregroundColor(Color.theme.green)
+                .padding(.vertical, -1)
+            
+            Text(item.brandName)
+                .font(.headline)
+                .bold()
+                .foregroundColor(Color.theme.green)
+            Text(item.name)
+                .font(.headline)
+                .bold()
+                .foregroundColor(Color.theme.green)
+            
+            Spacer()
+
+        }
+    }
+    
+    var detailsBar: some View {
+        HStack {
+            
+            VStack (alignment: .leading) {
+                // Price + Weight
+                HStack {
+                    Text("10g")
+                        .font(.subheadline)
+                        .foregroundColor(Color.theme.accent)
+                    
+                    Text("$100")
+                        .font(.subheadline)
+                        .foregroundColor(Color.theme.accent)
+                }
+               
+                // Regret Toggle
+                Toggle("Regret",isOn: $regret)
+                    .toggleStyle(CheckmarkToggleStyle())
+            }
+            .padding(.horizontal,20)
+            
+            Spacer()
+            
+            Rectangle()
+                .frame(width: 100, height: 100)
+                .foregroundColor(Color.gray)
+        }
     }
 }
 

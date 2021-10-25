@@ -9,27 +9,20 @@ import SwiftUI
 
 struct CategoryDetailView: View {
     
-    @StateObject private var viewModel = MainCatelogVM()
+    @EnvironmentObject var persistentStore: PersistentStore
     
-    @FetchRequest private var items: FetchedResults<Item>
-    
-    var categoryName: Category
-    
-    init(category: Category) {
-        let request = Item.allItemsFR(at: category)
-        _items = FetchRequest(fetchRequest: request)
-        self.categoryName = category
-    }
-    
+    @ObservedObject var category: Category
+    @State private var isEditCategoryShowing: Bool = false
+
     var body: some View {
         VStack(spacing:0) {
             
-            StatBarInShed()
+            StatBarInShed(persistentStore: persistentStore)
                 .padding(.top, 10)
                 .padding(.bottom, 10)
             
             ScrollView(.vertical, showsIndicators: false) {
-                ForEach(items) { item in
+                ForEach(category.items) { item in
                     ItemRowView(item: item)
                 }
             }
@@ -40,65 +33,19 @@ struct CategoryDetailView: View {
             Spacer(minLength: 60)
                 
         }
-        .navigationTitle(categoryName.name)
+        .navigationTitle(category.name)
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing, content: viewModel.editCategoryButton)
-        }
-        .fullScreenCover(isPresented: $viewModel.isEditCategoryShowing){ModifyCategoryView(category: categoryName).environment(\.managedObjectContext, PersistentStore.shared.context)}
-        
-    }
-}
-
-struct ItemRowViewInCategory: View {
-
-    @ObservedObject var item: Item
-    
-    var body: some View {
-        NavigationLink(destination: ItemDetailView(item: item)) {
-            HStack {
-                Image(systemName: "square.fill")
-                    .resizable()
-                    .font(.title)
-                    .frame(width: 35, height: 35)
-                    .foregroundColor(Color.theme.background)
-                    .padding(.horizontal,4)
-                
-                // Name, Brand, Details
-                VStack (alignment: .leading) {
-                    
-                    HStack {
-                        Text(item.brandName)
-                            .font(.headline)
-                            .foregroundColor(Color.theme.accent)
-                        Text("|")
-                            .font(.headline)
-                            .foregroundColor(Color.theme.accent)
-                        Text(item.name)
-                            .font(.headline)
-                            .foregroundColor(Color.theme.accent)
-                    }
-                    
-                    Text(item.detail)
-                        .font(.caption)
-                        .foregroundColor(Color.theme.secondaryText)
-                }
-                
-                Spacer()
-                
-                VStack {
-                    // quantity at the right
-                    Text("\(item.weight) g")
-                        .font(.caption)
-                        .bold()
-                        .foregroundColor(Color.theme.green)
-                        .padding(.horizontal)
-                }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button { isEditCategoryShowing.toggle() } label: { Image(systemName: "slider.horizontal.3") }
             }
-            .padding(.horizontal)
+        }
+        .fullScreenCover(isPresented: $isEditCategoryShowing) {
+            ModifyCategoryView(category: category).environment(\.managedObjectContext, PersistentStore.shared.context)
         }
     }
-    
 }
+
+
 
 
 

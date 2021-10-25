@@ -12,9 +12,6 @@ import SwiftUI
 @main
 struct GearShedApp: App {
     
-    // we create the PersistentStore here (although it will be created lazily anyway)
-    //@StateObject var persistentStore = PersistentStore.shared
-    
     @AppStorage("isFirstLaunch") var isFirstLaunch: Bool = true
     @AppStorage("lastReviewRequest") var lastReviewRequest: TimeInterval?
     @StateObject var persistentStore: PersistentStore

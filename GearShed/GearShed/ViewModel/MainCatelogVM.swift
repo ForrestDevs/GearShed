@@ -10,7 +10,107 @@ import Foundation
 import SwiftUI
 import CoreData
 
-final class MainCatelogVM: ObservableObject {
+final class MainCatelogVM: NSObject, NSFetchedResultsControllerDelegate,  ObservableObject {
+    
+    let persistentStore: PersistentStore
+    
+    private let itemsController: NSFetchedResultsController<Item>
+    @Published var items = [Item]()
+    
+    private let favItemsController: NSFetchedResultsController<Item>
+    @Published var favItems = [Item]()
+    
+    private let wishlistItemsController: NSFetchedResultsController<Item>
+    @Published var wishListItems = [Item]()
+    
+    private let categoriesController: NSFetchedResultsController<Category>
+    @Published var categories = [Category]()
+    
+    private let brandsController: NSFetchedResultsController<Brand>
+    @Published var brands = [Brand]()
+    
+    init(persistentStore: PersistentStore, isFavourited: Bool = true, onWishlist: Bool = true) {
+        self.persistentStore = persistentStore
+        
+        // MARK: Item Fetch Requests
+        let itemRequest: NSFetchRequest<Item> = Item.fetchRequest()
+        itemRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Item.name, ascending: true)]
+        
+        itemsController = NSFetchedResultsController(fetchRequest: itemRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
+        
+        let favItemRequest: NSFetchRequest<Item> = Item.fetchRequest()
+        favItemRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Item.name, ascending: true)]
+        favItemRequest.predicate = NSPredicate(format: "isFavourite_ == %d", isFavourited)
+        
+        favItemsController = NSFetchedResultsController(fetchRequest: favItemRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
+        
+        let wishlistItemRequest: NSFetchRequest<Item> = Item.fetchRequest()
+        wishlistItemRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Item.name, ascending: true)]
+        wishlistItemRequest.predicate = NSPredicate(format: "onList_ == %d", onWishlist)
+        
+        wishlistItemsController = NSFetchedResultsController(fetchRequest: wishlistItemRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
+        
+        // MARK: Category Fetch Requests
+        let categoryRequest: NSFetchRequest<Category> = Category.fetchRequest()
+        categoryRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Category.name, ascending: true)]
+        
+        categoriesController = NSFetchedResultsController(fetchRequest: categoryRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
+        
+        // MARK: Brand Fetch Requests
+        let brandRequest: NSFetchRequest<Brand> = Brand.fetchRequest()
+        brandRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Brand.name, ascending: true)]
+        
+        brandsController = NSFetchedResultsController(fetchRequest: brandRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
+        
+        // MARK: Assign Entities to corosponding arrays
+        super.init()
+        itemsController.delegate = self
+        favItemsController.delegate = self
+        wishlistItemsController.delegate = self
+        categoriesController.delegate = self
+        brandsController.delegate = self
+        
+        do {
+            try itemsController.performFetch()
+            items = itemsController.fetchedObjects ?? []
+        } catch {
+            print("Failed to fetch Items")
+        }
+        
+        do {
+            try favItemsController.performFetch()
+            favItems = favItemsController.fetchedObjects ?? []
+        } catch {
+            print("Failed to fetch Fav Items")
+        }
+        
+        do {
+            try wishlistItemsController.performFetch()
+            wishListItems = wishlistItemsController.fetchedObjects ?? []
+        } catch {
+            print("Failed to fetch Fav Items")
+        }
+        
+        do {
+            try categoriesController.performFetch()
+            categories = categoriesController.fetchedObjects ?? []
+        } catch {
+            print("Failed to fetch Categories")
+        }
+        
+        do {
+            try brandsController.performFetch()
+            brands = brandsController.fetchedObjects ?? []
+        } catch {
+            print("Failed to fetch Brands")
+        }
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        categories = categoriesController.fetchedObjects ?? []
+    }
+    
+    // MARK: Old
     
     // Array that is initialized with all Items whenever the ViewModel is called
     @Published var allItemsInShed: [Item] = []
@@ -85,14 +185,14 @@ final class MainCatelogVM: ObservableObject {
     // Local state to hold Search Text Value in Main Catelog
     @Published var searchText: String = ""
 
-    init () {
+    /*init () {
         getItems(onList: false)
         getItems(onList: true)
         getFavItems()
         getUserCategories()
         getBrands()
         getTags()
-    }
+    }*/
     
     func getItems(onList: Bool) {
         let request = NSFetchRequest<Item>(entityName: "Item")
@@ -172,7 +272,7 @@ final class MainCatelogVM: ObservableObject {
         }
     }
     
-    func getCategoryItems(category: Category, onList: Bool = false) {        
+    func getCategoryItems(category: Category, onList: Bool = false) {
         let request: NSFetchRequest<Item> = Item.fetchRequest()
         let p1 = NSPredicate(format: "category_ == %@", category)
         let p2 = NSPredicate(format: "onList_ == %d", onList)
@@ -327,3 +427,5 @@ final class MainCatelogVM: ObservableObject {
     }
     
 }
+
+

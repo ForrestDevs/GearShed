@@ -11,16 +11,15 @@ struct ModifyCategoryView: View {
     
     @Environment(\.presentationMode) var presentationMode
     
-    @StateObject private var viewModel = MainCatelogVM()
+    // parameter to control triggering an Alert and defining what action
+    // to take upon confirmation
+    @State private var confirmDeleteCategoryAlert: ConfirmDeleteCategoryAlert?
     
     // all editableData is packaged here. its initial values are set using
     // a custom init.
     @State private var editableData: EditableItemData
-    var category: Category?
     
-    // parameter to control triggering an Alert and defining what action
-    // to take upon confirmation
-    @State private var confirmDeleteCategoryAlert: ConfirmDeleteCategoryAlert?
+    var category: Category?
     
     // custom init to set up editable data
     init(category: Category? = nil) {

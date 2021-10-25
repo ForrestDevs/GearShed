@@ -9,86 +9,38 @@ import SwiftUI
 
 struct BrandDetailView: View {
     
-    @StateObject private var viewModel = MainCatelogVM()
+    @EnvironmentObject var persistentStore: PersistentStore
     
-    @FetchRequest private var items: FetchedResults<Item>
+    @ObservedObject var brand: Brand
     
-    var brandName: Brand
-    
-    @State var isEditBrandShowing: Bool = false
-    
-    init(brand: Brand) {
-        let request = Item.allItemsFR(at: brand)
-        _items = FetchRequest(fetchRequest: request)
-        self.brandName = brand
-    }
+    @State private var isEditBrandShowing: Bool = false
     
     var body: some View {
-        VStack(spacing:0) {
+        VStack (spacing: 0) {
             
-            StatBar()
-                .padding(.top, 10)
-                .padding(.bottom, 10)
+            StatBar(persistentStore: persistentStore)
             
-            ScrollView(.vertical, showsIndicators: false) {
-                ForEach(items) { item in
-                    ItemRowView(item: item)
-                }
-            }
-            Rectangle()
-                .frame(height: 1)
-                .opacity(0)
+            brandItems
+            
             Spacer(minLength: 60)
         }
-        .navigationTitle(brandName.name)
+        .navigationTitle(brand.name)
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing, content: viewModel.editBrandButton)
-        }
-        .fullScreenCover(isPresented: $viewModel.isEditBrandShowing){ModifyBrandView(brand: brandName).environment(\.managedObjectContext, PersistentStore.shared.context)}
-    }
-}
-
-struct ItemRowViewInBrand: View {
-
-    @ObservedObject var item: Item
-    
-    var body: some View {
-        NavigationLink(destination: ItemDetailView(item: item)) {
-            HStack {
-                Image(systemName: "square.fill")
-                    .resizable()
-                    .font(.title)
-                    .frame(width: 35, height: 35)
-                    .foregroundColor(Color.theme.background)
-                    .padding(.horizontal,4)
-                
-                // Name, Brand, Details
-                VStack (alignment: .leading) {
-                    
-                    HStack {
-                        Text(item.name)
-                            .font(.headline)
-                            .foregroundColor(Color.theme.accent)
-                    }
-                    
-                    Text(item.detail)
-                        .font(.caption)
-                        .foregroundColor(Color.theme.secondaryText)
-                }
-                
-                Spacer()
-                
-                VStack {
-                    // quantity at the right
-                    Text("\(item.weight) g")
-                        .font(.caption)
-                        .bold()
-                        .foregroundColor(Color.theme.green)
-                        .padding(.horizontal)
-                }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button { self.isEditBrandShowing.toggle() } label: { Image(systemName: "slider.horizontal.3") }
             }
-            .padding(.horizontal)
+        }
+        .fullScreenCover(isPresented: $isEditBrandShowing) {
+            ModifyBrandView(brand: brand).environment(\.managedObjectContext, PersistentStore.shared.context)
         }
     }
     
+    var brandItems: some View {
+        ScrollView(.vertical, showsIndicators: false) {
+            ForEach(brand.items) { item in
+                ItemRowView(item: item)
+            }
+        }
+    }
 }
+

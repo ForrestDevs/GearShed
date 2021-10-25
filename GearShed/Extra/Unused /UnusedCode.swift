@@ -1220,6 +1220,86 @@
      }
  }
  
+ /*.font(.largeTitle)
+ .frame(width: 57, height: 50)
+ .foregroundColor(Color.white)
+ .padding(.bottom, 7)*/
+
+// FetchRequest To Keep List of categories Updated
+/*@FetchRequest(fetchRequest: MainCatelogVM.allCategoriesFR())
+private var allCategories: FetchedResults<Category>*/
+
+/*HStack {
+ Button {viewModel.isAddNewItemShowing.toggle()} label: {
+     Image(systemName: "plus")
+ }
+ NavigationLink(destination: AllItemsView()) {
+     Text("Uncategorized")
+         .font(.headline)
+         .padding(.horizontal, 22.5)
+     Spacer()
+     
+     Text("0")
+         .font(.headline)
+         .padding(.horizontal, 20)
+ }
+}
+.padding(.horizontal)
+.padding(.top, 15)*/
+ 
+ /*ScrollView(.vertical, showsIndicators: false) {
+     ForEach(allFavItems) { item in
+         ItemRowView(item: item)
+             .padding(.top, 10)
+     }
+ }*/
+ struct SimpleItemsListForBrand: View {
+     
+     @FetchRequest    private var items: FetchedResults<Item>
+     
+     @State private var listDisplayID = UUID()
+     //@Binding var isAddNewItemSheetShowing: Bool
+     
+     init(brand: Brand/*, isAddNewItemSheetShowing: Binding<Bool>*/) {
+         let request = Item.allItemsFR(at: brand)
+         _items = FetchRequest(fetchRequest: request)
+         //_isAddNewItemSheetShowing = isAddNewItemSheetShowing
+     }
+     
+     var body: some View {
+         Section(header: ItemsListHeader()) {
+             ForEach(items) { item in
+                 NavigationLink(destination: AddItemView(editableItem: item)) {
+                     Text(item.name)
+                 }
+             }
+         }
+ //        .id(listDisplayID)
+         .onAppear { listDisplayID = UUID() }
+     }
+     
+     func ItemsListHeader() -> some View {
+         HStack {
+             Text("At this Brand: \(items.count) items").sectionHeader()
+             Spacer()
+             
+            //Button {
+            //    isAddNewItemSheetShowing = true
+            //} label: {
+            //    Image(systemName: "plus")
+            //        .font(.title2)
+            //}
+         }
+     }
+ }
+ 
+ // Section 3: Items assigned to this Brand, if we are editing a Brand
+ //if editableData.representsExistingBrand {
+ //    SimpleItemsListForBrand(brand: editableData.associatedBrand/*,
+ //                                    isAddNewItemSheetShowing: $isAddNewItemSheetShowing*/)
+ //}
+ 
+ 
  
  
  

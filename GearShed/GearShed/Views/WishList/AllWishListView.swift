@@ -1,5 +1,5 @@
 //
-//  AllItemsView.swift
+//  AllWishListView.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 18/10/21
@@ -8,10 +8,10 @@
 
 import SwiftUI
 
-struct AllItemsView: View {
+struct AllWishListView: View {
     
     @EnvironmentObject var persistentStore: PersistentStore
-    
+
     @StateObject private var viewModel: MainCatelogVM
     
     init(persistentStore: PersistentStore) {
@@ -20,23 +20,19 @@ struct AllItemsView: View {
     }
 
     var body: some View {
-        VStack (spacing: 0) {
-            
-            StatBar(persistentStore: persistentStore)
-                        
-            itemList
-            
+        VStack (spacing: 5) {
+            StatBarInWishList(persistentStore: persistentStore)
+            itemsList
             Spacer(minLength: 60)
         }
-        .navigationBarTitle("All")
     }
     
-    var itemList: some View {
+    private var itemsList: some View {
         ScrollView(.vertical, showsIndicators: false) {
             ForEach(sectionData()) { section in
                 Section {
                     ForEach(section.items) { item in
-                        ItemRowView(item: item)
+                        ItemRowViewInWishList(item: item)
                             .padding(.bottom, 5)
                     }
                 } header: {
@@ -54,12 +50,13 @@ struct AllItemsView: View {
                 }
             }
         }
+
     }
-        
-    func sectionData() -> [SectionData] {
+    
+    private func sectionData() -> [SectionData] {
         var completedSectionData = [SectionData]()
         // otherwise, one section for each category, please.  break the data out by category first
-        let dictionaryByCategory = Dictionary(grouping: viewModel.items, by: { $0.category })
+        let dictionaryByCategory = Dictionary(grouping: viewModel.wishListItems, by: { $0.category })
         // then reassemble the sections by sorted keys of this dictionary
         for key in dictionaryByCategory.keys.sorted() {
             completedSectionData.append(SectionData(title: key.name, items: dictionaryByCategory[key]!))
@@ -69,30 +66,12 @@ struct AllItemsView: View {
     
 }
 
-
-/*var body: some View {
-    VStack (spacing: 0) {
-        
-        StatBar()
-                    
-        ScrollView(.vertical, showsIndicators: false) {
-            
-            
-            ForEach(viewModel.allItemsInShed) { item in
-                ItemRowView(item: item)
-            }
-        }
-        .padding(.top, 10)
-        Rectangle()
-            .frame(height: 1)
-            .opacity(0)
-        Spacer(minLength: 60)
+/*ScrollView(.vertical, showsIndicators: false) {
+    ForEach(allWishListItems) { item in
+        ItemRowView(item: item)
     }
-}*/
-
-
-
-
+}
+.padding(.top, 20)*/
 
 
 

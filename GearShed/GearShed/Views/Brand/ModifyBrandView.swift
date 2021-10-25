@@ -11,11 +11,14 @@ struct ModifyBrandView: View {
     
     @Environment(\.presentationMode) var presentationMode
     
-    @StateObject private var viewModel = MainCatelogVM()
+    // parameter to control triggering an Alert and defining what action
+    // to take upon confirmation
+    @State private var confirmDeleteBrandAlert: ConfirmDeleteBrandAlert?
     
     // all editableData is packaged here. its initial values are set using
     // a custom init.
     @State private var editableData: EditableItemData
+    
     var brand: Brand?
     
     // custom init to set up editable data
@@ -41,7 +44,7 @@ struct ModifyBrandView: View {
                 if editableData.representsExistingBrand && !editableData.associatedBrand.isUnknownBrand {
                     Section(header: Text("Brand Management").sectionHeader()) {
                         SLCenteredButton(title: "Delete This Brand",
-                                         action: { viewModel.confirmDeleteBrandAlert = ConfirmDeleteBrandAlert(
+                                         action: { confirmDeleteBrandAlert = ConfirmDeleteBrandAlert(
                                         brand: editableData.associatedBrand,
                                         destructiveCompletion: { presentationMode.wrappedValue.dismiss() }) }
                         )
@@ -56,7 +59,7 @@ struct ModifyBrandView: View {
                 ToolbarItem(placement: .cancellationAction, content: cancelButton)
                 ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!editableData.canBrandBeSaved) }
             }
-            .alert(item: $viewModel.confirmDeleteBrandAlert) { item in item.alert() }
+            .alert(item: $confirmDeleteBrandAlert) { item in item.alert() }
         }
     }
     

@@ -283,7 +283,8 @@
 				08D67E1627260AA30064F639 /* Item */,
 				08C7D8CF270F480D00EC3984 /* Shed */,
 				08C7D8D4270F480E00EC3984 /* Brand */,
-				08371B66271DFEFE0072AD94 /* PickerViews */,
+				08D67E19272643D40064F639 /* Favourites */,
+				08D67E1A272643E00064F639 /* WishList */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -294,17 +295,6 @@
 				08371B4F271BC5010072AD94 /* MainCatelogVM.swift */,
 			);
 			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		08371B66271DFEFE0072AD94 /* PickerViews */ = {
-			isa = PBXGroup;
-			children = (
-				08371B5E271DFEC90072AD94 /* AllCategoryView.swift */,
-				08371B60271DFED90072AD94 /* AllBrandView.swift */,
-				08371B62271DFEE60072AD94 /* AllFavouriteView.swift */,
-				08371B64271DFEF80072AD94 /* AllWishListView.swift */,
-			);
-			path = PickerViews;
 			sourceTree = "<group>";
 		};
 		08371B67271E02820072AD94 /* Tags */ = {
@@ -425,6 +415,7 @@
 		08C7D8CF270F480D00EC3984 /* Shed */ = {
 			isa = PBXGroup;
 			children = (
+				08371B5E271DFEC90072AD94 /* AllCategoryView.swift */,
 				08C7D8D2270F480D00EC3984 /* CategoryRowView.swift */,
 				0853ABFD271F8EF100123497 /* CategoryDetailView.swift */,
 				08C7D8D3270F480D00EC3984 /* AddCategoryView.swift */,
@@ -436,6 +427,7 @@
 		08C7D8D4270F480E00EC3984 /* Brand */ = {
 			isa = PBXGroup;
 			children = (
+				08371B60271DFED90072AD94 /* AllBrandView.swift */,
 				08C7D8D5270F480E00EC3984 /* BrandRowView.swift */,
 				0853ABFB271F8E3300123497 /* BrandDetailView.swift */,
 				08C7D8D7270F480E00EC3984 /* AddBrandView.swift */,
@@ -562,6 +554,22 @@
 				08C7D915270F6E1600EC3984 /* items.json */,
 			);
 			path = Config;
+			sourceTree = "<group>";
+		};
+		08D67E19272643D40064F639 /* Favourites */ = {
+			isa = PBXGroup;
+			children = (
+				08371B62271DFEE60072AD94 /* AllFavouriteView.swift */,
+			);
+			path = Favourites;
+			sourceTree = "<group>";
+		};
+		08D67E1A272643E00064F639 /* WishList */ = {
+			isa = PBXGroup;
+			children = (
+				08371B64271DFEF80072AD94 /* AllWishListView.swift */,
+			);
+			path = WishList;
 			sourceTree = "<group>";
 		};
 		08ED0FD82719EAE10072CB90 /* CustomTabBar */ = {

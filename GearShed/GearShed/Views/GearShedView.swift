@@ -10,11 +10,18 @@ import SwiftUI
 
 struct MainCatelogView: View {
     
-    @StateObject private var viewModel = MainCatelogVM()
+    @EnvironmentObject var persistentStore: PersistentStore
+    
+    @StateObject private var viewModel: MainCatelogVM
     
     @State private var selected = 1
 
     static let tag: String? = "MainCatelog"
+    
+    init(persistentStore: PersistentStore) {
+        let viewModel = MainCatelogVM(persistentStore: persistentStore)
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
     
     var body: some View {
             VStack(spacing: 5) {
@@ -22,17 +29,17 @@ struct MainCatelogView: View {
                 SPForShedView(selected: $selected)
                    
                 if self.selected == 1 {
-                    AllCategoryView()
+                    AllCategoryView(persistentStore: persistentStore)
                         .transition(.moveAndFade)
                 }
                 else if self.selected == 2 {
-                    AllBrandView()
+                    AllBrandView(persistentStore: persistentStore)
                         .transition(.moveAndFade)
                 } else if self.selected == 3 {
-                    AllFavouriteView()
+                    AllFavouriteView(persistentStore: persistentStore)
                         .transition(.moveAndFade)
                 } else if self.selected == 4 {
-                    AllWishListView()
+                    AllWishListView(persistentStore: persistentStore)
                         .transition(.moveAndFade)
                 } else {
                     EmptyView()
@@ -42,7 +49,7 @@ struct MainCatelogView: View {
             } // end of VStack
             .navigationBarTitle("Gear Shed", displayMode: .inline)
             .fullScreenCover(isPresented:$viewModel.isAddNewItemShowing) {
-                AddItemView().environment(\.managedObjectContext, PersistentStore.shared.context)
+                AddItemView(persistentStore: persistentStore).environment(\.managedObjectContext, PersistentStore.shared.context)
             }
             .sheet(isPresented: $viewModel.showingUnlockView) {
                 UnlockView()
@@ -59,7 +66,7 @@ struct MainCatelogView: View {
                 PersistentStore.shared.saveContext()
             }
     }
-} // END OF STRUCT
+} 
 
 
 

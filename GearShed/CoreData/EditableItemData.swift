@@ -5,10 +5,6 @@
 //  Created by Luke Forrest Gannon on 18/10/21
 //  Copyright © 2021 All rights reserved.
 //
-
-import Foundation
-import SwiftUI
-
 // this gives me a way to collect all the data for an Item that i might want to edit
 // (or even just display).  it defaults to having values appropriate for a new item upon
 // creation, and can be initialized from a Item.  this is something
@@ -16,30 +12,26 @@ import SwiftUI
 // want to update an Item with this data, so see the class function
 // Item.update(using editableData: EditableItemData)
 
+import Foundation
+
 struct EditableItemData {
     
-    @StateObject private var viewModel = MainCatelogVM()
 	// the id of the Item, if any, associated with this data collection
 	// (nil if data for a new item that does not yet exist)
 	var id: UUID? = nil
+    
 	// all of the values here provide suitable defaults for a new item
 	var name: String = ""
-    
 	var weight: String = ""
     var price: String = ""
     var quantity: Int = 1
     var details: String = "Item Details"
-    
 	var category = Category.theUnknownCategory()
     var brand = Brand.theUnknownBrand()
-    
-    //var tag = Tag.unknownTag()
-    
-	var onList: Bool = false
+    var onList: Bool = false
 	var isFavourite = false
 	var dateText = "" // for display only, not actually editable
     
-
 	// this copies all the editable data from an incoming Item.  this looks fairly
 	// benign, but its in the lines below that crashes did/could occur in earlier versions
 	// because of the main, underlying problem: if an item is deleted somewhere outside

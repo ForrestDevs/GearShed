@@ -15,11 +15,8 @@ struct AddCategoryView: View {
 	// all editableData is packaged here. its initial values are set using
 	// a custom init.
 	@State private var editableData: EditableItemData
+    
 	var category: Category?
-	
-	// parameter to control triggering an Alert and defining what action
-	// to take upon confirmation
-	@State private var confirmDeleteCategoryAlert: ConfirmDeleteCategoryAlert?
 	
 	// custom init to set up editable data
 	init(category: Category? = nil) {
@@ -41,31 +38,17 @@ struct AddCategoryView: View {
 		.navigationBarTitle("Add New Category", displayMode: .inline)
 		.navigationBarBackButtonHidden(true)
 		.toolbar {
-			ToolbarItem(placement: .cancellationAction, content: cancelButton)
-			ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!editableData.canCategoryBeSaved) }
-		}
-		.alert(item: $confirmDeleteCategoryAlert) { item in item.alert() }
-	}
-	
-	// the cancel button
-	func cancelButton() -> some View {
-		Button(action: { presentationMode.wrappedValue.dismiss() }) {
-			Text("Cancel")
-		}
-	}
-	
-	// the save button
-	func saveButton() -> some View {
-		Button(action: commitData) {
-			Text("Save")
+            ToolbarItem(placement: .cancellationAction) {
+                Button(action: { presentationMode.wrappedValue.dismiss() }) { Text("Cancel") }
+            }
+			ToolbarItem(placement: .confirmationAction) {
+                Button {
+                    presentationMode.wrappedValue.dismiss()
+                    Category.updateData(using: editableData)
+                } label: { Text("Save") } .disabled(!editableData.canCategoryBeSaved)
+            }
 		}
 	}
-
-	func commitData() {
-		presentationMode.wrappedValue.dismiss()
-		Category.updateData(using: editableData)
-	}
-	
 }
 
 

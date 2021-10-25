@@ -8,13 +8,10 @@
 
 import SwiftUI
 
-// Generics
-// ViewBuilder
-// PreferenceKey
-// Matched Geometry Effect
-
 struct AppTabBarView: View {
 
+    @EnvironmentObject var persistentStore: PersistentStore
+    
     @State private var tabSelection: TabBarItem = .home
     
     var body: some View {
@@ -23,7 +20,7 @@ struct AppTabBarView: View {
             NavigationView { HomeView() }
                 .tabBarItem(tab: .home, selection: $tabSelection)
             
-            NavigationView { MainCatelogView() }
+            NavigationView { MainCatelogView(persistentStore: persistentStore) }
                 .tabBarItem(tab: .shed, selection: $tabSelection)
             
             NavigationView { TripsTabView() }
@@ -34,13 +31,13 @@ struct AppTabBarView: View {
     }
 }
 
-struct AppTabBarView_Previews: PreviewProvider {    
+/*struct AppTabBarView_Previews: PreviewProvider {
     static var previews: some View {
         AppTabBarView()
     }
-}
+}*/
 
-struct AppTabBarView1: View {
+/*struct AppTabBarView1: View {
 
     @State private var tabSelection: TabBarItem = .home
     
@@ -101,5 +98,5 @@ struct AppTabBarView2: View {
 
         }
     }
-}
+}*/
 

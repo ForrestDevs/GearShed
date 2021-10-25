@@ -9,7 +9,12 @@ import SwiftUI
 
 struct StatBar: View {
     
-    @StateObject private var viewModel = MainCatelogVM()
+    @StateObject private var viewModel: MainCatelogVM
+    
+    init(persistentStore: PersistentStore) {
+        let viewModel = MainCatelogVM(persistentStore: persistentStore)
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -106,8 +111,13 @@ struct StatBar: View {
 
 struct StatBarInWishList: View {
     
-    @StateObject private var viewModel = MainCatelogVM()
+    @StateObject private var viewModel: MainCatelogVM
 
+    init(persistentStore: PersistentStore) {
+        let viewModel = MainCatelogVM(persistentStore: persistentStore)
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
+    
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack (spacing: 30){
@@ -166,8 +176,13 @@ struct StatBarInWishList: View {
 
 struct StatBarInFav: View {
     
-    @StateObject private var viewModel = MainCatelogVM()
+    @StateObject private var viewModel: MainCatelogVM
 
+    init(persistentStore: PersistentStore) {
+        let viewModel = MainCatelogVM(persistentStore: persistentStore)
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
+    
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack (spacing: 30){
@@ -239,8 +254,13 @@ struct StatBarInFav: View {
 
 struct StatBarInShed: View {
     
-    @StateObject private var viewModel = MainCatelogVM()
+    @StateObject private var viewModel: MainCatelogVM
 
+    init(persistentStore: PersistentStore) {
+        let viewModel = MainCatelogVM(persistentStore: persistentStore)
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
+    
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack (spacing: 30){

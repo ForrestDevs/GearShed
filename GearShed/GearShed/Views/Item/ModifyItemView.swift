@@ -9,39 +9,19 @@ import SwiftUI
 
 struct ModifyItemView: View {
     
-    @StateObject private var viewModel = MainCatelogVM()
+    // Environment state to dismiss page
+    @Environment(\.presentationMode) var presentationMode
+    
+    @StateObject private var viewModel: MainCatelogVM
     
     // this editableData struct contains all of the fields of an Item that
     // can be edited here, so that we're not doing a "live edit" on the Item.
     @State private var editableItemData: EditableItemData
     
-    // FetchRequest To Keep Picker Updated
-    @FetchRequest(fetchRequest: MainCatelogVM.allCategoriesFR())
-    private var categorys: FetchedResults<Category>
-    
-    // FetchRequest To Keep Picker Updated
-    @FetchRequest(fetchRequest: MainCatelogVM.allBrandsFR())
-    private var brands: FetchedResults<Brand>
-    
-    // Environment state to dismiss page
-    @Environment(\.presentationMode) var presentationMode
-    
-    private var selectedCategoryName: String
-    
-    private var selectedBrandName: String
-    
-    @State private var altCategorySelected: Bool = false
-    
-    @State private var altBrandSelected: Bool = false
-    
-    @State private var altCategoryName: String = ""
-    
-    @State private var altBrandName: String = ""
-
-
-    
     // custom init here to set up editableData state
-    init(editableItem: Item? = nil, initialItemName: String? = nil, initialItemDetails: String? = nil, category: Category? = nil, brand: Brand? = nil) {
+    init(persistentStore: PersistentStore, editableItem: Item? = nil, initialItemName: String? = nil, initialItemDetails: String? = nil, category: Category? = nil, brand: Brand? = nil) {
+        let viewModel = MainCatelogVM(persistentStore: persistentStore)
+        _viewModel = StateObject(wrappedValue: viewModel)
         // initialize the editableData struct for the incoming item, if any; and
         // also carry in whatever might be a suggested Item name for a new Item
         if let item = editableItem {
@@ -55,7 +35,17 @@ struct ModifyItemView: View {
         selectedBrandName = brand?.name ?? "Choose a brand"
     }
     
+    private var selectedCategoryName: String
     
+    private var selectedBrandName: String
+    
+    @State private var altCategorySelected: Bool = false
+    
+    @State private var altBrandSelected: Bool = false
+    
+    @State private var altCategoryName: String = ""
+    
+    @State private var altBrandName: String = ""
     
     var body: some View {
         NavigationView {
@@ -117,7 +107,7 @@ struct ModifyItemView: View {
                                             .font(.subheadline)
                                             //.foregroundColor(Color.theme.green)
                                     }
-                                    ForEach(categorys) { category in
+                                    ForEach(viewModel.categories) { category in
                                         Text(category.name).tag(category)
                                             .font(.subheadline)
                                             //.foregroundColor(Color.theme.secondaryText)
@@ -140,7 +130,7 @@ struct ModifyItemView: View {
                                             .font(.subheadline)
                                             //.foregroundColor(Color.theme.secondaryText)
                                     }
-                                    ForEach(brands) { brand in
+                                    ForEach(viewModel.brands) { brand in
                                         Text(brand.name).tag(brand)
                                             .font(.subheadline)
                                             //.foregroundColor(Color.theme.secondaryText)
@@ -212,7 +202,7 @@ struct ModifyItemView: View {
                     }
                 }
                 .padding()
-                .navigationBarTitle(barTitle(), displayMode: .inline)
+                .navigationBarTitle("Modify Item", displayMode: .inline)
                 .navigationBarBackButtonHidden(true)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) { cancelButton() }
@@ -245,10 +235,6 @@ struct ModifyItemView: View {
             return altBrandName
         }
     }
-    
-    func barTitle() -> Text {
-        return editableItemData.representsExistingItem ? Text("Modify Item") : Text("Add New Item")
-    }
         
     // Cancel Button
     func cancelButton() -> some View {
@@ -267,12 +253,5 @@ struct ModifyItemView: View {
         Item.updateData(using: editableItemData)
         
         presentationMode.wrappedValue.dismiss()
-    }
-    
-}
-
-struct ModifyItemView_Previews: PreviewProvider {
-    static var previews: some View {
-        ModifyItemView()
     }
 }

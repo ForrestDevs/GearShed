@@ -10,22 +10,31 @@ import SwiftUI
 
 struct AddItemView: View {
     
-    @StateObject private var viewModel = MainCatelogVM()
+    // Environment state to dismiss page
+    @Environment(\.presentationMode) var presentationMode
+    
+    @StateObject private var viewModel: MainCatelogVM
     
     // this editableData struct contains all of the fields of an Item that
     // can be edited here, so that we're not doing a "live edit" on the Item.
     @State private var editableItemData: EditableItemData
     
-    // FetchRequest To Keep Picker Updated
-    @FetchRequest(fetchRequest: MainCatelogVM.allCategoriesFR())
-    private var categorys: FetchedResults<Category>
-    
-    // FetchRequest To Keep Picker Updated
-    @FetchRequest(fetchRequest: MainCatelogVM.allBrandsFR())
-    private var brands: FetchedResults<Brand>
-    
-    // Environment state to dismiss page
-	@Environment(\.presentationMode) var presentationMode
+    // custom init here to set up editableData state
+    init(persistentStore: PersistentStore, editableItem: Item? = nil, initialItemName: String? = nil, initialItemDetails: String? = nil, category: Category? = nil, brand: Brand? = nil) {
+        let viewModel = MainCatelogVM(persistentStore: persistentStore)
+        _viewModel = StateObject(wrappedValue: viewModel)
+        // initialize the editableData struct for the incoming item, if any; and
+        // also carry in whatever might be a suggested Item name for a new Item
+        if let item = editableItem {
+            _editableItemData = State(initialValue: EditableItemData(item: item))
+        } else {
+            // here's we'll see if a suggested name for adding a new item was supplied
+            let initialValue = EditableItemData(initialItemName: initialItemName, initialItemDetails: initialItemDetails, category: category,  brand: brand)
+            _editableItemData = State(initialValue: initialValue)
+        }
+        selectedCategoryName = category?.name ?? "Choose a category"
+        selectedBrandName = brand?.name ?? "Choose a brand"
+    }
     
     private var selectedCategoryName: String
     
@@ -38,26 +47,7 @@ struct AddItemView: View {
     @State private var altCategoryName: String = ""
     
     @State private var altBrandName: String = ""
-
-
-	
-	// custom init here to set up editableData state
-    init(editableItem: Item? = nil, initialItemName: String? = nil, initialItemDetails: String? = nil, category: Category? = nil, brand: Brand? = nil) {
-		// initialize the editableData struct for the incoming item, if any; and
-		// also carry in whatever might be a suggested Item name for a new Item
-		if let item = editableItem {
-			_editableItemData = State(initialValue: EditableItemData(item: item))
-		} else {
-			// here's we'll see if a suggested name for adding a new item was supplied
-            let initialValue = EditableItemData(initialItemName: initialItemName, initialItemDetails: initialItemDetails, category: category,  brand: brand)
-			_editableItemData = State(initialValue: initialValue)
-		}
-        selectedCategoryName = category?.name ?? "Choose a category"
-        selectedBrandName = brand?.name ?? "Choose a brand"
-	}
-	
-	
-    
+	    
     var body: some View {
         NavigationView {
             ScrollView(.vertical, showsIndicators: false) {
@@ -123,7 +113,7 @@ struct AddItemView: View {
                                             .font(.subheadline)
                                             //.foregroundColor(Color.theme.green)
                                     }
-                                    ForEach(categorys) { category in
+                                    ForEach(viewModel.categories) { category in
                                         Text(category.name).tag(category)
                                             .font(.subheadline)
                                             //.foregroundColor(Color.theme.secondaryText)
@@ -146,7 +136,7 @@ struct AddItemView: View {
                                             .font(.subheadline)
                                             //.foregroundColor(Color.theme.secondaryText)
                                     }
-                                    ForEach(brands) { brand in
+                                    ForEach(viewModel.brands) { brand in
                                         Text(brand.name).tag(brand)
                                             .font(.subheadline)
                                             //.foregroundColor(Color.theme.secondaryText)
@@ -212,7 +202,7 @@ struct AddItemView: View {
                     }
                 }
                 .padding()
-                .navigationBarTitle(barTitle(), displayMode: .inline)
+                .navigationBarTitle("Add New Item", displayMode: .inline)
                 .navigationBarBackButtonHidden(true)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) { cancelButton() }
@@ -245,10 +235,6 @@ struct AddItemView: View {
             return altBrandName
         }
     }
-    
-	func barTitle() -> Text {
-		return editableItemData.representsExistingItem ? Text("Modify Item") : Text("Add New Item")
-	}
 		
 	// Cancel Button
 	func cancelButton() -> some View {
@@ -268,13 +254,5 @@ struct AddItemView: View {
         
 		presentationMode.wrappedValue.dismiss()
 	}
-	
 }
-
-struct AddOrModifyItemView_Previews: PreviewProvider {
-    static var previews: some View {
-        AddItemView()
-    }
-}
-
 
