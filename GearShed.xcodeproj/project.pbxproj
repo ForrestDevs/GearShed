@@ -103,6 +103,7 @@
 		08D67E11272523680064F639 /* SKProduct-LocalizedPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D67E10272523680064F639 /* SKProduct-LocalizedPrice.swift */; };
 		08D67E13272529730064F639 /* PersistantStore+StoreKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D67E12272529730064F639 /* PersistantStore+StoreKit.swift */; };
 		08D67E152725EEA60064F639 /* ToggleStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D67E142725EEA60064F639 /* ToggleStyles.swift */; };
+		08D67E1C2726815D0064F639 /* Configuration.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 08D67E1B2726815D0064F639 /* Configuration.storekit */; };
 		08ED0FD72719DA490072CB90 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ED0FD62719DA490072CB90 /* ViewModel.swift */; };
 		08ED0FDE2719EAE10072CB90 /* TabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ED0FD92719EAE10072CB90 /* TabBarItem.swift */; };
 		08ED0FDF2719EAE10072CB90 /* CustomTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ED0FDA2719EAE10072CB90 /* CustomTabBarView.swift */; };
@@ -212,6 +213,7 @@
 		08D67E10272523680064F639 /* SKProduct-LocalizedPrice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SKProduct-LocalizedPrice.swift"; sourceTree = "<group>"; };
 		08D67E12272529730064F639 /* PersistantStore+StoreKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersistantStore+StoreKit.swift"; sourceTree = "<group>"; };
 		08D67E142725EEA60064F639 /* ToggleStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleStyles.swift; sourceTree = "<group>"; };
+		08D67E1B2726815D0064F639 /* Configuration.storekit */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Configuration.storekit; sourceTree = "<group>"; };
 		08ED0FD62719DA490072CB90 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		08ED0FD92719EAE10072CB90 /* TabBarItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarItem.swift; sourceTree = "<group>"; };
 		08ED0FDA2719EAE10072CB90 /* CustomTabBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBarView.swift; sourceTree = "<group>"; };
@@ -546,6 +548,7 @@
 		08D67E1827260BAC0064F639 /* Config */ = {
 			isa = PBXGroup;
 			children = (
+				08D67E1B2726815D0064F639 /* Configuration.storekit */,
 				08C7D8A3270F3D1D00EC3984 /* Assets.xcassets */,
 				08C7D8AD270F3D1D00EC3984 /* Info.plist */,
 				08C7D914270F6E1600EC3984 /* brands.json */,
@@ -662,6 +665,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08D67E1C2726815D0064F639 /* Configuration.storekit in Resources */,
 				08C7D8A7270F3D1D00EC3984 /* Preview Assets.xcassets in Resources */,
 				08C7D917270F6E1600EC3984 /* brands.json in Resources */,
 				08371B6E271E08A20072AD94 /* tags.json in Resources */,

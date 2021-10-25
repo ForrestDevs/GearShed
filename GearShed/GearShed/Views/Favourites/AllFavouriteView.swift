@@ -13,7 +13,7 @@ struct AllFavouriteView: View {
     @EnvironmentObject var persistentStore: PersistentStore
     
     @StateObject private var viewModel: MainCatelogVM
-    
+        
     init(persistentStore: PersistentStore) {
         let viewModel = MainCatelogVM(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)

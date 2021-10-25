@@ -260,22 +260,10 @@ extension Item {
 	// Identifiable objects, this makes sure we give the entity a unique id, then
 	// hand it back so the user can fill in what's important to them.
 	class func addNewItem() -> Item {
-        
         let context = PersistentStore.shared.context
         let newItem = Item(context: context)
         newItem.id = UUID()
         return newItem
-        
-        /*let canCreate = PersistentStore.fullVersionUnlocked ||
-            PersistentStore.count(for: Item.fetchRequest()) < 3
-        if canCreate {
-            let context = PersistentStore.shared.context
-            let newItem = Item(context: context)
-            newItem.id = UUID()
-            return newItem
-        } else {
-            showingUnlockView.toggle()
-        }*/
 	}
 	
 	// updates data for an Item that the user has directed from an Add or Modify View.

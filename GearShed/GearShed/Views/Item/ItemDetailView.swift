@@ -11,7 +11,7 @@ import SwiftUI
 struct ItemDetailView: View {
     
     @EnvironmentObject var persistentStore: PersistentStore
-        
+            
     @ObservedObject var item: Item
     
     @State private var isEditItemShowing: Bool = false
@@ -54,7 +54,7 @@ struct ItemDetailView: View {
             }
         }
         .fullScreenCover(isPresented: $isEditItemShowing){
-            ModifyItemView(persistentStore: persistentStore ,editableItem: item).environment(\.managedObjectContext, PersistentStore.shared.context)
+            ModifyItemView(persistentStore: persistentStore,editableItem: item).environment(\.managedObjectContext, PersistentStore.shared.context)
         }
     }
     

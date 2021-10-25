@@ -9,9 +9,7 @@
 import SwiftUI
 
 struct CategoryRowView: View {
-    
-   //@StateObject private var viewModel = MainCatelogVM()
-    
+        
     @ObservedObject var category: Category
 
     var body: some View {
@@ -25,7 +23,6 @@ struct CategoryRowView: View {
             }
         }
         .padding(.horizontal, 20)
-        //.onAppear(perform: {viewModel.getCategoryItems(category: category)})
     }
 }
 

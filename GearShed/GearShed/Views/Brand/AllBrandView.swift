@@ -10,7 +10,12 @@ import SwiftUI
 
 struct AllBrandView: View {
     
+    @EnvironmentObject var persistentStore: PersistentStore
+
     @StateObject private var viewModel: MainCatelogVM
+    
+    // Local state to trigger showing a view to Edit Brand
+    @State private var isAddBrandShowing = false
     
     init(persistentStore: PersistentStore) {
         let viewModel = MainCatelogVM(persistentStore: persistentStore)
@@ -25,7 +30,7 @@ struct AllBrandView: View {
             }
             Spacer(minLength: 50)
         }
-        .fullScreenCover(isPresented: $viewModel.isEditBrandShowing) {
+        .fullScreenCover(isPresented: $isAddBrandShowing) {
             NavigationView {
                 AddBrandView()
             }
@@ -46,7 +51,7 @@ struct AllBrandView: View {
             Spacer()
             HStack {
                 Spacer()
-                Button {viewModel.isEditBrandShowing.toggle()}
+                Button { isAddBrandShowing.toggle()}
                 label: {
                     VStack{
                         Text("Add")

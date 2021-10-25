@@ -49,7 +49,7 @@ struct GearShedApp: App {
     var body: some Scene {
         WindowGroup {
             AppTabBarView()
-                .environment(\.managedObjectContext, persistentStore.context)
+                .environment(\.managedObjectContext, PersistentStore.shared.context)
                 .environmentObject(persistentStore)
                 .environmentObject(unlockManager)
                 .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification),

@@ -56,7 +56,7 @@ struct MainCatelogView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading, content: viewModel.leadingButton)
-                ToolbarItem(placement: .navigationBarTrailing, content: viewModel.trailingButtons)
+                ToolbarItem(placement: .navigationBarTrailing, content: viewModel.trailingButton)
             }
             .onAppear {
                 logAppear(title: "MainCatelogView")

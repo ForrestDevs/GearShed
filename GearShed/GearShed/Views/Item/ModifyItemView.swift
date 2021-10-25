@@ -9,10 +9,20 @@ import SwiftUI
 
 struct ModifyItemView: View {
     
+    @EnvironmentObject var persistentStore: PersistentStore
+    
     // Environment state to dismiss page
     @Environment(\.presentationMode) var presentationMode
     
     @StateObject private var viewModel: MainCatelogVM
+    
+    // state variable to control triggering confirmation of a delete, which is
+    // one of three context menu actions that can be applied to an item
+    @State private var confirmDeleteItemAlert: ConfirmDeleteItemAlert?
+    
+    @State private var expandedCategory: Bool = false
+    
+    @State private var expandedBrand: Bool = false
     
     // this editableData struct contains all of the fields of an Item that
     // can be edited here, so that we're not doing a "live edit" on the Item.
@@ -100,7 +110,7 @@ struct ModifyItemView: View {
                             .foregroundColor(Color.theme.green)
                         
                         HStack (alignment: .firstTextBaseline, spacing: 10) {
-                            DisclosureGroup("\(discolsureCategoryTitle())", isExpanded: $viewModel.expandedCategory) {
+                            DisclosureGroup("\(discolsureCategoryTitle())", isExpanded: $expandedCategory) {
                                 VStack(alignment: .leading) {
                                     NavigationLink(destination: AddCategoryView()) {
                                         Text("Add New Category")
@@ -116,14 +126,14 @@ struct ModifyItemView: View {
                                                 altCategorySelected = true
                                                 altCategoryName = category.name
                                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                                                    viewModel.expandedCategory.toggle()
+                                                    expandedCategory.toggle()
                                                 }
                                             }
                                     }
                                 }
                             }
                             
-                            DisclosureGroup("\(discolsureBrandTitle())", isExpanded: $viewModel.expandedBrand) {
+                            DisclosureGroup("\(discolsureBrandTitle())", isExpanded: $expandedBrand) {
                                 VStack(alignment: .leading) {
                                     NavigationLink(destination: AddBrandView()) {
                                         Text("Add New Brand")
@@ -139,7 +149,7 @@ struct ModifyItemView: View {
                                                 altBrandSelected = true
                                                 altBrandName = brand.name
                                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                                                    viewModel.expandedBrand.toggle()
+                                                    expandedBrand.toggle()
                                                     //altBrandSelected.toggle()
                                                 }
                                             }
@@ -194,7 +204,7 @@ struct ModifyItemView: View {
                     
                     // Item Management (Delete), if present
                     if editableItemData.representsExistingItem {
-                        SLCenteredButton(title: "Delete This Item", action: { viewModel.confirmDeleteItemAlert =
+                        SLCenteredButton(title: "Delete This Item", action: { confirmDeleteItemAlert =
                             ConfirmDeleteItemAlert(item: editableItemData.associatedItem,
                                 destructiveCompletion: { presentationMode.wrappedValue.dismiss() })
                         })
@@ -215,7 +225,7 @@ struct ModifyItemView: View {
                     logDisappear(title: "AddOrModifyItemView")
                     PersistentStore.shared.saveContext()
                 }
-                .alert(item: $viewModel.confirmDeleteItemAlert) { item in item.alert() }
+                .alert(item: $confirmDeleteItemAlert) { item in item.alert() }
             }
         }
     }

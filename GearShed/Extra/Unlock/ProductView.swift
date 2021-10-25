@@ -15,18 +15,18 @@ struct ProductView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
-                Text("Get Unlimited Projects")
+                Text("Get Unlimited Access")
                     .font(.headline)
                     .padding(.top, 10)
 
-                Text("You can add three projects for free, or pay \(product.localizedPrice) to add unlimited projects.")
+                Text("You can add five items for free, or pay \(product.localizedPrice) to add unlimited items.")
                 Text("If you already bought the unlock on another device, press Restore Purchases.")
 
                 Button("Buy: \(product.localizedPrice)", action: unlock)
-                    .buttonStyle(PurchaseButton())
+                    //.buttonStyle(PurchaseButton())
 
                 Button("Restore Purchases", action: unlockManager.restore)
-                    .buttonStyle(PurchaseButton())
+                    //.buttonStyle(PurchaseButton())
             }
         }
     }

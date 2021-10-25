@@ -11,8 +11,15 @@ import SwiftUI
 struct AllCategoryView: View {
     
     @EnvironmentObject var persistentStore: PersistentStore
-    
+
     @StateObject private var viewModel: MainCatelogVM
+    
+    // Local state to trigger showing a sheet to add a new item in MainCatelog
+    @State private var isAddNewItemShowing: Bool = false
+    
+    @State private var showingUnlockView: Bool = false
+    
+    @State private var isAddCategoryShowing: Bool = false
     
     // state var to pass into addItemView pre populating the selected category
     @State var selectedCategory: Category? = nil
@@ -33,13 +40,16 @@ struct AllCategoryView: View {
             }
             Spacer(minLength: 50)
         }
-        .fullScreenCover(isPresented: $viewModel.isAddNewItemShowing) {
-            AddItemView(persistentStore: persistentStore ,category: selectedCategory).environment(\.managedObjectContext, PersistentStore.shared.context)
+        .fullScreenCover(isPresented: $isAddNewItemShowing) {
+            AddItemView(persistentStore: persistentStore, category: selectedCategory).environment(\.managedObjectContext, PersistentStore.shared.context)
         }
-        .fullScreenCover(isPresented: $viewModel.isEditCategoryShowing) {
+        .fullScreenCover(isPresented: $isAddCategoryShowing) {
             NavigationView {
                 AddCategoryView()
             }
+        }
+        .sheet(isPresented: $showingUnlockView) {
+            UnlockView()
         }
     }
     
@@ -58,7 +68,7 @@ struct AllCategoryView: View {
                 .padding(.horizontal, 50)
                 
                 Spacer()
-                Text("\(viewModel.allItemsInShed.count)")
+                Text("\(viewModel.items.count)")
                     .font(.headline)
                     .padding(.horizontal, 20)
             }
@@ -71,8 +81,14 @@ struct AllCategoryView: View {
         ForEach(viewModel.categories) { category in
             HStack (alignment: .firstTextBaseline, spacing: 10) {
                 Button {
-                    selectedCategory = category
-                    viewModel.isAddNewItemShowing.toggle()
+                    let canCreate = self.persistentStore.fullVersionUnlocked ||
+                        self.persistentStore.count(for: Item.fetchRequest()) < 3
+                    if canCreate {
+                        selectedCategory = category
+                        isAddNewItemShowing.toggle()
+                    } else {
+                        showingUnlockView.toggle()
+                    }
                 } label: {
                     Image(systemName: "plus")
                 }
@@ -90,7 +106,9 @@ struct AllCategoryView: View {
             Spacer()
             HStack {
                 Spacer()
-                Button {viewModel.isEditCategoryShowing.toggle()}
+                Button {
+                    isAddCategoryShowing.toggle()
+                }
                 label: {
                     VStack{
                         Text("Add")

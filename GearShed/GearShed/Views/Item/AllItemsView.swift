@@ -9,9 +9,9 @@
 import SwiftUI
 
 struct AllItemsView: View {
-    
+        
     @EnvironmentObject var persistentStore: PersistentStore
-    
+
     @StateObject private var viewModel: MainCatelogVM
     
     init(persistentStore: PersistentStore) {

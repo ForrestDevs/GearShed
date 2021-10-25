@@ -36,7 +36,7 @@ class UnlockManager: NSObject, ObservableObject, SKPaymentTransactionObserver, S
         self.persistentStore = persistentStore
 
         // Put the IAP product IDs HERE
-        let productIDs = Set(["com.yourcompany.ultimateportfolio.unlock"])
+        let productIDs = Set(["app.gearshed.GearShed.ProUnlock"])
         request = SKProductsRequest(productIdentifiers: productIDs)
 
         super.init()

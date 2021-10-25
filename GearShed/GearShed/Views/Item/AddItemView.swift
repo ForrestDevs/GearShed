@@ -13,6 +13,8 @@ struct AddItemView: View {
     // Environment state to dismiss page
     @Environment(\.presentationMode) var presentationMode
     
+    @EnvironmentObject var persistentStore: PersistentStore
+    
     @StateObject private var viewModel: MainCatelogVM
     
     // this editableData struct contains all of the fields of an Item that
@@ -35,6 +37,10 @@ struct AddItemView: View {
         selectedCategoryName = category?.name ?? "Choose a category"
         selectedBrandName = brand?.name ?? "Choose a brand"
     }
+    
+    @State private var expandedCategory: Bool = false
+    
+    @State private var expandedBrand: Bool = false
     
     private var selectedCategoryName: String
     
@@ -106,7 +112,7 @@ struct AddItemView: View {
                             .foregroundColor(Color.theme.green)
                         
                         HStack (alignment: .firstTextBaseline, spacing: 10) {
-                            DisclosureGroup("\(discolsureCategoryTitle())", isExpanded: $viewModel.expandedCategory) {
+                            DisclosureGroup("\(discolsureCategoryTitle())", isExpanded: $expandedCategory) {
                                 VStack(alignment: .leading) {
                                     NavigationLink(destination: AddCategoryView()) {
                                         Text("Add New Category")
@@ -122,14 +128,14 @@ struct AddItemView: View {
                                                 altCategorySelected = true
                                                 altCategoryName = category.name
                                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                                                    viewModel.expandedCategory.toggle()
+                                                    expandedCategory.toggle()
                                                 }
                                             }
                                     }
                                 }
                             }
                             
-                            DisclosureGroup("\(discolsureBrandTitle())", isExpanded: $viewModel.expandedBrand) {
+                            DisclosureGroup("\(discolsureBrandTitle())", isExpanded: $expandedBrand) {
                                 VStack(alignment: .leading) {
                                     NavigationLink(destination: AddBrandView()) {
                                         Text("Add New Brand")
@@ -145,7 +151,7 @@ struct AddItemView: View {
                                                 altBrandSelected = true
                                                 altBrandName = brand.name
                                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                                                    viewModel.expandedBrand.toggle()
+                                                    expandedBrand.toggle()
                                                     //altBrandSelected.toggle()
                                                 }
                                             }
@@ -215,7 +221,6 @@ struct AddItemView: View {
                     logDisappear(title: "AddOrModifyItemView")
                     PersistentStore.shared.saveContext()
                 }
-                .alert(item: $viewModel.confirmDeleteItemAlert) { item in item.alert() }
             }
         }
     }

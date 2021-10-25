@@ -10,7 +10,7 @@ import SwiftUI
 struct BrandDetailView: View {
     
     @EnvironmentObject var persistentStore: PersistentStore
-    
+
     @ObservedObject var brand: Brand
     
     @State private var isEditBrandShowing: Bool = false

@@ -9,6 +9,8 @@ import SwiftUI
 
 struct StatBar: View {
     
+    @EnvironmentObject var persistentStore: PersistentStore
+
     @StateObject private var viewModel: MainCatelogVM
     
     init(persistentStore: PersistentStore) {
@@ -24,7 +26,7 @@ struct StatBar: View {
                         Text("Sheds")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
-                        Text("\(viewModel.allItemsInShed.count)")
+                        Text("\(viewModel.categories.count)")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
                     }
@@ -38,7 +40,7 @@ struct StatBar: View {
                         Text("Items")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
-                        Text("\(viewModel.allItemsInShed.count)")
+                        Text("\(viewModel.items.count)")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
                     }
@@ -51,7 +53,7 @@ struct StatBar: View {
                         Text("Weight")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
-                        Text("\(viewModel.allItemsInShed.count) g")
+                        Text("\(viewModel.items.count) g")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
                     }
@@ -64,7 +66,7 @@ struct StatBar: View {
                         Text("Invested")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
-                        Text("$ \(viewModel.allItemsInShed.count)")
+                        Text("$ \(viewModel.items.count)")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
                     }
@@ -77,7 +79,7 @@ struct StatBar: View {
                         Text("Favorites")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
-                        Text("\(viewModel.allItemsInShed.count)")
+                        Text("\(viewModel.items.count)")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
                     }
@@ -111,8 +113,10 @@ struct StatBar: View {
 
 struct StatBarInWishList: View {
     
-    @StateObject private var viewModel: MainCatelogVM
+    @EnvironmentObject var persistentStore: PersistentStore
 
+    @StateObject private var viewModel: MainCatelogVM
+    
     init(persistentStore: PersistentStore) {
         let viewModel = MainCatelogVM(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -129,7 +133,7 @@ struct StatBarInWishList: View {
                         Text("Items")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
-                        Text("\(viewModel.allItemsInShed.count)")
+                        Text("\(viewModel.wishListItems.count)")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
                     }
@@ -142,7 +146,7 @@ struct StatBarInWishList: View {
                         Text("Cost")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
-                        Text("$ \(viewModel.allItemsInShed.count)")
+                        Text("$ \(viewModel.items.count)")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
                     }
@@ -176,8 +180,10 @@ struct StatBarInWishList: View {
 
 struct StatBarInFav: View {
     
-    @StateObject private var viewModel: MainCatelogVM
+    @EnvironmentObject var persistentStore: PersistentStore
 
+    @StateObject private var viewModel: MainCatelogVM
+    
     init(persistentStore: PersistentStore) {
         let viewModel = MainCatelogVM(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -194,7 +200,7 @@ struct StatBarInFav: View {
                         Text("Items")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
-                        Text("\(viewModel.allItemsInShed.count)")
+                        Text("\(viewModel.favItems.count)")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
                     }
@@ -207,7 +213,7 @@ struct StatBarInFav: View {
                         Text("Weight")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
-                        Text("\(viewModel.allItemsInShed.count) g")
+                        Text("\(viewModel.items.count) g")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
                     }
@@ -220,7 +226,7 @@ struct StatBarInFav: View {
                         Text("Invested")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
-                        Text("$ \(viewModel.allItemsInShed.count)")
+                        Text("$ \(viewModel.items.count)")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
                     }
@@ -254,8 +260,10 @@ struct StatBarInFav: View {
 
 struct StatBarInShed: View {
     
-    @StateObject private var viewModel: MainCatelogVM
+    @EnvironmentObject var persistentStore: PersistentStore
 
+    @StateObject private var viewModel: MainCatelogVM
+    
     init(persistentStore: PersistentStore) {
         let viewModel = MainCatelogVM(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -272,7 +280,7 @@ struct StatBarInShed: View {
                         Text("Items")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
-                        Text("\(viewModel.allItemsInShed.count)")
+                        Text("\(viewModel.items.count)")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
                     }
@@ -285,7 +293,7 @@ struct StatBarInShed: View {
                         Text("Weight")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
-                        Text("\(viewModel.allItemsInShed.count) g")
+                        Text("\(viewModel.items.count) g")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
                     }
@@ -298,7 +306,7 @@ struct StatBarInShed: View {
                         Text("Invested")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
-                        Text("$ \(viewModel.allItemsInShed.count)")
+                        Text("$ \(viewModel.items.count)")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
                     }
@@ -311,7 +319,7 @@ struct StatBarInShed: View {
                         Text("Favorites")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
-                        Text("\(viewModel.allItemsInShed.count)")
+                        Text("\(viewModel.items.count)")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
                     }

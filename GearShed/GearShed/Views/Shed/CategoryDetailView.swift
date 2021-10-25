@@ -10,7 +10,7 @@ import SwiftUI
 struct CategoryDetailView: View {
     
     @EnvironmentObject var persistentStore: PersistentStore
-    
+
     @ObservedObject var category: Category
     @State private var isEditCategoryShowing: Bool = false
 

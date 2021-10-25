@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct AllWishListView: View {
-    
+
     @EnvironmentObject var persistentStore: PersistentStore
 
     @StateObject private var viewModel: MainCatelogVM
@@ -66,12 +66,7 @@ struct AllWishListView: View {
     
 }
 
-/*ScrollView(.vertical, showsIndicators: false) {
-    ForEach(allWishListItems) { item in
-        ItemRowView(item: item)
-    }
-}
-.padding(.top, 20)*/
+
 
 
 
