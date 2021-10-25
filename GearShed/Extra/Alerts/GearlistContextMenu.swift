@@ -23,7 +23,7 @@ import SwiftUI
 /// - Parameter deletionTrigger: a closure to call to set state variables and put up an "Are you sure?" alert before allowing deletion of the item
 /// - Returns: Void
 @ViewBuilder
-func tripContextMenu(trip: Trip, deletionTrigger: @escaping () -> Void) -> some View {
+func gearlistContextMenu(gearlist: Gearlist, deletionTrigger: @escaping () -> Void) -> some View {
     
     // Delete Trip Option
     Button(action: { deletionTrigger() }) {
