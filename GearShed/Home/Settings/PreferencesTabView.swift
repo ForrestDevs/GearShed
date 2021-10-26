@@ -25,7 +25,7 @@ struct PreferencesTabView: View {
     // thing that might remain is whether the timer is stopped when in the background.
     
     @State private var confirmDataHasBeenAdded = false
-    @State private var categorysAdded: Int = 0
+    @State private var shedsAdded: Int = 0
     @State private var brandsAdded: Int = 0
     @State private var itemsAdded: Int = 0
     
@@ -57,11 +57,11 @@ struct PreferencesTabView: View {
                     .padding(.bottom, 20)
                 
                 Button("Load sample data") {
-                    let currentCategoryCount = Category.count() // what it is now
+                    let currentShedCount = Shed.count() // what it is now
                     let currentBrandCount = Brand.count() // what it is now
                     let currentItemCount = Item.count() // what it is now
                     populateDatabaseFromJSON()
-                    self.categorysAdded = Category.count() - currentCategoryCount // now the differential
+                    self.shedsAdded = Shed.count() - currentShedCount // now the differential
                     self.brandsAdded = Brand.count() - currentBrandCount // now the differential
                     self.itemsAdded = Item.count() - currentItemCount // now the differential
                     self.confirmDataHasBeenAdded = true
@@ -69,7 +69,7 @@ struct PreferencesTabView: View {
                 .padding(.bottom, 20)
                 .alert(isPresented: $confirmDataHasBeenAdded) {
                     Alert(title: Text("Data Added"),
-                                message: Text("Sample data for the app (\(categorysAdded) categorys and \(itemsAdded) shopping items) have been added."),
+                                message: Text("Sample data for the app (\(shedsAdded) sheds and \(itemsAdded) shopping items) have been added."),
                                 dismissButton: .default(Text("OK")))
                 }
                 
@@ -79,7 +79,7 @@ struct PreferencesTabView: View {
                 
                 Button("Write database as JSON") {
                     writeAsJSON(items: Item.allItems(), to: kItemsFilename)
-                    writeAsJSON(items: Category.allCategories(userCategorysOnly: true), to: kCategorysFilename)
+                    writeAsJSON(items: Shed.allSheds(userShedsOnly: true), to: kShedsFilename)
                     writeAsJSON(items: Brand.allBrands(userBrandsOnly: true), to: kBrandsFilename)
                 }
                 .padding(.bottom, 20)

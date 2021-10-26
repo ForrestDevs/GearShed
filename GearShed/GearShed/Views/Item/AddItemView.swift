@@ -17,43 +17,25 @@ struct AddItemView: View {
     
     @StateObject private var viewModel: MainCatelogVM
     
+    @State private var expandedShed: Bool = false
+    
+    @State private var expandedBrand: Bool = false
+    
     // this editableData struct contains all of the fields of an Item that
     // can be edited here, so that we're not doing a "live edit" on the Item.
     @State private var editableItemData: EditableItemData
     
     // custom init here to set up editableData state
-    init(persistentStore: PersistentStore, editableItem: Item? = nil, initialItemName: String? = nil, initialItemDetails: String? = nil, category: Category? = nil, brand: Brand? = nil) {
+    init(persistentStore: PersistentStore, initialItemName: String? = nil, initialItemDetails: String? = nil, shed: Shed? = nil, brand: Brand? = nil) {
+        
         let viewModel = MainCatelogVM(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
-        // initialize the editableData struct for the incoming item, if any; and
-        // also carry in whatever might be a suggested Item name for a new Item
-        if let item = editableItem {
-            _editableItemData = State(initialValue: EditableItemData(item: item))
-        } else {
-            // here's we'll see if a suggested name for adding a new item was supplied
-            let initialValue = EditableItemData(initialItemName: initialItemName, initialItemDetails: initialItemDetails, category: category,  brand: brand)
-            _editableItemData = State(initialValue: initialValue)
-        }
-        selectedCategoryName = category?.name ?? "Choose a category"
-        selectedBrandName = brand?.name ?? "Choose a brand"
+        
+        // here's we'll see if a suggested name for adding a new item was supplied
+        let initialValue = EditableItemData(initialItemName: initialItemName, initialItemDetails: initialItemDetails, shed: shed, brand: brand)
+        _editableItemData = State(initialValue: initialValue)
     }
     
-    @State private var expandedCategory: Bool = false
-    
-    @State private var expandedBrand: Bool = false
-    
-    private var selectedCategoryName: String
-    
-    private var selectedBrandName: String
-    
-    @State private var altCategorySelected: Bool = false
-    
-    @State private var altBrandSelected: Bool = false
-    
-    @State private var altCategoryName: String = ""
-    
-    @State private var altBrandName: String = ""
-	    
     var body: some View {
         NavigationView {
             ScrollView(.vertical, showsIndicators: false) {
@@ -106,36 +88,36 @@ struct AddItemView: View {
                     }
                     
                     VStack (alignment: .leading, spacing: 10) {
-                        Text("Category - Brand")
+                        Text("Shed - Brand")
                             .font(.subheadline)
                             .bold()
                             .foregroundColor(Color.theme.green)
                         
                         HStack (alignment: .firstTextBaseline, spacing: 10) {
-                            DisclosureGroup("\(discolsureCategoryTitle())", isExpanded: $expandedCategory) {
+                            DisclosureGroup(editableItemData.shed.name, isExpanded: $expandedShed) {
                                 VStack(alignment: .leading) {
-                                    NavigationLink(destination: AddCategoryView()) {
-                                        Text("Add New Category")
+                                    NavigationLink(destination: AddShedView()) {
+                                        Text("Add New Shed")
                                             .font(.subheadline)
                                             //.foregroundColor(Color.theme.green)
                                     }
-                                    ForEach(viewModel.categories) { category in
-                                        Text(category.name).tag(category)
+                                    ForEach(viewModel.sheds) { shed in
+                                        Text(shed.name).tag(shed)
                                             .font(.subheadline)
                                             //.foregroundColor(Color.theme.secondaryText)
                                             .onTapGesture {
-                                                editableItemData.category = category
-                                                altCategorySelected = true
-                                                altCategoryName = category.name
+                                                editableItemData.shed = shed
+                                                //altShedSelected = true
+                                                //altShedName = shed.name
                                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                                                    expandedCategory.toggle()
+                                                    expandedShed.toggle()
                                                 }
                                             }
                                     }
                                 }
                             }
                             
-                            DisclosureGroup("\(discolsureBrandTitle())", isExpanded: $expandedBrand) {
+                            DisclosureGroup(editableItemData.brand.name, isExpanded: $expandedBrand) {
                                 VStack(alignment: .leading) {
                                     NavigationLink(destination: AddBrandView()) {
                                         Text("Add New Brand")
@@ -148,8 +130,8 @@ struct AddItemView: View {
                                             //.foregroundColor(Color.theme.secondaryText)
                                             .onTapGesture {
                                                 editableItemData.brand = brand
-                                                altBrandSelected = true
-                                                altBrandName = brand.name
+                                                //altBrandSelected = true
+                                                //altBrandName = brand.name
                                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                                                     expandedBrand.toggle()
                                                     //altBrandSelected.toggle()
@@ -160,23 +142,8 @@ struct AddItemView: View {
                             }
                         }
                     }
-                    
-                    /*VStack (alignment: .leading, spacing: 10) {
-                        Text("Quantity")
-                            .font(.subheadline)
-                            .bold()
-                            .foregroundColor(Color.theme.green)
-                        
-                        Stepper(value: $editableItemData.quantity, in: 1...50) {
-                            HStack {
-                                Spacer()
-                                Text("\(editableItemData.quantity)")
-                                Spacer()
-                            }
-                        }
-                    }*/
-                    
-                    Toggle(isOn: $editableItemData.onList) {
+                                        
+                    Toggle(isOn: $editableItemData.wishlist) {
                         Text("Wishlist Item")
                             .font(.subheadline)
                             .bold()
@@ -225,22 +192,6 @@ struct AddItemView: View {
         }
     }
     
-    func discolsureCategoryTitle() -> String {
-        if !altCategorySelected {
-            return selectedCategoryName
-        } else {
-            return altCategoryName
-        }
-    }
-    
-    func discolsureBrandTitle() -> String {
-        if !altBrandSelected {
-            return selectedBrandName
-        } else {
-            return altBrandName
-        }
-    }
-		
 	// Cancel Button
 	func cancelButton() -> some View {
         Button("Cancel",action: {presentationMode.wrappedValue.dismiss()})
@@ -260,4 +211,3 @@ struct AddItemView: View {
 		presentationMode.wrappedValue.dismiss()
 	}
 }
-

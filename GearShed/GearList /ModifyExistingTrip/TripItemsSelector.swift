@@ -26,7 +26,7 @@ struct TripItemsSelector: View {
     
     var body: some View {
         HStack {
-            // Item Name and Category
+            // Item Name and Shed
             VStack(alignment: .leading) {
                 
                 if item.isFavourite {
@@ -37,7 +37,7 @@ struct TripItemsSelector: View {
                         .strikethrough()
                 }
                 
-                Text(item.categoryName)
+                Text(item.shedName)
                     .font(.caption)
                     .foregroundColor(.secondary)
             }

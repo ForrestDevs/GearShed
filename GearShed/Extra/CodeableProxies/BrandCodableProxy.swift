@@ -9,7 +9,7 @@
 
 import Foundation
 
-// this is a simple struct to extract only the fields of a Category
+// this is a simple struct to extract only the fields of a Shed
 // that we would import or export in such a way that the result is Codable
 struct BrandCodableProxy: Codable {
     var name: String

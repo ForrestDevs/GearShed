@@ -14,11 +14,11 @@ final class TripVM: ObservableObject {
     
     // state variable to control triggering confirmation of a delete, which is
     // one of three context menu actions that can be applied to an item
-    @Published var confirmDeleteTripAlert: ConfirmDeleteTripAlert?
+    @Published var confirmDeleteGearlistAlert: ConfirmDeleteGearlistAlert?
     
-    func deleteTrip(trip: Trip) {
-        let trip = trip
-        manager.delete(trip)
+    func deleteGearlist(gearlist: Gearlist) {
+        let gearlist = gearlist
+        manager.delete(gearlist)
     }
     
 }

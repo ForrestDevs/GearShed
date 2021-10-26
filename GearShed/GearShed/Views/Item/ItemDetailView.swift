@@ -47,7 +47,7 @@ struct ItemDetailView: View {
             
             Spacer()
         }
-        .navigationTitle("\(item.categoryName)")
+        .navigationTitle("\(item.shedName)")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button { self.isEditItemShowing.toggle() } label: { Image(systemName: "slider.horizontal.3") }
@@ -67,6 +67,14 @@ struct ItemDetailView: View {
                 .frame(width: 13, height: 12)
                 .foregroundColor(Color.theme.green)
                 .padding(.vertical, -1)
+                .onTapGesture {
+                    if item.isFavourite {
+                        item.unmarkFavourite()
+                    } else {
+                        item.markFavourite()
+                        item.unmarkRegret()
+                    }
+                }
             
             Text(item.brandName)
                 .font(.headline)
@@ -96,10 +104,23 @@ struct ItemDetailView: View {
                         .font(.subheadline)
                         .foregroundColor(Color.theme.accent)
                 }
-               
-                // Regret Toggle
-                Toggle("Regret",isOn: $regret)
-                    .toggleStyle(CheckmarkToggleStyle())
+                HStack {
+                    Text("Regret")
+                    
+                    Image(systemName: item.isRegret ? "checkmark.square" : "square")
+                        .resizable()
+                        .frame(width: 13, height: 12)
+                        .foregroundColor(Color.theme.green)
+                        .padding(.vertical, -1)
+                        .onTapGesture {
+                            if item.isRegret {
+                                item.unmarkRegret()
+                            } else {
+                                item.markRegret()
+                                item.unmarkFavourite()
+                            }
+                        }
+                }
             }
             .padding(.horizontal,20)
             

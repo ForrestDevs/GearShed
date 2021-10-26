@@ -23,7 +23,7 @@ extension Item {
 	conformance to Identifiable.)
 	
 	my general theory of the case is that no one outside of this class (and its Core
-	Data based brethren, like Category+Extensions.swift and DataController.swift) should really
+	Data based brethren, like Shed+Extensions.swift and DataController.swift) should really
 	be touching these attributes directly -- and certainly no SwiftUI views should
 	ever touch these attributes directly.
 	
@@ -46,31 +46,31 @@ extension Item {
 	the situation for SwiftUI becomes more complicated when one CD object has a computed property
 	based on something that's not a direct attribute of the object.  examples:
 	
-		-- an Item has a `categoryName` computed property = the name of its associated Category
+		-- an Item has a `shedName` computed property = the name of its associated Shed
 	
-		-- a Category has an `itemCount` computed property = the count of its associated Items.
+		-- a Shed has an `itemCount` computed property = the count of its associated Items.
 	
 	for example, if a view holds on to (is a subscriber of) an Item as an @ObservedObject, and if
-	we change the name of its associated Category, the view will not see this change because it
-	is subscribed to changes on the Item (not the Category).
+	we change the name of its associated Shed, the view will not see this change because it
+	is subscribed to changes on the Item (not the Shed).
 	
-	assuming the view displays the name of the associated category using the item's categoryName,
-	we must have the category tell all of its items that the categoryName computed property is now
+	assuming the view displays the name of the associated shed using the item's shedName,
+	we must have the shed tell all of its items that the shedName computed property is now
 	invalid and some views may need to be updated, in order to keep such a view in-sync.  thus
-	the category must execute
+	the shed must execute
 	
 		items.forEach({ $0.objectWillChange.send() })
 	
-	the same holds true for a view that holds on to (is a subscriber of) a Category as an @ObservedObject.
-	if that view displays the number of items for the category, based on the computed property
-	`itemCount`, then when an Item is edited to change its category, the item must tell both its previous
-	and new categorys about the change by executing objectWillChange.send() for those categorys:
+	the same holds true for a view that holds on to (is a subscriber of) a Shed as an @ObservedObject.
+	if that view displays the number of items for the shed, based on the computed property
+	`itemCount`, then when an Item is edited to change its shed, the item must tell both its previous
+	and new sheds about the change by executing objectWillChange.send() for those sheds:
 	
-		(see the computed var category: Category setter below)
+		(see the computed var shed: Shed setter below)
 	
-	as a result, you may see some code below (and also in Category+Extensions.swift) where, when
+	as a result, you may see some code below (and also in Shed+Extensions.swift) where, when
 	a SwiftUI view writes to one of the fronted properties of the Item, we also execute
-	category_?.objectWillChange.send().
+	shed_?.objectWillChange.send().
 	
 	(3) @ObservedObject References to Items
 	
@@ -117,15 +117,18 @@ extension Item {
 	
 	// whether the item is a favourtie or not.  this fronts a Core Data boolean
 	var isFavourite: Bool { isFavourite_ }
+    
+    // whether the item is a regret or not.  this fronts a Core Data boolean
+    var isRegret: Bool { isRegret_ }
 	
 	// whether the item is on the list or wishlist.  this fronts a Core Data boolean,
 	// but when changed from true to false, it signals a purchase, so update
 	// the lastDatePurchased
-	var onList: Bool { 
-		get { onList_ }
+	var wishlist: Bool { 
+		get { wishlist_ }
 		set {
-			onList_ = newValue
-			if !onList_ { // just moved off list, so record date
+            wishlist_ = newValue
+			if !wishlist_ { // just moved off list, so record date
 				dateLastPurchased_ = Date()
 			}
 		}
@@ -150,15 +153,15 @@ extension Item {
         set { price_ = newValue }
     }
 	
-	// an item's associated category.  this fronts a Core Data optional attribute.
-	// if you change an item's category, the old and the new Category may want to
+	// an item's associated shed.  this fronts a Core Data optional attribute.
+	// if you change an item's shed, the old and the new Shed may want to
 	// know that some of their computed properties could be invalidated
-	var category: Category {
-		get { category_! }
+	var shed: Shed {
+		get { shed_! }
 		set {
-			category_?.objectWillChange.send()
-			category_ = newValue
-			category_?.objectWillChange.send()
+            shed_?.objectWillChange.send()
+            shed_ = newValue
+            shed_?.objectWillChange.send()
 		}
 	}
     
@@ -174,30 +177,21 @@ extension Item {
         }
     }
     
-    // tags: fronts Core Data attribute tags_ that is an NSSet, and turns it into
-    // a Swift array
-    var tags: [Tag] {
-        if let tags = tags_ as? Set<Tag> {
-            return tags.sorted(by: { $0.name < $1.name })
-        }
-        return []
-    }
-    
     
     // trips: fronts Core Data attribute trips_ that is an NSSet, and turns it into
     // a Swift array
-    var trips: [Trip] {
-        if let trips = trips_ as? Set<Trip> {
-            return trips.sorted(by: { $0.name < $1.name })
+    var gearlists: [Gearlist] {
+        if let gearlists = gearlists_ as? Set<Gearlist> {
+            return gearlists.sorted(by: { $0.name < $1.name })
         }
         return []
     }
     
     // tripCount: computed property from Core Data trips_
-    var tripCount: Int { trips_?.count ?? 0 }
+    var gearlistCount: Int { gearlists_?.count ?? 0 }
     
-	// the name of its associated category
-	var categoryName: String { category_?.name_ ?? "Not Available" }
+	// the name of its associated shed
+	var shedName: String { shed_?.name_ ?? "Not Available" }
     
     // the name of its associated brand
     var brandName: String { brand_?.name_ ?? "Not Available" }
@@ -207,10 +201,10 @@ extension Item {
 	
 	// MARK: - Useful Fetch Requests
 	
-    class func allItemsFR(at category: Category, onList: Bool = false) -> NSFetchRequest<Item> {
+    class func allItemsFR(at shed: Shed, onList: Bool = false) -> NSFetchRequest<Item> {
 		let request: NSFetchRequest<Item> = Item.fetchRequest()
-        let p1 = NSPredicate(format: "category_ == %@", category)
-        let p2 = NSPredicate(format: "onList_ == %d", onList)
+        let p1 = NSPredicate(format: "shed_ == %@", shed)
+        let p2 = NSPredicate(format: "wishlist_ == %d", onList)
         let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [p1, p2])
 		request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
 		request.predicate = predicate
@@ -224,17 +218,17 @@ extension Item {
         return request
     }
     
-    static func allItemsFR(at trip: Trip) -> NSFetchRequest<Item> {
+    static func allItemsFR(at gearlist: Gearlist) -> NSFetchRequest<Item> {
         let request: NSFetchRequest<Item> = Item.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
-        request.predicate = NSPredicate(format: "trips_ == %@", trip)
+        request.predicate = NSPredicate(format: "gearlists_ == %@", gearlist)
         return request
     }
     
 	
 	class func allItemsFR(onList: Bool) -> NSFetchRequest<Item> {
 		let request: NSFetchRequest<Item> = Item.fetchRequest()
-		request.predicate = NSPredicate(format: "onList_ == %d", onList)
+		request.predicate = NSPredicate(format: "wishlist_ == %d", onList)
 		request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
 		return request
 	}
@@ -280,11 +274,10 @@ extension Item {
 	}
 
 	class func delete(_ item: Item) {
-		// remove the reference to this item from its associated category
-		// by resetting its (real, Core Data) category to nil
-		item.category_ = nil
+		// remove the reference to this item from its associated shed
+		// by resetting its (real, Core Data) shed to nil
+		item.shed_ = nil
         item.brand_ = nil
-        item.tags_ = nil
 		// now delete and save
 		let context = item.managedObjectContext
 		context?.delete(item)
@@ -292,8 +285,8 @@ extension Item {
 	}
 	
 	class func moveAllItemsOffShoppingList() {
-		for item in allItems() where item.onList {
-			item.onList_ = false
+		for item in allItems() where item.wishlist {
+			item.wishlist_ = false
 		}
 	}
 	
@@ -303,15 +296,32 @@ extension Item {
 	func toggleFavouriteStatus() {
         isFavourite_ = !isFavourite_
 	}
+    
+    // toggles the availability flag for an item
+    func toggleRegretStatus() {
+        isRegret_ = !isRegret_
+    }
 
 	// changes onList flag for an item
-	func toggleOnListStatus() {
-		onList = !onList
+	func toggleWishlistStatus() {
+		wishlist = !wishlist
 	}
 
 	func markFavourite() {
 		isFavourite_ = true
 	}
+    
+    func markRegret() {
+        isRegret_ = true
+    }
+    
+    func unmarkFavourite() {
+        isFavourite_ = false
+    }
+    
+    func unmarkRegret() {
+        isRegret_ = false
+    }
     
 	private func updateValues(from editableData: EditableItemData) {
 		name_ = editableData.name
@@ -319,12 +329,13 @@ extension Item {
 		quantity_ = Int32(editableData.quantity)
         weight_ = editableData.weight
         price_ = editableData.price
-		onList_ = editableData.onList
+		wishlist_ = editableData.wishlist
         isFavourite_ = editableData.isFavourite
-		category = editableData.category
+        isRegret_ = editableData.isRegret 
+		shed = editableData.shed
         brand = editableData.brand
         
-        trips.forEach({ $0.objectWillChange.send() })
+        gearlists.forEach({ $0.objectWillChange.send() })
         
 	}
 	

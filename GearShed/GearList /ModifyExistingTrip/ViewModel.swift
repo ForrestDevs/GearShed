@@ -15,10 +15,10 @@ class ViewModel: ObservableObject {
     // write, delete, update, etc. back to core data.
     let manager = PersistentStore.shared.context
     
-    func saveItemsToTrip(items: [Item], trip: Trip) {
+    func saveItemsToGearlist(items: [Item], gearlist: Gearlist) {
         for item in items {
-            trip.addToItems_(item)
-            print("Saved \(item.name) To Trip")
+            gearlist.addToItems_(item)
+            print("Saved \(item.name) To Gearlist")
         }
     }
     

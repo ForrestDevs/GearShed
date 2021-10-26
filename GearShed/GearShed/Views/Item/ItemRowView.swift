@@ -12,15 +12,11 @@ import SwiftUI
 struct ItemRowView: View {
 
 	@ObservedObject var item: Item
-    
-    @State private var isFavourited: Bool = false
-    
+        
 	var body: some View {
         
         HStack (alignment: .firstTextBaseline , spacing: 15) {
-            
             favouriteButton
-            
             NavigationLink(destination: ItemDetailView(item: item)) {
                 navLinkBody
             }
@@ -35,8 +31,12 @@ struct ItemRowView: View {
             .foregroundColor(Color.theme.green)
             .padding(.vertical, -1)
             .onTapGesture {
-                isFavourited.toggle()
-                item.toggleFavouriteStatus()
+                if item.isFavourite {
+                    item.unmarkFavourite()
+                } else {
+                    item.markFavourite()
+                    item.unmarkRegret()
+                }
             }
     }
     
@@ -52,8 +52,65 @@ struct ItemRowView: View {
                     
                     Text(item.name)
                         //.font(.headline)
-                        .foregroundColor(Color.theme.accent)
+                        .foregroundColor(Color.theme.green)
                 }
+                
+                HStack {
+                    // quantity at the right
+                    Text("\(item.weight) g")
+                        .font(.caption)
+                        //.font(.system(size: 10))
+                        //.bold()
+                        .foregroundColor(Color.theme.green)
+                        //.padding(.horizontal)
+                    
+                    Text(item.detail)
+                        .font(.caption)
+                        .foregroundColor(Color.theme.secondaryText)
+                        
+                    //Spacer()
+                }
+                .frame(maxHeight: 35)
+            }
+            Spacer()
+        }
+    }
+    
+}
+
+struct ItemRowViewInBrand: View {
+
+    @ObservedObject var item: Item
+        
+    var body: some View {
+        
+        HStack (alignment: .firstTextBaseline , spacing: 15) {
+            favouriteButton
+            NavigationLink(destination: ItemDetailView(item: item)) {
+                navLinkBody
+            }
+        }
+        .padding(.horizontal)
+    }
+    
+    private var favouriteButton: some View {
+        Image(systemName: item.isFavourite ? "heart.fill" : "heart")
+            .resizable()
+            .frame(width: 13, height: 12)
+            .foregroundColor(Color.theme.green)
+            .padding(.vertical, -1)
+            .onTapGesture {
+                item.toggleRegretStatus()
+                item.toggleFavouriteStatus()
+            }
+    }
+    
+    private var navLinkBody: some View {
+        HStack {
+            VStack (alignment: .leading, spacing: 0) {
+                
+                Text(item.name)
+                    .foregroundColor(Color.theme.accent)
                 
                 HStack {
                     // quantity at the right
@@ -116,32 +173,20 @@ struct ItemRowViewInWishList: View {
                         //.font(.headline)
                         .foregroundColor(Color.theme.accent)
                 }
-                
                 HStack {
-                    
                     // quantity at the right
-                    Text("$100,000")
+                    Text("$\(item.price)")
                         .font(.caption)
-                        //.font(.system(size: 10))
-                        //.bold()
                         .foregroundColor(Color.theme.green)
-                        //.padding(.horizontal)
                     
                     // quantity at the right
                     Text("\(item.weight)g")
                         .font(.caption)
-                        //.font(.system(size: 10))
-                        //.bold()
                         .foregroundColor(Color.theme.green)
-                        //.padding(.horizontal)
-                    
-                    
                     
                     Text(item.detail)
                         .font(.caption)
                         .foregroundColor(Color.theme.secondaryText)
-                        
-                    //Spacer()
                 }
                 .frame(maxHeight: 35)
                 
@@ -152,7 +197,7 @@ struct ItemRowViewInWishList: View {
     }
 }
 
-struct ItemRowViewInCategory: View {
+struct ItemRowViewInShed: View {
 
     @ObservedObject var item: Item
     
@@ -203,50 +248,6 @@ struct ItemRowViewInCategory: View {
     
 }
 
-struct ItemRowViewInBrand: View {
-
-    @ObservedObject var item: Item
-    
-    var body: some View {
-        NavigationLink(destination: ItemDetailView(item: item)) {
-            HStack {
-                Image(systemName: "square.fill")
-                    .resizable()
-                    .font(.title)
-                    .frame(width: 35, height: 35)
-                    .foregroundColor(Color.theme.background)
-                    .padding(.horizontal,4)
-                
-                // Name, Brand, Details
-                VStack (alignment: .leading) {
-                    
-                    HStack {
-                        Text(item.name)
-                            .font(.headline)
-                            .foregroundColor(Color.theme.accent)
-                    }
-                    
-                    Text(item.detail)
-                        .font(.caption)
-                        .foregroundColor(Color.theme.secondaryText)
-                }
-                
-                Spacer()
-                
-                VStack {
-                    // quantity at the right
-                    Text("\(item.weight) g")
-                        .font(.caption)
-                        .bold()
-                        .foregroundColor(Color.theme.green)
-                        .padding(.horizontal)
-                }
-            }
-            .padding(.horizontal)
-        }
-    }
-    
-}
 
 
 

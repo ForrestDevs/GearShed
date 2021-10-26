@@ -71,6 +71,5 @@ struct AllBrandView: View {
             }
         }
     }
-    
 }
 

@@ -1,46 +1,41 @@
 //
-//  BrandDetailView.swift
+//  AllRegretsView.swift
 //  GearShed
 //
-//  Created by Luke Forrest Gannon on 2021-10-19.
+//  Created by Luke Forrest Gannon on 2021-10-25.
 //
 
 import SwiftUI
 
-struct BrandDetailView: View {
+struct AllRegretsView: View {
     
     @EnvironmentObject var persistentStore: PersistentStore
+    
+    @StateObject private var viewModel: MainCatelogVM
+        
+    init(persistentStore: PersistentStore) {
+        let viewModel = MainCatelogVM(persistentStore: persistentStore)
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
 
-    @ObservedObject var brand: Brand
-    
-    @State private var isEditBrandShowing: Bool = false
-    
     var body: some View {
         VStack (spacing: 0) {
-            
-            StatBarInBrand(persistentStore: persistentStore, brand: brand)
-            
-            brandItems
-            
-            Spacer(minLength: 60)
-        }
-        .navigationTitle(brand.name)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button { self.isEditBrandShowing.toggle() } label: { Image(systemName: "slider.horizontal.3") }
-            }
-        }
-        .fullScreenCover(isPresented: $isEditBrandShowing) {
-            ModifyBrandView(brand: brand).environment(\.managedObjectContext, PersistentStore.shared.context)
+            StatBarInRegret(persistentStore: persistentStore)
+                .padding(.top, 5)
+
+            itemsList
+                .padding(.top, 10)
+
+            Spacer(minLength: 50)
         }
     }
     
-    var brandItems: some View {
+    private var itemsList: some View {
         ScrollView(.vertical, showsIndicators: false) {
             ForEach(sectionData()) { section in
                 Section {
                     ForEach(section.items) { item in
-                        ItemRowViewInBrand(item: item)
+                        ItemRowView(item: item)
                             .padding(.bottom, 5)
                     }
                 } header: {
@@ -58,12 +53,13 @@ struct BrandDetailView: View {
                 }
             }
         }
+
     }
     
     func sectionData() -> [SectionData] {
         var completedSectionData = [SectionData]()
         // otherwise, one section for each shed, please.  break the data out by shed first
-        let dictionaryByShed = Dictionary(grouping: brand.items, by: { $0.shed })
+        let dictionaryByShed = Dictionary(grouping: viewModel.regretItems, by: { $0.shed })
         // then reassemble the sections by sorted keys of this dictionary
         for key in dictionaryByShed.keys.sorted() {
             completedSectionData.append(SectionData(title: key.name, items: dictionaryByShed[key]!))
@@ -71,12 +67,3 @@ struct BrandDetailView: View {
         return completedSectionData
     }
 }
-
-
-/*ScrollView(.vertical, showsIndicators: false) {
-    ForEach(brand.items) { item in
-        ItemRowView(item: item)
-    }
-}*/
-
-

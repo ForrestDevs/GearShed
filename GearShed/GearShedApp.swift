@@ -36,10 +36,10 @@ struct GearShedApp: App {
         _persistentStore = StateObject(wrappedValue: persistentStore)
         _unlockManager = StateObject(wrappedValue: unlockManager)
         
-        // If app is loaded for the first time - create the Unknown Brand+Category,
+        // If app is loaded for the first time - create the Unknown Brand+Shed,
         // then set to false so duplicates arent created every time.
         if isFirstLaunch == true {
-            Category.createUnknownCategory()
+            Shed.createUnknownShed()
             Brand.createUnknownBrand()
             isFirstLaunch = false
         }

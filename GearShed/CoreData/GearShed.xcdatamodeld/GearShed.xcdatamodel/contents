@@ -5,41 +5,42 @@
         <attribute name="name_" optional="YES" attributeType="String"/>
         <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="brand_" inverseEntity="Item"/>
     </entity>
-    <entity name="Category" representedClassName="Category" syncable="YES" codeGenerationType="class">
+    <entity name="Gearlist" representedClassName="Gearlist" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name_" optional="YES" attributeType="String"/>
-        <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="category_" inverseEntity="Item"/>
+        <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="gearlists_" inverseEntity="Item"/>
+        <relationship name="trips_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Trip" inverseName="gearlists_" inverseEntity="Trip"/>
     </entity>
     <entity name="Item" representedClassName="Item" syncable="YES" codeGenerationType="class">
         <attribute name="dateLastPurchased_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="detail_" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="isFavourite_" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isRegret_" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="name_" optional="YES" attributeType="String"/>
-        <attribute name="onList_" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="price_" optional="YES" attributeType="String"/>
         <attribute name="quantity_" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="weight_" optional="YES" attributeType="String"/>
+        <attribute name="wishlist_" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <relationship name="brand_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Brand" inverseName="items_" inverseEntity="Brand"/>
-        <relationship name="category_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="items_" inverseEntity="Category"/>
-        <relationship name="tags_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tag" inverseName="items_" inverseEntity="Tag"/>
-        <relationship name="trips_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Trip" inverseName="items_" inverseEntity="Trip"/>
+        <relationship name="gearlists_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Gearlist" inverseName="items_" inverseEntity="Gearlist"/>
+        <relationship name="shed_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Shed" inverseName="items_" inverseEntity="Shed"/>
     </entity>
-    <entity name="Tag" representedClassName="Tag" syncable="YES" codeGenerationType="class">
+    <entity name="Shed" representedClassName="Shed" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name_" optional="YES" attributeType="String"/>
-        <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="tags_" inverseEntity="Item"/>
+        <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="shed_" inverseEntity="Item"/>
     </entity>
     <entity name="Trip" representedClassName="Trip" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name_" optional="YES" attributeType="String"/>
-        <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="trips_" inverseEntity="Item"/>
+        <relationship name="gearlists_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Gearlist" inverseName="trips_" inverseEntity="Gearlist"/>
     </entity>
     <elements>
-        <element name="Brand" positionX="-74.7701416015626" positionY="-290.924331665039" width="128" height="88"/>
-        <element name="Category" positionX="-86.36578369140631" positionY="-169.1634216308595" width="128" height="88"/>
-        <element name="Item" positionX="107.546875" positionY="-305.0498657226562" width="128" height="238"/>
-        <element name="Tag" positionX="289.8245239257812" positionY="-303.9589233398438" width="128" height="88"/>
-        <element name="Trip" positionX="314.958251953125" positionY="-186.2705688476563" width="128" height="88"/>
+        <element name="Brand" positionX="-80.3399658203126" positionY="-286.8526458740234" width="128" height="88"/>
+        <element name="Gearlist" positionX="297.212158203125" positionY="-238.018310546875" width="128" height="103"/>
+        <element name="Item" positionX="104.03515625" positionY="-324.1543884277343" width="128" height="238"/>
+        <element name="Shed" positionX="-76.58038330078131" positionY="-157.1509704589845" width="128" height="88"/>
+        <element name="Trip" positionX="499.904541015625" positionY="-287.3419189453126" width="128" height="88"/>
     </elements>
 </model>

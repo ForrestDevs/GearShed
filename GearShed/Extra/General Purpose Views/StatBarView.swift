@@ -26,16 +26,13 @@ struct StatBar: View {
                         Text("Sheds")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
-                        Text("\(viewModel.categories.count)")
+                        Text("\(viewModel.sheds.count)")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
                     }
                 }
                 
                 HStack {
-                   //Rectangle()
-                   //    .frame(width: 2, height: 40)
-                   //    .foregroundColor(Color.theme.accent)
                     VStack (alignment: .leading, spacing: 5) {
                         Text("Items")
                             .font(.caption)
@@ -46,40 +43,41 @@ struct StatBar: View {
                     }
                 }
                 HStack {
-                    //Rectangle()
-                    //    .frame(width: 2, height: 40)
-                    //    .foregroundColor(Color.theme.accent)
                     VStack (alignment: .leading, spacing: 5) {
                         Text("Weight")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
-                        Text("\(viewModel.items.count) g")
+                        Text("\(viewModel.totalWeight(array: viewModel.items)) g")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
                     }
                 }
                 HStack {
-                    //Rectangle()
-                    //    .frame(width: 2, height: 40)
-                    //    .foregroundColor(Color.theme.accent)
                     VStack (alignment: .leading, spacing: 5) {
                         Text("Invested")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
-                        Text("$ \(viewModel.items.count)")
+                        Text("$ \(viewModel.totalCost(array: viewModel.items))")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
                     }
                 }
                 HStack {
-                    //Rectangle()
-                    //    .frame(width: 2, height: 40)
-                    //    .foregroundColor(Color.theme.accent)
                     VStack (alignment: .leading, spacing: 5) {
                         Text("Favorites")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
-                        Text("\(viewModel.items.count)")
+                        Text("\(viewModel.totalFavs(array: viewModel.items))")
+                            .font(.caption)
+                            .foregroundColor(Color.theme.accent)
+                    }
+                }
+                HStack {
+                    VStack (alignment: .leading, spacing: 5) {
+                        Text("Regrets")
+                            .font(.caption)
+                            .foregroundColor(Color.theme.accent)
+                        Text("\(viewModel.regretItems.count)")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
                     }
@@ -90,25 +88,6 @@ struct StatBar: View {
         .background(Color.theme.background)
 
     }
-    
-    /*func totalWeight() -> String {
-        
-        let totalWeight: String = ""
-        
-        var totalWeightNum: Int = 0
-        
-        let nf = NumberFormatter()
-        nf.numberStyle = .decimal
-        let x = nf.number(from: "1,234")?.intValue
-        
-        for item in viewModel.allItemsInShed {
-            item.weight
-        }
-        
-       return totalWeight
-    }*/
-    
-    
 }
 
 struct StatBarInWishList: View {
@@ -121,14 +100,10 @@ struct StatBarInWishList: View {
         let viewModel = MainCatelogVM(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
     }
-    
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack (spacing: 30){
                 HStack {
-                   //Rectangle()
-                   //    .frame(width: 2, height: 40)
-                   //    .foregroundColor(Color.theme.accent)
                     VStack (alignment: .leading, spacing: 5) {
                         Text("Items")
                             .font(.caption)
@@ -139,14 +114,11 @@ struct StatBarInWishList: View {
                     }
                 }
                 HStack {
-                    //Rectangle()
-                    //    .frame(width: 2, height: 40)
-                    //    .foregroundColor(Color.theme.accent)
                     VStack (alignment: .leading, spacing: 5) {
                         Text("Cost")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
-                        Text("$ \(viewModel.items.count)")
+                        Text("$ \(viewModel.totalCost(array: viewModel.wishListItems))")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
                     }
@@ -155,27 +127,7 @@ struct StatBarInWishList: View {
             .padding(.horizontal, 30)
         }
         .background(Color.theme.background)
-
     }
-    
-    /*func totalWeight() -> String {
-        
-        let totalWeight: String = ""
-        
-        var totalWeightNum: Int = 0
-        
-        let nf = NumberFormatter()
-        nf.numberStyle = .decimal
-        let x = nf.number(from: "1,234")?.intValue
-        
-        for item in viewModel.allItemsInShed {
-            item.weight
-        }
-        
-       return totalWeight
-    }*/
-    
-    
 }
 
 struct StatBarInFav: View {
@@ -188,7 +140,6 @@ struct StatBarInFav: View {
         let viewModel = MainCatelogVM(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
     }
-    
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack (spacing: 30){
@@ -213,7 +164,7 @@ struct StatBarInFav: View {
                         Text("Weight")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
-                        Text("\(viewModel.items.count) g")
+                        Text("\(viewModel.totalWeight(array: viewModel.favItems)) g")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
                     }
@@ -226,7 +177,7 @@ struct StatBarInFav: View {
                         Text("Invested")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
-                        Text("$ \(viewModel.items.count)")
+                        Text("$ \(viewModel.totalCost(array: viewModel.favItems))")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
                     }
@@ -235,30 +186,10 @@ struct StatBarInFav: View {
             .padding(.horizontal, 30)
         }
         .background(Color.theme.background)
-
     }
-    
-    /*func totalWeight() -> String {
-        
-        let totalWeight: String = ""
-        
-        var totalWeightNum: Int = 0
-        
-        let nf = NumberFormatter()
-        nf.numberStyle = .decimal
-        let x = nf.number(from: "1,234")?.intValue
-        
-        for item in viewModel.allItemsInShed {
-            item.weight
-        }
-        
-       return totalWeight
-    }*/
-    
-    
 }
 
-struct StatBarInShed: View {
+struct StatBarInRegret: View {
     
     @EnvironmentObject var persistentStore: PersistentStore
 
@@ -268,58 +199,35 @@ struct StatBarInShed: View {
         let viewModel = MainCatelogVM(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
     }
-    
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack (spacing: 30){
                 HStack {
-                   //Rectangle()
-                   //    .frame(width: 2, height: 40)
-                   //    .foregroundColor(Color.theme.accent)
                     VStack (alignment: .leading, spacing: 5) {
                         Text("Items")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
-                        Text("\(viewModel.items.count)")
+                        Text("\(viewModel.regretItems.count)")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
                     }
                 }
                 HStack {
-                    //Rectangle()
-                    //    .frame(width: 2, height: 40)
-                    //    .foregroundColor(Color.theme.accent)
                     VStack (alignment: .leading, spacing: 5) {
                         Text("Weight")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
-                        Text("\(viewModel.items.count) g")
+                        Text("\(viewModel.totalWeight(array: viewModel.regretItems)) g")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
                     }
                 }
                 HStack {
-                    //Rectangle()
-                    //    .frame(width: 2, height: 40)
-                    //    .foregroundColor(Color.theme.accent)
                     VStack (alignment: .leading, spacing: 5) {
                         Text("Invested")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
-                        Text("$ \(viewModel.items.count)")
-                            .font(.caption)
-                            .foregroundColor(Color.theme.accent)
-                    }
-                }
-                HStack {
-                    //Rectangle()
-                    //    .frame(width: 2, height: 40)
-                    //    .foregroundColor(Color.theme.accent)
-                    VStack (alignment: .leading, spacing: 5) {
-                        Text("Favorites")
-                            .font(.caption)
-                            .foregroundColor(Color.theme.accent)
-                        Text("\(viewModel.items.count)")
+                        Text("$ \(viewModel.totalCost(array: viewModel.regretItems))")
                             .font(.caption)
                             .foregroundColor(Color.theme.accent)
                     }
@@ -328,25 +236,151 @@ struct StatBarInShed: View {
             .padding(.horizontal, 30)
         }
         .background(Color.theme.background)
-
     }
+}
+
+struct StatBarInShed: View {
     
-    /*func totalWeight() -> String {
-        
-        let totalWeight: String = ""
-        
-        var totalWeightNum: Int = 0
-        
-        let nf = NumberFormatter()
-        nf.numberStyle = .decimal
-        let x = nf.number(from: "1,234")?.intValue
-        
-        for item in viewModel.allItemsInShed {
-            item.weight
+    @EnvironmentObject var persistentStore: PersistentStore
+
+    @StateObject private var viewModel: MainCatelogVM
+    
+    @ObservedObject var shed: Shed
+    
+    init(persistentStore: PersistentStore, shed: Shed) {
+        let viewModel = MainCatelogVM(persistentStore: persistentStore)
+        _viewModel = StateObject(wrappedValue: viewModel)
+        self.shed = shed
+    }
+    var body: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack (spacing: 30){
+                HStack {
+                    VStack (alignment: .leading, spacing: 5) {
+                        Text("Items")
+                            .font(.caption)
+                            .foregroundColor(Color.theme.accent)
+                        Text("\(shed.items.count)")
+                            .font(.caption)
+                            .foregroundColor(Color.theme.accent)
+                    }
+                }
+                HStack {
+                    VStack (alignment: .leading, spacing: 5) {
+                        Text("Weight")
+                            .font(.caption)
+                            .foregroundColor(Color.theme.accent)
+                        Text("\(viewModel.totalWeight(array: shed.items)) g")
+                            .font(.caption)
+                            .foregroundColor(Color.theme.accent)
+                    }
+                }
+                HStack {
+                    VStack (alignment: .leading, spacing: 5) {
+                        Text("Invested")
+                            .font(.caption)
+                            .foregroundColor(Color.theme.accent)
+                        Text("$ \(viewModel.totalCost(array: shed.items))")
+                            .font(.caption)
+                            .foregroundColor(Color.theme.accent)
+                    }
+                }
+                HStack {
+                    VStack (alignment: .leading, spacing: 5) {
+                        Text("Favorites")
+                            .font(.caption)
+                            .foregroundColor(Color.theme.accent)
+                        Text("\(viewModel.totalFavs(array: shed.items))")
+                            .font(.caption)
+                            .foregroundColor(Color.theme.accent)
+                    }
+                }
+                HStack {
+                    VStack (alignment: .leading, spacing: 5) {
+                        Text("Regrets")
+                            .font(.caption)
+                            .foregroundColor(Color.theme.accent)
+                        Text("\(viewModel.totalRegrets(array: shed.regretItems))")
+                            .font(.caption)
+                            .foregroundColor(Color.theme.accent)
+                    }
+                }
+            }
+            .padding(.horizontal, 30)
         }
-        
-       return totalWeight
-    }*/
+        .background(Color.theme.background)
+    }
+}
+
+struct StatBarInBrand: View {
     
+    @EnvironmentObject var persistentStore: PersistentStore
+
+    @StateObject private var viewModel: MainCatelogVM
     
+    @ObservedObject var brand: Brand
+    
+    init(persistentStore: PersistentStore, brand: Brand) {
+        let viewModel = MainCatelogVM(persistentStore: persistentStore)
+        _viewModel = StateObject(wrappedValue: viewModel)
+        self.brand = brand
+    }
+    var body: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack (spacing: 30){
+                HStack {
+                    VStack (alignment: .leading, spacing: 5) {
+                        Text("Items")
+                            .font(.caption)
+                            .foregroundColor(Color.theme.accent)
+                        Text("\(brand.items.count)")
+                            .font(.caption)
+                            .foregroundColor(Color.theme.accent)
+                    }
+                }
+                HStack {
+                    VStack (alignment: .leading, spacing: 5) {
+                        Text("Weight")
+                            .font(.caption)
+                            .foregroundColor(Color.theme.accent)
+                        Text("\(viewModel.totalWeight(array: brand.items)) g")
+                            .font(.caption)
+                            .foregroundColor(Color.theme.accent)
+                    }
+                }
+                HStack {
+                    VStack (alignment: .leading, spacing: 5) {
+                        Text("Invested")
+                            .font(.caption)
+                            .foregroundColor(Color.theme.accent)
+                        Text("$ \(viewModel.totalCost(array: brand.items))")
+                            .font(.caption)
+                            .foregroundColor(Color.theme.accent)
+                    }
+                }
+                HStack {
+                    VStack (alignment: .leading, spacing: 5) {
+                        Text("Favorites")
+                            .font(.caption)
+                            .foregroundColor(Color.theme.accent)
+                        Text("\(viewModel.totalFavs(array: brand.items))")
+                            .font(.caption)
+                            .foregroundColor(Color.theme.accent)
+                    }
+                }
+                HStack {
+                    VStack (alignment: .leading, spacing: 5) {
+                        Text("Regrets")
+                            .font(.caption)
+                            .foregroundColor(Color.theme.accent)
+                        Text("\(viewModel.totalRegrets(array: brand.regretItems))")
+                            .font(.caption)
+                            .foregroundColor(Color.theme.accent)
+                    }
+                }
+            }
+            .padding(.horizontal, 30)
+        }
+        .background(Color.theme.background)
+    }
 }

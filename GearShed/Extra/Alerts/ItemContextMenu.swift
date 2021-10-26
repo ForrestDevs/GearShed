@@ -25,9 +25,9 @@ import SwiftUI
 @ViewBuilder
 func itemContextMenu(item: Item, deletionTrigger: @escaping () -> Void) -> some View {
 	
-	Button(action: { item.toggleOnListStatus() }) {
-		Text(item.onList ? "Move to Purchased" : "Move to ShoppingList")
-		Image(systemName: item.onList ? "purchased" : "cart")
+	Button(action: { item.toggleWishlistStatus() }) {
+		Text(item.wishlist ? "Move to Purchased" : "Move to ShoppingList")
+		Image(systemName: item.wishlist ? "purchased" : "cart")
 	}
 	
 	Button(action: { item.toggleFavouriteStatus() }) {

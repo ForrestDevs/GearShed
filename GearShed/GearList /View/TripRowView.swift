@@ -10,13 +10,13 @@ import SwiftUI
 
 struct TripRowView: View {
     
-    var trip: Trip
+    var gearlist: Gearlist
 
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
-                NavigationLink(destination: TripDetailView(trip: trip, tripFromParent: trip)) {
-                    Text(trip.name)
+                NavigationLink(destination: TripDetailView(gearlist: gearlist, gearlistFromParent: gearlist)) {
+                    Text(gearlist.name)
                         .font(.headline)
                 }
             }

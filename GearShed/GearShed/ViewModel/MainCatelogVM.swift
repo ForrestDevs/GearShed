@@ -14,47 +14,70 @@ final class MainCatelogVM: NSObject, NSFetchedResultsControllerDelegate,  Observ
     
     let persistentStore: PersistentStore
     
+    // State to trigger wether the item is favourited or not
+    @Published var isFavourited: Bool = false
+    
+    // var to store a selctedShed to pre populate adding an item
+    @Published var selectedShed: Shed? = nil
+    
+    // Local state to hold Search Text Value in Main Catelog
+    @Published var searchText: String = ""
+    
+    @Published var isAddNewItemShowing: Bool = false
+    
+    @Published var showingUnlockView: Bool = false
+    
     private let itemsController: NSFetchedResultsController<Item>
     @Published var items = [Item]()
     
     private let favItemsController: NSFetchedResultsController<Item>
     @Published var favItems = [Item]()
     
+    private let regretItemsController: NSFetchedResultsController<Item>
+    @Published var regretItems = [Item]()
+    
     private let wishlistItemsController: NSFetchedResultsController<Item>
     @Published var wishListItems = [Item]()
     
-    let categoriesController: NSFetchedResultsController<Category>
-    @Published var categories = [Category]()
+    let shedsController: NSFetchedResultsController<Shed>
+    @Published var sheds = [Shed]()
     
     private let brandsController: NSFetchedResultsController<Brand>
     @Published var brands = [Brand]()
     
-    init(persistentStore: PersistentStore,isFavourited: Bool = true, onWishlist: Bool = true) {
+    init(persistentStore: PersistentStore) {
         self.persistentStore = persistentStore
         
         // MARK: Item Fetch Requests
         let itemRequest: NSFetchRequest<Item> = Item.fetchRequest()
         itemRequest.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
+        itemRequest.predicate = NSPredicate(format: "wishlist_ == %d", false)
         
         itemsController = NSFetchedResultsController(fetchRequest: itemRequest, managedObjectContext: PersistentStore.shared.context, sectionNameKeyPath: nil, cacheName: nil)
         
         let favItemRequest: NSFetchRequest<Item> = Item.fetchRequest()
         favItemRequest.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
-        favItemRequest.predicate = NSPredicate(format: "isFavourite_ == %d", isFavourited)
+        favItemRequest.predicate = NSPredicate(format: "isFavourite_ == %d", true)
         
         favItemsController = NSFetchedResultsController(fetchRequest: favItemRequest, managedObjectContext: PersistentStore.shared.context, sectionNameKeyPath: nil, cacheName: nil)
         
+        let regretItemRequest: NSFetchRequest<Item> = Item.fetchRequest()
+        regretItemRequest.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
+        regretItemRequest.predicate = NSPredicate(format: "isRegret_ == %d", true)
+        
+        regretItemsController = NSFetchedResultsController(fetchRequest: regretItemRequest, managedObjectContext: PersistentStore.shared.context, sectionNameKeyPath: nil, cacheName: nil)
+        
         let wishlistItemRequest: NSFetchRequest<Item> = Item.fetchRequest()
         wishlistItemRequest.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
-        wishlistItemRequest.predicate = NSPredicate(format: "onList_ == %d", onWishlist)
+        wishlistItemRequest.predicate = NSPredicate(format: "wishlist_ == %d", true)
         
         wishlistItemsController = NSFetchedResultsController(fetchRequest: wishlistItemRequest, managedObjectContext: PersistentStore.shared.context, sectionNameKeyPath: nil, cacheName: nil)
         
-        // MARK: Category Fetch Requests
-        let categoryRequest: NSFetchRequest<Category> = Category.fetchRequest()
-        categoryRequest.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
+        // MARK: Shed Fetch Requests
+        let shedRequest: NSFetchRequest<Shed> = Shed.fetchRequest()
+        shedRequest.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
         
-        categoriesController = NSFetchedResultsController(fetchRequest: categoryRequest, managedObjectContext: PersistentStore.shared.context, sectionNameKeyPath: nil, cacheName: nil)
+        shedsController = NSFetchedResultsController(fetchRequest: shedRequest, managedObjectContext: PersistentStore.shared.context, sectionNameKeyPath: nil, cacheName: nil)
         
         // MARK: Brand Fetch Requests
         let brandRequest: NSFetchRequest<Brand> = Brand.fetchRequest()
@@ -66,8 +89,9 @@ final class MainCatelogVM: NSObject, NSFetchedResultsControllerDelegate,  Observ
         super.init()
         itemsController.delegate = self
         favItemsController.delegate = self
+        regretItemsController.delegate = self
         wishlistItemsController.delegate = self
-        categoriesController.delegate = self
+        shedsController.delegate = self
         brandsController.delegate = self
         
         do {
@@ -75,6 +99,13 @@ final class MainCatelogVM: NSObject, NSFetchedResultsControllerDelegate,  Observ
             items = itemsController.fetchedObjects ?? []
         } catch {
             print("Failed to fetch Items")
+        }
+        
+        do {
+            try regretItemsController.performFetch()
+            regretItems = regretItemsController.fetchedObjects ?? []
+        } catch {
+            print("Failed to fetch Regret Items")
         }
         
         do {
@@ -92,10 +123,10 @@ final class MainCatelogVM: NSObject, NSFetchedResultsControllerDelegate,  Observ
         }
         
         do {
-            try categoriesController.performFetch()
-            categories = categoriesController.fetchedObjects ?? []
+            try shedsController.performFetch()
+            sheds = shedsController.fetchedObjects ?? []
         } catch {
-            print("Failed to fetch Categories")
+            print("Failed to fetch Sheds")
         }
         
         do {
@@ -109,23 +140,48 @@ final class MainCatelogVM: NSObject, NSFetchedResultsControllerDelegate,  Observ
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         items = itemsController.fetchedObjects ?? []
         favItems = favItemsController.fetchedObjects ?? []
+        regretItems = regretItemsController.fetchedObjects ?? []
         wishListItems = wishlistItemsController.fetchedObjects ?? []
-        categories = categoriesController.fetchedObjects ?? []
+        sheds = shedsController.fetchedObjects ?? []
         brands = brandsController.fetchedObjects ?? []
     }
     
-    // State to trigger wether the item is favourited or not
-    @Published var isFavourited: Bool = false
     
-    @Published var selectedCategory: Category? = nil
+    // MARK: - Total Functions
     
-    // Local state to hold Search Text Value in Main Catelog
-    @Published var searchText: String = ""
     
-    @Published var isAddNewItemShowing: Bool = false
+    func totalWeight(array: [Item]) -> String {
+        var arrayString = [String]()
+        for x in array {
+            arrayString.append(x.weight)
+        }
+        let intArray = arrayString.map { Int($0) ?? 0 }
+        let total = intArray.reduce(0, +)
+        let totalString = String(total)
+        return totalString
+    }
     
-    @Published var showingUnlockView: Bool = false
-     
+    func totalCost(array: [Item]) -> String {
+        var arrayString = [String]()
+        for x in array {
+            arrayString.append(x.price)
+        }
+        let intArray = arrayString.map { Int($0) ?? 0 }
+        let total = intArray.reduce(0, +)
+        let totalString = String(total)
+        return totalString
+    }
+    
+    func totalFavs(array: [Item]) -> String {
+        let favItems = array.filter { $0.isFavourite }
+        return String(favItems.count)
+    }
+    
+    func totalRegrets(array: [Item]) -> String {
+        let regretItems = array.filter { $0.isRegret }
+        return String(regretItems.count)
+    }
+    
     // MARK: - ToolbarItems
     
     func trailingButton() -> some View {
@@ -144,11 +200,11 @@ final class MainCatelogVM: NSObject, NSFetchedResultsControllerDelegate,  Observ
     func leadingButton() -> some View {
         Button { [self] in
             writeAsJSON(items: items, to: kItemsFilename)
-            writeAsJSON(items: categories, to: kCategorysFilename)
+            writeAsJSON(items: sheds, to: kShedsFilename)
             writeAsJSON(items: brands, to: kBrandsFilename)
         } label: {
             Image(systemName: "square.and.arrow.up")
-                /*.fileExporter(isPresented: $showDisplayAction, documents: [kItemsFilename,kBrandsFilename,kCategorysFilename] , contentType: .json) { result in
+                /*.fileExporter(isPresented: $showDisplayAction, documents: [kItemsFilename,kBrandsFilename,kShedsFilename] , contentType: .json) { result in
                     switch result {
                         case .success(let url):
                             print("Saved to \(url)")

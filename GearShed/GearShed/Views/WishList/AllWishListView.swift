@@ -20,10 +20,14 @@ struct AllWishListView: View {
     }
 
     var body: some View {
-        VStack (spacing: 5) {
+        VStack (spacing: 0) {
             StatBarInWishList(persistentStore: persistentStore)
+                .padding(.top,5)
+
             itemsList
-            Spacer(minLength: 60)
+                .padding(.top,10)
+
+            Spacer(minLength: 50)
         }
     }
     
@@ -55,15 +59,14 @@ struct AllWishListView: View {
     
     private func sectionData() -> [SectionData] {
         var completedSectionData = [SectionData]()
-        // otherwise, one section for each category, please.  break the data out by category first
-        let dictionaryByCategory = Dictionary(grouping: viewModel.wishListItems, by: { $0.category })
+        // otherwise, one section for each shed, please.  break the data out by shed first
+        let dictionaryByShed = Dictionary(grouping: viewModel.wishListItems, by: { $0.shed })
         // then reassemble the sections by sorted keys of this dictionary
-        for key in dictionaryByCategory.keys.sorted() {
-            completedSectionData.append(SectionData(title: key.name, items: dictionaryByCategory[key]!))
+        for key in dictionaryByShed.keys.sorted() {
+            completedSectionData.append(SectionData(title: key.name, items: dictionaryByShed[key]!))
         }
         return completedSectionData
     }
-    
 }
 
 

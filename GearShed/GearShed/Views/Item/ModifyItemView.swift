@@ -20,7 +20,7 @@ struct ModifyItemView: View {
     // one of three context menu actions that can be applied to an item
     @State private var confirmDeleteItemAlert: ConfirmDeleteItemAlert?
     
-    @State private var expandedCategory: Bool = false
+    @State private var expandedShed: Bool = false
     
     @State private var expandedBrand: Bool = false
     
@@ -29,7 +29,7 @@ struct ModifyItemView: View {
     @State private var editableItemData: EditableItemData
     
     // custom init here to set up editableData state
-    init(persistentStore: PersistentStore, editableItem: Item? = nil, initialItemName: String? = nil, initialItemDetails: String? = nil, category: Category? = nil, brand: Brand? = nil) {
+    init(persistentStore: PersistentStore, editableItem: Item? = nil, initialItemName: String? = nil, initialItemDetails: String? = nil, shed: Shed? = nil, brand: Brand? = nil) {
         let viewModel = MainCatelogVM(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
         // initialize the editableData struct for the incoming item, if any; and
@@ -38,24 +38,10 @@ struct ModifyItemView: View {
             _editableItemData = State(initialValue: EditableItemData(item: item))
         } else {
             // here's we'll see if a suggested name for adding a new item was supplied
-            let initialValue = EditableItemData(initialItemName: initialItemName, initialItemDetails: initialItemDetails, category: category,  brand: brand)
+            let initialValue = EditableItemData(initialItemName: initialItemName, initialItemDetails: initialItemDetails, shed: shed,  brand: brand)
             _editableItemData = State(initialValue: initialValue)
         }
-        selectedCategoryName = category?.name ?? "Choose a category"
-        selectedBrandName = brand?.name ?? "Choose a brand"
     }
-    
-    private var selectedCategoryName: String
-    
-    private var selectedBrandName: String
-    
-    @State private var altCategorySelected: Bool = false
-    
-    @State private var altBrandSelected: Bool = false
-    
-    @State private var altCategoryName: String = ""
-    
-    @State private var altBrandName: String = ""
     
     var body: some View {
         NavigationView {
@@ -104,36 +90,36 @@ struct ModifyItemView: View {
                     }
                     
                     VStack (alignment: .leading, spacing: 10) {
-                        Text("Category - Brand")
+                        Text("Shed - Brand")
                             .font(.subheadline)
                             .bold()
                             .foregroundColor(Color.theme.green)
                         
                         HStack (alignment: .firstTextBaseline, spacing: 10) {
-                            DisclosureGroup("\(discolsureCategoryTitle())", isExpanded: $expandedCategory) {
+                            DisclosureGroup(editableItemData.shed.name, isExpanded: $expandedShed) {
                                 VStack(alignment: .leading) {
-                                    NavigationLink(destination: AddCategoryView()) {
-                                        Text("Add New Category")
+                                    NavigationLink(destination: AddShedView()) {
+                                        Text("Add New Shed")
                                             .font(.subheadline)
                                             //.foregroundColor(Color.theme.green)
                                     }
-                                    ForEach(viewModel.categories) { category in
-                                        Text(category.name).tag(category)
+                                    ForEach(viewModel.sheds) { shed in
+                                        Text(shed.name).tag(shed)
                                             .font(.subheadline)
                                             //.foregroundColor(Color.theme.secondaryText)
                                             .onTapGesture {
-                                                editableItemData.category = category
-                                                altCategorySelected = true
-                                                altCategoryName = category.name
+                                                editableItemData.shed = shed
+                                                //altShedSelected = true
+                                                //altShedName = shed.name
                                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                                                    expandedCategory.toggle()
+                                                    expandedShed.toggle()
                                                 }
                                             }
                                     }
                                 }
                             }
                             
-                            DisclosureGroup("\(discolsureBrandTitle())", isExpanded: $expandedBrand) {
+                            DisclosureGroup(editableItemData.brand.name, isExpanded: $expandedBrand) {
                                 VStack(alignment: .leading) {
                                     NavigationLink(destination: AddBrandView()) {
                                         Text("Add New Brand")
@@ -146,8 +132,8 @@ struct ModifyItemView: View {
                                             //.foregroundColor(Color.theme.secondaryText)
                                             .onTapGesture {
                                                 editableItemData.brand = brand
-                                                altBrandSelected = true
-                                                altBrandName = brand.name
+                                                //altBrandSelected = true
+                                                //altBrandName = brand.name
                                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                                                     expandedBrand.toggle()
                                                     //altBrandSelected.toggle()
@@ -174,7 +160,7 @@ struct ModifyItemView: View {
                         }
                     }*/
                     
-                    Toggle(isOn: $editableItemData.onList) {
+                    Toggle(isOn: $editableItemData.wishlist) {
                         Text("Wishlist Item")
                             .font(.subheadline)
                             .bold()
@@ -230,22 +216,6 @@ struct ModifyItemView: View {
         }
     }
     
-    func discolsureCategoryTitle() -> String {
-        if !altCategorySelected {
-            return selectedCategoryName
-        } else {
-            return altCategoryName
-        }
-    }
-    
-    func discolsureBrandTitle() -> String {
-        if !altBrandSelected {
-            return selectedBrandName
-        } else {
-            return altBrandName
-        }
-    }
-        
     // Cancel Button
     func cancelButton() -> some View {
         Button("Cancel",action: {presentationMode.wrappedValue.dismiss()})

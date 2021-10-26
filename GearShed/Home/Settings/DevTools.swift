@@ -36,15 +36,15 @@ func logDisappear(title: String) {
 
 
 // i used these constants and functions below during development to import and
-// export Items, Categorys and Brands via JSON.
+// export Items, Sheds and Brands via JSON.
 // these are the filenames for JSON output when dumped from the simulator
 // and also the filenames in the bundle used to load sample data.
 let kJSONDumpDirectory = "/Users/lukesair/Desktop/"    // dumps to the Desktop: Adjust for your Username!
 let kItemsFilename = "items.json"
-let kCategorysFilename = "categorys.json"
+let kShedsFilename = "sheds.json"
 let kBrandsFilename = "brands.json"
 
-// to write stuff out -- a list of Items and a list of Categorys --
+// to write stuff out -- a list of Items and a list of Sheds --
 // the code is essentially the same except for the typing of the objects
 // in the list.  so we use the power of generics:  we introduce
 // (1) a protocol that demands that something be able to produce a simple
@@ -54,10 +54,10 @@ protocol CodableStructRepresentable {
     var codableProxy: DataType { get }
 }
 
-// and (2), knowing that Item, Category and Brand are NSManagedObjects, and we
+// and (2), knowing that Item, Shed and Brand are NSManagedObjects, and we
 // don't want to write our own custom encoder (eventually we will), we extend each to
 // be able to produce a simple, Codable struct proxy holding only what we want to write out
-// (ItemCodable, CategoryCodable, and BrandCodeable structs, respectively)
+// (ItemCodable, ShedCodable, and BrandCodeable structs, respectively)
 func writeAsJSON<T>(items: [T], to filename: String) where T: CodableStructRepresentable {
     let codableItems = items.map() { $0.codableProxy }
     let encoder = JSONEncoder()
@@ -89,8 +89,8 @@ func writeAsJSON<T>(items: [T], to filename: String) where T: CodableStructRepre
 
 func populateDatabaseFromJSON() {
     // it sure is easy to do this with HWS's Bundle extension (!)
-    let codableCategorys: [CategoryCodableProxy] = Bundle.main.decode(from: kCategorysFilename)
-    insertNewCategorys(from: codableCategorys)
+    let codableSheds: [ShedCodableProxy] = Bundle.main.decode(from: kShedsFilename)
+    insertNewSheds(from: codableSheds)
     let codableBrands: [BrandCodableProxy] = Bundle.main.decode(from: kBrandsFilename)
     insertNewBrands(from: codableBrands)
     let codableItems: [ItemCodableProxy] = Bundle.main.decode(from: kItemsFilename)
@@ -100,10 +100,10 @@ func populateDatabaseFromJSON() {
 
 func insertNewItems(from codableItems: [ItemCodableProxy]) {
     
-    // get all Categorys that are not the unknown category
-    // group by name for lookup below when adding an item to a category
-    let categorys = Category.allCategories(userCategorysOnly: true)
-    let name2Category = Dictionary(grouping: categorys, by: { $0.name })
+    // get all Sheds that are not the unknown shed
+    // group by name for lookup below when adding an item to a shed
+    let sheds = Shed.allSheds(userShedsOnly: true)
+    let name2Shed = Dictionary(grouping: sheds, by: { $0.name })
     
     // get all Brands that are not the unknown brand
     // group by name for lookup below when adding an item to a brand
@@ -116,16 +116,16 @@ func insertNewItems(from codableItems: [ItemCodableProxy]) {
         newItem.quantity = codableItem.quantity
         newItem.weight = codableItem.weight
         newItem.price = codableItem.price
-        newItem.onList = codableItem.onList
+        newItem.wishlist = codableItem.wishlist
         newItem.isFavourite_ = codableItem.isFavourite
         newItem.dateLastPurchased_ = nil // never purchased
         
-        // look up matching category by name
-        // anything that doesn't match goes to the unknown category.
-        if let category = name2Category[codableItem.categoryName]?.first {
-            newItem.category = category
+        // look up matching shed by name
+        // anything that doesn't match goes to the unknown shed.
+        if let shed = name2Shed[codableItem.shedName]?.first {
+            newItem.shed = shed
         } else {
-            newItem.category = Category.theUnknownCategory() // if necessary, this creates the Unknown Category
+            newItem.shed = Shed.theUnknownShed() // if necessary, this creates the Unknown Shed
         }
         
         // look up matching brand by name
@@ -140,10 +140,10 @@ func insertNewItems(from codableItems: [ItemCodableProxy]) {
 }
 
 // used to insert data from JSON files in the app bundle
-func insertNewCategorys(from codableCategorys: [CategoryCodableProxy]) {
-    for codableCategory in codableCategorys {
-        let newCategory = Category.addNewCategory() // new UUID created here
-        newCategory.name = codableCategory.name
+func insertNewSheds(from codableSheds: [ShedCodableProxy]) {
+    for codableShed in codableSheds {
+        let newShed = Shed.addNewShed() // new UUID created here
+        newShed.name = codableShed.name
     }
 }
 
@@ -157,9 +157,9 @@ func insertNewBrands(from codableBrands: [BrandCodableProxy]) {
 
 // MARK: - USeful Extensions re: CodableStructRepresentable
 
-extension Category: CodableStructRepresentable {
+extension Shed: CodableStructRepresentable {
     var codableProxy: some Encodable & Decodable {
-        return CategoryCodableProxy(from: self)
+        return ShedCodableProxy(from: self)
     }
 }
 

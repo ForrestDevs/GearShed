@@ -26,10 +26,11 @@ struct EditableItemData {
     var price: String = ""
     var quantity: Int = 1
     var details: String = "Item Details"
-	var category = Category.theUnknownCategory()
+	var shed = Shed.theUnknownShed()
     var brand = Brand.theUnknownBrand()
-    var onList: Bool = false
+    var wishlist: Bool = false
 	var isFavourite = false
+    var isRegret = false
 	var dateText = "" // for display only, not actually editable
     
 	// this copies all the editable data from an incoming Item.  this looks fairly
@@ -51,25 +52,27 @@ struct EditableItemData {
         
         details = item.detail
         
-		category = item.category
+		shed = item.shed
         brand = item.brand
         
-		onList = item.onList
+		wishlist = item.wishlist
         isFavourite = item.isFavourite
+        isRegret = item.isRegret
+        
 		if item.hasBeenPurchased {
 			dateText = item.dateLastPurchased.dateText(style: .medium)
 		}
 	}
 	
-    init(initialItemName: String?, initialItemDetails: String?, category: Category? = nil, brand: Brand? = nil) {
+    init(initialItemName: String?, initialItemDetails: String?, shed: Shed? = nil, brand: Brand? = nil) {
 		if let name = initialItemName, name.count > 0 {
 			self.name = name
 		}
         if let details = initialItemDetails, details.count > 0 {
             self.details = details
         }
-		if let category = category {
-			self.category = category
+		if let shed = shed {
+			self.shed = shed
 		}
         if let brand = brand {
             self.brand = brand
@@ -110,56 +113,30 @@ struct EditableItemData {
     // be sure you check representsExistingBrand first (!)
     var associatedBrand: Brand { Brand.object(withID: idBrand!)! }
     
-    // MARK: - Category Stuff
+    // MARK: - Shed Stuff
     
-    // the id of the Category, if any, associated with this data collection
+    // the id of the Shed, if any, associated with this data collection
     // (nil if data for a new item that does not yet exist)
-    var idCategory: UUID? = nil
-    // all of the values here provide suitable defaults for a new Category
-    var categoryName: String = ""
+    var idShed: UUID? = nil
+    // all of the values here provide suitable defaults for a new Shed
+    var shedName: String = ""
     
-    // this copies all the editable data from an incoming Category
-    init(category: Category?) {
-        if let category = category {
-            idCategory = category.id!
-            categoryName = category.name
+    // this copies all the editable data from an incoming Shed
+    init(shed: Shed?) {
+        if let shed = shed {
+            idShed = shed.id!
+            shedName = shed.name
         }
     }
     
     // to do a save/commit of an Item, it must have a non-empty name
-    var canCategoryBeSaved: Bool { categoryName.count > 0 }
+    var canShedBeSaved: Bool { shedName.count > 0 }
     
-    // useful to know if this is associated with an existing Category
-    var representsExistingCategory: Bool { idCategory != nil && Category.object(withID: idCategory!) != nil }
-    // useful to know the associated category (which we'll force unwrap, so
-    // be sure you check representsExistingCategory first (!)
-    var associatedCategory: Category { Category.object(withID: idCategory!)! }
-    
-    // MARK: - Tag Stuff
-    
-    // the id of the Category, if any, associated with this data collection
-    // (nil if data for a new item that does not yet exist)
-    var idTag: UUID? = nil
-    // all of the values here provide suitable defaults for a new Category
-    var tagName: String = ""
-    
-    // this copies all the editable data from an incoming Category
-    init(tag: Tag?) {
-        if let tag = tag {
-            idTag = tag.id!
-            tagName = tag.name
-        }
-    }
-    
-    // to do a save/commit of an Item, it must have a non-empty name
-    var canTagBeSaved: Bool { tagName.count > 0 }
-    
-    // useful to know if this is associated with an existing Category
-    var representsExistingTag: Bool { idTag != nil && Tag.object(withID: idTag!) != nil }
-    // useful to know the associated category (which we'll force unwrap, so
-    // be sure you check representsExistingCategory first (!)
-    var associatedTag: Tag { Tag.object(withID: idTag!)! }
-    
+    // useful to know if this is associated with an existing Shed
+    var representsExistingShed: Bool { idShed != nil && Shed.object(withID: idShed!) != nil }
+    // useful to know the associated shed (which we'll force unwrap, so
+    // be sure you check representsExistingShed first (!)
+    var associatedShed: Shed { Shed.object(withID: idShed!)! }
     
 }
 

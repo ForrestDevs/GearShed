@@ -1,5 +1,5 @@
 //
-//  CategorysView.swift
+//  ShedsView.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 18/10/21
@@ -8,19 +8,19 @@
 
 //import SwiftUI
 
-/*struct CategoriesTabView: View {
+/*struct ShedsTabView: View {
 	
-	// this is the @FetchRequest that ties this view to CoreData Categories
-	@FetchRequest(fetchRequest: MainCatelogVM.allCategorysFR())
-	private var categories: FetchedResults<Category>
+	// this is the @FetchRequest that ties this view to CoreData Sheds
+	@FetchRequest(fetchRequest: MainCatelogVM.allShedsFR())
+	private var sheds: FetchedResults<Shed>
 	
-	// local state to trigger a sheet to appear to add a new category
-	@State private var isAddNewCategorySheetShowing = false
+	// local state to trigger a sheet to appear to add a new shed
+	@State private var isAddNewShedSheetShowing = false
 	
 	// parameters to control triggering an Alert and defining what action
 	// to take upon confirmation
 	//@State private var confirmationAlert = ConfirmationAlert(type: .none)
-	@State private var confirmDeleteCategoryAlert: ConfirmDeleteCategoryAlert?
+	@State private var confirmDeleteShedAlert: ConfirmDeleteShedAlert?
 
 	// this implements a seemingly well-known strategy to get the list drawn
 	// cleanly without any highlighting
@@ -29,28 +29,28 @@
 	var body: some View {
 		VStack(spacing: 0) {
 			
-			// 1. add new category "button" is at top.  note that this will put up the
-			// AddorModifyCategoryView inside its own NavigationView (so the Picker will work!)
-			Button(action: { isAddNewCategorySheetShowing = true }) {
-			//	Text("Add New Category")
+			// 1. add new shed "button" is at top.  note that this will put up the
+			// AddorModifyShedView inside its own NavigationView (so the Picker will work!)
+			Button(action: { isAddNewShedSheetShowing = true }) {
+			//	Text("Add New Shed")
 			//		.foregroundColor(Color.blue)
 			//		.padding(10)
 			}
-			.sheet(isPresented: $isAddNewCategorySheetShowing) {
-				NavigationView { AddCategoryView() }
+			.sheet(isPresented: $isAddNewShedSheetShowing) {
+				NavigationView { AddShedView() }
 			}
 			
 			Rectangle()
 				.frame(height: 1)
 			
 			
-			// 2. then the list of categories
+			// 2. then the list of sheds
 			//Form {
-			//	Section(header: Text("Categorys Listed: \(categories.count)").sectionHeader()) {
-			//		ForEach(categories) { category in
-			//			NavigationLink(destination: AddOrModifyCategoryView(category: category)) //{
-            //                CategoryRowView(category: category, rowData: //CategoryRowData(category: category))
-			//					.contextMenu { contextMenuButton(for: category) }
+			//	Section(header: Text("Sheds Listed: \(sheds.count)").sectionHeader()) {
+			//		ForEach(sheds) { shed in
+			//			NavigationLink(destination: AddOrModifyShedView(shed: shed)) //{
+            //                ShedRowView(shed: shed, rowData: //ShedRowData(shed: shed))
+			//					.contextMenu { contextMenuButton(for: shed) }
 			//			} // end of NavigationLink
 			//		} // end of ForEach
 			//	} // end of Section
@@ -58,35 +58,35 @@
 			//				.id(listDisplayID)
 			
 		} // end of VStack
-		.navigationBarTitle("Categories")
+		.navigationBarTitle("Sheds")
 		.toolbar { ToolbarItem(placement: .navigationBarTrailing, content: addNewButton) }
 		//.alert(isPresented: $confirmationAlert.isShowing) { confirmationAlert.alert() }
-		.alert(item: $confirmDeleteCategoryAlert) { item in item.alert() }
+		.alert(item: $confirmDeleteShedAlert) { item in item.alert() }
 		.onAppear {
-			logAppear(title: "CategorysTabView")
+			logAppear(title: "ShedsTabView")
 			handleOnAppear()
 		}
 		.onDisappear() {
-			logDisappear(title: "CategorysTabView")
+			logDisappear(title: "ShedsTabView")
 			PersistentStore.shared.saveContext()
 		}
 		
 	} // end of var body: some View
 	
 	func handleOnAppear() {
-		// updating listDisplayID makes SwiftUI think the list of categories is a whole new
+		// updating listDisplayID makes SwiftUI think the list of sheds is a whole new
 		// list, thereby removing any highlighting.
 		listDisplayID = UUID()
-		// because the unknown category is created lazily, this will make sure that
+		// because the unknown shed is created lazily, this will make sure that
 		// we'll not be left with an empty screen
-		if categories.count == 0 {
-			let _ = Category.unknownCategory()
+		if sheds.count == 0 {
+			let _ = Shed.unknownShed()
 		}
 	}
 	
-	// defines the usual "+" button to add a Category
+	// defines the usual "+" button to add a Shed
 	func addNewButton() -> some View {
-		Button(action: { isAddNewCategorySheetShowing = true }) {
+		Button(action: { isAddNewShedSheetShowing = true }) {
 			Image(systemName: "plus")
 				.font(.title2)
 		}
@@ -95,15 +95,15 @@
 	// a convenient way to build this context menu without having it in-line
 	// in the view code above
 	@ViewBuilder
-	func contextMenuButton(for category: Category) -> some View {
+	func contextMenuButton(for shed: Shed) -> some View {
 		Button(action: {
-			if !category.isUnknownCategory {
-				confirmDeleteCategoryAlert = ConfirmDeleteCategoryAlert(category: category)
-				//confirmationAlert.trigger(type: .deleteCategory(category))
+			if !shed.isUnknownShed {
+				confirmDeleteShedAlert = ConfirmDeleteShedAlert(shed: shed)
+				//confirmationAlert.trigger(type: .deleteShed(shed))
 			}
 		}) {
-			Text(category.isUnknownCategory ? "(Cannot be deleted)" : "Delete This Category")
-			Image(systemName: category.isUnknownCategory ? "trash.slash" : "trash")
+			Text(shed.isUnknownShed ? "(Cannot be deleted)" : "Delete This Shed")
+			Image(systemName: shed.isUnknownShed ? "trash.slash" : "trash")
 		}
 	}
 	

@@ -1,5 +1,5 @@
 //
-//  CategoryRowView.swift
+//  ShedRowView.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 18/10/21
@@ -8,17 +8,17 @@
 
 import SwiftUI
 
-struct CategoryRowView: View {
+struct ShedRowView: View {
         
-    @ObservedObject var category: Category
+    @ObservedObject var shed: Shed
 
     var body: some View {
-        NavigationLink(destination: CategoryDetailView(category: category)) {
+        NavigationLink(destination: ShedDetailView(shed: shed)) {
             HStack {
-                Text(category.name)
+                Text(shed.name)
                     .font(.headline)
                 Spacer()
-                Text("\(category.items.count)")
+                Text("\(shed.items.count)")
                     .font(.headline)
             }
         }

@@ -28,17 +28,17 @@ struct TripDetailView: View {
     
     // all editableData is packaged here. its initial values are set using
     // a custom init.
-    @State private var editableTripData: EditableTripData
+    @State private var editableGearlistData: EditableGearlistData
     
-    var tripFromParent: Trip
+    var gearlistFromParent: Gearlist
     
-    var trip: Trip
+    var gearlist: Gearlist
     
     // custom init to set up editable data
-    init(trip: Trip, tripFromParent: Trip) {
-        _editableTripData = State(initialValue: EditableTripData(trip: trip))
-        self.trip = trip
-        self.tripFromParent = tripFromParent
+    init(gearlist: Gearlist, gearlistFromParent: Gearlist) {
+        _editableGearlistData = State(initialValue: EditableGearlistData(gearlist: gearlist))
+        self.gearlist = gearlist
+        self.gearlistFromParent = gearlistFromParent
     }
     
     
@@ -46,13 +46,13 @@ struct TripDetailView: View {
         
         VStack {
         
-           SimpleItemsListForTrip(trip: tripFromParent)
+           SimpleItemsListForTrip(gearlist: gearlistFromParent)
             
         }
-        .navigationTitle(editableTripData.tripName)
+        .navigationTitle(editableGearlistData.gearlistName)
         .sheet(isPresented: $isAddNewItemToTripSheetShowing) {
             NavigationView {
-                AddItemToTripSheet(trip: trip)
+                AddItemToTripSheet(gearlist: gearlist)
                     .environment(\.managedObjectContext, PersistentStore.shared.context)
             }
         }
@@ -70,7 +70,7 @@ struct TripDetailView: View {
     
     // the purpose of this function is to break out the itemsToBePurchased by section,
     // according to whether the list is displayed as a single section or in multiple
-    // sections (one for each Category that contains shopping items on the list)
+    // sections (one for each Shed that contains shopping items on the list)
     
     // The purpose of this function is to add the selected item to our temporary array itemsChecked
     func handleItemSelected(_ item: Item) {
@@ -95,11 +95,11 @@ struct TripDetailView: View {
 
 struct SimpleItemsListForTrip: View {
     
-    var trip: Trip
+    var gearlist: Gearlist
     
     var body: some View {
         VStack (alignment: .leading){
-            if let items = trip.items_?.allObjects as? [Item] {
+            if let items = gearlist.items_?.allObjects as? [Item] {
                 ForEach(items) { item in
                     ItemRowInTrip(item: item)
                 }

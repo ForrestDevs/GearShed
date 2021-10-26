@@ -15,7 +15,7 @@ import CoreData
 extension NSManagedObject {
 	
 	// makes it easy to count NSManagedObjects in a given context.  useful during
-	// app development.  used in Item.count() and Category.count() in this app
+	// app development.  used in Item.count() and Shed.count() in this app
 	class func count(context: NSManagedObjectContext) -> Int {
 		let fetchRequest: NSFetchRequest<Self> = NSFetchRequest<Self>(entityName: Self.description())
 		do {

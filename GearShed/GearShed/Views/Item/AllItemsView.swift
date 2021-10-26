@@ -21,14 +21,12 @@ struct AllItemsView: View {
 
     var body: some View {
         VStack (spacing: 0) {
-            
             StatBar(persistentStore: persistentStore)
-                        
+                .padding(.top,5)
             itemList
-            
-            Spacer(minLength: 60)
+                .padding(.top,10)
+            Spacer(minLength: 50)
         }
-        .navigationBarTitle("All")
     }
     
     var itemList: some View {
@@ -58,11 +56,11 @@ struct AllItemsView: View {
         
     func sectionData() -> [SectionData] {
         var completedSectionData = [SectionData]()
-        // otherwise, one section for each category, please.  break the data out by category first
-        let dictionaryByCategory = Dictionary(grouping: viewModel.items, by: { $0.category })
+        // otherwise, one section for each shed, please.  break the data out by shed first
+        let dictionaryByShed = Dictionary(grouping: viewModel.items, by: { $0.shed })
         // then reassemble the sections by sorted keys of this dictionary
-        for key in dictionaryByCategory.keys.sorted() {
-            completedSectionData.append(SectionData(title: key.name, items: dictionaryByCategory[key]!))
+        for key in dictionaryByShed.keys.sorted() {
+            completedSectionData.append(SectionData(title: key.name, items: dictionaryByShed[key]!))
         }
         return completedSectionData
     }
@@ -70,25 +68,7 @@ struct AllItemsView: View {
 }
 
 
-/*var body: some View {
-    VStack (spacing: 0) {
-        
-        StatBar()
-                    
-        ScrollView(.vertical, showsIndicators: false) {
-            
-            
-            ForEach(viewModel.allItemsInShed) { item in
-                ItemRowView(item: item)
-            }
-        }
-        .padding(.top, 10)
-        Rectangle()
-            .frame(height: 1)
-            .opacity(0)
-        Spacer(minLength: 60)
-    }
-}*/
+
 
 
 

@@ -1,5 +1,5 @@
 //
-//  AddCategoryView.swift
+//  AddShedView.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 18/10/21
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct AddCategoryView: View {
+struct AddShedView: View {
     
 	@Environment(\.presentationMode) var presentationMode
 	
@@ -16,12 +16,12 @@ struct AddCategoryView: View {
 	// a custom init.
 	@State private var editableData: EditableItemData
     
-	var category: Category?
+	var shed: Shed?
 	
 	// custom init to set up editable data
-	init(category: Category? = nil) {
-		_editableData = State(initialValue: EditableItemData(category: category))
-		self.category = category
+	init(shed: Shed? = nil) {
+		_editableData = State(initialValue: EditableItemData(shed: shed))
+		self.shed = shed
 	}
 
 	var body: some View {
@@ -30,12 +30,12 @@ struct AddCategoryView: View {
 			Section(header: Text("Basic Information").sectionHeader()) {
 				HStack {
 					SLFormLabelText(labelText: "Name: ")
-					TextField("Category name", text: $editableData.categoryName)
+					TextField("Shed name", text: $editableData.shedName)
 				}
 			}
 		}
 		.onDisappear { PersistentStore.shared.saveContext() }
-		.navigationBarTitle("Add New Category", displayMode: .inline)
+		.navigationBarTitle("Add New Shed", displayMode: .inline)
 		.navigationBarBackButtonHidden(true)
 		.toolbar {
             ToolbarItem(placement: .cancellationAction) {
@@ -44,8 +44,8 @@ struct AddCategoryView: View {
 			ToolbarItem(placement: .confirmationAction) {
                 Button {
                     presentationMode.wrappedValue.dismiss()
-                    Category.updateData(using: editableData)
-                } label: { Text("Save") } .disabled(!editableData.canCategoryBeSaved)
+                    Shed.updateData(using: editableData)
+                } label: { Text("Save") } .disabled(!editableData.canShedBeSaved)
             }
 		}
 	}

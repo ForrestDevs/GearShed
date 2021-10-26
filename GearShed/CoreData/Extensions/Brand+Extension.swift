@@ -42,7 +42,16 @@ extension Brand: Comparable {
     // a Swift array
     var items: [Item] {
         if let items = items_ as? Set<Item> {
-            return items.sorted(by: { $0.name < $1.name })
+            return items.sorted(by: { $0.name < $1.name }).filter { !$0.wishlist }
+        }
+        return []
+    }
+    
+    // items: fronts Core Data attribute items_ that is an NSSet, and turns it into
+    // a Swift array
+    var regretItems: [Item] {
+        if let items = items_ as? Set<Item> {
+            return items.sorted(by: { $0.name < $1.name }).filter { $0.isRegret }
         }
         return []
     }
@@ -126,7 +135,7 @@ extension Brand: Comparable {
             }*/
             return brand[0]
         } catch let error as NSError {
-            fatalError("Error fetching unknown category: //\(error.localizedDescription), \(error.userInfo)")
+            fatalError("Error fetching unknown shed: //\(error.localizedDescription), \(error.userInfo)")
         }
     }
     

@@ -56,27 +56,27 @@ struct ConfirmMoveAllItemsOffShoppingListAlert: ConfirmationAlertProtocol {
 	var nonDestructiveCompletion: (() -> Void)?
 }
 
-// MARK: - Confirm DELETE Category Alert
-struct ConfirmDeleteCategoryAlert: ConfirmationAlertProtocol {
+// MARK: - Confirm DELETE Shed Alert
+struct ConfirmDeleteShedAlert: ConfirmationAlertProtocol {
 	var id = UUID()
 	
-	var category: Category
+	var shed: Shed
 	
-	var title: String { "Delete \'\(category.name)\'?" }
+	var title: String { "Delete \'\(shed.name)\'?" }
 	
 	var message: String {
-		"Are you sure you want to delete the Category named \'\(category.name)\'? All items at this category will be moved to the Unknown Category.  This action cannot be undone."
+		"Are you sure you want to delete the Shed named \'\(shed.name)\'? All items at this shed will be moved to the Unknown Shed.  This action cannot be undone."
 	}
 	
 	func destructiveAction() {
-		Category.delete(category)
+		Shed.delete(shed)
 	}
 	
 	var destructiveCompletion: (() -> Void)?
 	var nonDestructiveCompletion: (() -> Void)?
 	
-	init(category: Category, destructiveCompletion: (() -> Void)? = nil) {
-		self.category = category
+	init(shed: Shed, destructiveCompletion: (() -> Void)? = nil) {
+		self.shed = shed
 		self.destructiveCompletion = destructiveCompletion
 	}
 	
@@ -162,4 +162,34 @@ struct ConfirmDeleteTripAlert: ConfirmationAlertProtocol {
     }
     
 }
+
+// MARK: - Confirm DELETE TRIP Alert
+struct ConfirmDeleteGearlistAlert: ConfirmationAlertProtocol {
+    
+    //@StateObject private var viewModel = TripsViewModel()
+    
+    var id = UUID()
+    
+    var gearlist: Gearlist
+    
+    var title: String { "Delete \'\(gearlist.name)\'?" }
+    
+    var message: String {
+        "Are you sure you want to delete the Gearlist named \(gearlist.name)?  This action cannot be undone."
+    }
+    
+    func destructiveAction() {
+        //viewModel.deleteTrip(trip: trip)
+    }
+    
+    var destructiveCompletion: (() -> Void)?
+    var nonDestructiveCompletion: (() -> Void)?
+    
+    init(gearlist: Gearlist, destructiveCompletion: (() -> Void)? = nil) {
+        self.gearlist = gearlist
+        self.destructiveCompletion = destructiveCompletion
+    }
+    
+}
+
 

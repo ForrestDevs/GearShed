@@ -1,5 +1,5 @@
 //
-//  CategoryJSON.swift
+//  ShedJSON.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 18/10/21
@@ -8,12 +8,12 @@
 
 import Foundation
 
-// this is a simple struct to extract only the fields of a Category
+// this is a simple struct to extract only the fields of a Shed
 // that we would import or export in such a way that the result is Codable
-struct CategoryCodableProxy: Codable {
+struct ShedCodableProxy: Codable {
 	var name: String
 
-	init(from category: Category) {
-		name = category.name
+	init(from shed: Shed) {
+		name = shed.name
 	}
 }

@@ -11,8 +11,8 @@ import SwiftUI
 struct TripListDisplay: View {
     
     // this is the @FetchRequest that ties this view to Core Data Trips
-    @FetchRequest(fetchRequest: Trip.allTripsFR())
-    private var allFetchedTrips: FetchedResults<Trip>
+    @FetchRequest(fetchRequest: Gearlist.allGearlistsFR())
+    private var allGearlists: FetchedResults<Gearlist>
     
     @StateObject private var viewModel = TripVM()
 
@@ -20,13 +20,13 @@ struct TripListDisplay: View {
         
         // List of Trips
         Form {
-            Section(header: Text("Trips Listed: \(allFetchedTrips.count)").sectionHeader()) {
-                ForEach(allFetchedTrips) { trip in
-                    TripRowView(trip: trip)
-                        .contextMenu { tripContextMenu(trip: trip, deletionTrigger: { viewModel.confirmDeleteTripAlert = ConfirmDeleteTripAlert(trip: trip) }) }
+            Section(header: Text("Gearlists Listed: \(allGearlists.count)").sectionHeader()) {
+                ForEach(allGearlists) { gearlist in
+                    TripRowView(gearlist: gearlist)
+                        .contextMenu { gearlistContextMenu(gearlist: gearlist, deletionTrigger: { viewModel.confirmDeleteGearlistAlert = ConfirmDeleteGearlistAlert(gearlist: gearlist) }) }
                 }
             }
-            .alert(item: $viewModel.confirmDeleteTripAlert) { trip in trip.alert() }
+            .alert(item: $viewModel.confirmDeleteGearlistAlert) { gearlist in gearlist.alert() }
         }
         
     }

@@ -9,31 +9,31 @@
  
  //Section 2+3.
  
-// Section(header: Text("Category").sectionHeader()) {
-//     Picker(selection: $categoryChooser, label: Text("Category")) //{
-//         Text("Choose Category").tag(0)
-//         Text("Create New Category").tag(1)
+// Section(header: Text("Shed").sectionHeader()) {
+//     Picker(selection: $shedChooser, label: Text("Shed")) //{
+//         Text("Choose Shed").tag(0)
+//         Text("Create New Shed").tag(1)
 //     }
 //     .pickerStyle(SegmentedPickerStyle())
 //     .onAppear {
-//         if (self.categorys.count == 0) {
-//             self.categoryChooser = 1
+//         if (self.sheds.count == 0) {
+//             self.shedChooser = 1
 //             }
 //         }
 //
-//     // Choose Category is selected in segemented control
-//     if (categoryChooser == 0) {
-//         Picker(selection: $editableItemData.category, label: //SLFormLabelText(labelText: "Category: ")) {
-//             ForEach(categorys) { category in
-//                 Text(category.name).tag(category)
+//     // Choose Shed is selected in segemented control
+//     if (shedChooser == 0) {
+//         Picker(selection: $editableItemData.shed, label: //SLFormLabelText(labelText: "Shed: ")) {
+//             ForEach(sheds) { shed in
+//                 Text(shed.name).tag(shed)
 //             }
 //         }
 //     }
-//     // Create Category is selected in segmented control
-//     if (categoryChooser == 1) {
+//     // Create Shed is selected in segmented control
+//     if (shedChooser == 1) {
 //         HStack {
 //             SLFormLabelText(labelText: "Name: ")
-//             TextField("Category name", text: //$editableItemData.categoryName)
+//             TextField("Shed name", text: //$editableItemData.shedName)
 //         }
 //     }
 // }
@@ -111,9 +111,9 @@
  //    }
  //}
  
- Category Visitation order section
+ Shed Visitation order section
  
- //if editableData.visitationOrder != kUnknownCategoryVisitationOrder {
+ //if editableData.visitationOrder != kUnknownShedVisitationOrder {
  //    Stepper(value: $editableData.visitationOrder, in: 1...100) {
  //        HStack {
  //            SLFormLabelText(labelText: "Visitation Order: ")
@@ -534,7 +534,7 @@
  //@FetchRequest(fetchRequest: Item.allItemsFR(onList: true))
  //private var allItems: FetchedResults<Item>
 
- // display format: one big section of Items, or sectioned by Category?
+ // display format: one big section of Items, or sectioned by Shed?
  // (not sure we need a Binding here ... we only read the value)
  //@Binding var multiSectionDisplay: Bool
      
@@ -596,10 +596,10 @@
  func handleOnAppear() {
      // what follows here is a kludge for a very special case:
      // -- we were in the ShoppingListTabView
-     // -- we navigate to this Add/ModifyItem view for an Item X at Category Y
-     // -- we use the tab bar to move to the Categorys tab
-     // -- we select Category Y and navigate to its Add/ModifyCategory view
-     // -- we tap Item X listed for Category Y, opening a second Add/ModifyItem view for Item X
+     // -- we navigate to this Add/ModifyItem view for an Item X at Shed Y
+     // -- we use the tab bar to move to the Sheds tab
+     // -- we select Shed Y and navigate to its Add/ModifyShed view
+     // -- we tap Item X listed for Shed Y, opening a second Add/ModifyItem view for Item X
      // -- we delete Item X in this second Add/ModifyItem view
      // -- we use the tab bar to come back to the shopping list tab, and
      // -- this view is now what's on-screen, showing us an item that was deleted underneath us (!)
@@ -612,7 +612,7 @@
      }
      
      // by the way, this applies symmetrically to opening an Add/ModifyItem view from the
-     // Add/ModifyCategory view, then tabbing over to the shopping list, looking at a second
+     // Add/ModifyShed view, then tabbing over to the shopping list, looking at a second
      // Add/ModifyItem view there and deleting.  the first Add/ModifyItem view will get the
      // same treatment in this code, getting dismissed when it tries to come back on screen.
      
@@ -638,8 +638,8 @@
  }
  
  //// EDIT CATEGORIES
- //NavigationLink(destination: CategoriesTabView()) {
- //    Text("Edit Categories")
+ //NavigationLink(destination: ShedsTabView()) {
+ //    Text("Edit Sheds")
  //    .foregroundColor(Color.blue)
  //    .padding(10)
  //}
@@ -663,8 +663,8 @@
  //@State private var confirmDeleteItemAlert: ConfirmDeleteItemAlert?
  
  /* /////////////////////////// */
- //Create a state var for the category picker section
- //@State private var categoryChooser = 0
+ //Create a state var for the shed picker section
+ //@State private var shedChooser = 0
  //Create a state var for the brand picker section
  //@State private var brandChooser = 0
  /* /////////////////////////// */
@@ -678,18 +678,18 @@
  //    }
  //}
  
- // Category Section
-  //Section(header: Text("Category").sectionHeader()) {
-  //   Picker(selection: $editableItemData.category, label: SLFormLabelText(labelText: "Category: ")) {
-  //        ForEach(categorys) { category in
-  //            Text(category.name).tag(category)
+ // Shed Section
+  //Section(header: Text("Shed").sectionHeader()) {
+  //   Picker(selection: $editableItemData.shed, label: SLFormLabelText(labelText: "Shed: ")) {
+  //        ForEach(sheds) { shed in
+  //            Text(shed.name).tag(shed)
   //      }
   //   }
   //}
  
- // Section 3: Items assigned to this Category, if we are editing a Category
- if editableData.representsExistingCategory {
-     SimpleItemsList(category: editableData.associatedCategory/*,
+ // Section 3: Items assigned to this Shed, if we are editing a Shed
+ if editableData.representsExistingShed {
+     SimpleItemsList(shed: editableData.associatedShed/*,
                                      isAddNewItemSheetShowing: $isAddNewItemSheetShowing*/)
  }
  
@@ -699,8 +699,8 @@
      @State private var listDisplayID = UUID()
      //@Binding var isAddNewItemSheetShowing: Bool
      
-     init(category: Category/*, isAddNewItemSheetShowing: Binding<Bool>*/) {
-         let request = Item.allItemsFR(at: category)
+     init(shed: Shed/*, isAddNewItemSheetShowing: Binding<Bool>*/) {
+         let request = Item.allItemsFR(at: shed)
          _items = FetchRequest(fetchRequest: request)
          //_isAddNewItemSheetShowing = isAddNewItemSheetShowing
      }
@@ -719,7 +719,7 @@
      
      func ItemsListHeader() -> some View {
          HStack {
-             Text("At this Category: \(items.count) items").sectionHeader()
+             Text("At this Shed: \(items.count) items").sectionHeader()
              Spacer()
              
              //Button {
@@ -736,8 +736,8 @@
  // but an eager developer could easily store this default value in UserDefaults (?)
  //@Published var multiSectionDisplay: Bool = true
  
- struct CategoryRowViewOld: View {
-     var rowData: CategoryRowData
+ struct ShedRowViewOld: View {
+     var rowData: ShedRowData
 
      var body: some View {
          HStack {
@@ -751,7 +751,7 @@
                  Text(subtitle())
                      .font(.caption)
              }
-             if rowData.visitationOrder != kUnknownCategoryVisitationOrder {
+             if rowData.visitationOrder != kUnknownShedVisitationOrder {
                  //Spacer()
                  //Text(String(rowData.visitationOrder))
              }
@@ -768,21 +768,21 @@
      
  }
  
- // MARK: - CategoryRowData Definition
- // this is a struct to transport all the incoming data about a Category that we
+ // MARK: - ShedRowData Definition
+ // this is a struct to transport all the incoming data about a Shed that we
  // will display.  see the commentary over in EditableItemData.swift and
  // SelectableItemRowView.swift about why we do this.
- struct CategoryRowData {
+ struct ShedRowData {
      let name: String
      let itemCount: Int
      let visitationOrder: Int
      let uiColor: UIColor
      
-     init(category: Category) {
-         name = category.name
-         itemCount = category.itemCount
-         visitationOrder = category.visitationOrder
-         uiColor = category.uiColor
+     init(shed: Shed) {
+         name = shed.name
+         itemCount = shed.itemCount
+         visitationOrder = shed.visitationOrder
+         uiColor = shed.uiColor
      }
  }
  
@@ -944,7 +944,7 @@
  }
  
  // this collects the four uiColor components into a single uiColor.
- // if you change a category's uiColor, its associated items will want to
+ // if you change a shed's uiColor, its associated items will want to
  // know that their uiColor computed properties have been invalidated
  var uiColor: UIColor {
      get {
@@ -961,9 +961,9 @@
      }
  }
  
- // the color = the color of its associated category
+ // the color = the color of its associated shed
  var uiColor: UIColor {
-     category_?.uiColor ?? UIColor(displayP3Red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
+     shed_?.uiColor ?? UIColor(displayP3Red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
  }
  
  // addItemToShoppingList just means that by default, a new item will be added to
@@ -984,17 +984,17 @@
                      TextField("Item name", text: $editableItemData.name)
                  }
              }
-             Section(header: Text("Category").sectionHeader()) {
+             Section(header: Text("Shed").sectionHeader()) {
                  
-                 DisclosureGroup("Category", isExpanded: $viewModel.expandedCategory) {
-                     NavigationLink(destination: AddCategoryView()) {
-                         Text("Add New Category")
+                 DisclosureGroup("Shed", isExpanded: $viewModel.expandedShed) {
+                     NavigationLink(destination: AddShedView()) {
+                         Text("Add New Shed")
                      }
-                     ForEach(categorys) { category in
-                         Text(category.name).tag(category)
+                     ForEach(sheds) { shed in
+                         Text(shed.name).tag(shed)
                              .onTapGesture {
-                                 editableItemData.category = category
-                                 viewModel.expandedCategory.toggle()
+                                 editableItemData.shed = shed
+                                 viewModel.expandedShed.toggle()
                              }
                      }
                  }
@@ -1081,33 +1081,33 @@
      
  }*/
  
- // we only keep one "UnknownCategory" in the data store.  you can find it because its
+ // we only keep one "UnknownShed" in the data store.  you can find it because its
  // visitationOrder is the largest 32-bit integer. to make the app work, however, we need this
- // default category to exist!
+ // default shed to exist!
  //
- // so if we ever need to get the unknown category from the database, we will fetch it;
+ // so if we ever need to get the unknown shed from the database, we will fetch it;
  // and if it's not there, we will create it then.
- //let fetchRequest: NSFetchRequest<Category> = Category.fetchRequest()
+ //let fetchRequest: NSFetchRequest<Shed> = Shed.fetchRequest()
  //
- //fetchRequest.predicate = NSPredicate(format: "name_ == %d", kUnknownCategoryName)
+ //fetchRequest.predicate = NSPredicate(format: "name_ == %d", kUnknownShedName)
  //
  //do {
- //    let categories = try PersistentStore.shared.context.fetch(fetchRequest)
- //    if categories.count == 1 { // there should be no more than one
- //        return categories[0]
- //    } else if categories.count == 0 {
- //        return createUnknownCategory()
+ //    let sheds = try PersistentStore.shared.context.fetch(fetchRequest)
+ //    if sheds.count == 1 { // there should be no more than one
+ //        return sheds[0]
+ //    } else if sheds.count == 0 {
+ //        return createUnknownShed()
  //    }
  //} catch let error as NSError {
- //    fatalError("Error fetching unknown category: \(error.localizedDescription), \(error.userInfo)")
+ //    fatalError("Error fetching unknown shed: \(error.localizedDescription), \(error.userInfo)")
  //}
  
  
- /*class func unknownCategoryFR(unknCategoryName: String = kUnknownCategoryName) -> NSFetchRequest<Category> {
+ /*class func unknownShedFR(unknShedName: String = kUnknownShedName) -> NSFetchRequest<Shed> {
 
-     let request = NSFetchRequest<Category>(entityName: "Category")
+     let request = NSFetchRequest<Shed>(entityName: "Shed")
      
-     let filter = NSPredicate(format: "name_ == %d", unknCategoryName)
+     let filter = NSPredicate(format: "name_ == %d", unknShedName)
      request.predicate = filter
      
      return request
@@ -1171,7 +1171,7 @@
          .actionSheet(isPresented: $viewModel.showDisplayAction) {
              ActionSheet(title: Text("Display:"), buttons: [
                  .default(Text("All Items")) {displayBy = 0},
-                 .default(Text("Grouped by Category")) {displayBy = 1},
+                 .default(Text("Grouped by Shed")) {displayBy = 1},
                  .default(Text("Grouped by Brand")) {displayBy = 2}
              ])
          }
@@ -1225,9 +1225,9 @@
  .foregroundColor(Color.white)
  .padding(.bottom, 7)*/
 
-// FetchRequest To Keep List of categories Updated
-/*@FetchRequest(fetchRequest: MainCatelogVM.allCategoriesFR())
-private var allCategories: FetchedResults<Category>*/
+// FetchRequest To Keep List of sheds Updated
+/*@FetchRequest(fetchRequest: MainCatelogVM.allShedsFR())
+private var allSheds: FetchedResults<Shed>*/
 
 /*HStack {
  Button {viewModel.isAddNewItemShowing.toggle()} label: {
@@ -1318,19 +1318,19 @@ private var allCategories: FetchedResults<Category>*/
  // Array that is initialized with all Items whenever the ViewModel is called
  @Published var allFavItems: [Item] = []
  
- // Array that is initialized with all Categories whenever the ViewModel is called
- @Published var itemInCategory: [Item] = []
+ // Array that is initialized with all Sheds whenever the ViewModel is called
+ @Published var itemInShed: [Item] = []
  
- // Array that is initialized with all Categories whenever the ViewModel is called
+ // Array that is initialized with all Sheds whenever the ViewModel is called
  @Published var itemInBrand: [Item] = []
  
- // Array that is initialized with all Categories whenever the ViewModel is called
- @Published var allUserCategories: [Category] = []
+ // Array that is initialized with all Sheds whenever the ViewModel is called
+ @Published var allUserSheds: [Shed] = []
  
- // Array that is initialized with all Categories whenever the ViewModel is called
+ // Array that is initialized with all Sheds whenever the ViewModel is called
  @Published var allBrands: [Brand] = []
  
- // Array that is initialized with all Categories whenever the ViewModel is called
+ // Array that is initialized with all Sheds whenever the ViewModel is called
  @Published var allTags: [Tag] = []
  
  func getItems(onList: Bool) {
@@ -1339,7 +1339,7 @@ private var allCategories: FetchedResults<Category>*/
      let sort = [NSSortDescriptor(key: "name_", ascending: true)]
      request.sortDescriptors = sort
      
-     let filter = NSPredicate(format: "onList_ == %d", onList)
+     let filter = NSPredicate(format: "wishlist_ == %d", onList)
      request.predicate = filter
      
      do {
@@ -1369,17 +1369,17 @@ private var allCategories: FetchedResults<Category>*/
      }
  }
  
- func getUserCategories(unknCategoryName: String = kUnknownCategoryName) {
-     let request = NSFetchRequest<Category>(entityName: "Category")
+ func getUserSheds(unknShedName: String = kUnknownShedName) {
+     let request = NSFetchRequest<Shed>(entityName: "Shed")
      
      let sort = [NSSortDescriptor(key: "name_", ascending: true)]
      request.sortDescriptors = sort
      
-     let filter = NSPredicate(format: "NOT name_ == %@", unknCategoryName)
+     let filter = NSPredicate(format: "NOT name_ == %@", unknShedName)
      request.predicate = filter
      
      do {
-         allUserCategories = try PersistentStore.shared.context.fetch(request)
+         allUserSheds = try PersistentStore.shared.context.fetch(request)
      } catch let error {
          print("Error fetching. \(error.localizedDescription)")
      }
@@ -1411,16 +1411,16 @@ private var allCategories: FetchedResults<Category>*/
      }
  }
  
- func getCategoryItems(category: Category, onList: Bool = false) {
+ func getShedItems(shed: Shed, onList: Bool = false) {
      let request: NSFetchRequest<Item> = Item.fetchRequest()
-     let p1 = NSPredicate(format: "category_ == %@", category)
-     let p2 = NSPredicate(format: "onList_ == %d", onList)
+     let p1 = NSPredicate(format: "shed_ == %@", shed)
+     let p2 = NSPredicate(format: "wishlist_ == %d", onList)
      let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [p1, p2])
      request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
      request.predicate = predicate
      
      do {
-         itemInCategory = try PersistentStore.shared.context.fetch(request)
+         itemInShed = try PersistentStore.shared.context.fetch(request)
      } catch let error {
          print("Error fetching. \(error.localizedDescription)")
      }
@@ -1444,14 +1444,14 @@ private var allCategories: FetchedResults<Category>*/
  
  // MARK: - FetchRequests
  
- // a fetch request we can use in views to get all categorys, sorted by name.
- // by default, you get all categorys; setting onList = true returns only categorys that
+ // a fetch request we can use in views to get all sheds, sorted by name.
+ // by default, you get all sheds; setting onList = true returns only sheds that
  // have at least one of its shopping items currently on the shopping list
- class func allCategoriesFR(onList: Bool = false) -> NSFetchRequest<Category> {
-     let request: NSFetchRequest<Category> = Category.fetchRequest()
+ class func allShedsFR(onList: Bool = false) -> NSFetchRequest<Shed> {
+     let request: NSFetchRequest<Shed> = Shed.fetchRequest()
      request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
      if onList {
-         request.predicate = NSPredicate(format: "ANY items_.onList_ == true")
+         request.predicate = NSPredicate(format: "ANY items_.wishlist_ == true")
      }
      return request
  }
@@ -1459,7 +1459,7 @@ private var allCategories: FetchedResults<Category>*/
  class func allItemsInWishListFR(onList: Bool = true) -> NSFetchRequest<Item> {
      let request: NSFetchRequest<Item> = Item.fetchRequest()
      request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
-     request.predicate = NSPredicate(format: "onList_ == %d", onList)
+     request.predicate = NSPredicate(format: "wishlist_ == %d", onList)
      return request
  }
  
@@ -1470,17 +1470,17 @@ private var allCategories: FetchedResults<Category>*/
      return request
  }
  
- // a fetch request we can use in views to get all User categoriess, excluding the Unknown
- // category, sorted by name by default; setting onList = true returns only categorys that
+ // a fetch request we can use in views to get all User shedss, excluding the Unknown
+ // shed, sorted by name by default; setting onList = true returns only sheds that
  // have at least one of its item currently in the Gear Shed list
- class func allUserCategoriesFR(unknCategoryName: String = kUnknownCategoryName) -> NSFetchRequest<Category> {
+ class func allUserShedsFR(unknShedName: String = kUnknownShedName) -> NSFetchRequest<Shed> {
      
-     let request = NSFetchRequest<Category>(entityName: "Category")
+     let request = NSFetchRequest<Shed>(entityName: "Shed")
      
      let sort = [NSSortDescriptor(key: "name_", ascending: true)]
      request.sortDescriptors = sort
      
-     let filter = NSPredicate(format: "NOT name_ == %@", unknCategoryName)
+     let filter = NSPredicate(format: "NOT name_ == %@", unknShedName)
      request.predicate = filter
      
      return request
@@ -1493,13 +1493,13 @@ private var allCategories: FetchedResults<Category>*/
      let request: NSFetchRequest<Brand> = Brand.fetchRequest()
      request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
      if onList {
-         request.predicate = NSPredicate(format: "ANY items_.onList_ == true")
+         request.predicate = NSPredicate(format: "ANY items_.wishlist_ == true")
      }
      return request
  }
  
- // a fetch request we can use in views to get all User categoriess, excluding the Unknown
- // category, sorted by name by default; setting onList = true returns only categorys that
+ // a fetch request we can use in views to get all User shedss, excluding the Unknown
+ // shed, sorted by name by default; setting onList = true returns only sheds that
  // have at least one of its item currently in the Gear Shed list
  class func allUserBrandsFR(unknBrandName: String) -> NSFetchRequest<Brand> {
      
@@ -1526,8 +1526,8 @@ private var allCategories: FetchedResults<Category>*/
  //    Button { self.isEditBrandShowing.toggle() } label: { Image(systemName: "slider.horizontal.3") }
  //}
  
- //func editCategoryButton() -> some View {
- //    Button { self.isEditCategoryShowing.toggle() } label: { Image(systemName: "slider.horizontal.3") }
+ //func editShedButton() -> some View {
+ //    Button { self.isEditShedShowing.toggle() } label: { Image(systemName: "slider.horizontal.3") }
  //}
  //
  //func editItemButton() -> some View {
@@ -1544,9 +1544,127 @@ private var allCategories: FetchedResults<Category>*/
  
  // parameter to control triggering an Alert and defining what action
  // to take upon confirmation
- @Published var confirmDeleteCategoryAlert: ConfirmDeleteCategoryAlert?
+ @Published var confirmDeleteShedAlert: ConfirmDeleteShedAlert?
  
+ // MARK: - Old Persistant Store Init
+
+ // this makes sure we're the only one who can create one of these
+ //private init() { }
+
+ /// The lone CloudKit container used to store all our data.
+ /*lazy var container: NSPersistentCloudKitContainer = {
+     
+     let defaults = UserDefaults.standard
+     let container = NSPersistentCloudKitContainer(name: "GearShed")
+     
+     let groupID = "group.com.yourcompany.gearshed"
+
+     if let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: groupID) {
+         container.persistentStoreDescriptions.first?.url = url.appendingPathComponent("GearShed.sqlite")
+     }
+     
+     guard let persistentStoreDescriptions = container.persistentStoreDescriptions.first else {
+         fatalError("\(#function): Failed to retrieve a persistent store description.")
+     }
+     persistentStoreDescriptions.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
+     persistentStoreDescriptions.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
+     
+     container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+         if let error = error as NSError? {
+             fatalError("Unresolved error \(error), \(error.userInfo)")
+         }
+     })
+     
+     // also suggested for cloud-based Core Data are the two lines below for syncing with the cloud.
+     container.viewContext.automaticallyMergesChangesFromParent = true
+     container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+     
+     return container
+     
+ }()*/
+
+ /*var body: some View {
+     VStack (spacing: 0) {
+         
+         StatBar()
+                     
+         ScrollView(.vertical, showsIndicators: false) {
+             
+             
+             ForEach(viewModel.allItemsInShed) { item in
+                 ItemRowView(item: item)
+             }
+         }
+         .padding(.top, 10)
+         Rectangle()
+             .frame(height: 1)
+             .opacity(0)
+         Spacer(minLength: 60)
+     }
+ }*/
+ //private var selectedBrandName: String
  
+ //@State private var altShedSelected: Bool = false
  
+ //@State private var altBrandSelected: Bool = false
+ 
+ //@State private var altShedName: String = ""
+ 
+ //@State private var altBrandName: String = ""
+ /*if selectedShed != Shed.theUnknownShed() {
+     
+ }
+     
+     editableItemData.shed = selectedShed! //?? Shed.theUnknownShed()
+     print("loaded selected shed")
+ }*/
+ //if (selectedShed != nil) {
+ //    editableItemData.shed = selectedShed! //?? Shed.theUnknownShed()
+ //    print("loaded selected shed")
+ //}
+ //print("AI SC",selectedShed?.name ?? "")
+ //print("STock", editableItemData.shed.name)
+ // initialize the editableData struct for the incoming item, if any; and
+ // also carry in whatever might be a suggested Item name for a new Item
+ /*if let item = editableItem {
+     _editableItemData = State(initialValue: EditableItemData(item: item))
+ } else {
+  // here's we'll see if a suggested name for adding a new item was supplied
+  let initialValue = EditableItemData(initialItemName: initialItemName, initialItemDetails: initialItemDetails, shed: shed,  brand: brand)
+  _editableItemData = State(initialValue: initialValue)
+ }*/
+ //selectedShedName = shed?.name ?? "Choose a shed"
+ //selectedBrandName = brand?.name ?? "Choose a brand"
+ /@State private var selectedShed: Shed? = Shed.theUnknownShed()
+ /*func discolsureShedTitle() -> String {
+     if !altShedSelected {
+         return viewModel.selectedShed!.name
+     } else {
+         return altShedName
+     }
+ }*/
+ 
+ /*func discolsureBrandTitle() -> String {
+     if !altBrandSelected {
+         return selectedBrandName
+     } else {
+         return altBrandName
+     }
+ }*/
+ /*VStack (alignment: .leading, spacing: 10) {
+     Text("Quantity")
+         .font(.subheadline)
+         .bold()
+         .foregroundColor(Color.theme.green)
+     
+     Stepper(value: $editableItemData.quantity, in: 1...50) {
+         HStack {
+             Spacer()
+             Text("\(editableItemData.quantity)")
+             Spacer()
+         }
+     }
+ }*/
+
  
  */

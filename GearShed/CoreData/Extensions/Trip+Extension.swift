@@ -9,7 +9,6 @@
 import SwiftUI
 import CoreData
 
-
 extension Trip {
     
     // MARK: - Computed properties
@@ -23,21 +22,21 @@ extension Trip {
         get { name_ ?? "Unknown Name" }
         set {
             name_ = newValue
-            items.forEach({ $0.objectWillChange.send() })
+            gearlists.forEach({ $0.objectWillChange.send() })
         }
     }
     
     // items: fronts Core Data attribute items_ that is an NSSet, and turns it into
     // a Swift array
-    var items: [Item] {
-        if let items = items_ as? Set<Item> {
-            return items.sorted(by: { $0.name < $1.name })
+    var gearlists: [Gearlist] {
+        if let gearlists = gearlists_ as? Set<Gearlist> {
+            return gearlists.sorted(by: { $0.name < $1.name })
         }
         return []
     }
     
     // tripCount: computed property from Core Data items_
-    var itemCount: Int { items_?.count ?? 0 }
+    var gearlistCount: Int { gearlists_?.count ?? 0 }
     
     
     // MARK: - Useful Fetch Request
@@ -113,7 +112,7 @@ extension Trip {
         // usually, what i would do is this, to be sure that anyone who is
         // observing an Item as an @ObservedObject knows about the Trip update:
         
-        items.forEach({ $0.objectWillChange.send() })
+        gearlists.forEach({ $0.objectWillChange.send() })
     }
     
 } // end of extension Trip

@@ -1,5 +1,5 @@
 //
-//  CategoryDetailView.swift
+//  ShedDetailView.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-10-19.
@@ -7,22 +7,22 @@
 
 import SwiftUI
 
-struct CategoryDetailView: View {
+struct ShedDetailView: View {
     
     @EnvironmentObject var persistentStore: PersistentStore
 
-    @ObservedObject var category: Category
-    @State private var isEditCategoryShowing: Bool = false
+    @ObservedObject var shed: Shed
+    @State private var isEditShedShowing: Bool = false
 
     var body: some View {
         VStack(spacing:0) {
             
-            StatBarInShed(persistentStore: persistentStore)
+            StatBarInShed(persistentStore: persistentStore, shed: shed)
                 .padding(.top, 10)
                 .padding(.bottom, 10)
             
             ScrollView(.vertical, showsIndicators: false) {
-                ForEach(category.items) { item in
+                ForEach(shed.items) { item in
                     ItemRowView(item: item)
                 }
             }
@@ -33,14 +33,14 @@ struct CategoryDetailView: View {
             Spacer(minLength: 60)
                 
         }
-        .navigationTitle(category.name)
+        .navigationTitle(shed.name)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button { isEditCategoryShowing.toggle() } label: { Image(systemName: "slider.horizontal.3") }
+                Button { isEditShedShowing.toggle() } label: { Image(systemName: "slider.horizontal.3") }
             }
         }
-        .fullScreenCover(isPresented: $isEditCategoryShowing) {
-            ModifyCategoryView(category: category).environment(\.managedObjectContext, PersistentStore.shared.context)
+        .fullScreenCover(isPresented: $isEditShedShowing) {
+            ModifyShedView(shed: shed).environment(\.managedObjectContext, PersistentStore.shared.context)
         }
     }
 }

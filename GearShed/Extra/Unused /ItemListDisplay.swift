@@ -36,7 +36,7 @@ struct ItemListDisplay: View {
     
     // the purpose of this function is to break out the allItems by section,
     // according to whether the list is displayed as a single section or in multiple
-    // sections (one for each Category that contains shopping items on the list)
+    // sections (one for each Shed that contains shopping items on the list)
     func sectionData() -> [SectionData] {
         
         var completedSectionData = [SectionData]()
@@ -44,11 +44,11 @@ struct ItemListDisplay: View {
         if displayBy == 0 {
             completedSectionData.append(SectionData(title:"", items: viewModel.allItemsInShed))
         } else if displayBy == 1 {
-            // otherwise, one section for each category, please.  break the data out by category first
-            let dictionaryByCategory = Dictionary(grouping: viewModel.allItemsInShed, by: { $0.category })
+            // otherwise, one section for each shed, please.  break the data out by shed first
+            let dictionaryByShed = Dictionary(grouping: viewModel.allItemsInShed, by: { $0.shed })
             // then reassemble the sections by sorted keys of this dictionary
-            for key in dictionaryByCategory.keys.sorted() {
-                completedSectionData.append(SectionData(title: key.name, items: dictionaryByCategory[key]!))
+            for key in dictionaryByShed.keys.sorted() {
+                completedSectionData.append(SectionData(title: key.name, items: dictionaryByShed[key]!))
             }
         } else if displayBy == 2 {
             // otherwise, one section for each brand, please.  break the data out by brand first

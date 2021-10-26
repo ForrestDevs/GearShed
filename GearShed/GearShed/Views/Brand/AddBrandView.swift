@@ -12,8 +12,6 @@ struct AddBrandView: View {
     
     @Environment(\.presentationMode) var presentationMode
     
-    @State private var confirmDeleteBrandAlert: ConfirmDeleteBrandAlert?
-    
     // all editableData is packaged here. its initial values are set using
     // a custom init.
     @State private var editableData: EditableItemData
@@ -50,7 +48,6 @@ struct AddBrandView: View {
                     } label: { Text("Save") } .disabled(!editableData.canBrandBeSaved)
                 }
             }
-            .alert(item: $confirmDeleteBrandAlert) { item in item.alert() }
     }
 }
 

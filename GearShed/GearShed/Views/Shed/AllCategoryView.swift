@@ -1,5 +1,5 @@
 //
-//  AllCategoryView.swift
+//  AllShedView.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 18/10/21
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct AllCategoryView: View {
+struct AllShedView: View {
     
     @EnvironmentObject var persistentStore: PersistentStore
 
@@ -19,10 +19,7 @@ struct AllCategoryView: View {
     
     @State private var showingUnlockView: Bool = false
     
-    @State private var isAddCategoryShowing: Bool = false
-    
-    // state var to pass into addItemView pre populating the selected category
-    @State var selectedCategory: Category? = nil
+    @State private var isAddShedShowing: Bool = false
     
     init(persistentStore: PersistentStore) {
         let viewModel = MainCatelogVM(persistentStore: persistentStore)
@@ -33,19 +30,20 @@ struct AllCategoryView: View {
         VStack {
             ZStack {
                 ScrollView(.vertical, showsIndicators: false) {
-                    allShedRow
-                    categoryList
+                    //allShedRow
+                    shedList
                 }
                 addShedOverLay
             }
             Spacer(minLength: 50)
         }
         .fullScreenCover(isPresented: $isAddNewItemShowing) {
-            AddItemView(persistentStore: persistentStore, category: selectedCategory).environment(\.managedObjectContext, PersistentStore.shared.context)
+            AddItemView(persistentStore: persistentStore, shed:  viewModel.selectedShed).environment(\.managedObjectContext, PersistentStore.shared.context)
+            //print("Injected",selectedShed?.name ?? "")
         }
-        .fullScreenCover(isPresented: $isAddCategoryShowing) {
+        .fullScreenCover(isPresented: $isAddShedShowing) {
             NavigationView {
-                AddCategoryView()
+                AddShedView()
             }
         }
         .sheet(isPresented: $showingUnlockView) {
@@ -62,7 +60,7 @@ struct AllCategoryView: View {
                         .font(.headline)
                     Text("|")
                         .font(.headline)
-                    Text("\(viewModel.categories.count) Sheds")
+                    Text("\(viewModel.sheds.count) Sheds")
                         .font(.headline)
                 }
                 .padding(.horizontal, 50)
@@ -77,14 +75,16 @@ struct AllCategoryView: View {
         .padding(.top, 15)
     }
     
-    var categoryList: some View {
-        ForEach(viewModel.categories) { category in
+    var shedList: some View {
+        ForEach(viewModel.sheds) { shed in
             HStack (alignment: .firstTextBaseline, spacing: 10) {
                 Button {
+                    viewModel.selectedShed = shed
+                    print("AC SC", viewModel.selectedShed?.name ?? "")
+                 
                     let canCreate = self.persistentStore.fullVersionUnlocked ||
                         self.persistentStore.count(for: Item.fetchRequest()) < 3
                     if canCreate {
-                        selectedCategory = category
                         isAddNewItemShowing.toggle()
                     } else {
                         showingUnlockView.toggle()
@@ -92,7 +92,7 @@ struct AllCategoryView: View {
                 } label: {
                     Image(systemName: "plus")
                 }
-                CategoryRowView(category: category)
+                ShedRowView(shed: shed)
                     .padding(.top, 15)
             }
             .padding(.horizontal)
@@ -107,7 +107,7 @@ struct AllCategoryView: View {
             HStack {
                 Spacer()
                 Button {
-                    isAddCategoryShowing.toggle()
+                    isAddShedShowing.toggle()
                 }
                 label: {
                     VStack{

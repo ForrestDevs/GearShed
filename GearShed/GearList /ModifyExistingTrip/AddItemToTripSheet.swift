@@ -24,14 +24,14 @@ struct AddItemToTripSheet: View {
     
     // all editableData is packaged here. its initial values are set using
     // a custom init.
-    @State private var editableTripData: EditableTripData
+    @State private var editableGearlistData: EditableGearlistData
     
-    var trip: Trip
+    var gearlist: Gearlist
     
     // custom init to set up editable data
-    init(trip: Trip) {
-        _editableTripData = State(initialValue: EditableTripData(trip: trip))
-        self.trip = trip
+    init(gearlist: Gearlist) {
+        _editableGearlistData = State(initialValue: EditableGearlistData(gearlist: gearlist))
+        self.gearlist = gearlist
     }
     
     var multiSectionDisplay = true
@@ -51,7 +51,7 @@ struct AddItemToTripSheet: View {
             List {
                 ForEach(sectionData()) { section in
                     Section(header: Text(section.title).sectionHeader()) {
-                        // display items in this category
+                        // display items in this shed
                         ForEach(section.items) { item in
                             // display a single row here for 'item'
                             TripItemsSelector(item: item,selected: itemsChecked.contains(item),  respondToTapOnSelector:  { handleItemSelected(item) }, respondToTapOffSelector: { handleItemUnSelected(item)})
@@ -82,7 +82,7 @@ struct AddItemToTripSheet: View {
     }
     // the purpose of this function is to break out the itemsToBePurchased by section,
     // according to whether the list is displayed as a single section or in multiple
-    // sections (one for each Category that contains shopping items on the list)
+    // sections (one for each Shed that contains shopping items on the list)
     func sectionData() -> [SectionData] {
         
         // the easy case: if this is not a multi-section list, there will be one section with a title
@@ -91,17 +91,17 @@ struct AddItemToTripSheet: View {
             // if you want to change the sorting when this is a single section to "by name"
             // then comment out the .sorted() qualifier -- itemsToBePurchased is already sorted by //name
             let sortedItems = itemsToBePurchased
-                .sorted(by: { $0.category.name < $1.category.name })
+                .sorted(by: { $0.shed.name < $1.shed.name })
             return [SectionData(title: "", items: sortedItems)
             ]
         }
         
-        // otherwise, one section for each category, please.  break the data out by category first
-        let dictionaryByCategory = Dictionary(grouping: itemsToBePurchased, by: { $0.category })
+        // otherwise, one section for each shed, please.  break the data out by shed first
+        let dictionaryByShed = Dictionary(grouping: itemsToBePurchased, by: { $0.shed })
         // then reassemble the sections by sorted keys of this dictionary
         var completedSectionData = [SectionData]()
-        for key in dictionaryByCategory.keys.sorted() {
-            completedSectionData.append(SectionData(title: key.name, items: dictionaryByCategory[key]!))
+        for key in dictionaryByShed.keys.sorted() {
+            completedSectionData.append(SectionData(title: key.name, items: dictionaryByShed[key]!))
         }
         return completedSectionData
     }
@@ -122,8 +122,8 @@ struct AddItemToTripSheet: View {
     
     func commitData() {
         presentationMode.wrappedValue.dismiss()
-        vm.saveItemsToTrip(items: itemsChecked, trip: trip)
-        Trip.updateData(using: editableTripData)
+        vm.saveItemsToGearlist(items: itemsChecked, gearlist: gearlist)
+        Gearlist.updateData(using: editableGearlistData)
     }
 
 }

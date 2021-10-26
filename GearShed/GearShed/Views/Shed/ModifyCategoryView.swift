@@ -1,5 +1,5 @@
 //
-//  ModifyCategoryView.swift
+//  ModifyShedView.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-10-19.
@@ -7,24 +7,24 @@
 
 import SwiftUI
 
-struct ModifyCategoryView: View {
+struct ModifyShedView: View {
     
     @Environment(\.presentationMode) var presentationMode
     
     // parameter to control triggering an Alert and defining what action
     // to take upon confirmation
-    @State private var confirmDeleteCategoryAlert: ConfirmDeleteCategoryAlert?
+    @State private var confirmDeleteShedAlert: ConfirmDeleteShedAlert?
     
     // all editableData is packaged here. its initial values are set using
     // a custom init.
     @State private var editableData: EditableItemData
     
-    var category: Category?
+    var shed: Shed?
     
     // custom init to set up editable data
-    init(category: Category? = nil) {
-        _editableData = State(initialValue: EditableItemData(category: category))
-        self.category = category
+    init(shed: Shed? = nil) {
+        _editableData = State(initialValue: EditableItemData(shed: shed))
+        self.shed = shed
     }
 
     var body: some View {
@@ -34,16 +34,16 @@ struct ModifyCategoryView: View {
                 Section(header: Text("Basic Information").sectionHeader()) {
                     HStack {
                         SLFormLabelText(labelText: "Name: ")
-                        TextField("Category name", text: $editableData.categoryName)
+                        TextField("Shed name", text: $editableData.shedName)
                     }
                 } // end of Section 1
                 
-                // Section 2: Delete button, if present (must be editing a user category)
-                if editableData.representsExistingCategory && !editableData.associatedCategory.isUnknownCategory {
-                    Section(header: Text("Category Management").sectionHeader()) {
-                        SLCenteredButton(title: "Delete This Category",
-                                        action: { confirmDeleteCategoryAlert = ConfirmDeleteCategoryAlert(
-                                        category: editableData.associatedCategory,
+                // Section 2: Delete button, if present (must be editing a user shed)
+                if editableData.representsExistingShed && !editableData.associatedShed.isUnknownShed {
+                    Section(header: Text("Shed Management").sectionHeader()) {
+                        SLCenteredButton(title: "Delete This Shed",
+                                        action: { confirmDeleteShedAlert = ConfirmDeleteShedAlert(
+                                        shed: editableData.associatedShed,
                                         destructiveCompletion: { presentationMode.wrappedValue.dismiss() }) }
                         )
                         .foregroundColor(Color.red)
@@ -51,18 +51,18 @@ struct ModifyCategoryView: View {
                 } // end of Section 2
             } // end of Form
             .onDisappear { PersistentStore.shared.saveContext() }
-            .navigationBarTitle("Edit Category", displayMode: .inline)
+            .navigationBarTitle("Edit Shed", displayMode: .inline)
             .navigationBarBackButtonHidden(true)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction, content: cancelButton)
-                ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!editableData.canCategoryBeSaved) }
+                ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!editableData.canShedBeSaved) }
             }
-            .alert(item: $confirmDeleteCategoryAlert) { item in item.alert() }
+            .alert(item: $confirmDeleteShedAlert) { item in item.alert() }
         }
     }
     
-    func deleteAndDismiss(_ category: Category) {
-        Category.delete(category)
+    func deleteAndDismiss(_ shed: Shed) {
+        Shed.delete(shed)
         presentationMode.wrappedValue.dismiss()
     }
 
@@ -82,7 +82,6 @@ struct ModifyCategoryView: View {
 
     func commitData() {
         presentationMode.wrappedValue.dismiss()
-        Category.updateData(using: editableData)
-        //viewModel.updateViews()
+        Shed.updateData(using: editableData)
     }
 }
