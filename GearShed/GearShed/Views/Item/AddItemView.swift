@@ -15,7 +15,7 @@ struct AddItemView: View {
     
     @EnvironmentObject var persistentStore: PersistentStore
     
-    @StateObject private var viewModel: MainCatelogVM
+    @StateObject private var viewModel: GearShedData
     
     @State private var expandedShed: Bool = false
     
@@ -26,13 +26,13 @@ struct AddItemView: View {
     @State private var editableItemData: EditableItemData
     
     // custom init here to set up editableData state
-    init(persistentStore: PersistentStore, initialItemName: String? = nil, initialItemDetails: String? = nil, shed: Shed? = nil, brand: Brand? = nil) {
+    init(persistentStore: PersistentStore, initialItemName: String? = nil, initialItemDetails: String? = nil, shed: Shed? = nil, brand: Brand? = nil, wishlist: Bool? = nil) {
         
-        let viewModel = MainCatelogVM(persistentStore: persistentStore)
+        let viewModel = GearShedData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
         
         // here's we'll see if a suggested name for adding a new item was supplied
-        let initialValue = EditableItemData(initialItemName: initialItemName, initialItemDetails: initialItemDetails, shed: shed, brand: brand)
+        let initialValue = EditableItemData(initialItemName: initialItemName, initialItemDetails: initialItemDetails, shed: shed, brand: brand, wishlist: wishlist)
         _editableItemData = State(initialValue: initialValue)
     }
     

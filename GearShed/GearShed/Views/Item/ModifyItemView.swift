@@ -14,7 +14,7 @@ struct ModifyItemView: View {
     // Environment state to dismiss page
     @Environment(\.presentationMode) var presentationMode
     
-    @StateObject private var viewModel: MainCatelogVM
+    @StateObject private var viewModel: GearShedData
     
     // state variable to control triggering confirmation of a delete, which is
     // one of three context menu actions that can be applied to an item
@@ -30,7 +30,7 @@ struct ModifyItemView: View {
     
     // custom init here to set up editableData state
     init(persistentStore: PersistentStore, editableItem: Item? = nil, initialItemName: String? = nil, initialItemDetails: String? = nil, shed: Shed? = nil, brand: Brand? = nil) {
-        let viewModel = MainCatelogVM(persistentStore: persistentStore)
+        let viewModel = GearShedData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
         // initialize the editableData struct for the incoming item, if any; and
         // also carry in whatever might be a suggested Item name for a new Item

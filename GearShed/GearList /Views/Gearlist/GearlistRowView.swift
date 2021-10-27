@@ -1,5 +1,5 @@
 //
-//  BrandRowView.swift
+//  TripRowView.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 18/10/21
@@ -8,26 +8,24 @@
 
 import SwiftUI
 
-struct BrandRowView: View {
+struct GearlistRowView: View {
     
     @EnvironmentObject var persistentStore: PersistentStore
-    
-    @ObservedObject var brand: Brand
+
+    @ObservedObject var gearlist: Gearlist
 
     var body: some View {
-        NavigationLink(destination: BrandDetailView(persistentStore: persistentStore,brand: brand)) {
-            HStack{
-                Text(brand.name)
+        NavigationLink(destination: GearlistDetailView(persistentStore: persistentStore, gearlist: gearlist)) {
+            HStack {
+                Text(gearlist.name)
                     .font(.headline)
                 Spacer()
-                Text("\(brand.itemCount)")
+                Text("\(gearlist.items.count)")
                     .font(.headline)
             }
         }
+        .padding(.horizontal, 20)
     }
 }
-
-
-
 
 

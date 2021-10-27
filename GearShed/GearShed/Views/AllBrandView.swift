@@ -12,23 +12,36 @@ struct AllBrandView: View {
     
     @EnvironmentObject var persistentStore: PersistentStore
 
-    @StateObject private var viewModel: MainCatelogVM
+    @StateObject private var viewModel: GearShedData
+    
+    @State private var isAlertShowing: Bool = false
+    
+    @State private var newBrandName: String = ""
+    
+    @State private var brand1: Brand? = nil
     
     // Local state to trigger showing a view to Edit Brand
     @State private var isAddBrandShowing = false
     
     init(persistentStore: PersistentStore) {
-        let viewModel = MainCatelogVM(persistentStore: persistentStore)
+        let viewModel = GearShedData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
     }
 
     var body: some View {
-        VStack {
+        VStack (spacing: 0) {
+            statBar
             ZStack {
                 brandList
+                    .padding(.top, 5)
+                    .padding(.horizontal, 20)
                 addBrandOverlay
+                AZAlert(title: "Rename Brand", isShown: $isAlertShowing, text: $newBrandName) { text in
+                    brand1?.updateName(brand: brand1!, name: text)
+                    newBrandName = ""
+                }
             }
-            Spacer(minLength: 50)
+            .padding(.bottom, 50)
         }
         .fullScreenCover(isPresented: $isAddBrandShowing) {
             NavigationView {
@@ -37,16 +50,36 @@ struct AllBrandView: View {
         }
     }
     
-    var brandList: some View {
+    private var statBar: some View {
+        HStack {
+            Text("Brands:")
+            Text("\(viewModel.brands.count)")
+            Spacer()
+        }
+        .font(.caption)
+        .foregroundColor(Color.white)
+        .padding(.vertical, 5)
+        .offset(x: 45)
+        .background(Color.theme.green)
+        .padding(.top, 15)
+    }
+    
+    private var brandList: some View {
         ScrollView(.vertical, showsIndicators: false) {
             ForEach(viewModel.brands) { brand in
                 BrandRowView(brand: brand)
                     .padding(.top, 10)
+                    .contextMenu{ brandRowContextMenu(editTrigger: {
+                        brand1 = brand
+                        isAlertShowing = true
+                    }, deletionTrigger: {
+                        Brand.delete(brand)
+                    })}
             }
         }
     }
     
-    var addBrandOverlay: some View {
+    private var addBrandOverlay: some View {
         VStack {
             Spacer()
             HStack {

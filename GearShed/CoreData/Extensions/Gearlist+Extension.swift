@@ -87,10 +87,30 @@ extension Gearlist {
         let context = gearlist.managedObjectContext
         //let itemsAtThisTrip = trip.items
         
-        //itemsAtThisTrip.forEach({ $0.trip = nil})
+        //gearlist.items.forEach({ $0.gearlist = nil})
         // now finish the deletion and save
         context?.delete(gearlist)
         try? context?.save()
+    }
+    
+    class func addNewGearlist(using editableData: EditableGearlistData, itemArray: [Item]) {
+        
+        let newGearlist = Gearlist.addNewGearlist()
+        newGearlist.updateValues(from: editableData)
+        
+        Gearlist.addItemsToList(itemArray: itemArray, gearList: newGearlist)
+        
+    }
+    
+    class func removeItemFromList(item: Item, gearlist: Gearlist) {
+        gearlist.removeFromItems_(item)
+    }
+    
+    class func addItemsToList(itemArray: [Item], gearList: Gearlist) {
+        for item in itemArray {
+            gearList.addToItems_(item)
+            print("Saved \(item.name) to \(gearList.name)")
+        }
     }
     
     class func updateData(using editableData: EditableGearlistData) {
@@ -111,6 +131,14 @@ extension Gearlist {
 
     
     // MARK: - Object Methods
+    
+    
+    func updateName(gearlist: Gearlist, name: String) {
+        
+        gearlist.name_ = name
+        PersistentStore.shared.saveContext()
+    }
+    
     
     func updateValues(from editableData: EditableGearlistData) {
         

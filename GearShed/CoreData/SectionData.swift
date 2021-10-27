@@ -10,10 +10,18 @@ import Foundation
 
 // MARK: - A Generic SectionData struct
 
-struct SectionData: Identifiable, Hashable {
+struct SectionShedData: Identifiable, Hashable {
 	var id: Int { hashValue }
 	let title: String
+    let shed: Shed
 	let items: [Item]
+}
+
+struct SectionBrandData: Identifiable, Hashable {
+    var id: Int { hashValue }
+    let title: String
+    let brand: Brand
+    let items: [Item]
 }
 
 // in a sectioned data display, one consisting of sections and with each section being

@@ -1,5 +1,5 @@
 //
-//  MainCatelogViewModel.swift
+//  GearShedData.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 18/10/21
@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 import CoreData
 
-final class MainCatelogVM: NSObject, NSFetchedResultsControllerDelegate,  ObservableObject {
+final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  ObservableObject {
     
     let persistentStore: PersistentStore
     
@@ -19,13 +19,6 @@ final class MainCatelogVM: NSObject, NSFetchedResultsControllerDelegate,  Observ
     
     // var to store a selctedShed to pre populate adding an item
     @Published var selectedShed: Shed? = nil
-    
-    // Local state to hold Search Text Value in Main Catelog
-    @Published var searchText: String = ""
-    
-    @Published var isAddNewItemShowing: Bool = false
-    
-    @Published var showingUnlockView: Bool = false
     
     private let itemsController: NSFetchedResultsController<Item>
     @Published var items = [Item]()
@@ -146,9 +139,31 @@ final class MainCatelogVM: NSObject, NSFetchedResultsControllerDelegate,  Observ
         brands = brandsController.fetchedObjects ?? []
     }
     
+    func sectionByShed(itemArray: [Item]) -> [SectionShedData] {
+        var completedSectionData = [SectionShedData]()
+        // otherwise, one section for each shed, please.  break the data out by shed first
+        let dictionaryByShed = Dictionary(grouping: itemArray, by: { $0.shed })
+        
+        // then reassemble the sections by sorted keys of this dictionary
+        for key in dictionaryByShed.keys.sorted() {
+            completedSectionData.append(SectionShedData(title: key.name,shed: key,items: dictionaryByShed[key]!))
+        }
+        return completedSectionData
+    }
+    
+    func sectionByBrand(itemArray: [Item]) -> [SectionBrandData] {
+        var completedSectionData = [SectionBrandData]()
+        // otherwise, one section for each shed, please.  break the data out by shed first
+        let dictionaryByShed = Dictionary(grouping: itemArray, by: { $0.brand })
+        
+        // then reassemble the sections by sorted keys of this dictionary
+        for key in dictionaryByShed.keys.sorted() {
+            completedSectionData.append(SectionBrandData(title: key.name,brand: key,items: dictionaryByShed[key]!))
+        }
+        return completedSectionData
+    }
     
     // MARK: - Total Functions
-    
     
     func totalWeight(array: [Item]) -> String {
         var arrayString = [String]()
@@ -184,18 +199,6 @@ final class MainCatelogVM: NSObject, NSFetchedResultsControllerDelegate,  Observ
     
     // MARK: - ToolbarItems
     
-    func trailingButton() -> some View {
-        Button {
-            let canCreate = self.persistentStore.fullVersionUnlocked ||
-                self.persistentStore.count(for: Item.fetchRequest()) < 3
-            if canCreate {
-                self.isAddNewItemShowing.toggle()
-            } else {
-                self.showingUnlockView.toggle()
-            }
-        } label: { Image(systemName: "plus") }
-    }
-    
     // a toggle button to share gear list
     func leadingButton() -> some View {
         Button { [self] in
@@ -215,8 +218,6 @@ final class MainCatelogVM: NSObject, NSFetchedResultsControllerDelegate,  Observ
             
         }
     }
-    
-    
 }
 
 

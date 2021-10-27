@@ -1666,5 +1666,51 @@ private var allSheds: FetchedResults<Shed>*/
      }
  }*/
 
+ HStack {
+     VStack (alignment: .leading, spacing: 5) {
+         Text("Favorites")
+             .font(.caption)
+             .foregroundColor(Color.theme.accent)
+         Text("\(viewModel.totalFavs(array: viewModel.items))")
+             .font(.caption)
+             .foregroundColor(Color.theme.accent)
+     }
+ }
+ HStack {
+     VStack (alignment: .leading, spacing: 5) {
+         Text("Regrets")
+             .font(.caption)
+             .foregroundColor(Color.theme.accent)
+         Text("\(viewModel.regretItems.count)")
+             .font(.caption)
+             .foregroundColor(Color.theme.accent)
+     }
+ }
+ 
+ /*SPForShedView(selected: $selected)
+ if self.selected == 0 {
+     AllItemsView(persistentStore: persistentStore)
+         .transition(.moveAndFade)
+ } else if self.selected == 1 {
+     AllShedView(persistentStore: persistentStore)
+         .transition(.moveAndFade)
+ }
+ else if self.selected == 2 {
+     AllBrandView(persistentStore: persistentStore)
+         .transition(.moveAndFade)
+ } else if self.selected == 3 {
+     AllFavouriteView(persistentStore: persistentStore)
+         .transition(.moveAndFade)
+ } else if self.selected == 4 {
+     AllWishListView(persistentStore: persistentStore)
+         .transition(.moveAndFade)
+ } else {
+     EmptyView()
+ }*/
+
+ //Spacer()
+
+ 
+ 
  
  */

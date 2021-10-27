@@ -11,31 +11,48 @@ struct AllRegretsView: View {
     
     @EnvironmentObject var persistentStore: PersistentStore
     
-    @StateObject private var viewModel: MainCatelogVM
+    @StateObject private var viewModel: GearShedData
         
     init(persistentStore: PersistentStore) {
-        let viewModel = MainCatelogVM(persistentStore: persistentStore)
+        let viewModel = GearShedData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
     }
 
     var body: some View {
         VStack (spacing: 0) {
-            StatBarInRegret(persistentStore: persistentStore)
-                .padding(.top, 5)
-
+            statBar
             itemsList
-                .padding(.top, 10)
-
             Spacer(minLength: 50)
         }
     }
     
+    private var statBar: some View {
+        HStack (spacing: 30) {
+            HStack {
+                Text("Items:")
+                Text("\(viewModel.regretItems.count)")
+            }
+            HStack {
+                Text("Invested:")
+                Text("$\(viewModel.totalCost(array: viewModel.regretItems))")
+            }
+             Spacer()
+        }
+        .font(.caption)
+        .foregroundColor(Color.white)
+        .padding(.vertical, 5)
+        .offset(x: 45)
+        .background(Color.theme.green)
+        .padding(.vertical, 15)
+    }
+
     private var itemsList: some View {
         ScrollView(.vertical, showsIndicators: false) {
-            ForEach(sectionData()) { section in
+            ForEach(viewModel.sectionByShed(itemArray: viewModel.regretItems)) { section in
                 Section {
                     ForEach(section.items) { item in
                         ItemRowView(item: item)
+                            .padding(.horizontal)
                             .padding(.bottom, 5)
                     }
                 } header: {
@@ -54,16 +71,5 @@ struct AllRegretsView: View {
             }
         }
 
-    }
-    
-    func sectionData() -> [SectionData] {
-        var completedSectionData = [SectionData]()
-        // otherwise, one section for each shed, please.  break the data out by shed first
-        let dictionaryByShed = Dictionary(grouping: viewModel.regretItems, by: { $0.shed })
-        // then reassemble the sections by sorted keys of this dictionary
-        for key in dictionaryByShed.keys.sorted() {
-            completedSectionData.append(SectionData(title: key.name, items: dictionaryByShed[key]!))
-        }
-        return completedSectionData
     }
 }

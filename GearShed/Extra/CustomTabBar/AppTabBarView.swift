@@ -20,10 +20,10 @@ struct AppTabBarView: View {
             NavigationView { HomeView() }
                 .tabBarItem(tab: .home, selection: $tabSelection)
             
-            NavigationView { MainCatelogView(persistentStore: persistentStore) }
+            NavigationView { GearShedView(persistentStore: persistentStore) }
                 .tabBarItem(tab: .shed, selection: $tabSelection)
             
-            NavigationView { TripsTabView() }
+            NavigationView { GearlistView(persistentStore: persistentStore) }
                 .tabBarItem(tab: .trips, selection: $tabSelection)
             
         }

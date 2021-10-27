@@ -64,7 +64,7 @@ struct EditableItemData {
 		}
 	}
 	
-    init(initialItemName: String?, initialItemDetails: String?, shed: Shed? = nil, brand: Brand? = nil) {
+    init(initialItemName: String?, initialItemDetails: String?, shed: Shed? = nil, brand: Brand? = nil, wishlist: Bool? = nil) {
 		if let name = initialItemName, name.count > 0 {
 			self.name = name
 		}
@@ -76,6 +76,9 @@ struct EditableItemData {
 		}
         if let brand = brand {
             self.brand = brand
+        }
+        if let wishlist = wishlist {
+            self.wishlist = wishlist
         }
 	}
 	

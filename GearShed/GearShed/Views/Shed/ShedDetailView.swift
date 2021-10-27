@@ -1,5 +1,5 @@
 //
-//  BrandDetailView.swift
+//  ShedDetailView.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-10-19.
@@ -7,37 +7,38 @@
 
 import SwiftUI
 
-struct BrandDetailView: View {
+struct ShedDetailView: View {
     
     @EnvironmentObject var persistentStore: PersistentStore
     
     @StateObject private var viewModel: GearShedData
+
+    @ObservedObject var shed: Shed
     
-    @ObservedObject var brand: Brand
+    @State private var isEditShedShowing: Bool = false
     
-    @State private var isEditBrandShowing: Bool = false
-    
-    init(persistentStore: PersistentStore, brand: Brand) {
+    init(persistentStore: PersistentStore, shed: Shed) {
         let viewModel = GearShedData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
-        self.brand = brand
+        self.shed = shed
     }
 
     var body: some View {
-        VStack (spacing: 0) {
+        VStack(spacing:0) {
+            
             statBar
                 .padding(.top, 22.2)
                 .padding(.bottom, 10)
             itemList
         }
-        .navigationTitle(brand.name)
+        .navigationTitle(shed.name)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button { self.isEditBrandShowing.toggle() } label: { Image(systemName: "slider.horizontal.3") }
+                Button { isEditShedShowing.toggle() } label: { Image(systemName: "slider.horizontal.3") }
             }
         }
-        .fullScreenCover(isPresented: $isEditBrandShowing) {
-            ModifyBrandView(brand: brand).environment(\.managedObjectContext, PersistentStore.shared.context)
+        .fullScreenCover(isPresented: $isEditShedShowing) {
+            ModifyShedView(shed: shed).environment(\.managedObjectContext, PersistentStore.shared.context)
         }
     }
     
@@ -45,15 +46,15 @@ struct BrandDetailView: View {
         HStack (spacing: 20){
             HStack {
                 Text("Items:")
-                Text("\(brand.items.count)")
+                Text("\(shed.items.count)")
             }
             HStack {
                 Text("Weight:")
-                Text("\(viewModel.totalWeight(array: brand.items))g")
+                Text("\(viewModel.totalWeight(array: shed.items))g")
             }
             HStack {
                 Text("Invested:")
-                Text("$\(viewModel.totalCost(array: brand.items))")
+                Text("$\(viewModel.totalCost(array: shed.items))")
             }
             Spacer()
         }
@@ -67,10 +68,10 @@ struct BrandDetailView: View {
     
     private var itemList: some View {
         ScrollView(.vertical, showsIndicators: false) {
-            ForEach(viewModel.sectionByShed(itemArray: brand.items)) { section in
+            ForEach(viewModel.sectionByBrand(itemArray: shed.items)) { section in
                 Section {
                     ForEach(section.items) { item in
-                        ItemRowViewInBrand(item: item)
+                        ItemRowViewInShed(item: item)
                             .padding(.horizontal)
                             .padding(.bottom, 5)
                     }
@@ -82,7 +83,7 @@ struct BrandDetailView: View {
         }
     }
     
-    private func sectionHeader(section: SectionShedData) -> some View {
+    private func sectionHeader(section: SectionBrandData) -> some View {
        return VStack (spacing: 0) {
             HStack {
                 Text(section.title)
@@ -95,5 +96,8 @@ struct BrandDetailView: View {
         }
     }
 }
+
+
+
 
 

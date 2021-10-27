@@ -46,7 +46,7 @@ struct AddItemToTripSheet: View {
         }
             
         // Section: Select Items To Add to Trip
-        Section(header: Text("Select Items To Add To Trip").sectionHeader()) {
+        /*Section(header: Text("Select Items To Add To Trip").sectionHeader()) {
             VStack {
             List {
                 ForEach(sectionData()) { section in
@@ -71,7 +71,7 @@ struct AddItemToTripSheet: View {
             //.alert(item: $confirmDeleteItemAlert) { item in item.alert() }
         }
                 .frame(height: 400)
-        }
+        }*/
             
         }
     }
@@ -83,7 +83,7 @@ struct AddItemToTripSheet: View {
     // the purpose of this function is to break out the itemsToBePurchased by section,
     // according to whether the list is displayed as a single section or in multiple
     // sections (one for each Shed that contains shopping items on the list)
-    func sectionData() -> [SectionData] {
+    /*func sectionData() -> [SectionData] {
         
         // the easy case: if this is not a multi-section list, there will be one section with a title
         // and an array of all the items
@@ -104,7 +104,7 @@ struct AddItemToTripSheet: View {
             completedSectionData.append(SectionData(title: key.name, items: dictionaryByShed[key]!))
         }
         return completedSectionData
-    }
+    }*/
     
     // The purpose of this function is to add the selected item to our temporary array itemsChecked
     func handleItemSelected(_ item: Item) {
@@ -119,7 +119,6 @@ struct AddItemToTripSheet: View {
         self.itemsChecked.removeAll{$0.id == item.id}
     }
 
-    
     func commitData() {
         presentationMode.wrappedValue.dismiss()
         vm.saveItemsToGearlist(items: itemsChecked, gearlist: gearlist)

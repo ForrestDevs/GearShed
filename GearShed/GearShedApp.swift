@@ -43,7 +43,6 @@ struct GearShedApp: App {
             Brand.createUnknownBrand()
             isFirstLaunch = false
         }
-        
     }
     
     var body: some Scene {

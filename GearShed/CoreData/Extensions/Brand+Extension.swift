@@ -177,6 +177,13 @@ extension Brand: Comparable {
     
     // MARK: - Object Methods
     
+    
+    func updateName(brand: Brand, name: String) {
+        
+        brand.name_ = name
+        PersistentStore.shared.saveContext()
+    }
+    
     func updateValues(from editableData: EditableItemData) {
         
         // we first make these changes directly in Core Data

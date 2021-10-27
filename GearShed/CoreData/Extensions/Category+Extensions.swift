@@ -145,6 +145,12 @@ extension Shed: Comparable {
 
 	
 	// MARK: - Object Methods
+    
+    func updateName(shed: Shed, name: String) {
+        
+        shed.name_ = name
+        PersistentStore.shared.saveContext()
+    }
 	
 	func updateValues(from editableData: EditableItemData) {
 		
