@@ -47,7 +47,7 @@ struct GearShedApp: App {
     
     var body: some Scene {
         WindowGroup {
-            AppTabBarView()
+            ContentView()
                 .environment(\.managedObjectContext, PersistentStore.shared.context)
                 .environmentObject(persistentStore)
                 .environmentObject(unlockManager)

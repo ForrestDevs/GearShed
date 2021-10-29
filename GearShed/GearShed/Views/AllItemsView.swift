@@ -40,7 +40,7 @@ struct AllItemsView: View {
                     //.padding(.horizontal, 20)
                 addItemOverlay
             }
-            .padding(.bottom, 50)
+            //.padding(.bottom, 50)
         }
         .fullScreenCover(isPresented: $isAddItemShowing) {
             AddItemView(persistentStore: persistentStore)

@@ -14,19 +14,40 @@ struct AppTabBarView: View {
     
     @State private var tabSelection: TabBarItem = .home
     
+    // Current Tab...
+    @State var currentTab = "GearShed"
+    
+    var bottomEdge: CGFloat
+    
+    // Hiding Native TabBar...
+    init(bottomEdge: CGFloat){
+        UITabBar.appearance().isHidden = true
+        self.bottomEdge = bottomEdge
+    }
+    
+    @State var hideBar = false
+    
     var body: some View {
-        CustomTabView(selection: $tabSelection) {
+        
+        TabView(selection: $currentTab) {
         
             NavigationView { HomeView() }
-                .tabBarItem(tab: .home, selection: $tabSelection)
+                .frame(maxWidth: .infinity ,maxHeight: .infinity)
+                .tag("Home")
             
-            NavigationView { GearShedView(persistentStore: persistentStore) }
-                .tabBarItem(tab: .shed, selection: $tabSelection)
+            NavigationView { GearShedView(hideTab: $hideBar, bottomEdge: bottomEdge, persistentStore: persistentStore) }
+                .frame(maxWidth: .infinity ,maxHeight: .infinity)
+                .tag("GearShed")
             
             NavigationView { GearlistView(persistentStore: persistentStore) }
-                .tabBarItem(tab: .trips, selection: $tabSelection)
+                .frame(maxWidth: .infinity ,maxHeight: .infinity)
+                .tag("Gearlist")
             
         }
+        .overlay(
+            CustomTabBar(currentTab: $currentTab,bottomEdge: bottomEdge)
+                .offset(y: hideBar ? (50 + bottomEdge) : 0) ,alignment: .bottom
+        )
         .navigationViewStyle(StackNavigationViewStyle())
     }
 }
@@ -35,6 +56,20 @@ struct AppTabBarView: View {
     static var previews: some View {
         AppTabBarView()
     }
+}*/
+
+
+/*CustomTabView(selection: $tabSelection) {
+
+    NavigationView { HomeView() }
+        .tabBarItem(tab: .home, selection: $tabSelection)
+    
+    NavigationView { GearShedView(persistentStore: persistentStore) }
+        .tabBarItem(tab: .shed, selection: $tabSelection)
+    
+    NavigationView { GearlistView(persistentStore: persistentStore) }
+        .tabBarItem(tab: .trips, selection: $tabSelection)
+    
 }*/
 
 /*struct AppTabBarView1: View {

@@ -11,13 +11,19 @@ import SwiftUI
 struct GearShedView: View {
     static let tag: String? = "GearShed"
     
+    @Binding var hideTab: Bool
+    var bottomEdge: CGFloat
+    
     @EnvironmentObject var persistentStore: PersistentStore
     
     @StateObject private var viewModel: GearShedData
     
     @State private var currentSelection: Int = 0
 
-    init(persistentStore: PersistentStore) {
+    init(hideTab: Binding<Bool>, bottomEdge: CGFloat, persistentStore: PersistentStore) {
+        _hideTab = hideTab
+        self.bottomEdge = bottomEdge
+        
         let viewModel = GearShedData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
     }
@@ -74,6 +80,13 @@ struct GearShedView: View {
         .navigationBarTitle("Gear Shed", displayMode: .inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading, content: viewModel.leadingButton)
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    hideTab.toggle()
+                } label: {
+                    Text("Hide Tab")
+                }
+            }
         }
         .onAppear {
             logAppear(title: "MainCatelogView")

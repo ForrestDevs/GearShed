@@ -36,6 +36,8 @@
 		08371B70271E56C00072AD94 /* AddOrModifyTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B6F271E56C00072AD94 /* AddOrModifyTagView.swift */; };
 		08371B72271E5B6D0072AD94 /* ItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B71271E5B6D0072AD94 /* ItemDetailView.swift */; };
 		084EDA11272B5C9900475891 /* HelveticaNeue.ttc in Resources */ = {isa = PBXBuildFile; fileRef = 084EDA10272B5C9800475891 /* HelveticaNeue.ttc */; };
+		084EDA13272BAE2B00475891 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084EDA12272BAE2B00475891 /* ContentView.swift */; };
+		084EDA15272BAFD900475891 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084EDA14272BAFD800475891 /* CustomTabBar.swift */; };
 		0853ABF8271F824700123497 /* ModifyBrandView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0853ABF7271F824700123497 /* ModifyBrandView.swift */; };
 		0853ABFA271F876F00123497 /* ModifyShedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0853ABF9271F876F00123497 /* ModifyShedView.swift */; };
 		0853ABFC271F8E3300123497 /* BrandDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0853ABFB271F8E3300123497 /* BrandDetailView.swift */; };
@@ -157,6 +159,8 @@
 		08371B6F271E56C00072AD94 /* AddOrModifyTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOrModifyTagView.swift; sourceTree = "<group>"; };
 		08371B71271E5B6D0072AD94 /* ItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailView.swift; sourceTree = "<group>"; };
 		084EDA10272B5C9800475891 /* HelveticaNeue.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; path = HelveticaNeue.ttc; sourceTree = "<group>"; };
+		084EDA12272BAE2B00475891 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		084EDA14272BAFD800475891 /* CustomTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
 		0853ABF7271F824700123497 /* ModifyBrandView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyBrandView.swift; sourceTree = "<group>"; };
 		0853ABF9271F876F00123497 /* ModifyShedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyShedView.swift; sourceTree = "<group>"; };
 		0853ABFB271F8E3300123497 /* BrandDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandDetailView.swift; sourceTree = "<group>"; };
@@ -419,6 +423,9 @@
 			isa = PBXGroup;
 			children = (
 				08C7D89F270F3D1800EC3984 /* GearShedApp.swift */,
+				084EDA12272BAE2B00475891 /* ContentView.swift */,
+				084EDA14272BAFD800475891 /* CustomTabBar.swift */,
+				08ED0FDD2719EAE10072CB90 /* AppTabBarView.swift */,
 				08C7D8BF270F434400EC3984 /* CoreData */,
 				08371B43271BB0070072AD94 /* Home */,
 				08C7D8B5270F418F00EC3984 /* GearShed */,
@@ -654,7 +661,6 @@
 				08ED0FDA2719EAE10072CB90 /* CustomTabBarView.swift */,
 				08ED0FDB2719EAE10072CB90 /* CustomTabView.swift */,
 				08ED0FDC2719EAE10072CB90 /* TabBarItemsPreferenceKey.swift */,
-				08ED0FDD2719EAE10072CB90 /* AppTabBarView.swift */,
 			);
 			path = CustomTabBar;
 			sourceTree = "<group>";
@@ -780,6 +786,7 @@
 				08371B5F271DFEC90072AD94 /* AllCategoryView.swift in Sources */,
 				08C7D8CA270F475A00EC3984 /* View+Extensions.swift in Sources */,
 				080015AA27277C2B00E1BE4C /* OffsetTabView.swift in Sources */,
+				084EDA15272BAFD900475891 /* CustomTabBar.swift in Sources */,
 				08C7D93E2710EEEE00EC3984 /* AddItemToTripSheet.swift in Sources */,
 				080015AF272787E700E1BE4C /* AllRegretsView.swift in Sources */,
 				08ED0FE5271A2C8A0072CB90 /* UnusedCode.swift in Sources */,
@@ -811,6 +818,7 @@
 				086C925227238D03009F962D /* ModifyItemView.swift in Sources */,
 				08371B56271C8ABD0072AD94 /* Sorting+Extension.swift in Sources */,
 				08C7D8F5270F65E100EC3984 /* EmptyCatelogView.swift in Sources */,
+				084EDA13272BAE2B00475891 /* ContentView.swift in Sources */,
 				08D67E052724888A0064F639 /* Transition+Extension.swift in Sources */,
 				08C7D8F3270F65E100EC3984 /* SLSliderControl.swift in Sources */,
 				08371B30271AB4940072AD94 /* Blur.swift in Sources */,
