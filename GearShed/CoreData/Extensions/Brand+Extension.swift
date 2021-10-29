@@ -170,6 +170,12 @@ extension Brand: Comparable {
         }
     }
     
+    class func addNewBrandFromItem(using editableData: EditableItemData, brandOut: ( (Brand) -> () ) ) {
+        let newBrand = Brand.addNewBrand()
+        newBrand.updateValues(from: editableData)
+        brandOut(newBrand)
+    }
+    
     class func object(withID id: UUID) -> Brand? {
         return object(id: id, context: PersistentStore.shared.context) as Brand?
     }
@@ -179,7 +185,6 @@ extension Brand: Comparable {
     
     
     func updateName(brand: Brand, name: String) {
-        
         brand.name_ = name
         PersistentStore.shared.saveContext()
     }

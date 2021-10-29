@@ -12,14 +12,14 @@ import SwiftUI
 struct EmptyTripView: View {
     var body: some View {
         VStack {
-            Group {
+            /*Group {
                 Text("You have")
                     .padding([.top], 200)
                 Text("no trips.")
             }
             .font(.title)
             .foregroundColor(.secondary)
-            Spacer()
+            Spacer()*/
         }
     }
 }

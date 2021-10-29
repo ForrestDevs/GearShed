@@ -12,14 +12,14 @@ import SwiftUI
 struct EmptyCatelogView: View {
 	var body: some View {
 		VStack {
-			Group {
+			/*Group {
 				Text("There are no items")
 					.padding([.top], 200)
 				Text("in your Main Catelog")
 			}
 			.font(.title)
 			.foregroundColor(.secondary)
-			Spacer()
+			Spacer()*/
 		}
 	}
 }

@@ -35,6 +35,8 @@ struct ModifyShedView: View {
                     HStack {
                         SLFormLabelText(labelText: "Name: ")
                         TextField("Shed name", text: $editableData.shedName)
+                            .disableAutocorrection(true)
+
                     }
                 } // end of Section 1
                 

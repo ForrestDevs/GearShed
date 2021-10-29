@@ -37,6 +37,10 @@ struct GearShedView: View {
                     .pageLabel()
                     .font(.system(size: 12).bold())
                 
+                Text("WISH")
+                    .pageLabel()
+                    .font(.system(size: 12).bold())
+                
                 Text("FAV")
                     .pageLabel()
                     .font(.system(size: 12).bold())
@@ -44,12 +48,9 @@ struct GearShedView: View {
                 Text("REGRET")
                     .pageLabel()
                     .font(.system(size: 12).bold())
-                
-                Text("WISH")
-                    .pageLabel()
-                    .font(.system(size: 12).bold())
             }
-        } content: {
+        }
+        content: {
             AllItemsView(persistentStore: persistentStore)
                 .pageView(ignoresSafeArea: true, edges: .bottom)
             
@@ -59,15 +60,16 @@ struct GearShedView: View {
             AllBrandView(persistentStore: persistentStore)
                 .pageView(ignoresSafeArea: true, edges: .bottom)
             
+            AllWishListView(persistentStore: persistentStore)
+                .pageView(ignoresSafeArea: true, edges: .bottom)
+            
             AllFavouriteView(persistentStore: persistentStore)
                 .pageView(ignoresSafeArea: true, edges: .bottom)
             
             AllRegretsView(persistentStore: persistentStore)
                 .pageView(ignoresSafeArea: true, edges: .bottom)
-            
-            AllWishListView(persistentStore: persistentStore)
-                .pageView(ignoresSafeArea: true, edges: .bottom)
         }
+        .padding(.top, 10)
         .ignoresSafeArea(.container, edges: .bottom)
         .navigationBarTitle("Gear Shed", displayMode: .inline)
         .toolbar {

@@ -35,6 +35,8 @@ struct ModifyBrandView: View {
                     HStack {
                         SLFormLabelText(labelText: "Name: ")
                         TextField("Brand name", text: $editableData.brandName)
+                            .disableAutocorrection(true)
+
                     }
                     
 

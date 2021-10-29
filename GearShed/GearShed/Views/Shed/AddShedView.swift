@@ -16,12 +16,16 @@ struct AddShedView: View {
 	// a custom init.
 	@State private var editableData: EditableItemData
     
-	var shed: Shed?
+    private var isAddFromItem: Bool
+    private var shedOut: ((Shed) -> ())?
+	private var shed: Shed?
 	
 	// custom init to set up editable data
-	init(shed: Shed? = nil) {
+	init(shed: Shed? = nil, shedOut: ((Shed) -> ())? = nil, isAddFromItem: Bool? = nil) {
 		_editableData = State(initialValue: EditableItemData(shed: shed))
 		self.shed = shed
+        self.shedOut = shedOut
+        self.isAddFromItem = isAddFromItem ?? false
 	}
 
 	var body: some View {
@@ -31,6 +35,8 @@ struct AddShedView: View {
 				HStack {
 					SLFormLabelText(labelText: "Name: ")
 					TextField("Shed name", text: $editableData.shedName)
+                        .disableAutocorrection(true)
+
 				}
 			}
 		}
@@ -43,8 +49,12 @@ struct AddShedView: View {
             }
 			ToolbarItem(placement: .confirmationAction) {
                 Button {
+                    if isAddFromItem {
+                        Shed.addNewShedFromItem(using: editableData, shedOut: { shed in shedOut!(shed) } )
+                    } else {
+                        Shed.updateData(using: editableData)
+                    }
                     presentationMode.wrappedValue.dismiss()
-                    Shed.updateData(using: editableData)
                 } label: { Text("Save") } .disabled(!editableData.canShedBeSaved)
             }
 		}

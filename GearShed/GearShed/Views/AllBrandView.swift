@@ -30,16 +30,15 @@ struct AllBrandView: View {
 
     var body: some View {
         VStack (spacing: 0) {
+            
             statBar
+            
             ZStack {
                 brandList
                     .padding(.top, 5)
                     .padding(.horizontal, 20)
                 addBrandOverlay
-                AZAlert(title: "Rename Brand", isShown: $isAlertShowing, text: $newBrandName) { text in
-                    brand1?.updateName(brand: brand1!, name: text)
-                    newBrandName = ""
-                }
+                alertOverlay
             }
             .padding(.bottom, 50)
         }
@@ -102,6 +101,13 @@ struct AllBrandView: View {
                 .padding()
                 .shadow(color: Color.black.opacity(0.3), radius: 3,x: 3,y: 3)
             }
+        }
+    }
+    
+    private var alertOverlay: some View {
+        AZAlert(title: "Rename Brand", isShown: $isAlertShowing, text: $newBrandName) { text in
+            brand1?.updateName(brand: brand1!, name: text)
+            newBrandName = ""
         }
     }
 }

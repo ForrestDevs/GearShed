@@ -55,7 +55,7 @@ struct ModifyItemView: View {
                             .foregroundColor(Color.theme.green)
                         
                         TextField(editableItemData.name, text: $editableItemData.name)
-                            .textFieldStyle(.roundedBorder)
+                            .disableAutocorrection(true)
                         
                         Rectangle()
                             .frame(maxWidth: .infinity)

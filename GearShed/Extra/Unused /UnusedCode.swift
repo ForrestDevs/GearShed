@@ -1711,6 +1711,54 @@ private var allSheds: FetchedResults<Shed>*/
  //Spacer()
 
  
+ /*DisclosureGroup(editableItemData.shed.name, isExpanded: $expandedShed) {
+     VStack(alignment: .leading) {
+         NavigationLink(destination: AddShedView()) {
+             Text("Add New Shed")
+                 .font(.subheadline)
+         }
+         ForEach(viewModel.sheds) { shed in
+             Text(shed.name).tag(shed)
+                 .font(.subheadline)
+                 //.foregroundColor(Color.theme.secondaryText)
+                 .onTapGesture {
+                     editableItemData.shed = shed
+                     //altShedSelected = true
+                     //altShedName = shed.name
+                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                         expandedShed.toggle()
+                     }
+                 }
+         }
+     }
+ }*/
+ 
+ /*DisclosureGroup(editableItemData.brand.name, isExpanded: $expandedBrand) {
+     VStack(alignment: .leading) {
+         NavigationLink(destination: AddBrandView()) {
+             Text("Add New Brand")
+                 .font(.subheadline)
+                 //.foregroundColor(Color.theme.secondaryText)
+         }
+         ForEach(viewModel.brands) { brand in
+             Text(brand.name).tag(brand)
+                 .font(.subheadline)
+                 //.foregroundColor(Color.theme.secondaryText)
+                 .onTapGesture {
+                     editableItemData.brand = brand
+                     //altBrandSelected = true
+                     //altBrandName = brand.name
+                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                         expandedBrand.toggle()
+                         //altBrandSelected.toggle()
+                     }
+                 }
+         }
+     }
+ }*/
+ 
+ 
+ 
  
  
  */

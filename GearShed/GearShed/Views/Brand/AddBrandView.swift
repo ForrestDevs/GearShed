@@ -16,12 +16,16 @@ struct AddBrandView: View {
     // a custom init.
     @State private var editableData: EditableItemData
     
-    var brand: Brand?
+    private var isAddFromItem: Bool
+    private var brandOut: ((Brand) -> ())?
+    private var brand: Brand?
     
     // custom init to set up editable data
-    init(brand: Brand? = nil) {
+    init(brand: Brand? = nil, brandOut: ((Brand) -> ())? = nil, isAddFromItem: Bool? = nil) {
         _editableData = State(initialValue: EditableItemData(brand: brand))
         self.brand = brand
+        self.brandOut = brandOut
+        self.isAddFromItem = isAddFromItem ?? false
     }
 
     var body: some View {
@@ -31,6 +35,8 @@ struct AddBrandView: View {
                     HStack {
                         SLFormLabelText(labelText: "Name: ")
                         TextField("Brand name", text: $editableData.brandName)
+                            .disableAutocorrection(true)
+
                     }
                 }
             }
@@ -43,8 +49,12 @@ struct AddBrandView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button {
+                        if isAddFromItem {
+                            Brand.addNewBrandFromItem(using: editableData, brandOut: { brand in brandOut!(brand) })
+                        } else {
+                            Brand.updateData(using: editableData)
+                        }
                         presentationMode.wrappedValue.dismiss()
-                        Brand.updateData(using: editableData)
                     } label: { Text("Save") } .disabled(!editableData.canBrandBeSaved)
                 }
             }

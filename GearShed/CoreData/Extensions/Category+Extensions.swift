@@ -138,6 +138,12 @@ extension Shed: Comparable {
 			newShed.updateValues(from: editableData)
 		}		
 	}
+    
+    class func addNewShedFromItem(using editableData: EditableItemData, shedOut: ( (Shed) -> () ) ) {
+        let newShed = Shed.addNewShed()
+        newShed.updateValues(from: editableData)
+        shedOut(newShed)
+    }
 	
 	class func object(withID id: UUID) -> Shed? {
 		return object(id: id, context: PersistentStore.shared.context) as Shed?
