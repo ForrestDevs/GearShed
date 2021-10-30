@@ -24,8 +24,9 @@ struct ItemCodableProxy: Codable {
     
 	var shedName: String
     var brandName: String
-    //var trips: NSSet
-	
+
+    var datePurchased: Date
+    
 	init(from item: Item) {
 		name = item.name
 		wishlist = item.wishlist
@@ -37,6 +38,8 @@ struct ItemCodableProxy: Codable {
         
 		shedName = item.shedName
         brandName = item.brandName
+        
+        datePurchased = item.datePurchased
 	}
 
 }

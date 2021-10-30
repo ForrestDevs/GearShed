@@ -8,13 +8,6 @@
 
 import SwiftUI
 
-// i collect all the confirmation alerts here in one file.  there are four of them, although
-// two of them are used in different places throughout the app; that's why they are all
-// here and not distributed in different Views.
-//
-// please be sure to read through the file ConfirmationAlertProtocol.swift that describes
-// how to set up alerts.
-
 // MARK: - Confirm DELETE ITEM Alert
 struct ConfirmDeleteItemAlert: ConfirmationAlertProtocol {
 	var id = UUID()
@@ -41,7 +34,7 @@ struct ConfirmDeleteItemAlert: ConfirmationAlertProtocol {
 }
 
 // MARK: - Confirm MOVE ALL ITEMS OF LIST Alert
-struct ConfirmMoveAllItemsOffShoppingListAlert: ConfirmationAlertProtocol {
+/*struct ConfirmMoveAllItemsOffShoppingListAlert: ConfirmationAlertProtocol {
 	var id = UUID()
 	
 	var title: String { "Move All Items Off-List" }
@@ -54,7 +47,7 @@ struct ConfirmMoveAllItemsOffShoppingListAlert: ConfirmationAlertProtocol {
 	
 	var destructiveCompletion: (() -> Void)?
 	var nonDestructiveCompletion: (() -> Void)?
-}
+}*/
 
 // MARK: - Confirm DELETE Shed Alert
 struct ConfirmDeleteShedAlert: ConfirmationAlertProtocol {

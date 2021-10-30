@@ -10,10 +10,18 @@ import SwiftUI
 struct AllRegretsView: View {
     
     @EnvironmentObject var persistentStore: PersistentStore
+    @EnvironmentObject var tabManager: TabBarManager
     
     @StateObject private var viewModel: GearShedData
         
-    init(persistentStore: PersistentStore) {
+    // For tab bar
+    @State private var offset: CGFloat = 0
+    @State private var lastOffset: CGFloat = 0
+    private var bottomEdge: CGFloat
+    
+    init(bottomEdge: CGFloat, persistentStore: PersistentStore) {
+        self.bottomEdge = bottomEdge
+        
         let viewModel = GearShedData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
     }
@@ -22,7 +30,6 @@ struct AllRegretsView: View {
         VStack (spacing: 0) {
             statBar
             itemsList
-            Spacer(minLength: 50)
         }
     }
     
@@ -69,7 +76,39 @@ struct AllRegretsView: View {
                     .padding(.horizontal)
                 }
             }
+            // Geometry Reader for calculating Offset...
+            .overlay(
+                GeometryReader{ proxy -> Color in
+                    let minY = proxy.frame(in: .named("SCROLL")).minY
+                    // Your Own Duration to hide tabbar....
+                    let durationOffset: CGFloat = 35
+                    DispatchQueue.main.async {
+                        if minY < offset{
+                            if offset < 0 && -minY > (lastOffset + durationOffset){
+                                // HIding tab and updating last offset...
+                                withAnimation(.easeOut.speed(1.5)){
+                                    tabManager.hideTab = true
+                                }
+                                lastOffset = -offset
+                            }
+                        }
+                        
+                        // Same ....
+                        if minY > offset && -minY < (lastOffset - durationOffset){
+                            // Showing tab and updating last offset...
+                            withAnimation(.easeOut.speed(1.5)){
+                                tabManager.hideTab = false
+                            }
+                            lastOffset = -offset
+                        }
+                        self.offset = minY
+                    }
+                    return Color.clear
+                }
+            )
+            // Same as Bottom Tab Calcu...
+            .padding(.bottom,15 + bottomEdge + 35)
         }
-
+        .coordinateSpace(name: "SCROLL")
     }
 }

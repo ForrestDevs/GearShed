@@ -10,9 +10,8 @@ import SwiftUI
 struct BrandDetailView: View {
     
     @EnvironmentObject var persistentStore: PersistentStore
-    
+    @EnvironmentObject var tabManager: TabBarManager
     @StateObject private var viewModel: GearShedData
-    
     @ObservedObject var brand: Brand
     
     @State private var isEditBrandShowing: Bool = false
@@ -22,7 +21,7 @@ struct BrandDetailView: View {
         _viewModel = StateObject(wrappedValue: viewModel)
         self.brand = brand
     }
-
+    
     var body: some View {
         VStack (spacing: 0) {
             statBar
@@ -38,6 +37,9 @@ struct BrandDetailView: View {
         }
         .fullScreenCover(isPresented: $isEditBrandShowing) {
             ModifyBrandView(brand: brand).environment(\.managedObjectContext, PersistentStore.shared.context)
+        }
+        .onAppear {
+            tabManager.hideTab = true
         }
     }
     
@@ -83,7 +85,7 @@ struct BrandDetailView: View {
     }
     
     private func sectionHeader(section: SectionShedData) -> some View {
-       return VStack (spacing: 0) {
+        return VStack (spacing: 0) {
             HStack {
                 Text(section.title)
                     .font(.headline)
@@ -95,5 +97,3 @@ struct BrandDetailView: View {
         }
     }
 }
-
-

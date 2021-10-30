@@ -11,12 +11,13 @@ import SwiftUI
 struct GearlistDetailView: View {
     
     @EnvironmentObject var persistentStore: PersistentStore
+    @EnvironmentObject var tabManager: TabBarManager
     
     @StateObject private var gearVM: GearlistData
     @StateObject private var itemVM: GearShedData
     
     @ObservedObject var gearlist: Gearlist
-    
+        
     init(persistentStore: PersistentStore, gearlist: Gearlist) {
         let gearVM = GearlistData(persistentStore: persistentStore)
         _gearVM = StateObject(wrappedValue: gearVM)
@@ -36,6 +37,9 @@ struct GearlistDetailView: View {
                .frame(height: 50)
         }
         .navigationTitle(gearlist.name)
+        .onAppear {
+            tabManager.hideTab = true
+        }
     }
     
     private var itemList: some View {

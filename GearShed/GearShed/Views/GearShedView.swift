@@ -11,7 +11,6 @@ import SwiftUI
 struct GearShedView: View {
     static let tag: String? = "GearShed"
     
-    @Binding var hideTab: Bool
     var bottomEdge: CGFloat
     
     @EnvironmentObject var persistentStore: PersistentStore
@@ -20,8 +19,7 @@ struct GearShedView: View {
     
     @State private var currentSelection: Int = 0
 
-    init(hideTab: Binding<Bool>, bottomEdge: CGFloat, persistentStore: PersistentStore) {
-        _hideTab = hideTab
+    init(bottomEdge: CGFloat, persistentStore: PersistentStore) {
         self.bottomEdge = bottomEdge
         
         let viewModel = GearShedData(persistentStore: persistentStore)
@@ -57,22 +55,22 @@ struct GearShedView: View {
             }
         }
         content: {
-            AllItemsView(persistentStore: persistentStore)
+            AllItemsView(bottomEdge: bottomEdge, persistentStore: persistentStore)
                 .pageView(ignoresSafeArea: true, edges: .bottom)
             
-            AllShedView(persistentStore: persistentStore)
+            AllShedView(bottomEdge: bottomEdge, persistentStore: persistentStore)
                 .pageView(ignoresSafeArea: true, edges: .bottom)
             
-            AllBrandView(persistentStore: persistentStore)
+            AllBrandView(bottomEdge: bottomEdge, persistentStore: persistentStore)
                 .pageView(ignoresSafeArea: true, edges: .bottom)
             
-            AllWishListView(persistentStore: persistentStore)
+            AllWishListView(bottomEdge: bottomEdge, persistentStore: persistentStore)
                 .pageView(ignoresSafeArea: true, edges: .bottom)
             
-            AllFavouriteView(persistentStore: persistentStore)
+            AllFavouriteView(bottomEdge: bottomEdge, persistentStore: persistentStore)
                 .pageView(ignoresSafeArea: true, edges: .bottom)
             
-            AllRegretsView(persistentStore: persistentStore)
+            AllRegretsView(bottomEdge: bottomEdge, persistentStore: persistentStore)
                 .pageView(ignoresSafeArea: true, edges: .bottom)
         }
         .padding(.top, 10)
@@ -80,13 +78,6 @@ struct GearShedView: View {
         .navigationBarTitle("Gear Shed", displayMode: .inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading, content: viewModel.leadingButton)
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button {
-                    hideTab.toggle()
-                } label: {
-                    Text("Hide Tab")
-                }
-            }
         }
         .onAppear {
             logAppear(title: "MainCatelogView")
@@ -97,6 +88,14 @@ struct GearShedView: View {
         }
     }
 }
+
+/*ToolbarItem(placement: .navigationBarTrailing) {
+    Button {
+        hideTab.toggle()
+    } label: {
+        Text("Hide Tab")
+    }
+}*/
 
 
 

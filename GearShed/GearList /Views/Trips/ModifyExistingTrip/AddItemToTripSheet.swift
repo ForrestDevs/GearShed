@@ -14,8 +14,8 @@ struct AddItemToTripSheet: View {
     
     @Environment(\.presentationMode) var presentationMode
     // this is the @FetchRequest that ties this view to Core Data Items
-    @FetchRequest(fetchRequest: Item.allItemsFR(onList: true))
-    private var itemsToBePurchased: FetchedResults<Item>
+    //@FetchRequest(fetchRequest: Item.allItemsFR(onList: true))
+    //private var itemsToBePurchased: FetchedResults<Item>
     
     // this is a temporary holding array for items being added to a trip.  it's a
     // @State variable, so if any SelectableItemRowView or a context menu adds an Item

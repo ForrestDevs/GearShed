@@ -25,13 +25,13 @@ struct EditableItemData {
 	var weight: String = ""
     var price: String = ""
     var quantity: Int = 1
-    var details: String = "Item Details"
+    var details: String = "Details"
 	var shed = Shed.theUnknownShed()
     var brand = Brand.theUnknownBrand()
     var wishlist: Bool = false
-	var isFavourite = false
-    var isRegret = false
-	var dateText = "" // for display only, not actually editable
+    var isFavourite: Bool = false
+    var isRegret: Bool = false
+    var datePurchased: Date = Date()
     
 	// this copies all the editable data from an incoming Item.  this looks fairly
 	// benign, but its in the lines below that crashes did/could occur in earlier versions
@@ -59,9 +59,8 @@ struct EditableItemData {
         isFavourite = item.isFavourite
         isRegret = item.isRegret
         
-		if item.hasBeenPurchased {
-			dateText = item.dateLastPurchased.dateText(style: .medium)
-		}
+        datePurchased = item.datePurchased
+        
 	}
 	
     init(initialItemName: String?, initialItemDetails: String?, shed: Shed? = nil, brand: Brand? = nil, wishlist: Bool? = nil) {

@@ -14,20 +14,11 @@ struct GearShedApp: App {
     
     @AppStorage("isFirstLaunch") var isFirstLaunch: Bool = true
     @AppStorage("lastReviewRequest") var lastReviewRequest: TimeInterval?
+    
     @StateObject var persistentStore: PersistentStore
     @StateObject var unlockManager: UnlockManager
-    @Environment(\.scenePhase) private var scenePhase
     
-    var askForReview: Bool {
-        if let lastReviewRequest = lastReviewRequest {
-            let lastReviewDistance = Date().timeIntervalSinceReferenceDate - lastReviewRequest
-            // Ask only every 5 days for a review
-            if  lastReviewDistance < 5*24*60*60 {
-                return false
-            }
-        }
-        return true
-    }
+    @Environment(\.scenePhase) private var scenePhase
 
     init() {
         let persistentStore = PersistentStore()
@@ -62,6 +53,17 @@ struct GearShedApp: App {
                     }
                 })
         }
+    }
+    
+    var askForReview: Bool {
+        if let lastReviewRequest = lastReviewRequest {
+            let lastReviewDistance = Date().timeIntervalSinceReferenceDate - lastReviewRequest
+            // Ask only every 5 days for a review
+            if  lastReviewDistance < 5*24*60*60 {
+                return false
+            }
+        }
+        return true
     }
     
     func handleResignActive(_ note: Notification) {

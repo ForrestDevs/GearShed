@@ -15,7 +15,7 @@ struct ItemRowView: View {
 	var body: some View {
         HStack (alignment: .firstTextBaseline , spacing: 15) {
             favouriteButton
-            NavigationLink(destination: ItemDetailView(item: item)) {
+            NavigationLink(destination: ItemDetailView(item: item) ) {
                 navLinkBody
             }
         }

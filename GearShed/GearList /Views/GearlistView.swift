@@ -9,15 +9,21 @@
 import SwiftUI
 
 struct GearlistView: View {
-    
     static let tag: String? = "GearList"
+    
     @EnvironmentObject var persistentStore: PersistentStore
+    
     @StateObject private var viewModel: GearlistData
+    
     @State private var currentSelection: Int = 0
     
-    init(persistentStore: PersistentStore) {
+    private var bottomEdge: CGFloat
+    
+    init(bottomEdge: CGFloat, persistentStore: PersistentStore) {
         let viewModel = GearlistData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
+        
+        self.bottomEdge = bottomEdge
     }
 
     var body: some View {
@@ -33,7 +39,7 @@ struct GearlistView: View {
                     .font(.system(size: 12).bold())
                 
             } content: {
-                AllGearLists(persistentStore: persistentStore)
+                AllGearLists(bottomEdge: bottomEdge, persistentStore: persistentStore)
                     .pageView(ignoresSafeArea: true, edges: .bottom)
                 
                 

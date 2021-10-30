@@ -12,6 +12,8 @@ struct AllBrandView: View {
     
     @EnvironmentObject var persistentStore: PersistentStore
 
+    @EnvironmentObject var tabManager: TabBarManager
+    
     @StateObject private var viewModel: GearShedData
     
     @State private var isAlertShowing: Bool = false
@@ -20,19 +22,24 @@ struct AllBrandView: View {
     
     @State private var brand1: Brand? = nil
     
+    // For tab bar
+    @State private var offset: CGFloat = 0
+    @State private var lastOffset: CGFloat = 0
+    private var bottomEdge: CGFloat
+    
     // Local state to trigger showing a view to Edit Brand
     @State private var isAddBrandShowing = false
     
-    init(persistentStore: PersistentStore) {
+    init(bottomEdge: CGFloat, persistentStore: PersistentStore) {
+        self.bottomEdge = bottomEdge
+        
         let viewModel = GearShedData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
     }
-
+    
     var body: some View {
         VStack (spacing: 0) {
-            
             statBar
-            
             ZStack {
                 brandList
                     .padding(.top, 5)
@@ -40,7 +47,6 @@ struct AllBrandView: View {
                 addBrandOverlay
                 alertOverlay
             }
-            .padding(.bottom, 50)
         }
         .fullScreenCover(isPresented: $isAddBrandShowing) {
             NavigationView {
@@ -75,7 +81,40 @@ struct AllBrandView: View {
                         Brand.delete(brand)
                     })}
             }
+            // Geometry Reader for calculating Offset...
+            .overlay(
+                GeometryReader{ proxy -> Color in
+                    let minY = proxy.frame(in: .named("SCROLL")).minY
+                    // Your Own Duration to hide tabbar....
+                    let durationOffset: CGFloat = 35
+                    DispatchQueue.main.async {
+                        if minY < offset{
+                            if offset < 0 && -minY > (lastOffset + durationOffset){
+                                // HIding tab and updating last offset...
+                                withAnimation(.easeOut.speed(1.5)){
+                                    tabManager.hideTab = true
+                                }
+                                lastOffset = -offset
+                            }
+                        }
+                        
+                        // Same ....
+                        if minY > offset && -minY < (lastOffset - durationOffset){
+                            // Showing tab and updating last offset...
+                            withAnimation(.easeOut.speed(1.5)){
+                                tabManager.hideTab = false
+                            }
+                            lastOffset = -offset
+                        }
+                        self.offset = minY
+                    }
+                    return Color.clear
+                }
+            )
+            // Same as Bottom Tab Calcu...
+            .padding(.bottom,15 + bottomEdge + 35)
         }
+        .coordinateSpace(name: "SCROLL")
     }
     
     private var addBrandOverlay: some View {

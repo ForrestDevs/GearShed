@@ -8,10 +8,12 @@
 import SwiftUI
 
 struct ItemRowViewForList: View {
+    
     @ObservedObject var item: Item
     @State private var isChecked: Bool = false
     var respondToTapOnSelector: () -> ()
     var respondToTapOffSelector: () -> ()
+    
     var body: some View {
         HStack (alignment: .firstTextBaseline , spacing: 15) {
             itemSelectorButton
@@ -19,8 +21,9 @@ struct ItemRowViewForList: View {
             Spacer()
         }
     }
-    var itemSelectorButton: some View {
-        Image(systemName: isChecked ? "checkmark.circle" : "circle")
+    
+    private var itemSelectorButton: some View {
+        Image(systemName: isChecked ? "circle.fill" : "circle")
             .resizable()
             .frame(width: 13, height: 12)
             .foregroundColor(Color.theme.green)
@@ -43,7 +46,8 @@ struct ItemRowViewForList: View {
                 }
             }
     }
-    var itemRowView: some View {
+    
+    private var itemRowView: some View {
         VStack (alignment: .leading, spacing: 0) {
             HStack {
                 Text(item.brandName)
@@ -65,4 +69,5 @@ struct ItemRowViewForList: View {
             .frame(maxHeight: 35)
         }
     }
+    
 }

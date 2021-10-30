@@ -17,7 +17,7 @@
         <relationship name="sheds_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Shed" inverseName="group_" inverseEntity="Shed"/>
     </entity>
     <entity name="Item" representedClassName="Item" syncable="YES" codeGenerationType="class">
-        <attribute name="dateLastPurchased_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="datePurchased_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="detail_" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="isFavourite_" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
@@ -45,9 +45,9 @@
     <elements>
         <element name="Brand" positionX="-60.6998291015626" positionY="-373.6808319091796" width="128" height="88"/>
         <element name="Gearlist" positionX="260.955078125" positionY="-321.8805236816406" width="128" height="103"/>
+        <element name="Group" positionX="-86.8411865234375" positionY="-134.4103088378906" width="128" height="88"/>
         <element name="Item" positionX="96.439453125" positionY="-324.1543884277343" width="128" height="238"/>
         <element name="Shed" positionX="-74.51153564453131" positionY="-271.7739257812501" width="128" height="103"/>
         <element name="Trip" positionX="252.37744140625" positionY="-178.4892883300782" width="128" height="88"/>
-        <element name="Group" positionX="-86.8411865234375" positionY="-134.4103088378906" width="128" height="88"/>
     </elements>
 </model>

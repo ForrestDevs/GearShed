@@ -10,9 +10,8 @@ import SwiftUI
 struct ShedDetailView: View {
     
     @EnvironmentObject var persistentStore: PersistentStore
-    
+    @EnvironmentObject var tabManager: TabBarManager
     @StateObject private var viewModel: GearShedData
-
     @ObservedObject var shed: Shed
     
     @State private var isEditShedShowing: Bool = false
@@ -25,7 +24,6 @@ struct ShedDetailView: View {
 
     var body: some View {
         VStack(spacing:0) {
-            
             statBar
                 .padding(.top, 22.2)
                 .padding(.bottom, 10)
@@ -39,6 +37,9 @@ struct ShedDetailView: View {
         }
         .fullScreenCover(isPresented: $isEditShedShowing) {
             ModifyShedView(shed: shed).environment(\.managedObjectContext, PersistentStore.shared.context)
+        }
+        .onAppear {
+            tabManager.hideTab = true
         }
     }
     

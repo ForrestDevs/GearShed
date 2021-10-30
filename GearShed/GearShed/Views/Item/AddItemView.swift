@@ -27,6 +27,9 @@ struct AddItemView: View {
     
     @State private var date = Date()
     
+    // Auto Updating TextBox Height...
+    //@State private var containerHeight: CGFloat = 0
+    
     init(persistentStore: PersistentStore, initialItemName: String? = nil, initialItemDetails: String? = nil, shed: Shed? = nil, brand: Brand? = nil, wishlist: Bool? = nil) {
         
         let viewModel = GearShedData(persistentStore: persistentStore)
@@ -55,7 +58,6 @@ struct AddItemView: View {
                     ToolbarItem(placement: .cancellationAction) { cancelButton() }
                     ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!editableItemData.canBeSaved) }
                 }
-                
                 .onAppear {
                     logAppear(title: "AddOrModifyItemView")
                 }
@@ -65,9 +67,6 @@ struct AddItemView: View {
                 }
             }
         }
-        /*.onTapGesture {
-            dismissKeyboard()
-        }*/
     }
     
     private var itemNameFeild: some View {
@@ -77,6 +76,8 @@ struct AddItemView: View {
                 .foregroundColor(Color.theme.accent)
                 
             TextField("Add Item Name", text: $editableItemData.name)
+                .foregroundColor(Color.theme.green)
+                .font(.custom("HelveticaNeue", size: 17).bold())
                 .disableAutocorrection(true)
             
             Rectangle()
@@ -87,17 +88,11 @@ struct AddItemView: View {
     }
     
     private var itemShedBrandFeild: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            HStack {
-                Text ("Shed")
+        HStack {
+            VStack(alignment: .leading, spacing: 10) {
+                Text("Shed")
                     .font(.subheadline)
-                Spacer()
-                Text("Brand")
-                    .font(.subheadline)
-                Spacer()
-            } // Title
-            HStack {
-                // SHED
+                
                 Menu {
                     Button {
                         shedNavLinkActive.toggle()
@@ -115,9 +110,12 @@ struct AddItemView: View {
                         }
                     }
                 } label: {
-                    withAnimation (.spring()) {
+                    HStack {
                         Text(editableItemData.shed.name)
-                            .format()
+                            .formatGreen()
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                        Image(systemName: "chevron.down")
+                            .foregroundColor(Color.theme.accent)
                     }
                 }
                 .background(
@@ -125,10 +123,12 @@ struct AddItemView: View {
                         EmptyView()
                     }
                 )
+            }
+            
+            VStack(alignment: .leading, spacing: 10) {
+                Text("Brand")
+                    .font(.subheadline)
                 
-                Spacer()
-                
-                // BRAND
                 Menu {
                     Button {
                         brandNavLinkActive.toggle()
@@ -146,9 +146,12 @@ struct AddItemView: View {
                         }
                     }
                 } label: {
-                    withAnimation (.spring()) {
+                    HStack {
                         Text(editableItemData.brand.name)
-                            .format()
+                            .formatGreen()
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                        Image(systemName: "chevron.down")
+                            .foregroundColor(Color.theme.accent)
                     }
                 }
                 .background(
@@ -156,8 +159,7 @@ struct AddItemView: View {
                         EmptyView()
                     }
                 )
-                Spacer()
-            } // Menu Pickers
+            }
         }
     }
     
@@ -174,6 +176,9 @@ struct AddItemView: View {
             HStack {
                 VStack {
                     TextField("Add Item Weight", text: $editableItemData.weight)
+                        .foregroundColor(Color.theme.green)
+                        .font(.custom("HelveticaNeue", size: 17).bold())
+                        .disableAutocorrection(true)
                     Rectangle()
                         .frame(maxWidth: .infinity)
                         .frame(height: editableItemData.weight.isEmpty ? 1 : 2)
@@ -182,6 +187,9 @@ struct AddItemView: View {
                 Spacer()
                 VStack {
                     TextField("Add Item Price", text: $editableItemData.price)
+                        .foregroundColor(Color.theme.green)
+                        .font(.custom("HelveticaNeue", size: 17).bold())
+                        .disableAutocorrection(true)
                     Rectangle()
                         .frame(maxWidth: .infinity)
                         .frame(height: editableItemData.price.isEmpty ? 1 : 2)
@@ -195,12 +203,12 @@ struct AddItemView: View {
         Toggle(isOn: $editableItemData.wishlist) {
             Text("Wishlist Item?")
                 .font(.subheadline)
-                .foregroundColor(Color.theme.green)
+                .foregroundColor(Color.theme.accent)
         }
     }
     
     private var itemPurchaseDateFeild: some View {
-        DatePicker(selection: $date, displayedComponents: .date) {
+        DatePicker(selection: $editableItemData.datePurchased, displayedComponents: .date) {
             Text("Purchase Date")
                 .font(.subheadline)
         }
@@ -221,7 +229,8 @@ struct AddItemView: View {
                     .frame(maxHeight: .infinity)
                     .padding(.horizontal, -5)
             }
-            .font(.body)
+            .foregroundColor(Color.theme.green)
+            .font(.custom("HelveticaNeue", size: 17).bold())
         }
     }
     
@@ -242,11 +251,6 @@ struct AddItemView: View {
 	}
 }
 
-extension Text {
-    func format() -> some View {
-        self.foregroundColor(Color.theme.green)
-            .font(.custom("HelveticaNeue", size: 17))
-            .bold()
-    }
-}
+
+
 

@@ -11,97 +11,7 @@ import CoreData
 import SwiftUI
 
 extension Item {
-	/* Discussion
-	
-	update 25 December: better reorganization and removal of previous misconceptions!
-	
-	(1) Fronting of Core Data Attributes
-	
-	Notice that all except one of the Core Data attributes on an Item in the
-	CD model appear with an underscore (_) at the end of their name.
-	(the only exception is "id" because tweaking that name is a problem due to
-	conformance to Identifiable.)
-	
-	my general theory of the case is that no one outside of this class (and its Core
-	Data based brethren, like Shed+Extensions.swift and DataController.swift) should really
-	be touching these attributes directly -- and certainly no SwiftUI views should
-	ever touch these attributes directly.
-	
-	therefore, i choose to "front" each of them in this file, as well as perhaps provide
-	other computed properties of interest.
-	
-	doing so helps smooth out the awkwardness of nil-coalescing (we don't want SwiftUI views
-	continually writing item.name ?? "Unknown" all over the place); and in the case of an
-	item's quantity, "fronting" its quantity_ attribute smooths the transition from
-	Int32 to Int.  indeed, in SwiftUI views, these Core Data objects should
-	appear just as objects, without any knowledge that they come from Core Data.
-	
-	we do allow SwiftUI views to write to these fronted properties; and because we front them,
-	we can appropriately act on the Core Data side, sometimes performing only a simple Int --> Int32
-	conversion.  similarly, if we move an item off the shopping list, we can take the opportunity
-	then to timestamp the item as purchased.
-	
-	(2) Computed Properties Based on Relationships
-	
-	the situation for SwiftUI becomes more complicated when one CD object has a computed property
-	based on something that's not a direct attribute of the object.  examples:
-	
-		-- an Item has a `shedName` computed property = the name of its associated Shed
-	
-		-- a Shed has an `itemCount` computed property = the count of its associated Items.
-	
-	for example, if a view holds on to (is a subscriber of) an Item as an @ObservedObject, and if
-	we change the name of its associated Shed, the view will not see this change because it
-	is subscribed to changes on the Item (not the Shed).
-	
-	assuming the view displays the name of the associated shed using the item's shedName,
-	we must have the shed tell all of its items that the shedName computed property is now
-	invalid and some views may need to be updated, in order to keep such a view in-sync.  thus
-	the shed must execute
-	
-		items.forEach({ $0.objectWillChange.send() })
-	
-	the same holds true for a view that holds on to (is a subscriber of) a Shed as an @ObservedObject.
-	if that view displays the number of items for the shed, based on the computed property
-	`itemCount`, then when an Item is edited to change its shed, the item must tell both its previous
-	and new sheds about the change by executing objectWillChange.send() for those sheds:
-	
-		(see the computed var shed: Shed setter below)
-	
-	as a result, you may see some code below (and also in Shed+Extensions.swift) where, when
-	a SwiftUI view writes to one of the fronted properties of the Item, we also execute
-	shed_?.objectWillChange.send().
-	
-	(3) @ObservedObject References to Items
-	
-	only the SelectableItemRowView has an @ObservedObject reference to an Item, and in development,
-	this view (or whatever this view was during development) had a serious problem:
-	
-		if a SwiftUI view holds an Item as an @ObservedObject and that object is deleted while the
-		view is still alive, the view is then holding on to a zombie object.  (Core Data does not immediately
-		save out its data to disk and update its in-memory object graph for a deletion.)  depending on how
-		view code accesses that object, your program may crash.
-
-	when you front all your Core Data attributes as i do below, the problem above seems to disappear, for
-	the most part, but i think it's really still there.  it's possible that iOS 14.2 and later have done
-	something about this ...
-		
-	anyway, it's something to think about.  in this app, if you show a list of items on the shopping list,
-	navigate to an item's detail view, and press "Delete this Item," the row view for the item in the shopping
-	list is still alive and has a dead reference to the item.  SwiftUI may try to use that; and if you had
-	to reference that item, you should expect that every attribute will be 0 (e.g., nil for a Date, 0 for an
-	Integer 32, and nil for every optional attribute).
-	
-	*/
-	
 	// MARK: - Computed Properties
-	
-	// the date last purchased.  this fronts a Core Data optional attribute
-	// when no date is available, we'll set the date to ReferenceDate, for purposes of
-	// always having one for comparisons ("today" versus "earlier")
-	var dateLastPurchased: Date { dateLastPurchased_ ?? Date(timeIntervalSinceReferenceDate: 1) }
-	
-	var hasBeenPurchased: Bool { dateLastPurchased_ != nil }
 	
 	// the name.  this fronts a Core Data optional attribute
 	var name: String {
@@ -128,8 +38,8 @@ extension Item {
 		get { wishlist_ }
 		set {
             wishlist_ = newValue
-			if !wishlist_ { // just moved off list, so record date
-				dateLastPurchased_ = Date()
+			if !wishlist_ { // just moved off wishlist, so record date Purchased
+				datePurchased_ = Date()
 			}
 		}
 	}
@@ -177,8 +87,11 @@ extension Item {
         }
     }
     
+    // the date purchased
     
-    // trips: fronts Core Data attribute trips_ that is an NSSet, and turns it into
+    var datePurchased: Date { datePurchased_ ?? Date() }
+    
+    // gearlists: fronts Core Data attribute gearlists_ that is an NSSet, and turns it into
     // a Swift array
     var gearlists: [Gearlist] {
         if let gearlists = gearlists_ as? Set<Gearlist> {
@@ -196,12 +109,9 @@ extension Item {
     // the name of its associated brand
     var brandName: String { brand_?.name_ ?? "Not Available" }
 	
-	
-	
-	
 	// MARK: - Useful Fetch Requests
 	
-    class func allItemsFR(at shed: Shed, onList: Bool = false) -> NSFetchRequest<Item> {
+    /*class func allItemsFR(at shed: Shed, onList: Bool = false) -> NSFetchRequest<Item> {
 		let request: NSFetchRequest<Item> = Item.fetchRequest()
         let p1 = NSPredicate(format: "shed_ == %@", shed)
         let p2 = NSPredicate(format: "wishlist_ == %d", onList)
@@ -224,14 +134,13 @@ extension Item {
         request.predicate = NSPredicate(format: "gearlists_ == %@", gearlist)
         return request
     }
-    
 	
 	class func allItemsFR(onList: Bool) -> NSFetchRequest<Item> {
 		let request: NSFetchRequest<Item> = Item.fetchRequest()
 		request.predicate = NSPredicate(format: "wishlist_ == %d", onList)
 		request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
 		return request
-	}
+	}*/
 
 	// MARK: - Class functions for CRUD operations
 	
@@ -284,7 +193,7 @@ extension Item {
 		try? context?.save()
 	}
 	
-	class func moveAllItemsOffShoppingList() {
+	class func moveAllItemsOffWishlist() {
 		for item in allItems() where item.wishlist {
 			item.wishlist_ = false
 		}
@@ -334,10 +243,94 @@ extension Item {
         isRegret_ = editableData.isRegret 
 		shed = editableData.shed
         brand = editableData.brand
+        datePurchased_ = editableData.datePurchased
         
         gearlists.forEach({ $0.objectWillChange.send() })
         
 	}
 	
 }
+
+/* Discussion
+
+update 25 December: better reorganization and removal of previous misconceptions!
+
+(1) Fronting of Core Data Attributes
+
+Notice that all except one of the Core Data attributes on an Item in the
+CD model appear with an underscore (_) at the end of their name.
+(the only exception is "id" because tweaking that name is a problem due to
+conformance to Identifiable.)
+
+my general theory of the case is that no one outside of this class (and its Core
+Data based brethren, like Shed+Extensions.swift and DataController.swift) should really
+be touching these attributes directly -- and certainly no SwiftUI views should
+ever touch these attributes directly.
+
+therefore, i choose to "front" each of them in this file, as well as perhaps provide
+other computed properties of interest.
+
+doing so helps smooth out the awkwardness of nil-coalescing (we don't want SwiftUI views
+continually writing item.name ?? "Unknown" all over the place); and in the case of an
+item's quantity, "fronting" its quantity_ attribute smooths the transition from
+Int32 to Int.  indeed, in SwiftUI views, these Core Data objects should
+appear just as objects, without any knowledge that they come from Core Data.
+
+we do allow SwiftUI views to write to these fronted properties; and because we front them,
+we can appropriately act on the Core Data side, sometimes performing only a simple Int --> Int32
+conversion.  similarly, if we move an item off the shopping list, we can take the opportunity
+then to timestamp the item as purchased.
+
+(2) Computed Properties Based on Relationships
+
+the situation for SwiftUI becomes more complicated when one CD object has a computed property
+based on something that's not a direct attribute of the object.  examples:
+
+    -- an Item has a `shedName` computed property = the name of its associated Shed
+
+    -- a Shed has an `itemCount` computed property = the count of its associated Items.
+
+for example, if a view holds on to (is a subscriber of) an Item as an @ObservedObject, and if
+we change the name of its associated Shed, the view will not see this change because it
+is subscribed to changes on the Item (not the Shed).
+
+assuming the view displays the name of the associated shed using the item's shedName,
+we must have the shed tell all of its items that the shedName computed property is now
+invalid and some views may need to be updated, in order to keep such a view in-sync.  thus
+the shed must execute
+
+    items.forEach({ $0.objectWillChange.send() })
+
+the same holds true for a view that holds on to (is a subscriber of) a Shed as an @ObservedObject.
+if that view displays the number of items for the shed, based on the computed property
+`itemCount`, then when an Item is edited to change its shed, the item must tell both its previous
+and new sheds about the change by executing objectWillChange.send() for those sheds:
+
+    (see the computed var shed: Shed setter below)
+
+as a result, you may see some code below (and also in Shed+Extensions.swift) where, when
+a SwiftUI view writes to one of the fronted properties of the Item, we also execute
+shed_?.objectWillChange.send().
+
+(3) @ObservedObject References to Items
+
+only the SelectableItemRowView has an @ObservedObject reference to an Item, and in development,
+this view (or whatever this view was during development) had a serious problem:
+
+    if a SwiftUI view holds an Item as an @ObservedObject and that object is deleted while the
+    view is still alive, the view is then holding on to a zombie object.  (Core Data does not immediately
+    save out its data to disk and update its in-memory object graph for a deletion.)  depending on how
+    view code accesses that object, your program may crash.
+
+when you front all your Core Data attributes as i do below, the problem above seems to disappear, for
+the most part, but i think it's really still there.  it's possible that iOS 14.2 and later have done
+something about this ...
+    
+anyway, it's something to think about.  in this app, if you show a list of items on the shopping list,
+navigate to an item's detail view, and press "Delete this Item," the row view for the item in the shopping
+list is still alive and has a dead reference to the item.  SwiftUI may try to use that; and if you had
+to reference that item, you should expect that every attribute will be 0 (e.g., nil for a Date, 0 for an
+Integer 32, and nil for every optional attribute).
+
+*/
 

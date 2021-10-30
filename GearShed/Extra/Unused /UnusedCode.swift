@@ -1757,6 +1757,360 @@ private var allSheds: FetchedResults<Shed>*/
      }
  }*/
  
+ /*struct AppTabBarView_Previews: PreviewProvider {
+     static var previews: some View {
+         AppTabBarView()
+     }
+ }*/
+
+
+ /*CustomTabView(selection: $tabSelection) {
+
+     NavigationView { HomeView() }
+         .tabBarItem(tab: .home, selection: $tabSelection)
+     
+     NavigationView { GearShedView(persistentStore: persistentStore) }
+         .tabBarItem(tab: .shed, selection: $tabSelection)
+     
+     NavigationView { GearlistView(persistentStore: persistentStore) }
+         .tabBarItem(tab: .trips, selection: $tabSelection)
+     
+ }*/
+
+ /*struct AppTabBarView1: View {
+
+     @State private var tabSelection: TabBarItem = .home
+     
+     var body: some View {
+         NavigationView{
+             CustomTabView(selection: $tabSelection) {
+             
+                 HomeView()
+                     .offset(y: 50)
+                     .tabBarItem(tab: .home, selection: $tabSelection)
+                     .tag(TabBarItem.home)
+                 
+                 MainCatelogView()
+                     .offset(y: 100)
+                     .tabBarItem(tab: .shed, selection: $tabSelection)
+                     .tag(TabBarItem.shed)
+
+                                 
+                 TripsTabView()
+                     .offset(y: 100)
+                     .tabBarItem(tab: .trips, selection: $tabSelection)
+                     .tag(TabBarItem.trips)
+
+                 
+             }
+             //.navigationBarTitle(returnNaviBarTitle(tabSelection: self.tabSelection))
+             //.navigationViewStyle(StackNavigationViewStyle())
+         }
+
+     }
+
+         
+     func returnNaviBarTitle(tabSelection: TabBarItem) -> String {
+         switch tabSelection {
+             case .home: return "Tab1"
+             case .shed: return "Tab2"
+             case .trips: return "Tab2"
+         }
+     }
+ }
+
+ struct AppTabBarView2: View {
+
+     @State private var tabSelection: TabBarItem = .home
+     
+     var body: some View {
+         TabView(selection: $tabSelection) {
+             
+             NavigationView { HomeView() }
+                 .tabItem({ Label("Home", systemImage: "list.bullet") })
+
+                
+             NavigationView { MainCatelogView() }
+                 .tabItem({ Label("Gear Shed", systemImage: "house") })
+
+             NavigationView { TripsTabView() }
+                 .tabItem({ Label("Gear List", systemImage: "figure.walk") })
+
+         }
+     }
+ }*/
+ /*AutoSizingTF(hint: "Item Details", text: $editableItemData.details, containerHeight: $containerHeight) {
+     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+ }
+ .frame(height: containerHeight <= 120 ? containerHeight : 120)
+ //.background(Color.theme.green)
+ //.cornerRadius(10)*/
+
+ /*VStack(alignment: .leading, spacing: 10) {
+     HStack {
+         Text ("Shed")
+             .font(.subheadline)
+         Spacer()
+         Text("Brand")
+             .font(.subheadline)
+         Spacer()
+     } // Title
+     
+     HStack {
+         // SHED
+         Menu {
+             Button {
+                 shedNavLinkActive.toggle()
+             } label: {
+                 Text("Add New Shed")
+                 .font(.subheadline)
+             }
+             ForEach(viewModel.sheds) { shed in
+                 Button {
+                     editableItemData.shed = shed
+                 } label: {
+                     Text(shed.name)
+                         .tag(shed)
+                         .font(.subheadline)
+                 }
+             }
+         } label: {
+             withAnimation (.spring()) {
+                 Text(editableItemData.shed.name)
+                     .format()
+                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                     .background(Color.blue)
+             }
+         }
+         .background(
+             NavigationLink(destination: AddShedView(shedOut: { shed in editableItemData.shed = shed }, isAddFromItem: true), isActive: $shedNavLinkActive) {
+                 EmptyView()
+             }
+         )
+         
+         Spacer()
+         
+         // BRAND
+         Menu {
+             Button {
+                 brandNavLinkActive.toggle()
+             } label: {
+                 Text("Add New Brand")
+                     .font(.subheadline)
+             }
+             ForEach(viewModel.brands) { brand in
+                 Button {
+                     editableItemData.brand = brand
+                 } label: {
+                     Text(brand.name)
+                         .tag(brand)
+                         .font(.subheadline)
+                 }
+             }
+         } label: {
+             withAnimation (.spring()) {
+                 Text(editableItemData.brand.name)
+                     .format()
+                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                     .background(Color.blue)
+             }
+         }
+         .background(
+             NavigationLink(destination: AddBrandView(brandOut: { brand in editableItemData.brand = brand }, isAddFromItem: true), isActive: $brandNavLinkActive) {
+                 EmptyView()
+             }
+         )
+         
+         Spacer()
+     } // Menu Pickers
+ }*/
+ // custom init here to set up editableData state
+ /*init(persistentStore: PersistentStore, editableItem: Item? = nil, initialItemName: String? = nil, initialItemDetails: String? = nil, shed: Shed? = nil, brand: Brand? = nil) {
+     let viewModel = GearShedData(persistentStore: persistentStore)
+     _viewModel = StateObject(wrappedValue: viewModel)
+     
+     
+     // initialize the editableData struct for the incoming item, if any; and
+     // also carry in whatever might be a suggested Item name for a new Item
+     if let item = editableItem {
+         _editableItemData = State(initialValue: EditableItemData(item: item))
+     } else {
+         // here's we'll see if a suggested name for adding a new item was supplied
+         let initialValue = EditableItemData(initialItemName: initialItemName, initialItemDetails: initialItemDetails, shed: shed,  brand: brand)
+         _editableItemData = State(initialValue: initialValue)
+     }
+ }*/
+
+ /*NavigationView {
+     ScrollView(.vertical, showsIndicators: false) {
+         VStack (alignment: .leading, spacing: 20) {
+             
+             VStack (alignment: .leading, spacing: 10) {
+                 Text("Item Name:")
+                     .font(.subheadline)
+                     .bold()
+                     .foregroundColor(Color.theme.green)
+                 
+                 TextField(editableItemData.name, text: $editableItemData.name)
+                     .disableAutocorrection(true)
+                 
+                 Rectangle()
+                     .frame(maxWidth: .infinity)
+                     .frame(maxHeight: 2)
+                     .foregroundColor(Color.theme.green)
+             }
+             
+             VStack (alignment: .leading, spacing: 20) {
+                 Text("Item Stats:")
+                     .font(.subheadline)
+                     .bold()
+                     .foregroundColor(Color.theme.green)
+                 
+                 HStack(alignment: .firstTextBaseline) {
+                     
+                     VStack {
+                         TextField(editableItemData.weight, text: $editableItemData.weight)
+                         Rectangle()
+                             .frame(maxWidth: .infinity)
+                             .frame(maxHeight: 1)
+                             .foregroundColor(Color.theme.green)
+                     }
+                     
+                     VStack {
+                         TextField(editableItemData.price, text: $editableItemData.price)
+                         Rectangle()
+                             .frame(maxWidth: .infinity)
+                             .frame(maxHeight: 1)
+                             .foregroundColor(Color.theme.green)
+                     }
+                 }
+             }
+             
+             VStack (alignment: .leading, spacing: 10) {
+                 Text("Shed - Brand")
+                     .font(.subheadline)
+                     .bold()
+                     .foregroundColor(Color.theme.green)
+                 
+                 HStack (alignment: .firstTextBaseline, spacing: 10) {
+                     DisclosureGroup(editableItemData.shed.name, isExpanded: $expandedShed) {
+                         VStack(alignment: .leading) {
+                             NavigationLink(destination: AddShedView()) {
+                                 Text("Add New Shed")
+                                     .font(.subheadline)
+                                     //.foregroundColor(Color.theme.green)
+                             }
+                             ForEach(viewModel.sheds) { shed in
+                                 Text(shed.name).tag(shed)
+                                     .font(.subheadline)
+                                     //.foregroundColor(Color.theme.secondaryText)
+                                     .onTapGesture {
+                                         editableItemData.shed = shed
+                                         //altShedSelected = true
+                                         //altShedName = shed.name
+                                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                                             expandedShed.toggle()
+                                         }
+                                     }
+                             }
+                         }
+                     }
+                     
+                     DisclosureGroup(editableItemData.brand.name, isExpanded: $expandedBrand) {
+                         VStack(alignment: .leading) {
+                             NavigationLink(destination: AddBrandView()) {
+                                 Text("Add New Brand")
+                                     .font(.subheadline)
+                                     //.foregroundColor(Color.theme.secondaryText)
+                             }
+                             ForEach(viewModel.brands) { brand in
+                                 Text(brand.name).tag(brand)
+                                     .font(.subheadline)
+                                     //.foregroundColor(Color.theme.secondaryText)
+                                     .onTapGesture {
+                                         editableItemData.brand = brand
+                                         //altBrandSelected = true
+                                         //altBrandName = brand.name
+                                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                                             expandedBrand.toggle()
+                                             //altBrandSelected.toggle()
+                                         }
+                                     }
+                             }
+                         }
+                     }
+                 }
+             }
+             
+             /*VStack (alignment: .leading, spacing: 10) {
+                 Text("Quantity")
+                     .font(.subheadline)
+                     .bold()
+                     .foregroundColor(Color.theme.green)
+                 
+                 Stepper(value: $editableItemData.quantity, in: 1...50) {
+                     HStack {
+                         Spacer()
+                         Text("\(editableItemData.quantity)")
+                         Spacer()
+                     }
+                 }
+             }*/
+             
+             Toggle(isOn: $editableItemData.wishlist) {
+                 Text("Wishlist Item")
+                     .font(.subheadline)
+                     .bold()
+                     .foregroundColor(Color.theme.green)
+             }
+             
+             VStack (alignment: .leading, spacing: 10) {
+                 Text("Item Details:")
+                     .font(.subheadline)
+                     .bold()
+                     .foregroundColor(Color.theme.green)
+                 ZStack {
+                     if editableItemData.details.isEmpty == true {
+                         Text("placeholder")
+                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                             .foregroundColor(Color.theme.secondaryText)
+                     }
+                     TextEditor(text: $editableItemData.details)
+                         .frame(maxHeight: .infinity)
+                         .padding(.horizontal, -5)
+                 }
+                 .font(.body)
+             }
+             .frame(maxHeight: .infinity)
+             
+             Spacer()
+             
+             // Item Management (Delete), if present
+             if editableItemData.representsExistingItem {
+                 SLCenteredButton(title: "Delete This Item", action: { confirmDeleteItemAlert =
+                     ConfirmDeleteItemAlert(item: editableItemData.associatedItem,
+                         destructiveCompletion: { presentationMode.wrappedValue.dismiss() })
+                 })
+                     .foregroundColor(Color.red)
+             }
+         }
+         .padding()
+         .navigationBarTitle("Modify Item", displayMode: .inline)
+         .navigationBarBackButtonHidden(true)
+         .toolbar {
+             ToolbarItem(placement: .cancellationAction) { cancelButton() }
+             ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!editableItemData.canBeSaved) }
+         }
+         .onAppear {
+             logAppear(title: "AddOrModifyItemView")
+         }
+         .onDisappear {
+             logDisappear(title: "AddOrModifyItemView")
+             PersistentStore.shared.saveContext()
+         }
+         .alert(item: $confirmDeleteItemAlert) { item in item.alert() }
+     }
+ }*/
  
  
  

@@ -93,11 +93,16 @@ extension Gearlist {
         try? context?.save()
     }
     
+    class func newGearlist(name: String) -> Gearlist {
+        let newGearlist = Gearlist.addNewGearlist()
+        newGearlist.name_ = name
+        PersistentStore.shared.saveContext()
+        return newGearlist
+    }
+    
     class func addNewGearlist(using editableData: EditableGearlistData, itemArray: [Item]) {
-        
         let newGearlist = Gearlist.addNewGearlist()
         newGearlist.updateValues(from: editableData)
-        
         Gearlist.addItemsToList(itemArray: itemArray, gearList: newGearlist)
         
     }

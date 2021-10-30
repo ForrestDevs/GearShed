@@ -11,6 +11,7 @@ import SwiftUI
 struct AllShedView: View {
     
     @EnvironmentObject var persistentStore: PersistentStore
+    @EnvironmentObject var tabManager: TabBarManager
 
     @StateObject private var viewModel: GearShedData
     
@@ -22,7 +23,13 @@ struct AllShedView: View {
     
     @State private var shed1: Shed? = nil
     
-    init(persistentStore: PersistentStore) {
+    @State private var offset: CGFloat = 0
+    @State private var lastOffset: CGFloat = 0
+    var bottomEdge: CGFloat
+    
+    init(bottomEdge: CGFloat, persistentStore: PersistentStore) {
+        self.bottomEdge = bottomEdge
+        
         let viewModel = GearShedData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
     }
@@ -35,12 +42,8 @@ struct AllShedView: View {
                     .padding(.top, 5)
                     .padding(.horizontal, 20)
                 addShedOverLay
-                AZAlert(title: "Rename Shed", isShown: $isAlertShowing, text: $newShedName) { text in
-                    shed1?.updateName(shed: shed1!, name: text)
-                    newShedName = ""
-                }
+                alertOverlay
             }
-            .padding(.bottom, 50)
         }
         .fullScreenCover(isPresented: $isAddShedShowing) {
             NavigationView {
@@ -75,7 +78,36 @@ struct AllShedView: View {
                         Shed.delete(shed)
                     })}
             }
+            // Geometry Reader for calculating Offset...
+            .overlay( GeometryReader { proxy -> Color in
+                    let minY = proxy.frame(in: .named("SCROLL")).minY
+                    let durationOffset: CGFloat = 35
+                    DispatchQueue.main.async {
+                        
+                        if minY < offset{
+                            if offset < 0 && -minY > (lastOffset + durationOffset){
+                                // HIding tab and updating last offset...
+                                withAnimation(.easeOut.speed(1.5)){
+                                    tabManager.hideTab = true
+                                }
+                                lastOffset = -offset
+                            }
+                        }
+                        if minY > offset && -minY < (lastOffset - durationOffset) {
+                            withAnimation(.easeOut.speed(1.5)) {
+                                tabManager.hideTab = false
+                            }
+                            lastOffset = -offset
+                        }
+                        
+                        self.offset = minY
+                    }
+                    return Color.clear
+                } )
+            // Same as Bottom Tab Calcu...
+            .padding(.bottom,15 + bottomEdge + 35)
         }
+        .coordinateSpace(name: "SCROLL")
     }
     
     private var addShedOverLay: some View {
@@ -103,6 +135,13 @@ struct AllShedView: View {
                 .padding()
                 .shadow(color: Color.theme.accent.opacity(0.3), radius: 3,x: 3,y: 3)
             }
+        }
+    }
+    
+    private var alertOverlay: some View {
+        AZAlert(title: "Rename Shed", isShown: $isAlertShowing, text: $newShedName) { text in
+            shed1?.updateName(shed: shed1!, name: text)
+            newShedName = ""
         }
     }
 }

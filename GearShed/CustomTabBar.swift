@@ -42,12 +42,16 @@ struct CustomTabBar: View {
     }
 }
 
-struct CustomTabBar_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-            .preferredColorScheme(.light)
-    }
+
+/// An environment singleton responsible for managing the Tab Bar
+final class TabBarManager: ObservableObject {
+    
+    private(set) static var shared = TabBarManager()
+    
+    @Published var hideTab: Bool = false
+    
 }
+
 
 /*struct TabButton: View {
     
