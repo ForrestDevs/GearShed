@@ -109,6 +109,7 @@
 		08C7D92E270F844C00EC3984 /* AddListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C7D92D270F844C00EC3984 /* AddListView.swift */; };
 		08C7D930270F846500EC3984 /* TripItemsSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C7D92F270F846500EC3984 /* TripItemsSelector.swift */; };
 		08C7D93E2710EEEE00EC3984 /* AddItemToTripSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C7D93D2710EEEE00EC3984 /* AddItemToTripSheet.swift */; };
+		08C9C4E9272DFEB4007DBCF9 /* TabBarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C9C4E8272DFEB4007DBCF9 /* TabBarManager.swift */; };
 		08D67E03272488000064F639 /* SegmentedPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D67E02272488000064F639 /* SegmentedPicker.swift */; };
 		08D67E052724888A0064F639 /* Transition+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D67E042724888A0064F639 /* Transition+Extension.swift */; };
 		08D67E0C27250F5A0064F639 /* UnlockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D67E0827250F5A0064F639 /* UnlockManager.swift */; };
@@ -236,6 +237,7 @@
 		08C7D92D270F844C00EC3984 /* AddListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddListView.swift; sourceTree = "<group>"; };
 		08C7D92F270F846500EC3984 /* TripItemsSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripItemsSelector.swift; sourceTree = "<group>"; };
 		08C7D93D2710EEEE00EC3984 /* AddItemToTripSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemToTripSheet.swift; sourceTree = "<group>"; };
+		08C9C4E8272DFEB4007DBCF9 /* TabBarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarManager.swift; sourceTree = "<group>"; };
 		08D67E02272488000064F639 /* SegmentedPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedPicker.swift; sourceTree = "<group>"; };
 		08D67E042724888A0064F639 /* Transition+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transition+Extension.swift"; sourceTree = "<group>"; };
 		08D67E0827250F5A0064F639 /* UnlockManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnlockManager.swift; sourceTree = "<group>"; };
@@ -330,9 +332,9 @@
 				08371B5C271DFEA20072AD94 /* AllItemsView.swift */,
 				08371B5E271DFEC90072AD94 /* AllShedView.swift */,
 				08371B60271DFED90072AD94 /* AllBrandView.swift */,
+				08371B64271DFEF80072AD94 /* AllWishListView.swift */,
 				08371B62271DFEE60072AD94 /* AllFavouriteView.swift */,
 				080015AE272787E700E1BE4C /* AllRegretsView.swift */,
-				08371B64271DFEF80072AD94 /* AllWishListView.swift */,
 				08D67E1627260AA30064F639 /* Item */,
 				08C7D8CF270F480D00EC3984 /* Shed */,
 				08C7D8D4270F480E00EC3984 /* Brand */,
@@ -427,13 +429,8 @@
 			isa = PBXGroup;
 			children = (
 				08C7D89F270F3D1800EC3984 /* GearShedApp.swift */,
-				084EDA12272BAE2B00475891 /* ContentView.swift */,
-				084EDA14272BAFD800475891 /* CustomTabBar.swift */,
-				08ED0FDD2719EAE10072CB90 /* AppTabBarView.swift */,
-				08C7D8BF270F434400EC3984 /* CoreData */,
-				08371B43271BB0070072AD94 /* Home */,
-				08C7D8B5270F418F00EC3984 /* GearShed */,
-				08C7D8B3270F416B00EC3984 /* GearList  */,
+				08C9C4EC272DFFC2007DBCF9 /* Views */,
+				08C7D8BF270F434400EC3984 /* DataCenter */,
 				08D67E1727260B920064F639 /* Extra */,
 				08D67E1827260BAC0064F639 /* Config */,
 			);
@@ -475,19 +472,15 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
-		08C7D8BF270F434400EC3984 /* CoreData */ = {
+		08C7D8BF270F434400EC3984 /* DataCenter */ = {
 			isa = PBXGroup;
 			children = (
-				08C7D8A8270F3D1D00EC3984 /* PersistentStore.swift */,
-				08D67E12272529730064F639 /* PersistantStore+StoreKit.swift */,
-				08C7D8AA270F3D1D00EC3984 /* GearShed.xcdatamodeld */,
-				08C7D8E1270F485200EC3984 /* EditableItemData.swift */,
-				08C7D922270F7AFC00EC3984 /* EditableTripData.swift */,
-				080015A4272731DB00E1BE4C /* EditableGearlistData.swift */,
 				08C7D91F270F72F700EC3984 /* SectionData.swift */,
 				08C7D905270F6D0600EC3984 /* Extensions */,
+				08C9C4EB272DFF77007DBCF9 /* EditableData */,
+				08C9C4EA272DFF61007DBCF9 /* Core Data */,
 			);
-			path = CoreData;
+			path = DataCenter;
 			sourceTree = "<group>";
 		};
 		08C7D8C0270F475A00EC3984 /* Convenience Extensions */ = {
@@ -604,6 +597,48 @@
 				08ED0FD62719DA490072CB90 /* ViewModel.swift */,
 			);
 			path = ModifyExistingTrip;
+			sourceTree = "<group>";
+		};
+		08C9C4E7272DFD37007DBCF9 /* MainViewContainer */ = {
+			isa = PBXGroup;
+			children = (
+				084EDA12272BAE2B00475891 /* ContentView.swift */,
+				08ED0FDD2719EAE10072CB90 /* AppTabBarView.swift */,
+				084EDA14272BAFD800475891 /* CustomTabBar.swift */,
+				08C9C4E8272DFEB4007DBCF9 /* TabBarManager.swift */,
+			);
+			path = MainViewContainer;
+			sourceTree = "<group>";
+		};
+		08C9C4EA272DFF61007DBCF9 /* Core Data */ = {
+			isa = PBXGroup;
+			children = (
+				08C7D8AA270F3D1D00EC3984 /* GearShed.xcdatamodeld */,
+				08C7D8A8270F3D1D00EC3984 /* PersistentStore.swift */,
+				08D67E12272529730064F639 /* PersistantStore+StoreKit.swift */,
+			);
+			path = "Core Data";
+			sourceTree = "<group>";
+		};
+		08C9C4EB272DFF77007DBCF9 /* EditableData */ = {
+			isa = PBXGroup;
+			children = (
+				08C7D922270F7AFC00EC3984 /* EditableTripData.swift */,
+				08C7D8E1270F485200EC3984 /* EditableItemData.swift */,
+				080015A4272731DB00E1BE4C /* EditableGearlistData.swift */,
+			);
+			path = EditableData;
+			sourceTree = "<group>";
+		};
+		08C9C4EC272DFFC2007DBCF9 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				08C9C4E7272DFD37007DBCF9 /* MainViewContainer */,
+				08371B43271BB0070072AD94 /* Home */,
+				08C7D8B5270F418F00EC3984 /* GearShed */,
+				08C7D8B3270F416B00EC3984 /* GearList  */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		08D67E0727250F5A0064F639 /* Unlock */ = {
@@ -808,6 +843,7 @@
 				08C7D900270F680400EC3984 /* ConfirmationAlerts.swift in Sources */,
 				08C7D920270F72F700EC3984 /* ItemContextMenu.swift in Sources */,
 				08371B3B271B72BF0072AD94 /* Date.swift in Sources */,
+				08C9C4E9272DFEB4007DBCF9 /* TabBarManager.swift in Sources */,
 				08C7D8D8270F480E00EC3984 /* CategorysTabView.swift in Sources */,
 				08A7D0042729F604006FA3F7 /* ItemRowViewForList.swift in Sources */,
 				080015A3272730F400E1BE4C /* Gearlist+Extension.swift in Sources */,

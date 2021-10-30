@@ -29,4 +29,14 @@ extension Text {
         self.foregroundColor(Color.theme.green)
             .font(.custom("HelveticaNeue", size: 12).bold())
     }
+    
+    func formatNoColorSmall() -> some View {
+        self.font(.custom("HelveticaNeue", size: 12).bold())
+    }
+    
+    func formatNoColorLarge() -> some View {
+        self.font(.custom("HelveticaNeue", size: 17).bold())
+    }
+    
+    
 }

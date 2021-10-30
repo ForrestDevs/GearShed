@@ -2113,6 +2113,182 @@ private var allSheds: FetchedResults<Shed>*/
  }*/
  
  
+ // MARK: Swipe to dismiss tab bar scroll View
+ // For tab bar
+ @State private var offset: CGFloat = 0
+ @State private var lastOffset: CGFloat = 0
+ private var bottomEdge: CGFloat
+ 
+ ScrollView(.vertical, showsIndicators: false) {
+     LazyVStack {
+         ForEach(viewModel.sectionByShed(itemArray: viewModel.items)) { section in
+             Section {
+                 ForEach(section.items) { item in
+                     ItemRowView(item: item)
+                         .padding(.horizontal)
+                         .padding(.bottom, 5)
+                 }
+             } header: {
+                 sectionHeader(section: section)
+                     .padding(.horizontal)
+             }
+         }
+     }
+     // Geometry Reader for calculating Offset...
+     /*.overlay( GeometryReader { proxy -> Color in
+             let minY = proxy.frame(in: .named("SCROLL")).minY
+             let durationOffset: CGFloat = 35
+             DispatchQueue.main.async {
+                 
+                 if minY < offset{
+                     if offset < 0 && -minY > (lastOffset + durationOffset){
+                         // HIding tab and updating last offset...
+                         withAnimation(.easeOut.speed(1.5)){
+                             tabManager.hideTab = true
+                         }
+                         lastOffset = -offset
+                     }
+                 }
+                 if minY > offset && -minY < (lastOffset - durationOffset) {
+                     withAnimation(.easeOut.speed(1.5)) {
+                         tabManager.hideTab = false
+                     }
+                     lastOffset = -offset
+                 }
+                 
+                 self.offset = minY
+             }
+             return Color.clear
+         } )*/
+     // Same as Bottom Tab Calcu...
+     .padding(.bottom, 75)
+ }
+ //.fixFlickering()
+ .coordinateSpace(name: "SCROLL")
+// MARK: END OF CUSTOM GEO READER SCROLL VIEW
+ extension ScrollView {
+     private typealias PaddedContent = ModifiedContent<Content, _PaddingLayout>
+     
+     func fixFlickering() -> some View {
+         GeometryReader { geo in
+             ScrollView<PaddedContent>(axes, showsIndicators: showsIndicators) {
+                 content.padding(geo.safeAreaInsets) as! PaddedContent
+             }
+             .edgesIgnoringSafeArea(.all)
+         }
+     }
+ }
+ 
+ 
+ /*SPForDetailView(selected: $selected)
+
+ if self.selected == 1 {
+     Color.black
+         .transition(.moveAndFade)
+ }
+ else if self.selected == 2 {
+     Color.black
+         .transition(.moveAndFade)
+ } else if self.selected == 3 {
+     Color.black
+         .transition(.moveAndFade)
+ } else {
+     Color.black
+         .transition(.moveAndFade)
+ }
+
+ Spacer()*/
+ 
+ /*ToolbarItem(placement: .navigationBarTrailing) {
+     Button {
+         hideTab.toggle()
+     } label: {
+         Text("Hide Tab")
+     }
+ }*/
+ 
+ 
+ // all editableData is packaged here. its initial values are set using
+ // a custom init.
+ //@State private var editableGearlistData: EditableGearlistData
+ // custom init to set up editable data
+ /*init(gearlist: Gearlist) {
+     _editableGearlistData = State(initialValue: EditableGearlistData(gearlist: gearlist))
+     self.gearlist = gearlist
+ }*/
+
+ 
+ 
+ /*struct TabButton: View {
+     
+     var image: String
+     @Binding var currentTab: String
+     
+     // Based On Color SCheme changing Color...
+     @Environment(\.colorScheme) var scheme
+     
+     var body: some View{
+         
+         Button {
+             
+             withAnimation{currentTab = image}
+             
+         } label: {
+             Image(image)
+                 .renderingMode(.template)
+                 .resizable()
+                 .aspectRatio(contentMode: .fit)
+                 .frame(width: 35, height: 35)
+                 .foregroundColor(currentTab == image ? Color("Pink") : Color.gray.opacity(0.7))
+                 .frame(maxWidth: .infinity)
+         }
+
+     }
+ }*/
+
+
+ /*struct CustomTabBar: View {
+     
+     @Binding var currentTab: String
+     
+     var bottomEdge: CGFloat
+     
+     var body: some View {
+         HStack(spacing: 10) {
+             
+             Button {
+                 withAnimation{currentTab = "Home"}
+             } label: {
+                 Text("Home")
+             }
+             Button {
+                 withAnimation{currentTab = "GearShed"}
+             } label: {
+                 Text("GearShed")
+             }
+             Button {
+                 withAnimation{currentTab = "Gearlist"}
+             } label: {
+                 Text("Gearlist")
+             }
+         }
+         .padding(.top,15)
+         .padding(.bottom,bottomEdge)
+         .padding(.horizontal, 10)
+         .background(
+             Color.theme.green
+         )
+         .clipShape(RoundedRectangle(cornerRadius: 20))
+     }*/
+
+ /*ZStack {
+     Color.theme.background
+         .opacity(0.8)
+     Color.white
+         .opacity(0.3)
+ }
+
+ )*/
  
  
  */
