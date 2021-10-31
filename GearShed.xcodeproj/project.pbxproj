@@ -51,6 +51,12 @@
 		08A7D0042729F604006FA3F7 /* ItemRowViewForList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A7D0032729F604006FA3F7 /* ItemRowViewForList.swift */; };
 		08A7D0062729F62F006FA3F7 /* ItemRowViewInWishlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A7D0052729F62F006FA3F7 /* ItemRowViewInWishlist.swift */; };
 		08A7D00C2729FBCF006FA3F7 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08A7D00B2729FBCF006FA3F7 /* CloudKit.framework */; };
+		08B6FD31272E1DF300B8A9AE /* PDFExportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B6FD30272E1DF300B8A9AE /* PDFExportView.swift */; };
+		08B6FD33272E636E00B8A9AE /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B6FD32272E636E00B8A9AE /* Array+Extensions.swift */; };
+		08B6FD36272E63CE00B8A9AE /* TableData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B6FD35272E63CE00B8A9AE /* TableData.swift */; };
+		08B6FD38272E643900B8A9AE /* PDFCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B6FD37272E643800B8A9AE /* PDFCreator.swift */; };
+		08B6FD3A272E647A00B8A9AE /* ShareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B6FD39272E647A00B8A9AE /* ShareView.swift */; };
+		08B6FD3C272E64CD00B8A9AE /* PDFPreviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B6FD3B272E64CD00B8A9AE /* PDFPreviews.swift */; };
 		08C7D8A0270F3D1800EC3984 /* GearShedApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C7D89F270F3D1800EC3984 /* GearShedApp.swift */; };
 		08C7D8A2270F3D1800EC3984 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C7D8A1270F3D1800EC3984 /* MainView.swift */; };
 		08C7D8A4270F3D1D00EC3984 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08C7D8A3270F3D1D00EC3984 /* Assets.xcassets */; };
@@ -177,6 +183,12 @@
 		08A7D0032729F604006FA3F7 /* ItemRowViewForList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemRowViewForList.swift; sourceTree = "<group>"; };
 		08A7D0052729F62F006FA3F7 /* ItemRowViewInWishlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemRowViewInWishlist.swift; sourceTree = "<group>"; };
 		08A7D00B2729FBCF006FA3F7 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		08B6FD30272E1DF300B8A9AE /* PDFExportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFExportView.swift; sourceTree = "<group>"; };
+		08B6FD32272E636E00B8A9AE /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
+		08B6FD35272E63CE00B8A9AE /* TableData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableData.swift; sourceTree = "<group>"; };
+		08B6FD37272E643800B8A9AE /* PDFCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFCreator.swift; sourceTree = "<group>"; };
+		08B6FD39272E647A00B8A9AE /* ShareView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareView.swift; sourceTree = "<group>"; };
+		08B6FD3B272E64CD00B8A9AE /* PDFPreviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFPreviews.swift; sourceTree = "<group>"; };
 		08C7D89C270F3D1800EC3984 /* GearShed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GearShed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08C7D89F270F3D1800EC3984 /* GearShedApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GearShedApp.swift; sourceTree = "<group>"; };
 		08C7D8A1270F3D1800EC3984 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -408,6 +420,26 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		08B6FD2D272E1BF900B8A9AE /* PDF */ = {
+			isa = PBXGroup;
+			children = (
+				08B6FD30272E1DF300B8A9AE /* PDFExportView.swift */,
+				08B6FD37272E643800B8A9AE /* PDFCreator.swift */,
+				08B6FD39272E647A00B8A9AE /* ShareView.swift */,
+				08B6FD3B272E64CD00B8A9AE /* PDFPreviews.swift */,
+			);
+			path = PDF;
+			sourceTree = "<group>";
+		};
+		08B6FD34272E63A700B8A9AE /* DataModels */ = {
+			isa = PBXGroup;
+			children = (
+				08C7D91F270F72F700EC3984 /* SectionData.swift */,
+				08B6FD35272E63CE00B8A9AE /* TableData.swift */,
+			);
+			path = DataModels;
+			sourceTree = "<group>";
+		};
 		08C7D893270F3D1700EC3984 = {
 			isa = PBXGroup;
 			children = (
@@ -429,6 +461,7 @@
 			isa = PBXGroup;
 			children = (
 				08C7D89F270F3D1800EC3984 /* GearShedApp.swift */,
+				08B6FD2D272E1BF900B8A9AE /* PDF */,
 				08C9C4EC272DFFC2007DBCF9 /* Views */,
 				08C7D8BF270F434400EC3984 /* DataCenter */,
 				08D67E1727260B920064F639 /* Extra */,
@@ -475,7 +508,7 @@
 		08C7D8BF270F434400EC3984 /* DataCenter */ = {
 			isa = PBXGroup;
 			children = (
-				08C7D91F270F72F700EC3984 /* SectionData.swift */,
+				08B6FD34272E63A700B8A9AE /* DataModels */,
 				08C7D905270F6D0600EC3984 /* Extensions */,
 				08C9C4EB272DFF77007DBCF9 /* EditableData */,
 				08C9C4EA272DFF61007DBCF9 /* Core Data */,
@@ -504,6 +537,7 @@
 				08C7D8C3270F475A00EC3984 /* View+Extensions.swift */,
 				08D67E142725EEA60064F639 /* ToggleStyles.swift */,
 				08FE3660272CDC60000035A9 /* Text+Extension.swift */,
+				08B6FD32272E636E00B8A9AE /* Array+Extensions.swift */,
 			);
 			path = "Convenience Extensions";
 			sourceTree = "<group>";
@@ -816,6 +850,7 @@
 				08C7D91C270F719B00EC3984 /* ItemRowView.swift in Sources */,
 				08C7D8F8270F65E100EC3984 /* SLSectionHeaderView.swift in Sources */,
 				08D67E0D27250F5A0064F639 /* ProductView.swift in Sources */,
+				08B6FD3A272E647A00B8A9AE /* ShareView.swift in Sources */,
 				08D67E11272523680064F639 /* SKProduct-LocalizedPrice.swift in Sources */,
 				08C7D8F6270F65E100EC3984 /* SLSimpleHeaderView.swift in Sources */,
 				08D67E152725EEA60064F639 /* ToggleStyles.swift in Sources */,
@@ -841,6 +876,7 @@
 				08ED0FE5271A2C8A0072CB90 /* UnusedCode.swift in Sources */,
 				08D67E0C27250F5A0064F639 /* UnlockManager.swift in Sources */,
 				08C7D900270F680400EC3984 /* ConfirmationAlerts.swift in Sources */,
+				08B6FD33272E636E00B8A9AE /* Array+Extensions.swift in Sources */,
 				08C7D920270F72F700EC3984 /* ItemContextMenu.swift in Sources */,
 				08371B3B271B72BF0072AD94 /* Date.swift in Sources */,
 				08C9C4E9272DFEB4007DBCF9 /* TabBarManager.swift in Sources */,
@@ -867,7 +903,9 @@
 				08C7D8F1270F65E100EC3984 /* EmptyTripView.swift in Sources */,
 				08C7D8A9270F3D1D00EC3984 /* PersistentStore.swift in Sources */,
 				08C7D925270F7BFB00EC3984 /* Trip+Extension.swift in Sources */,
+				08B6FD3C272E64CD00B8A9AE /* PDFPreviews.swift in Sources */,
 				086C925227238D03009F962D /* ModifyItemView.swift in Sources */,
+				08B6FD31272E1DF300B8A9AE /* PDFExportView.swift in Sources */,
 				08371B56271C8ABD0072AD94 /* Sorting+Extension.swift in Sources */,
 				08C7D8F5270F65E100EC3984 /* EmptyCatelogView.swift in Sources */,
 				084EDA13272BAE2B00475891 /* ContentView.swift in Sources */,
@@ -892,12 +930,14 @@
 				08C7D8DA270F480E00EC3984 /* ShedRowView.swift in Sources */,
 				08ED0FDE2719EAE10072CB90 /* TabBarItem.swift in Sources */,
 				0853ABFC271F8E3300123497 /* BrandDetailView.swift in Sources */,
+				08B6FD36272E63CE00B8A9AE /* TableData.swift in Sources */,
 				08C7D90A270F6D1D00EC3984 /* Category+Extensions.swift in Sources */,
 				08C7D8C8270F475A00EC3984 /* String+Extensions.swift in Sources */,
 				08C7D8CD270F475A00EC3984 /* Date+Extensions.swift in Sources */,
 				08ED0FE02719EAE10072CB90 /* CustomTabView.swift in Sources */,
 				08C7D911270F6DFC00EC3984 /* ItemCodableProxy.swift in Sources */,
 				08C7D8E5270F485300EC3984 /* EditableItemData.swift in Sources */,
+				08B6FD38272E643900B8A9AE /* PDFCreator.swift in Sources */,
 				08D67E13272529730064F639 /* PersistantStore+StoreKit.swift in Sources */,
 				08ED0FE12719EAE10072CB90 /* TabBarItemsPreferenceKey.swift in Sources */,
 				08C7D929270F7F7500EC3984 /* GearlistDetailView.swift in Sources */,

@@ -13,13 +13,7 @@ import CoreData
 final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  ObservableObject {
     
     let persistentStore: PersistentStore
-    
-    // State to trigger wether the item is favourited or not
-    @Published var isFavourited: Bool = false
-    
-    // var to store a selctedShed to pre populate adding an item
-    @Published var selectedShed: Shed? = nil
-    
+   
     private let itemsController: NSFetchedResultsController<Item>
     @Published var items = [Item]()
     
@@ -164,7 +158,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     }
     
     // MARK: - Total Functions
-    
+
     func totalWeight(array: [Item]) -> String {
         var arrayString = [String]()
         for x in array {
@@ -195,28 +189,6 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     func totalRegrets(array: [Item]) -> String {
         let regretItems = array.filter { $0.isRegret }
         return String(regretItems.count)
-    }
-    
-    // MARK: - ToolbarItems
-    
-    // a toggle button to share gear list
-    func leadingButton() -> some View {
-        Button { [self] in
-            writeAsJSON(items: items, to: kItemsFilename)
-            writeAsJSON(items: sheds, to: kShedsFilename)
-            writeAsJSON(items: brands, to: kBrandsFilename)
-        } label: {
-            Image(systemName: "square.and.arrow.up")
-                /*.fileExporter(isPresented: $showDisplayAction, documents: [kItemsFilename,kBrandsFilename,kShedsFilename] , contentType: .json) { result in
-                    switch result {
-                        case .success(let url):
-                            print("Saved to \(url)")
-                        case .failure(let error):
-                            print(error.localizedDescription)
-                        }
-                }*/
-            
-        }
     }
 }
 

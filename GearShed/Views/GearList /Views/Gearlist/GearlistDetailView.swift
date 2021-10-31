@@ -30,10 +30,7 @@ struct GearlistDetailView: View {
             ZStack {
                 itemList
                 editListOverlay
-            }.padding(.bottom, 50)
-            Rectangle()
-               .opacity(0)
-               .frame(height: 50)
+            }
         }
         .navigationTitle(gearlist.name)
         .onAppear {
@@ -92,7 +89,8 @@ struct GearlistDetailView: View {
                     .frame(width: 55, height: 55)
                     .background(Color.theme.accent)
                     .cornerRadius(38.5)
-                    .padding()
+                    .padding(.bottom, 75)
+                    .padding(.trailing, 15)
                     .shadow(color: Color.theme.accent.opacity(0.3), radius: 3,x: 3,y: 3)
                 }
             }

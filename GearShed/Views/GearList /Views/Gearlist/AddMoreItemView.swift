@@ -35,11 +35,7 @@ struct AddMoreItemView: View {
         VStack {
             itemsList
                 .padding(.top,10)
-                .padding(.bottom, 50)
-            
-            Rectangle()
-                .opacity(0)
-                .frame(height: 50)
+                .padding(.bottom, 75)
         }
         .navigationBarTitle("Add Items to \(gearlist.name)", displayMode: .inline)
         .navigationBarBackButtonHidden(true)

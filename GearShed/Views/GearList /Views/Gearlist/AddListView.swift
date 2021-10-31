@@ -21,7 +21,6 @@ struct AddListView: View {
     var gearlist: Gearlist?
     
     init(persistentStore: PersistentStore, gearlist: Gearlist? = nil, item: Item? = nil) {
-        
         // Init viewModel
         let viewModel = GearShedData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -41,11 +40,7 @@ struct AddListView: View {
             
             itemList
                 .padding(.top,10)
-                .padding(.bottom, 50)
-            
-            Rectangle()
-                .opacity(0)
-                .frame(height: 50)
+                //.padding(.bottom, 75)
         }
         .navigationBarTitle("New List", displayMode: .inline)
         .navigationBarBackButtonHidden(true)

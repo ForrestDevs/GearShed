@@ -17,6 +17,8 @@ struct GearShedView: View {
     @StateObject private var viewModel: GearShedData
     
     @State private var currentSelection: Int = 0
+    
+    @State private var showPDFScreen: Bool = false
 
     init(persistentStore: PersistentStore) {
         let viewModel = GearShedData(persistentStore: persistentStore)
@@ -74,7 +76,18 @@ struct GearShedView: View {
         .ignoresSafeArea(.container, edges: .bottom)
         .navigationBarTitle("Gear Shed", displayMode: .inline)
         .toolbar {
-            ToolbarItem(placement: .navigationBarLeading, content: viewModel.leadingButton)
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button {
+                    showPDFScreen.toggle()
+                } label: {
+                    Image(systemName: "square.and.arrow.up")
+                }
+            }
+        }
+        .fullScreenCover(isPresented: $showPDFScreen) {
+            NavigationView {
+                PDFExportView(persistentStore: persistentStore)
+            }
         }
         .onAppear {
             logAppear(title: "MainCatelogView")
@@ -86,8 +99,6 @@ struct GearShedView: View {
         }
     }
 }
-
-
 
 
 

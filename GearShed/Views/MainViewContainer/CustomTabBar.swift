@@ -57,7 +57,7 @@ struct CustomTabBar: View {
             withAnimation{currentTab = "GearShed"}
         } label: {
             VStack (alignment: .center, spacing: 0) {
-                Image(systemName: "magazine")
+                Image(systemName: "bag")
                 
                 Text("GearShed")
                     .formatNoColorSmall()

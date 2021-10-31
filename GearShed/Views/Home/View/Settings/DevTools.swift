@@ -118,7 +118,7 @@ func insertNewItems(from codableItems: [ItemCodableProxy]) {
         newItem.price = codableItem.price
         newItem.wishlist = codableItem.wishlist
         newItem.isFavourite_ = codableItem.isFavourite
-        newItem.datePurchased_ = codableItem.datePurchased
+        //newItem.datePurchased_ = codableItem.datePurchased
         
         // look up matching shed by name
         // anything that doesn't match goes to the unknown shed.

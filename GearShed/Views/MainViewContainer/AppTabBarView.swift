@@ -25,6 +25,7 @@ struct AppTabBarView: View {
     
     var body: some View {
         TabView(selection: $currentTab) {
+            
             NavigationView { HomeView() }
                 .frame(maxWidth: .infinity ,maxHeight: .infinity)
                 .tag("Home")

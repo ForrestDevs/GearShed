@@ -12,7 +12,8 @@ struct AllItemsView: View {
     @EnvironmentObject var persistentStore: PersistentStore
 
     @StateObject private var viewModel: GearShedData
-        
+    
+    @State private var selectedShed: Shed? = nil 
     @State private var showingUnlockView: Bool = false
     @State private var isAddItemShowing: Bool = false
     @State private var isQuickAddItemShowing: Bool = false
@@ -38,7 +39,7 @@ struct AllItemsView: View {
                 .environment(\.managedObjectContext, PersistentStore.shared.context)
         }
         .fullScreenCover(isPresented: $isQuickAddItemShowing) {
-            AddItemView(persistentStore: persistentStore, shed:  viewModel.selectedShed).environment(\.managedObjectContext, PersistentStore.shared.context)
+            AddItemView(persistentStore: persistentStore, shed: selectedShed).environment(\.managedObjectContext, PersistentStore.shared.context)
         }
         .sheet(isPresented: $showingUnlockView) {
             UnlockView()
@@ -94,7 +95,7 @@ struct AllItemsView: View {
        return VStack (spacing: 0) {
             HStack {
                 Button {
-                    viewModel.selectedShed = section.shed
+                    selectedShed = section.shed
                     let canCreate = self.persistentStore.fullVersionUnlocked ||
                         self.persistentStore.count(for: Item.fetchRequest()) < 3
                     if canCreate {
