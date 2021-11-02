@@ -9,14 +9,11 @@
 import SwiftUI
 
 struct AllShedView: View {
-    @EnvironmentObject var persistentStore: PersistentStore
+    @EnvironmentObject private var persistentStore: PersistentStore
 
     @StateObject private var viewModel: GearShedData
     
     @State private var isAddShedShowing: Bool = false
-    @State private var isAlertShowing: Bool = false
-    @State private var newShedName: String = ""
-    @State private var shed1: Shed? = nil
     
     init(persistentStore: PersistentStore) {
         let viewModel = GearShedData(persistentStore: persistentStore)
@@ -29,7 +26,6 @@ struct AllShedView: View {
             ZStack {
                 shedList
                 addShedOverLay
-                alertOverlay
             }
         }
         .fullScreenCover(isPresented: $isAddShedShowing) {
@@ -38,6 +34,9 @@ struct AllShedView: View {
             }
         }
     }
+}
+
+extension AllShedView {
     
     private var statBar: some View {
         HStack {
@@ -58,17 +57,9 @@ struct AllShedView: View {
             LazyVStack {
                 ForEach(viewModel.sheds) { shed in
                     ShedRowView(shed: shed)
-                        .padding(.horizontal)
-                        .padding(.top, 10)
-                        .contextMenu { shedRowContextMenu(editTrigger: {
-                            shed1 = shed
-                            isAlertShowing = true
-                        }, deletionTrigger: {
-                            Shed.delete(shed)
-                        })}
                 }
             }
-            .padding(.bottom, 75)
+            .padding(.bottom, 15)
         }
     }
     
@@ -94,19 +85,13 @@ struct AllShedView: View {
                 .frame(width: 55, height: 55)
                 .background(Color.theme.accent)
                 .cornerRadius(38.5)
-                .padding(.bottom, 75)
+                .padding(.bottom, 20)
                 .padding(.trailing, 15)
                 .shadow(color: Color.theme.accent.opacity(0.3), radius: 3,x: 3,y: 3)
             }
         }
     }
     
-    private var alertOverlay: some View {
-        AZAlert(title: "Rename Shed", isShown: $isAlertShowing, text: $newShedName) { text in
-            shed1?.updateName(shed: shed1!, name: text)
-            newShedName = ""
-        }
-    }
 }
 
 

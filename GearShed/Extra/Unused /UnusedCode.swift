@@ -2401,6 +2401,151 @@ private var allSheds: FetchedResults<Shed>*/
  
  
  //let pdfCreator = PDFCreator(tableDataItems: tableDataItems, tableDataHeaderTitles: tableDataHeaderTitles)
+ // MARK: OLD
+
+ //@State var isTabShowing: Bool = true
+ //@EnvironmentObject var tabManager: TabBarManager
+
+ //var bottomEdge: CGFloat
+
+ // Hiding Native TabBar...
+ /*init(bottomEdge: CGFloat){
+     UITabBar.appearance().isHidden = true
+     self.bottomEdge = bottomEdge
+ }*/
+
+ /*var body1: some View {
+     TabView(selection: $currentTab) {
+         
+         NavigationView { HomeView() }
+             .frame(maxWidth: .infinity ,maxHeight: .infinity)
+             .tag("Home")
+             //.navigationViewStyle(StackNavigationViewStyle())
+         
+         NavigationView { GearShedView(persistentStore: persistentStore) }
+             .frame(maxWidth: .infinity ,maxHeight: .infinity)
+             .tag("GearShed")
+             //.navigationViewStyle(StackNavigationViewStyle())
+         
+         NavigationView { GearlistView(persistentStore: persistentStore) }
+             .frame(maxWidth: .infinity ,maxHeight: .infinity)
+             .tag("Gearlist")
+             //.navigationViewStyle(StackNavigationViewStyle())
+     }
+     //.tabViewStyle(.page(indexDisplayMode: .never))
+     /*.overlay(
+         CustomTabBar(currentTab: $currentTab)
+             .offset(y: tabManager.hideTab ? (50 + bottomEdge) : 0) ,alignment: .bottom
+     )*/
+ }*/
+
+ /*PagerTabView3(tint: Color.blue, selection: $tabInt) {
+     HStack {
+         Image(systemName: "house")
+             .pageLabel()
+         Image(systemName: "list.bullet")
+             .pageLabel()
+         Image(systemName: "list.bullet.rectangle")
+             .pageLabel()
+     }
+     .padding(.bottom, 50)
+ } content: {
+     NavigationView { HomeView() }
+         .pageView(ignoresSafeArea: true, edges: .bottom)
+         .frame(maxWidth: .infinity ,maxHeight: .infinity)
+         .tag(0)
+         //.navigationViewStyle(StackNavigationViewStyle())
+     
+     NavigationView { GearShedView(persistentStore: persistentStore) }
+         .pageView(ignoresSafeArea: true, edges: .bottom)
+         .frame(maxWidth: .infinity ,maxHeight: .infinity)
+         .tag(1)
+         //.navigationViewStyle(StackNavigationViewStyle())
+     
+     NavigationView { GearlistView(persistentStore: persistentStore) }
+         .pageView(ignoresSafeArea: true, edges: .bottom)
+         //.frame(maxWidth: .infinity ,maxHeight: .infinity)
+         .tag(2)
+         //.navigationViewStyle(StackNavigationViewStyle())
+ }*/
+
+ /* ZStack {
+     
+     VStack {
+         
+         
+         
+         
+         
+         
+         
+         /*if tabInt == 0 {
+             
+         }*/
+         
+     }
+ }
+
+
+
+ TabView(selection: $currentTab) {
+     
+     HomeView()
+         .frame(maxWidth: .infinity ,maxHeight: .infinity)
+         .tag("Home")
+         //.navigationViewStyle(StackNavigationViewStyle())
+     
+     GearShedView(persistentStore: persistentStore)
+         .frame(maxWidth: .infinity ,maxHeight: .infinity)
+         .tag("GearShed")
+         //.navigationViewStyle(StackNavigationViewStyle())
+     
+     GearlistView(persistentStore: persistentStore)
+         .frame(maxWidth: .infinity ,maxHeight: .infinity)
+         .tag("Gearlist")
+         //.navigationViewStyle(StackNavigationViewStyle())
+ }
+ .tabViewStyle(.page(indexDisplayMode: .never))
+
+ ScrollView(.horizontal) {
+     
+ }
+ .onAppear(perform: {
+     UIScrollView.appearance().alwaysBounceVertical = false
+ })
+ .onDisappear(perform: {
+     UIScrollView.appearance().alwaysBounceVertical = true
+ })
+
+ .overlay(
+     CustomTabBar(currentTab: $currentTab)
+         .offset(y: tabManager.hideTab ? (50 + bottomEdge) : 0) ,alignment: .bottom
+ ) */
+ 
+ // Singleton TabBarManager Instantiated Here
+ @StateObject var tabManager = TabBarManager()
+
+ /*var body1: some View {
+     GeometryReader { proxy in
+         let bottomEdge = proxy.safeAreaInsets.bottom
+         AppTabBarView(bottomEdge: (bottomEdge == 0 ? 15 : bottomEdge))
+             .ignoresSafeArea(.all, edges: .bottom)
+             .environmentObject(tabManager)
+     }
+ }*/
+ /*private var addListAlertOverlay: some View {
+     AZAlert(title: "Add New List", isShown: $isAddListShowing, text: $newListName) { text in
+         let gearlist = Gearlist.newGearlist(name: text)
+         activateAddItems = true
+         
+         NavigationLink(isActive: $activateAddItems) {
+             AddMoreItemView(persistentStore: persistentStore, gearlist: gearlist)
+         } label: {
+             EmptyView()
+         }
+
+     }
+ }*/
  
  
  */

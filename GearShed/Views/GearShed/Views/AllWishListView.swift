@@ -40,6 +40,9 @@ struct AllWishListView: View {
             UnlockView()
         }
     }
+}
+
+extension AllWishListView {
     
     private var statBar: some View {
         HStack (spacing: 30) {
@@ -115,12 +118,13 @@ struct AllWishListView: View {
                 .frame(width: 55, height: 55)
                 .background(Color.theme.accent)
                 .cornerRadius(38.5)
-                .padding(.bottom, 75)
+                .padding(.bottom, 20)
                 .padding(.trailing, 15)
                 .shadow(color: Color.theme.accent.opacity(0.3), radius: 3,x: 3,y: 3)
             }
         }
     }
+    
 }
 
 

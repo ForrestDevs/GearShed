@@ -25,6 +25,10 @@ struct AllFavouriteView: View {
         }
     }
     
+}
+
+extension AllFavouriteView {
+    
     private var statBar: some View {
         HStack (spacing: 30) {
             HStack {
@@ -79,4 +83,5 @@ struct AllFavouriteView: View {
             .padding(.bottom, 75)
         }
     }
+    
 }

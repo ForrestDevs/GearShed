@@ -9,8 +9,9 @@
 import SwiftUI
 
 struct GearlistDetailView: View {
+    @Environment(\.presentationMode) var presentationMode
+
     @EnvironmentObject var persistentStore: PersistentStore
-    @EnvironmentObject var tabManager: TabBarManager
     
     @StateObject private var gearVM: GearlistData
     @StateObject private var itemVM: GearShedData
@@ -26,18 +27,29 @@ struct GearlistDetailView: View {
     }
     
     var body: some View {
-        VStack {
-            ZStack {
-                itemList
-                editListOverlay
+        NavigationView {
+            VStack {
+                ZStack {
+                    itemList
+                    editListOverlay
+                }
+            }
+            .navigationBarTitle(gearlist.name, displayMode: .inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        presentationMode.wrappedValue.dismiss()
+                    } label: {
+                        Image(systemName: "chevron.left")
+                    }
+                }
             }
         }
-        .navigationTitle(gearlist.name)
-        .onAppear {
-            tabManager.hideTab = true
-        }
+        
     }
-    
+}
+
+extension GearlistDetailView {
     private var itemList: some View {
         ScrollView(.vertical, showsIndicators: false) {
             ForEach(itemVM.sectionByShed(itemArray: gearlist.items)) { section in
@@ -68,6 +80,7 @@ struct GearlistDetailView: View {
                     .padding(.horizontal)
                 }
             }
+            .padding(.top, 10)
         }
     }
     
@@ -89,7 +102,7 @@ struct GearlistDetailView: View {
                     .frame(width: 55, height: 55)
                     .background(Color.theme.accent)
                     .cornerRadius(38.5)
-                    .padding(.bottom, 75)
+                    .padding(.bottom, 20)
                     .padding(.trailing, 15)
                     .shadow(color: Color.theme.accent.opacity(0.3), radius: 3,x: 3,y: 3)
                 }

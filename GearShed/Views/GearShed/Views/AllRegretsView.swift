@@ -23,7 +23,9 @@ struct AllRegretsView: View {
             itemsList
         }
     }
-    
+}
+
+extension AllRegretsView {
     private var statBar: some View {
         HStack (spacing: 30) {
             HStack {

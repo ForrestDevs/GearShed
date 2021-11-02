@@ -39,7 +39,9 @@ struct AllGearLists: View {
             }
         }
     }
-    
+}
+
+extension AllGearLists {
     private var gearlistList: some View {
         ScrollView(.vertical, showsIndicators: false) {
             LazyVStack {
@@ -80,7 +82,7 @@ struct AllGearLists: View {
                 .frame(width: 55, height: 55)
                 .background(Color.theme.accent)
                 .cornerRadius(38.5)
-                .padding(.bottom, 75)
+                .padding(.bottom, 20)
                 .padding(.trailing, 15)
                 .shadow(color: Color.theme.accent.opacity(0.3), radius: 3,x: 3,y: 3)
             }
@@ -93,19 +95,5 @@ struct AllGearLists: View {
             newListName = ""
         }
     }
-    
-    /*private var addListAlertOverlay: some View {
-        AZAlert(title: "Add New List", isShown: $isAddListShowing, text: $newListName) { text in
-            let gearlist = Gearlist.newGearlist(name: text)
-            activateAddItems = true
-            
-            NavigationLink(isActive: $activateAddItems) {
-                AddMoreItemView(persistentStore: persistentStore, gearlist: gearlist)
-            } label: {
-                EmptyView()
-            }
-
-        }
-    }*/
 }
 

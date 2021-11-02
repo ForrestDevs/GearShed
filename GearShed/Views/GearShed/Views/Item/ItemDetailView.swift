@@ -9,38 +9,160 @@
 import SwiftUI
 
 struct ItemDetailView: View {
+    @Environment(\.presentationMode) var presentationMode
+    
     @EnvironmentObject var persistentStore: PersistentStore
-    @EnvironmentObject var tabManager: TabBarManager
     
     @ObservedObject var item: Item
     
     @State private var isEditItemShowing: Bool = false
     @State private var currentSelection: Int = 0
-    
+        
     var body: some View {
-        VStack (alignment: .leading) {
-            VStack {
+        NavigationView {
+            VStack (alignment: .leading) {
                 titleBar
-                secondaryBar
-                //detailsBar
+                HStack {
+                    itemDetails
+                    itemImage
+                }
+                .padding(.horizontal)
+                pageView
             }
-            .padding(.horizontal)
-            pageView
-        }
-        .navigationTitle("\(item.shedName)")
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button { self.isEditItemShowing.toggle() } label: { Image(systemName: "slider.horizontal.3") }
+            .navigationBarTitle("\(item.shedName)", displayMode: .inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button { self.isEditItemShowing.toggle() } label: { Image(systemName: "slider.horizontal.3") }
+                }
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        presentationMode.wrappedValue.dismiss()
+                    } label: {
+                        Image(systemName: "chevron.left")
+                    }
+                }
             }
-        }
-        .fullScreenCover(isPresented: $isEditItemShowing) {
-            ModifyItemView(persistentStore: persistentStore,editableItem: item).environment(\.managedObjectContext, PersistentStore.shared.context)
-        }
-        .onAppear {
-            tabManager.hideTab = true
+            .fullScreenCover(isPresented: $isEditItemShowing) {
+                ModifyItemView(persistentStore: persistentStore,editableItem: item).environment(\.managedObjectContext, PersistentStore.shared.context)
+            }
         }
     }
     
+}
+
+extension ItemDetailView {
+    // MARK: Main
+    private var titleBar: some View {
+        // Fav, Brand, Name
+        HStack {
+            favouriteButton
+            
+            Text(item.brandName)
+                .formatBlackTitle()
+            
+            Text("|")
+                .formatBlackTitle()
+            
+            Text(item.name)
+                .formatGreenTitle()
+            
+            Spacer()
+
+        }
+        .padding(.top, 10)
+        .padding(.horizontal)
+    }
+    
+    private var itemDetails: some View {
+        HStack {
+            VStack (alignment: .leading, spacing: 5) {
+                // Weight - Price
+                HStack {
+                    spaceFiller
+                    HStack {
+                        Text("Weight:")
+                            .formatBlackSmall()
+                        
+                        Text("\(item.weight)g")
+                            .formatGreenSmall()
+                    }
+                    HStack {
+                        Text("Price:")
+                            .formatBlackSmall()
+                        
+                        Text("$\(item.price)")
+                            .formatGreenSmall()
+                    }
+                }
+                
+                // Purchased - Regret
+                HStack {
+                    spaceFiller
+                    HStack {
+                        Text("Purchased:")
+                            .formatBlackSmall()
+                        
+                        Text("\(item.datePurchased.asShortDateString())")
+                            .formatGreenSmall()
+                    }
+                    HStack {
+                        Text("Regret")
+                            .formatBlackSmall()
+                        regretButton
+                    }
+                }
+                
+                // Details
+                HStack {
+                    spaceFiller
+                    Text(item.detail)
+                        .formatGreenSmall()
+                        .frame(alignment: .leading)
+                }
+            }
+            Spacer()
+        }
+    }
+    
+    private var itemImage: some View {
+        ZStack {
+            Rectangle()
+                .frame(width: 100, height: 100)
+                .foregroundColor(Color.gray)
+            
+            Text("Image N/a")
+        }
+    }
+    
+    private var pageView: some View {
+        PagerTabView(tint: Color.theme.accent, selection: $currentSelection) {
+            Text("TRIP")
+                .pageLabel()
+                .font(.system(size: 12).bold())
+            Text("LIST")
+                .pageLabel()
+                .font(.system(size: 12).bold())
+            Text("DIARY")
+                .pageLabel()
+                .font(.system(size: 12).bold())
+            Text("PHOTO")
+                .pageLabel()
+                .font(.system(size: 12).bold())
+        } content: {
+            Color.green
+                .pageView(ignoresSafeArea: true, edges: .bottom)
+            Color.blue
+                .pageView(ignoresSafeArea: true, edges: .bottom)
+            Color.red
+                .pageView(ignoresSafeArea: true, edges: .bottom)
+            Color.black
+                .pageView(ignoresSafeArea: true, edges: .bottom)
+        }
+        .ignoresSafeArea(.container, edges: .bottom)
+        .padding(.top, 10)
+    }
+    
+    // MARK: Extras
     private var favouriteButton: some View {
         Image(systemName: item.isFavourite ? "heart.fill" : "heart")
             .resizable()
@@ -73,111 +195,12 @@ struct ItemDetailView: View {
             }
     }
     
-    private var titleBar: some View {
-        // Fav, Brand, Name
-        HStack {
-            favouriteButton
-            
-            Text(item.brandName)
-                .formatBlack()
-            
-            Text("|")
-                .formatBlack()
-            
-            Text(item.name)
-                .formatGreen()
-            
-            Spacer()
-
-        }
-    }
-    
-    private var secondaryBar: some View {
-        HStack (alignment: .top , spacing: 5) {
-            
-            Rectangle()
-                .frame(width: 100, height: 100)
-                .foregroundColor(Color.gray)
-            
-            VStack (alignment: .leading, spacing: 5) {
-                // Weight - Price
-                HStack {
-                    HStack {
-                        Text("Weight:")
-                            .formatBlackSmall()
-                        
-                        Text("\(item.weight)g")
-                            .formatGreenSmall()
-                    }
-                    HStack {
-                        Text("Price:")
-                            .formatBlackSmall()
-                        
-                        Text("$\(item.price)")
-                            .formatGreenSmall()
-                    }
-                }
-                
-                // Purchased - Regret
-                HStack {
-                    HStack {
-                        Text("Purchased:")
-                            .formatBlackSmall()
-                        
-                        Text("\(item.datePurchased.asShortDateString())")
-                            .formatGreenSmall()
-                    }
-                    HStack {
-                        Text("Regret")
-                            .formatBlackSmall()
-                        regretButton
-                    }
-                }
-                
-                // Details
-                Text(item.detail)
-                    .formatGreenSmall()
-                    .frame(alignment: .leading)
-            }
-        }
-        .padding(.horizontal, 20)
-    }
-    
-    private var detailsBar: some View {
-        HStack {
-            Text(item.detail)
-                .formatGreenSmall()
-                .frame(alignment: .leading)
-            Spacer()
-        }
-        .padding(.horizontal, 20)
-    }
-    
-    private var pageView: some View {
-        PagerTabView(tint: Color.theme.accent, selection: $currentSelection) {
-            Text("TRIP")
-                .pageLabel()
-                .font(.system(size: 12).bold())
-            Text("LIST")
-                .pageLabel()
-                .font(.system(size: 12).bold())
-            Text("DIARY")
-                .pageLabel()
-                .font(.system(size: 12).bold())
-            Text("PHOTO")
-                .pageLabel()
-                .font(.system(size: 12).bold())
-        } content: {
-            Color.green
-                .pageView(ignoresSafeArea: true, edges: .bottom)
-            Color.blue
-                .pageView(ignoresSafeArea: true, edges: .bottom)
-            Color.red
-                .pageView(ignoresSafeArea: true, edges: .bottom)
-            Color.black
-                .pageView(ignoresSafeArea: true, edges: .bottom)
-        }
-        .ignoresSafeArea(.container, edges: .bottom)
+    private var spaceFiller: some View {
+        Image(systemName: "heart")
+            .resizable()
+            .frame(width: 13, height: 12)
+            .padding(.vertical, -1)
+            .opacity(0)
     }
 }
 

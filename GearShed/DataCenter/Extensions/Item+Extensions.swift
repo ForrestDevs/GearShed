@@ -62,7 +62,7 @@ extension Item {
         get { price_ ?? "" }
         set { price_ = newValue }
     }
-	
+    
 	// an item's associated shed.  this fronts a Core Data optional attribute.
 	// if you change an item's shed, the old and the new Shed may want to
 	// know that some of their computed properties could be invalidated
@@ -88,7 +88,6 @@ extension Item {
     }
     
     // the date purchased
-    
     var datePurchased: Date { datePurchased_ ?? Date() }
     
     // gearlists: fronts Core Data attribute gearlists_ that is an NSSet, and turns it into

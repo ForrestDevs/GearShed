@@ -8,17 +8,45 @@
 import SwiftUI
 
 struct ItemRowViewInBrand: View {
+    @Environment(\.presentationMode) var presentationMode
+    
+    @EnvironmentObject private var persistentStore: PersistentStore
+    
     @ObservedObject var item: Item
-        
+    
+    @State private var confirmDeleteItemAlert: ConfirmDeleteItemAlert?
+    @State private var showDetail: Bool = false
+    @State private var showEdit: Bool = false
+
     var body: some View {
-        HStack (alignment: .firstTextBaseline , spacing: 15) {
-            favouriteButton
-            NavigationLink(destination: ItemDetailView(item: item)) {
-                navLinkBody
+        ZStack {
+            Color.clear
+            HStack (alignment: .firstTextBaseline , spacing: 15) {
+                favouriteButton
+                Button {
+                    showDetail.toggle()
+                } label: {
+                    itemBody
+                }
             }
+            .padding(.horizontal)
+            .padding(.bottom, 5)
         }
-        .padding(.horizontal)
+        .contextMenu {
+            editContextButton
+            deleteContextButton
+        }
+        .fullScreenCover (isPresented: $showDetail) {
+            ItemDetailView(item: item)
+        }
+        .fullScreenCover (isPresented: $showEdit) {
+            ModifyItemView(persistentStore: persistentStore, editableItem: item)
+        }
+        .alert(item: $confirmDeleteItemAlert) { item in item.alert() }
     }
+}
+
+extension ItemRowViewInBrand {
     
     private var favouriteButton: some View {
         Image(systemName: item.isFavourite ? "heart.fill" : "heart")
@@ -32,7 +60,35 @@ struct ItemRowViewInBrand: View {
             }
     }
     
-    private var navLinkBody: some View {
+    private var editContextButton: some View {
+        Button {
+            showEdit.toggle()
+        } label: {
+            HStack {
+                Text("Edit Item")
+                Image(systemName: "square.and.pencil")
+            }
+            
+        }
+    }
+    
+    private var deleteContextButton: some View {
+        Button {
+            confirmDeleteItemAlert = ConfirmDeleteItemAlert (
+                item: item,
+                destructiveCompletion: {
+                    presentationMode.wrappedValue.dismiss()
+                }
+            )
+        } label: {
+            HStack {
+                Text("Delete Item")
+                Image(systemName: "trash")
+            }
+        }
+    }
+    
+    private var itemBody: some View {
         HStack {
             VStack (alignment: .leading, spacing: 0) {
                 Text(item.name)
@@ -41,7 +97,6 @@ struct ItemRowViewInBrand: View {
                     Text("\(item.weight)g")
                     Text(item.detail)
                         .frame(maxHeight: 35)
-
                 }
                 .font(.caption)
                 .foregroundColor(Color.theme.green)
@@ -49,4 +104,5 @@ struct ItemRowViewInBrand: View {
             Spacer()
         }
     }
+    
 }

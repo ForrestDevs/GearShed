@@ -37,6 +37,7 @@ struct ModifyItemView: View {
                     itemWishlistToggle
                     itemPurchaseDateFeild
                     itemDetailsFeild
+                    deleteItemFeild
                 }
                 .padding()
                 .navigationBarTitle("Modify Item", displayMode: .inline)
@@ -51,7 +52,9 @@ struct ModifyItemView: View {
             }
         }
     }
-    
+}
+
+extension ModifyItemView {
     private var itemNameFeild: some View {
         VStack (alignment: .leading, spacing: 10) {
             Text("Item Name")
@@ -214,6 +217,25 @@ struct ModifyItemView: View {
             }
             .foregroundColor(Color.theme.green)
             .font(.custom("HelveticaNeue", size: 17).bold())
+        }
+    }
+    
+    private var deleteItemFeild: some View {
+        VStack {
+            if editableItemData.representsExistingItem {
+                
+                Button {
+                    
+                    confirmDeleteItemAlert = ConfirmDeleteItemAlert(
+                        item: editableItemData.associatedItem,
+                        destructiveCompletion: {
+                            presentationMode.wrappedValue.dismiss()
+                            Item.delete(editableItemData.associatedItem)
+                    })
+                } label: {
+                    Text("Delete Item")
+                }
+            }
         }
     }
     

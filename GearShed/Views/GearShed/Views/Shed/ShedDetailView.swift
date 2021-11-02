@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct ShedDetailView: View {
+    @Environment(\.presentationMode) var presentationMode
+
     @EnvironmentObject var persistentStore: PersistentStore
-    @EnvironmentObject var tabManager: TabBarManager
     
     @StateObject private var viewModel: GearShedData
     
@@ -24,26 +25,33 @@ struct ShedDetailView: View {
     }
 
     var body: some View {
-        VStack(spacing:0) {
-            statBar
-                .padding(.top, 22.2)
-                .padding(.bottom, 10)
-            itemList
-        }
-        .navigationTitle(shed.name)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button { isEditShedShowing.toggle() } label: { Image(systemName: "slider.horizontal.3") }
+        NavigationView {
+            VStack(spacing:0) {
+                statBar
+                itemList
+            }
+            .navigationBarTitle(shed.name, displayMode: .inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button { isEditShedShowing.toggle() } label: { Image(systemName: "slider.horizontal.3") }
+                }
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        presentationMode.wrappedValue.dismiss()
+                    } label: {
+                        Image(systemName: "chevron.left")
+                    }
+                }
+            }
+            .fullScreenCover(isPresented: $isEditShedShowing) {
+                ModifyShedView(shed: shed).environment(\.managedObjectContext, PersistentStore.shared.context)
             }
         }
-        .fullScreenCover(isPresented: $isEditShedShowing) {
-            ModifyShedView(shed: shed).environment(\.managedObjectContext, PersistentStore.shared.context)
-        }
-        .onAppear {
-            tabManager.hideTab = true
-        }
+        
     }
-    
+}
+
+extension ShedDetailView {
     private var statBar: some View {
         HStack (spacing: 20){
             HStack {
@@ -60,12 +68,11 @@ struct ShedDetailView: View {
             }
             Spacer()
         }
+        .padding(.vertical, 5)
+        .padding(.horizontal)
         .font(.caption)
         .foregroundColor(Color.white)
-        .padding(.vertical, 5)
-        .offset(x: 45)
         .background(Color.theme.green)
-        .padding(.top, 15)
     }
     
     private var itemList: some View {
@@ -82,7 +89,9 @@ struct ShedDetailView: View {
                         .padding(.horizontal)
                 }
             }
+            .padding(.top, 10)
         }
+        
     }
     
     private func sectionHeader(section: SectionBrandData) -> some View {

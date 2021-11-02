@@ -94,9 +94,142 @@ struct PagerTabView<Content: View,Label: View>: View {
     }
 }
 
+struct PagerTabView1<Content: View>: View {
+    
+    var content: Content
+    
+    @Binding var selection: Double
+    
+    @Binding var offset: CGFloat
+    
+    @Binding var tabOffset: CGFloat
+    
+    init(selection: Binding<Double>, offset: Binding<CGFloat>, tabOffset: Binding<CGFloat>, @ViewBuilder content: @escaping ()->Content) {
+        self.content = content()
+        self._selection = selection
+        self._offset = offset
+        self._tabOffset = tabOffset
+    }
+    
+    var body: some View {
+        VStack(spacing: 0){
+            OffsetPageTabView1(selection: $selection,offset: $offset) {
+                
+                HStack(spacing: 0){
+                    content
+                }
+                // Getting How many tabs are there by getting the total Content Size...
+                .overlay(
+                    GeometryReader{proxy in
+                        Color.clear
+                            .preference(key: TabPreferenceKey.self, value: proxy.frame(in: .global))
+                    }
+                )
+                // When value Changes...
+                .onPreferenceChange(TabPreferenceKey.self) { proxy in
+                    let minX = -proxy.minX
+                    let maxWidth = proxy.width
+                    let screenWidth = getScreenBounds().width
+                    let maxTabs = (maxWidth / screenWidth).rounded()
+                    // Getting Tab Offset...
+                    let progress = minX / screenWidth
+                    let tabOffset = progress * (screenWidth / maxTabs)
+                    self.tabOffset = tabOffset
+                }
+            }
+        }
+    }
+}
+
+struct OffsetPageTabView1<Content: View>: UIViewRepresentable {
+    
+    var content: Content
+    @Binding var offset: CGFloat
+    @Binding var selection: Double
+    
+    func makeCoordinator() -> Coordinator {
+        return OffsetPageTabView1.Coordinator(parent: self)
+    }
+    
+    init(selection: Binding<Double>,offset: Binding<CGFloat>,@ViewBuilder content: @escaping ()->Content){
+        
+        self.content = content()
+        self._offset = offset
+        self._selection = selection
+    }
+    
+    func makeUIView(context: Context) -> UIScrollView {
+        
+        let scrollview = UIScrollView()
+        
+        // Extracting SwiftUI View and embedding into UIKit ScrollView...
+        let hostview = UIHostingController(rootView: content)
+        hostview.view.translatesAutoresizingMaskIntoConstraints = false
+        
+        let constraints = [
+        
+            hostview.view.topAnchor.constraint(equalTo: scrollview.topAnchor),
+            hostview.view.leadingAnchor.constraint(equalTo: scrollview.leadingAnchor),
+            hostview.view.trailingAnchor.constraint(equalTo: scrollview.trailingAnchor),
+            hostview.view.bottomAnchor.constraint(equalTo: scrollview.bottomAnchor),
+            
+            // if you are using vertical Paging...
+            // then dont declare height constraint...
+            hostview.view.heightAnchor.constraint(equalTo: scrollview.heightAnchor)
+        ]
+        
+        scrollview.addSubview(hostview.view)
+        scrollview.addConstraints(constraints)
+        
+        // ENabling Paging...
+        scrollview.isPagingEnabled = true
+        scrollview.showsVerticalScrollIndicator = false
+        scrollview.showsHorizontalScrollIndicator = false
+        
+        // setting Delegate...
+        scrollview.delegate = context.coordinator
+        
+        return scrollview
+    }
+    
+    func updateUIView(_ uiView: UIScrollView, context: Context) {
+        // need to update only when offset changed manually...
+        // just check the current and scrollview offsets...
+        let currentOffset = uiView.contentOffset.x
+        
+        if currentOffset != offset{
+        
+            print("updating")
+            uiView.setContentOffset(CGPoint(x: offset, y: 0), animated: true)
+        }
+    }
+    
+    // Pager Offset...
+    class Coordinator: NSObject, UIScrollViewDelegate {
+        
+        var parent: OffsetPageTabView1
+        
+        init(parent: OffsetPageTabView1) {
+            self.parent = parent
+        }
+        
+        func scrollViewDidScroll(_ scrollView: UIScrollView) {
+            let offset = scrollView.contentOffset.x
+            
+            // Safer side updating selection on scroll....
+            let maxSize = scrollView.contentSize.width
+            let currentSelection = (offset / maxSize)
+            let tabSelect = preciseRound(currentSelection, precision: .hundredths)
+            parent.selection = Double(tabSelect)
+            print("\(tabSelect)")
+            parent.offset = offset
+        }
+    }
+}
+
 
 // Geometry Preference...
-struct TabPreferenceKey: PreferenceKey{
+struct TabPreferenceKey: PreferenceKey {
     
     static var defaultValue: CGRect = .init()
     
@@ -106,7 +239,7 @@ struct TabPreferenceKey: PreferenceKey{
 }
 
 // Extending View for PageLabel and PageView Modifiers....
-extension View{
+extension View {
     
     func pageLabel()->some View{
         // Just Filling all Empty Space...

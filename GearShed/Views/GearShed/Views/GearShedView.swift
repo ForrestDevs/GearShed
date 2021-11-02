@@ -12,7 +12,6 @@ struct GearShedView: View {
     static let tag: String? = "GearShed"
         
     @EnvironmentObject var persistentStore: PersistentStore
-    @EnvironmentObject var tabManager: TabBarManager
     
     @StateObject private var viewModel: GearShedData
     
@@ -54,6 +53,7 @@ struct GearShedView: View {
             }
         }
         content: {
+            
             AllItemsView(persistentStore: persistentStore)
                 .pageView(ignoresSafeArea: true, edges: .bottom)
             
@@ -91,7 +91,6 @@ struct GearShedView: View {
         }
         .onAppear {
             logAppear(title: "MainCatelogView")
-            tabManager.hideTab = false
         }
         .onDisappear {
             logDisappear(title: "MainCatelogView")

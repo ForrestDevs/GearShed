@@ -35,7 +35,6 @@ struct AddMoreItemView: View {
         VStack {
             itemsList
                 .padding(.top,10)
-                .padding(.bottom, 75)
         }
         .navigationBarTitle("Add Items to \(gearlist.name)", displayMode: .inline)
         .navigationBarBackButtonHidden(true)
@@ -46,6 +45,9 @@ struct AddMoreItemView: View {
         .onDisappear { PersistentStore.shared.saveContext() }
     }
     
+}
+
+extension AddMoreItemView {
     private var itemsList: some View {
         ScrollView(.vertical, showsIndicators: false) {
             ForEach(itemVM.sectionByShed(itemArray: gearVM.itemsNotInList)) { section in

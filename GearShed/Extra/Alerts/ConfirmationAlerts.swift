@@ -10,6 +10,7 @@ import SwiftUI
 
 // MARK: - Confirm DELETE ITEM Alert
 struct ConfirmDeleteItemAlert: ConfirmationAlertProtocol {
+    
 	var id = UUID()
 	
 	var item: Item

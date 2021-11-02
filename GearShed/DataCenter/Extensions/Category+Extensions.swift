@@ -33,6 +33,18 @@ extension Shed: Comparable {
 			items.forEach({ $0.objectWillChange.send() })
 		}
 	}
+    
+    // an item's associated brand.  this fronts a Core Data optional attribute.
+    // if you change an item's brand, the old and the new Brand may want to
+    // know that some of their computed properties could be invalidated
+    var group: ItemGroup {
+        get { group_! }
+        set {
+            group_?.objectWillChange.send()
+            group_ = newValue
+            group_?.objectWillChange.send()
+        }
+    }
 	
 	// items: fronts Core Data attribute items_ that is an NSSet, and turns it into
 	// a Swift array

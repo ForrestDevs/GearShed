@@ -26,6 +26,9 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     private let wishlistItemsController: NSFetchedResultsController<Item>
     @Published var wishListItems = [Item]()
     
+    let groupsController: NSFetchedResultsController<ItemGroup>
+    @Published var groups = [ItemGroup]()
+    
     let shedsController: NSFetchedResultsController<Shed>
     @Published var sheds = [Shed]()
     
@@ -60,6 +63,12 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         
         wishlistItemsController = NSFetchedResultsController(fetchRequest: wishlistItemRequest, managedObjectContext: PersistentStore.shared.context, sectionNameKeyPath: nil, cacheName: nil)
         
+        // MARK: Group Fetch Requests
+        let groupRequest: NSFetchRequest<ItemGroup> = ItemGroup.fetchRequest()
+        groupRequest.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
+        
+        groupsController = NSFetchedResultsController(fetchRequest: groupRequest, managedObjectContext: PersistentStore.shared.context, sectionNameKeyPath: nil, cacheName: nil)
+        
         // MARK: Shed Fetch Requests
         let shedRequest: NSFetchRequest<Shed> = Shed.fetchRequest()
         shedRequest.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
@@ -78,6 +87,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         favItemsController.delegate = self
         regretItemsController.delegate = self
         wishlistItemsController.delegate = self
+        groupsController.delegate = self
         shedsController.delegate = self
         brandsController.delegate = self
         
@@ -110,6 +120,13 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         }
         
         do {
+            try groupsController.performFetch()
+            groups = groupsController.fetchedObjects ?? []
+        } catch {
+            print("Failed to fetch Groups")
+        }
+        
+        do {
             try shedsController.performFetch()
             sheds = shedsController.fetchedObjects ?? []
         } catch {
@@ -129,8 +146,29 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         favItems = favItemsController.fetchedObjects ?? []
         regretItems = regretItemsController.fetchedObjects ?? []
         wishListItems = wishlistItemsController.fetchedObjects ?? []
+        groups = groupsController.fetchedObjects ?? []
         sheds = shedsController.fetchedObjects ?? []
         brands = brandsController.fetchedObjects ?? []
+    }
+    
+    func sectionByGroupShed(itemArray: [Item], shedArray: [Shed]) -> [SectionGroupShedData] {
+        var completedSectionData = [SectionGroupShedData]()
+        
+        // break the data out by group first
+        //let dictionaryByGroup = Dictionary(grouping: itemArray, by: { $0.shed })
+        let dictionaryByGroup = Dictionary(grouping: shedArray, by: { $0.group })
+        
+        // break the item out by sheds
+        let dictionaryByShed = Dictionary(grouping: itemArray, by: { $0.shed })
+        
+        // then reassemble the sections by sorted keys of this dictionary
+        for groupKey in dictionaryByGroup.keys.sorted() {
+            for shedKey in dictionaryByShed.keys.sorted() {
+                completedSectionData.append(SectionGroupShedData(title: groupKey.name, subtitle: shedKey.name, group: groupKey, shed: shedKey, items: dictionaryByShed[shedKey]!))
+            }
+        }
+        
+        return completedSectionData
     }
     
     func sectionByShed(itemArray: [Item]) -> [SectionShedData] {

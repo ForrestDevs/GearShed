@@ -1,5 +1,5 @@
 //
-//  TripRowView.swift
+//  GearlistRowView.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 18/10/21
@@ -12,9 +12,13 @@ struct GearlistRowView: View {
     @EnvironmentObject var persistentStore: PersistentStore
 
     @ObservedObject var gearlist: Gearlist
+    
+    @State private var showDetail: Bool = false
 
     var body: some View {
-        NavigationLink(destination: GearlistDetailView(persistentStore: persistentStore, gearlist: gearlist)) {
+        Button {
+            showDetail.toggle()
+        } label: {
             HStack {
                 Text(gearlist.name)
                     .font(.headline)
@@ -24,6 +28,9 @@ struct GearlistRowView: View {
             }
         }
         .padding(.horizontal, 20)
+        .fullScreenCover(isPresented: $showDetail) {
+            GearlistDetailView(persistentStore: persistentStore, gearlist: gearlist)
+        }
     }
 }
 

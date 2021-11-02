@@ -32,15 +32,8 @@ struct AddListView: View {
     
     var body: some View {
         VStack {
-            HStack {
-                Text("List Name: ")
-                TextField("List Name", text: $editableGearlistData.gearlistName)
-            }
-            .padding(.horizontal, 20)
-            
+            listNameFeild
             itemList
-                .padding(.top,10)
-                //.padding(.bottom, 75)
         }
         .navigationBarTitle("New List", displayMode: .inline)
         .navigationBarBackButtonHidden(true)
@@ -49,6 +42,19 @@ struct AddListView: View {
             ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!editableGearlistData.canGearlistBeSaved) }
         }
         .onDisappear { PersistentStore.shared.saveContext() }
+    }
+    
+}
+
+extension AddListView {
+    
+    private var listNameFeild: some View {
+        HStack {
+            Text("List Name: ")
+            TextField("List Name", text: $editableGearlistData.gearlistName)
+        }
+        .padding(.horizontal, 20)
+        .padding(.top, 10)
     }
     
     private var itemList: some View {
@@ -78,12 +84,13 @@ struct AddListView: View {
                     .padding(.horizontal)
                 }
             }
+            .padding(.top,10)
         }
     }
     
     // The purpose of this function is to add the selected
     // item to our temporary array itemsChecked
-     private func handleItemSelected(_ item: Item) {
+    private func handleItemSelected(_ item: Item) {
         if !itemsChecked.contains(item) {
             itemsChecked.append(item)
         }
@@ -115,7 +122,6 @@ struct AddListView: View {
             Gearlist.updateData(using: editableGearlistData)
         }
     }
-    
 }
 
 

@@ -1,48 +1,35 @@
 //
-//  AllBrandView.swift
+//  AllGroupView.swift
 //  GearShed
 //
-//  Created by Luke Forrest Gannon on 18/10/21
-//  Copyright © 2021 All rights reserved.
+//  Created by Luke Forrest Gannon on 2021-11-01.
 //
 
 import SwiftUI
 
-struct AllBrandView: View {
-    @EnvironmentObject var persistentStore: PersistentStore
+struct AllGroupView: View {
+    @EnvironmentObject private var persistentStore: PersistentStore
     
     @StateObject private var viewModel: GearShedData
     
-    @State private var isAddBrandShowing = false
-        
+    @State private var isAddGroupShowing: Bool = false
+    
     init(persistentStore: PersistentStore) {
         let viewModel = GearShedData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
     }
     
     var body: some View {
-        VStack (spacing: 0) {
-            statBar
-            ZStack {
-                brandList
-                addBrandOverlay
-            }
-        }
-        .fullScreenCover(isPresented: $isAddBrandShowing) {
-            NavigationView {
-                AddBrandView()
-            }
-        }
+        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
-    
 }
 
-extension AllBrandView {
+extension AllGroupView {
     
     private var statBar: some View {
         HStack {
-            Text("Brands:")
-            Text("\(viewModel.brands.count)")
+            Text("Sheds:")
+            Text("\(viewModel.sheds.count)")
             Spacer()
         }
         .font(.caption)
@@ -53,30 +40,34 @@ extension AllBrandView {
         .padding(.top, 10)
     }
     
-    private var brandList: some View {
+    private var groupList: some View {
         ScrollView(.vertical, showsIndicators: false) {
             LazyVStack {
-                ForEach(viewModel.brands) { brand in
-                    BrandRowView(brand: brand)
+                ForEach(viewModel.sheds) { shed in
+                    ShedRowView(shed: shed)
+                        .padding(.horizontal)
+                        .padding(.top, 10)
                 }
             }
-            .padding(.bottom, 15)
+            .padding(.bottom, 75)
         }
     }
     
-    private var addBrandOverlay: some View {
+    private var addGroupOverLay: some View {
         VStack {
             Spacer()
             HStack {
                 Spacer()
-                Button { isAddBrandShowing.toggle()}
+                Button {
+                    isAddGroupShowing.toggle()
+                }
                 label: {
                     VStack{
                         Text("Add")
                             .font(.system(size: 12, weight: .regular))
                             .foregroundColor(Color.theme.background)
                             
-                        Text("Brand")
+                        Text("Group")
                             .font(.system(size: 12, weight: .regular))
                             .foregroundColor(Color.theme.background)
                     }
@@ -86,10 +77,9 @@ extension AllBrandView {
                 .cornerRadius(38.5)
                 .padding(.bottom, 20)
                 .padding(.trailing, 15)
-                .shadow(color: Color.black.opacity(0.3), radius: 3,x: 3,y: 3)
+                .shadow(color: Color.theme.accent.opacity(0.3), radius: 3,x: 3,y: 3)
             }
         }
     }
     
 }
-

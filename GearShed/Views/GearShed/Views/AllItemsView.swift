@@ -12,12 +12,14 @@ struct AllItemsView: View {
     @EnvironmentObject var persistentStore: PersistentStore
 
     @StateObject private var viewModel: GearShedData
+
+    @State private var selectedShed: Shed? = nil
     
-    @State private var selectedShed: Shed? = nil 
     @State private var showingUnlockView: Bool = false
     @State private var isAddItemShowing: Bool = false
     @State private var isQuickAddItemShowing: Bool = false
     @State private var isAlertShowing: Bool = false
+    
     @State private var newItemName: String = ""
     @State private var item1: Item? = nil
     
@@ -45,6 +47,9 @@ struct AllItemsView: View {
             UnlockView()
         }
     }
+}
+
+extension AllItemsView {
     
     private var statBar: some View {
         HStack (spacing: 20){
@@ -75,10 +80,9 @@ struct AllItemsView: View {
             LazyVStack {
                 ForEach(viewModel.sectionByShed(itemArray: viewModel.items)) { section in
                     Section {
-                        ForEach(section.items) { item in
+                        ForEach(section.items, id: \.id) { item in
                             ItemRowView(item: item)
-                                .padding(.horizontal)
-                                .padding(.bottom, 5)
+                                
                         }
                     } header: {
                         sectionHeader(section: section)
@@ -94,6 +98,9 @@ struct AllItemsView: View {
     private func sectionHeader(section: SectionShedData) -> some View {
        return VStack (spacing: 0) {
             HStack {
+                Text(section.title)
+                    .font(.headline)
+                
                 Button {
                     selectedShed = section.shed
                     let canCreate = self.persistentStore.fullVersionUnlocked ||
@@ -106,9 +113,6 @@ struct AllItemsView: View {
                 } label: {
                     Image(systemName: "plus")
                 }
-                
-                Text(section.title)
-                    .font(.headline)
                 Spacer()
             }
             Rectangle()
@@ -142,12 +146,14 @@ struct AllItemsView: View {
                 .frame(width: 55, height: 55)
                 .background(Color.theme.accent)
                 .cornerRadius(38.5)
-                .padding(.bottom, 75)
+                .padding(.bottom, 20)
                 .padding(.trailing, 15)
                 .shadow(color: Color.theme.accent.opacity(0.3), radius: 3,x: 3,y: 3)
             }
         }
     }
+    
+    
 }
 
 

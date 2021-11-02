@@ -11,10 +11,10 @@
         <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="gearlists_" inverseEntity="Item"/>
         <relationship name="trips_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Trip" inverseName="gearlists_" inverseEntity="Trip"/>
     </entity>
-    <entity name="Group" representedClassName="Group" syncable="YES" codeGenerationType="class">
+    <entity name="GearPlan" representedClassName="GearPlan" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name_" optional="YES" attributeType="String"/>
-        <relationship name="sheds_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Shed" inverseName="group_" inverseEntity="Shed"/>
+        <relationship name="planGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PlanGroup" inverseName="gearPlans_" inverseEntity="PlanGroup"/>
     </entity>
     <entity name="Item" representedClassName="Item" syncable="YES" codeGenerationType="class">
         <attribute name="datePurchased_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -29,12 +29,31 @@
         <attribute name="wishlist_" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <relationship name="brand_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Brand" inverseName="items_" inverseEntity="Brand"/>
         <relationship name="gearlists_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Gearlist" inverseName="items_" inverseEntity="Gearlist"/>
+        <relationship name="group_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ItemGroup" inverseName="items_" inverseEntity="ItemGroup"/>
         <relationship name="shed_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Shed" inverseName="items_" inverseEntity="Shed"/>
     </entity>
+    <entity name="ItemGroup" representedClassName="ItemGroup" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name_" optional="YES" attributeType="String"/>
+        <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="group_" inverseEntity="Item"/>
+        <relationship name="sheds_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Shed" inverseName="group_" inverseEntity="Shed"/>
+    </entity>
+    <entity name="PlanGroup" representedClassName="PlanGroup" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name_" optional="YES" attributeType="String"/>
+        <relationship name="gearPlans_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="GearPlan" inverseName="planGroups" inverseEntity="GearPlan"/>
+        <relationship name="newRelationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PlanItem" inverseName="newRelationship" inverseEntity="PlanItem"/>
+    </entity>
+    <entity name="PlanItem" representedClassName="PlanItem" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name_" optional="YES" attributeType="String"/>
+        <relationship name="newRelationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PlanGroup" inverseName="newRelationship" inverseEntity="PlanGroup"/>
+    </entity>
+    <entity name="PlanItemLabel" representedClassName="PlanItemLabel" syncable="YES" codeGenerationType="class"/>
     <entity name="Shed" representedClassName="Shed" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name_" optional="YES" attributeType="String"/>
-        <relationship name="group_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Group" inverseName="sheds_" inverseEntity="Group"/>
+        <relationship name="group_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ItemGroup" inverseName="sheds_" inverseEntity="ItemGroup"/>
         <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="shed_" inverseEntity="Item"/>
     </entity>
     <entity name="Trip" representedClassName="Trip" syncable="YES" codeGenerationType="class">
@@ -43,11 +62,15 @@
         <relationship name="gearlists_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Gearlist" inverseName="trips_" inverseEntity="Gearlist"/>
     </entity>
     <elements>
-        <element name="Brand" positionX="-60.6998291015626" positionY="-373.6808319091796" width="128" height="88"/>
-        <element name="Gearlist" positionX="260.955078125" positionY="-321.8805236816406" width="128" height="103"/>
-        <element name="Group" positionX="-86.8411865234375" positionY="-134.4103088378906" width="128" height="88"/>
-        <element name="Item" positionX="96.439453125" positionY="-324.1543884277343" width="128" height="238"/>
-        <element name="Shed" positionX="-74.51153564453131" positionY="-271.7739257812501" width="128" height="103"/>
-        <element name="Trip" positionX="252.37744140625" positionY="-178.4892883300782" width="128" height="88"/>
+        <element name="Brand" positionX="259.6739501953124" positionY="-435.6322479248046" width="128" height="88"/>
+        <element name="Gearlist" positionX="274.985107421875" positionY="-326.2024536132812" width="128" height="103"/>
+        <element name="ItemGroup" positionX="-58.2078857421875" positionY="-427.3375549316406" width="128" height="103"/>
+        <element name="Item" positionX="100.51220703125" positionY="-431.8352661132812" width="128" height="253"/>
+        <element name="Shed" positionX="-65.52398681640631" positionY="-281.5622558593751" width="128" height="103"/>
+        <element name="Trip" positionX="272.177001953125" positionY="-165.052703857422" width="128" height="88"/>
+        <element name="PlanItem" positionX="334.24462890625" positionY="-598.7250823974609" width="128" height="88"/>
+        <element name="PlanGroup" positionX="129.4296875" positionY="-598.0165405273438" width="128" height="103"/>
+        <element name="GearPlan" positionX="-68.33642578125" positionY="-593.2082824707031" width="128" height="88"/>
+        <element name="PlanItemLabel" positionX="132.960693359375" positionY="-679.7671051025391" width="128" height="43"/>
     </elements>
 </model>

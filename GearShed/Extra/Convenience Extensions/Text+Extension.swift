@@ -15,6 +15,11 @@ extension Text {
             .font(.custom("HelveticaNeue", size: 17).bold())
     }
     
+    func formatBlackTitle() -> some View {
+        self.foregroundColor(Color.theme.accent)
+            .font(.custom("HelveticaNeue", size: 22).bold())
+    }
+    
     func formatBlackSmall() -> some View {
         self.foregroundColor(Color.theme.accent)
             .font(.custom("HelveticaNeue", size: 12).bold())
@@ -23,6 +28,11 @@ extension Text {
     func formatGreen() -> some View {
         self.foregroundColor(Color.theme.green)
             .font(.custom("HelveticaNeue", size: 17).bold())
+    }
+    
+    func formatGreenTitle() -> some View {
+        self.foregroundColor(Color.theme.green)
+            .font(.custom("HelveticaNeue", size: 22).bold())
     }
     
     func formatGreenSmall() -> some View {

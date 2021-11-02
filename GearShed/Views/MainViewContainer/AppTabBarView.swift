@@ -9,42 +9,134 @@
 import SwiftUI
 
 struct AppTabBarView: View {
+    
     @EnvironmentObject var persistentStore: PersistentStore
-    @EnvironmentObject var tabManager: TabBarManager
+        
+    @State var tabInt: Double = 0
     
-    // Current Tab...
-    @State var currentTab = "GearShed"
-    
-    var bottomEdge: CGFloat
-    
-    // Hiding Native TabBar...
-    init(bottomEdge: CGFloat){
-        UITabBar.appearance().isHidden = true
-        self.bottomEdge = bottomEdge
-    }
-    
+    @State var offset: CGFloat = 0
+
+    @State var tabOffset: CGFloat = 0
+
     var body: some View {
-        TabView(selection: $currentTab) {
-            
-            NavigationView { HomeView() }
-                .frame(maxWidth: .infinity ,maxHeight: .infinity)
-                .tag("Home")
-            
-            NavigationView { GearShedView(persistentStore: persistentStore) }
-                .frame(maxWidth: .infinity ,maxHeight: .infinity)
-                .tag("GearShed")
-            
-            NavigationView { GearlistView(persistentStore: persistentStore) }
-                .frame(maxWidth: .infinity ,maxHeight: .infinity)
-                .tag("Gearlist")
+        ZStack {
+            backgroundLayer
+            tabLayer
+            contentLayer
         }
-        .overlay(
-            CustomTabBar(currentTab: $currentTab)
-                .offset(y: tabManager.hideTab ? (50 + bottomEdge) : 0) ,alignment: .bottom
-        )
-        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
+extension AppTabBarView {
+    
+    private var backgroundLayer: some View {
+        Color.theme.background
+            .ignoresSafeArea()
+    }
+    
+    private var tabLayer: some View {
+        VStack {
+            Spacer()
+            HStack (spacing: 75) {
+                gearShedButton
+                gearListButton
+                gearPlanButton
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: 30)
+        }
+        .edgesIgnoringSafeArea(.top)
+        .padding(.bottom, 20)
+        .background(Color.theme.green)
+    }
+    
+    private var contentLayer: some View {
+        VStack {
+            PagerTabView1(selection: $tabInt, offset: $offset, tabOffset: $tabOffset) {
+                NavigationView { GearShedView(persistentStore: persistentStore) }
+                    .pageView(ignoresSafeArea: true)
+                
+                NavigationView { GearlistView(persistentStore: persistentStore) }
+                    .pageView(ignoresSafeArea: true)
+                
+                NavigationView { GearPlanView(persistentStore: persistentStore) }
+                    .pageView(ignoresSafeArea: true)
+            }
+            .frame(maxWidth: .infinity)
+        }
+        .padding(.bottom, 60)
+        .edgesIgnoringSafeArea(.top)
+    }
+    
+    private var gearShedButton: some View {
+        VStack (alignment: .center, spacing: 0) {
+            Image(systemName: "bag")
+            
+            Text("GearShed")
+                .formatNoColorSmall()
+        }
+        .onTapGesture {
+            let newOffset = CGFloat(0) * getScreenBounds().width
+            self.offset = newOffset
+        }
+        .foregroundColor (
+            (0.0 <= tabInt && tabInt <= 0.17) ? Color.white : Color.black
+        )
+    }
+
+    private var gearListButton: some View {
+        VStack (alignment: .center, spacing: 0) {
+            Image(systemName: "list.bullet.rectangle")
+            Text("GearList")
+                .formatNoColorSmall()
+        }
+        .onTapGesture {
+            let newOffset = CGFloat(1) * getScreenBounds().width
+            self.offset = newOffset
+        }
+        .foregroundColor (
+            (0.18 <= tabInt && tabInt <= 0.49) ? Color.white : Color.black
+        )
+
+    }
+    
+    private var gearPlanButton: some View {
+        VStack (alignment: .center, spacing: 0) {
+            Image(systemName: "list.bullet.rectangle")
+            Text("GearPlan")
+                .formatNoColorSmall()
+        }
+        .onTapGesture {
+            let newOffset = CGFloat(2) * getScreenBounds().width
+            self.offset = newOffset
+        }
+        .foregroundColor (
+            (0.50 <= tabInt && tabInt <= 1) ? Color.white : Color.black
+        )
+
+    }
+    
+}
 
 
+// Specify the decimal place to round to using an enum
+public enum RoundingPrecision {
+    case ones
+    case tenths
+    case hundredths
+}
+
+// Round to the specific decimal place
+public func preciseRound(
+    _ value: Double,
+    precision: RoundingPrecision = .ones) -> Double
+{
+    switch precision {
+    case .ones:
+        return round(value)
+    case .tenths:
+        return round(value * 10) / 10.0
+    case .hundredths:
+        return round(value * 100) / 100.0
+    }
+}

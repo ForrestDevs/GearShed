@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct BrandDetailView: View {
+    @Environment(\.presentationMode) var presentationMode
+
     @EnvironmentObject var persistentStore: PersistentStore
-    @EnvironmentObject var tabManager: TabBarManager
     
     @StateObject private var viewModel: GearShedData
     
@@ -24,26 +25,32 @@ struct BrandDetailView: View {
     }
     
     var body: some View {
-        VStack (spacing: 0) {
-            statBar
-                .padding(.top, 22.2)
-                .padding(.bottom, 10)
-            itemList
-        }
-        .navigationTitle(brand.name)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button { self.isEditBrandShowing.toggle() } label: { Image(systemName: "slider.horizontal.3") }
+        NavigationView {
+            VStack (spacing: 0) {
+                statBar
+                itemList
+            }
+            .navigationBarTitle(brand.name, displayMode: .inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button { self.isEditBrandShowing.toggle() } label: { Image(systemName: "slider.horizontal.3") }
+                }
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        presentationMode.wrappedValue.dismiss()
+                    } label: {
+                        Image(systemName: "chevron.left")
+                    }
+                }
+            }
+            .fullScreenCover(isPresented: $isEditBrandShowing) {
+                ModifyBrandView(brand: brand).environment(\.managedObjectContext, PersistentStore.shared.context)
             }
         }
-        .fullScreenCover(isPresented: $isEditBrandShowing) {
-            ModifyBrandView(brand: brand).environment(\.managedObjectContext, PersistentStore.shared.context)
-        }
-        .onAppear {
-            tabManager.hideTab = true
-        }
     }
-    
+}
+
+extension BrandDetailView {
     private var statBar: some View {
         HStack (spacing: 20){
             HStack {
@@ -60,12 +67,11 @@ struct BrandDetailView: View {
             }
             Spacer()
         }
+        .padding(.vertical, 5)
+        .padding(.horizontal)
         .font(.caption)
         .foregroundColor(Color.white)
-        .padding(.vertical, 5)
-        .offset(x: 45)
         .background(Color.theme.green)
-        .padding(.top, 15)
     }
     
     private var itemList: some View {
@@ -82,6 +88,7 @@ struct BrandDetailView: View {
                         .padding(.horizontal)
                 }
             }
+            .padding(.top, 10)
         }
     }
     

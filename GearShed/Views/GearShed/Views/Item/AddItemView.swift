@@ -59,7 +59,10 @@ struct AddItemView: View {
             }
         }
     }
-    
+
+}
+
+extension AddItemView {
     private var itemNameFeild: some View {
         VStack (alignment: .leading, spacing: 10) {
             Text("Item Name")
@@ -225,21 +228,21 @@ struct AddItemView: View {
         }
     }
     
-	private func cancelButton() -> some View {
+    private func cancelButton() -> some View {
         Button("Cancel",action: {presentationMode.wrappedValue.dismiss()})
-	}
+    }
     
-	private func saveButton() -> some View {
-		Button("Save", action: commitDataEntry)
-	}
+    private func saveButton() -> some View {
+        Button("Save", action: commitDataEntry)
+    }
     
-	private func commitDataEntry() {
-		guard editableItemData.canBeSaved else { return }
+    private func commitDataEntry() {
+        guard editableItemData.canBeSaved else { return }
         
-		Item.updateData(using: editableItemData)
+        Item.updateData(using: editableItemData)
         
-		presentationMode.wrappedValue.dismiss()
-	}
+        presentationMode.wrappedValue.dismiss()
+    }
 }
 
 

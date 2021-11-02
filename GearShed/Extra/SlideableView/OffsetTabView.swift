@@ -96,3 +96,4 @@ struct OffsetPageTabView<Content: View>: UIViewRepresentable {
         }
     }
 }
+
