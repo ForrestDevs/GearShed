@@ -11,6 +11,19 @@ import SwiftUI
 // MARK: - Confirm DELETE ITEM Alert
 struct ConfirmDeleteItemAlert: ConfirmationAlertProtocol {
     
+    @EnvironmentObject var persistentStore: PersistentStore
+    
+    @StateObject private var viewModel: GearShedData
+    
+    init(persistentStore: PersistentStore, item: Item, destructiveCompletion: (() -> Void)? = nil) {
+        
+        let viewModel = GearShedData(persistentStore: persistentStore)
+        _viewModel = StateObject(wrappedValue: viewModel)
+        
+        self.item = item
+        self.destructiveCompletion = destructiveCompletion
+    }
+    
 	var id = UUID()
 	
 	var item: Item
@@ -22,16 +35,13 @@ struct ConfirmDeleteItemAlert: ConfirmationAlertProtocol {
 	}
 	
 	func destructiveAction() {
-		Item.delete(item)
+        viewModel.deleteItem(item: item)
 	}
 	
 	var destructiveCompletion: (() -> Void)?
 	var nonDestructiveCompletion: (() -> Void)?
 	
-	init(item: Item, destructiveCompletion: (() -> Void)? = nil) {
-		self.item = item
-		self.destructiveCompletion = destructiveCompletion
-	}
+	
 }
 
 // MARK: - Confirm MOVE ALL ITEMS OF LIST Alert
@@ -52,6 +62,19 @@ struct ConfirmDeleteItemAlert: ConfirmationAlertProtocol {
 
 // MARK: - Confirm DELETE Shed Alert
 struct ConfirmDeleteShedAlert: ConfirmationAlertProtocol {
+    @EnvironmentObject var persistentStore: PersistentStore
+    
+    @StateObject private var viewModel: GearShedData
+    
+    init(persistentStore: PersistentStore, shed: Shed, destructiveCompletion: (() -> Void)? = nil) {
+        
+        let viewModel = GearShedData(persistentStore: persistentStore)
+        _viewModel = StateObject(wrappedValue: viewModel)
+        
+        self.shed = shed
+        self.destructiveCompletion = destructiveCompletion
+    }
+    
 	var id = UUID()
 	
 	var shed: Shed
@@ -63,21 +86,31 @@ struct ConfirmDeleteShedAlert: ConfirmationAlertProtocol {
 	}
 	
 	func destructiveAction() {
-		Shed.delete(shed)
-	}
+        viewModel.deleteShed(shed: shed)
+    }
 	
 	var destructiveCompletion: (() -> Void)?
 	var nonDestructiveCompletion: (() -> Void)?
 	
-	init(shed: Shed, destructiveCompletion: (() -> Void)? = nil) {
-		self.shed = shed
-		self.destructiveCompletion = destructiveCompletion
-	}
+	
 	
 }
 
 // MARK: - Confirm DELETE BRAND Alert
 struct ConfirmDeleteBrandAlert: ConfirmationAlertProtocol {
+    @EnvironmentObject var persistentStore: PersistentStore
+    
+    @StateObject private var viewModel: GearShedData
+    
+    init(persistentStore: PersistentStore, brand: Brand, destructiveCompletion: (() -> Void)? = nil) {
+        
+        let viewModel = GearShedData(persistentStore: persistentStore)
+        _viewModel = StateObject(wrappedValue: viewModel)
+        
+        self.brand = brand
+        self.destructiveCompletion = destructiveCompletion
+    }
+    
     var id = UUID()
     
     var brand: Brand
@@ -89,78 +122,30 @@ struct ConfirmDeleteBrandAlert: ConfirmationAlertProtocol {
     }
     
     func destructiveAction() {
-        Brand.delete(brand)
+        viewModel.deleteBrand(brand: brand)
     }
     
     var destructiveCompletion: (() -> Void)?
     var nonDestructiveCompletion: (() -> Void)?
     
-    init(brand: Brand, destructiveCompletion: (() -> Void)? = nil) {
-        self.brand = brand
-        self.destructiveCompletion = destructiveCompletion
-    }
+    
     
 }
 
-// MARK: - Confirm DELETE Tag Alert
-/*struct ConfirmDeleteTagAlert: ConfirmationAlertProtocol {
-    var id = UUID()
-    
-    var tag: Tag
-    
-    var title: String { "Delete \'\(tag.name)\'?" }
-    
-    var message: String {
-        "Are you sure you want to delete the Tag named \(tag.name)? All items at this tag will be moved to the Unknown Tag.  This action cannot be undone."
-    }
-    
-    func destructiveAction() {
-        Tag.delete(tag)
-    }
-    
-    var destructiveCompletion: (() -> Void)?
-    var nonDestructiveCompletion: (() -> Void)?
-    
-    init(tag: Tag, destructiveCompletion: (() -> Void)? = nil) {
-        self.tag = tag
-        self.destructiveCompletion = destructiveCompletion
-    }
-    
-}*/
-
-// MARK: - Confirm DELETE TRIP Alert
-struct ConfirmDeleteTripAlert: ConfirmationAlertProtocol {
-    
-    //@StateObject private var viewModel = TripsViewModel()
-    
-    var id = UUID()
-    
-    var trip: Trip
-    
-    var title: String { "Delete \'\(trip.name)\'?" }
-    
-    var message: String {
-        "Are you sure you want to delete the Trip named \(trip.name)?  This action cannot be undone."
-    }
-    
-    func destructiveAction() {
-        //viewModel.deleteTrip(trip: trip)
-    }
-    
-    var destructiveCompletion: (() -> Void)?
-    var nonDestructiveCompletion: (() -> Void)?
-    
-    init(trip: Trip, destructiveCompletion: (() -> Void)? = nil) {
-        self.trip = trip
-        self.destructiveCompletion = destructiveCompletion
-    }
-    
-}
-
-// MARK: - Confirm DELETE TRIP Alert
+// MARK: - Confirm DELETE Gearlist Alert
 struct ConfirmDeleteGearlistAlert: ConfirmationAlertProtocol {
+    @EnvironmentObject var persistentStore: PersistentStore
     
-    //@StateObject private var viewModel = TripsViewModel()
+    @StateObject private var viewModel: GearlistData
+    
+    init(persistentStore: PersistentStore, gearlist: Gearlist, destructiveCompletion: (() -> Void)? = nil) {
+        
+        let viewModel = GearlistData(persistentStore: persistentStore)
+        _viewModel = StateObject(wrappedValue: viewModel)
+        
+        self.gearlist = gearlist
+        self.destructiveCompletion = destructiveCompletion
+    }
     
     var id = UUID()
     
@@ -173,16 +158,11 @@ struct ConfirmDeleteGearlistAlert: ConfirmationAlertProtocol {
     }
     
     func destructiveAction() {
-        //viewModel.deleteTrip(trip: trip)
+        viewModel.deleteGearlist(gearlist: gearlist)
     }
     
     var destructiveCompletion: (() -> Void)?
     var nonDestructiveCompletion: (() -> Void)?
-    
-    init(gearlist: Gearlist, destructiveCompletion: (() -> Void)? = nil) {
-        self.gearlist = gearlist
-        self.destructiveCompletion = destructiveCompletion
-    }
     
 }
 

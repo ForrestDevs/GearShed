@@ -28,15 +28,15 @@ struct ShedRowView: View {
                 } label: {
                     HStack {
                         Text(shed.name)
-                            .font(.headline)
+                        
                         Spacer()
+                        
                         Text("\(shed.items.count)")
-                            .font(.headline)
                     }
                 }
             }
             .padding(.horizontal)
-            .padding(.vertical, 5)
+            .padding(.vertical, 2.5)
         }
         .contextMenu {
             editContextButton
@@ -46,7 +46,7 @@ struct ShedRowView: View {
             ShedDetailView(persistentStore: persistentStore, shed: shed)
         }
         .fullScreenCover (isPresented: $showEdit) {
-            ModifyShedView(shed: shed)
+            ModifyShedView(persistentStore: persistentStore ,shed: shed)
         }
         .alert(item: $confirmDeleteShedAlert) { shed in shed.alert() }
     }
@@ -68,6 +68,7 @@ extension ShedRowView {
     private var deleteContextButton: some View {
         Button {
             confirmDeleteShedAlert = ConfirmDeleteShedAlert (
+                persistentStore: persistentStore,
                 shed: shed,
                 destructiveCompletion: {
                     presentationMode.wrappedValue.dismiss()

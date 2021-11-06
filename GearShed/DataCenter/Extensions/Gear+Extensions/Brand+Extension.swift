@@ -11,7 +11,11 @@ import SwiftUI
 import CoreData
 
 // constants
-let kUnknownBrandName = "Unknown Brand"
+let kUnknownBrandName = "UnBranded"
+let kUnknownBrandID: Int32 = INT32_MAX
+var kUnknownBrandUUID: UUID?
+
+
 
 extension Brand: Comparable {
     
@@ -20,7 +24,6 @@ extension Brand: Comparable {
         lhs.name < rhs.name
     }
     
-
     // MARK: - Computed properties
     
     // ** please see the associated discussion over in Item+Extensions.swift **
@@ -36,7 +39,9 @@ extension Brand: Comparable {
         }
     }
     
-
+    var unBrandID: Int {
+        get { Int(unBrandID_) }
+    }
     
     // items: fronts Core Data attribute items_ that is an NSSet, and turns it into
     // a Swift array
@@ -60,19 +65,21 @@ extension Brand: Comparable {
     var itemCount: Int { items_?.count ?? 0 }
     
     // simplified test of "is the unknown brand"
-    var isUnknownBrand: Bool { name == kUnknownBrandName }
+    var isUnknownBrand: Bool { unBrandID_ == kUnknownBrandID }
     
-    
+    /*class func object(withID id: UUID) -> Brand? {
+        return object(id: id, context: PersistentStore.shared.context) as Brand?
+    }*/
 
     // MARK: - Class Functions
     
-    class func count() -> Int {
+    /*class func count() -> Int {
         return count(context: PersistentStore.shared.context)
-    }
+    }*/
 
     // return a list of all brands, optionally returning only user-defined brand
     // (i.e., excluding the unknown brand)
-    class func allBrands(userBrandsOnly: Bool) -> [Brand] {
+    /*class func allBrands(userBrandsOnly: Bool) -> [Brand] {
         var allBrands = allObjects(context: PersistentStore.shared.context) as! [Brand]
         if userBrandsOnly {
             if let index = allBrands.firstIndex(where: { $0.isUnknownBrand }) {
@@ -80,38 +87,37 @@ extension Brand: Comparable {
             }
         }
         return allBrands
-    }
+    }*/
 
     // creates a new Brand having an id, but then it's the user's responsibility
     // to fill in the field values (and eventually save)
-    class func addNewBrand() -> Brand {
+    /*class func addNewBrand() -> Brand {
         let newBrand = Brand(context: PersistentStore.shared.context)
         newBrand.id = UUID()
         return newBrand
-    }
+    }*/
     
     // parameters for the Unknown Brand.  call this only upon startup if
     // the Core Data database has not yet been initialized
-    class func createUnknownBrand() {
-        let unknownBrand = addNewBrand()
-        unknownBrand.name_ = kUnknownBrandName
+    /*class func createUnknownBrand() -> Brand {
+        let unbranded = Brand(context: PersistentStore.context)
+        unbranded.name_ = kUnknownBrandName
+        unbranded.id = UUID()
+        unbranded.unBrandID_ = kUnknownBrandID
+        
         PersistentStore.shared.saveContext()
-        //return unknownBrand
-    }
+        
+        return unbranded
+    }*/
 
     /*class func unknownBrand() -> Brand {
-        // we only keep one "UnknownBrand" in the data store.  you can find it because its
-        // order is the largest 32-bit integer. to make the app work, however, we need this
-        // default brand to exist!
-        //
-        // so if we ever need to get the unknown brand from the database, we will fetch it;
-        // and if it's not there, we will create it then.
         let fetchRequest: NSFetchRequest<Brand> = Brand.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "name_ == %d", kUnknownBrandName)
+        fetchRequest.predicate = NSPredicate(format: "unBrandID_ == %d", kUnknownBrandID)
+        
         do {
-            let brands = try PersistentStore.shared.context.fetch(fetchRequest)
-            if brands.count >= 1 { // there should be no more than one
-                return brands[0]
+            let brand = try PersistentStore.shared.context.fetch(fetchRequest)
+            if brand.count >= 1 {
+                return brand[0]
             } else {
                 return createUnknownBrand()
             }
@@ -121,13 +127,14 @@ extension Brand: Comparable {
     }*/
 
     
-    class func theUnknownBrand() -> Brand {
+    /*class func theUnknownBrand() -> Brand {
         
         let fetchRequest: NSFetchRequest<Brand> = Brand.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "name_ == %@", kUnknownBrandName)
        
         do {
             let brand = try PersistentStore.shared.context.fetch(fetchRequest)
+            
             /*if brand.count >= 1 {
                 return brand[0]
             } else {
@@ -137,11 +144,11 @@ extension Brand: Comparable {
         } catch let error as NSError {
             fatalError("Error fetching unknown shed: //\(error.localizedDescription), \(error.userInfo)")
         }
-    }
+    }*/
     
-    class func delete(_ brand: Brand) {
+    /*class func delete(_ brand: Brand) {
         // you cannot delete the unknownBrand
-        guard brand.name_ != kUnknownBrandName else { return }
+        guard brand.unBrandID_ != kUnknownBrandID else { return }
 
         // retrieve the context of this Brand and get a list of
         // all items for this brand so we can work with them
@@ -151,46 +158,43 @@ extension Brand: Comparable {
         // reset brand associated with each of these to the unknownBrand
         // (which in turn, removes the current association with brand). additionally,
         // this could affect each item's computed properties
-        let theUnknownBrand = Brand.theUnknownBrand()
+        let theUnknownBrand = Brand.unknownBrand()
         itemsAtThisBrand.forEach({ $0.brand = theUnknownBrand })
         // now finish the deletion and save
         context?.delete(brand)
         try? context?.save()
-    }
+    }*/
     
-    class func updateData(using editableData: EditableItemData) {
+    /*class func updateData(using editableData: EditableBrandData) {
         // if the incoming brand is not nil, then this is just a straight update.
         // otherwise, we must create the new Brand here and add it
-        if let id = editableData.idBrand,
+        if let id = editableData.id,
              let brand = Brand.object(id: id, context: PersistentStore.shared.context) {
             brand.updateValues(from: editableData)
         } else {
             let newBrand = Brand.addNewBrand()
             newBrand.updateValues(from: editableData)
         }
-    }
+    }*/
     
-    class func addNewBrandFromItem(using editableData: EditableItemData, brandOut: ( (Brand) -> () ) ) {
+    /*class func addNewBrandFromItem(using editableData: EditableBrandData, brandOut: ( (Brand) -> () ) ) {
         let newBrand = Brand.addNewBrand()
         newBrand.updateValues(from: editableData)
         brandOut(newBrand)
-    }
+    }*/
     
-    class func object(withID id: UUID) -> Brand? {
+    /*class func object(withID id: UUID) -> Brand? {
         return object(id: id, context: PersistentStore.shared.context) as Brand?
-    }
+    }*/
 
     
     // MARK: - Object Methods
-    
-    
-    func updateName(brand: Brand, name: String) {
+    /*func updateName(brand: Brand, name: String) {
         brand.name_ = name
         PersistentStore.shared.saveContext()
-    }
+    }*/
     
-    func updateValues(from editableData: EditableItemData) {
-        
+    /*func updateValues(from editableData: EditableBrandData) {
         // we first make these changes directly in Core Data
         name_ = editableData.brandName
         
@@ -201,6 +205,6 @@ extension Brand: Comparable {
         // observing an Item as an @ObservedObject knows about the Brand update:
         
         items.forEach({ $0.objectWillChange.send() })
-    }
+    }*/
     
 } // end of extension Brand

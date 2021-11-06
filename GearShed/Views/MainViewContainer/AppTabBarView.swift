@@ -72,7 +72,7 @@ extension AppTabBarView {
         VStack (alignment: .center, spacing: 0) {
             Image(systemName: "bag")
             
-            Text("GearShed")
+            Text("Gear Shed")
                 .formatNoColorSmall()
         }
         .onTapGesture {
@@ -87,7 +87,7 @@ extension AppTabBarView {
     private var gearListButton: some View {
         VStack (alignment: .center, spacing: 0) {
             Image(systemName: "list.bullet.rectangle")
-            Text("GearList")
+            Text("Gear List")
                 .formatNoColorSmall()
         }
         .onTapGesture {
@@ -103,7 +103,7 @@ extension AppTabBarView {
     private var gearPlanButton: some View {
         VStack (alignment: .center, spacing: 0) {
             Image(systemName: "list.bullet.rectangle")
-            Text("GearPlan")
+            Text("Gear Plan")
                 .formatNoColorSmall()
         }
         .onTapGesture {

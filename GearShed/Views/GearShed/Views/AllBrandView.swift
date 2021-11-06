@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct AllBrandView: View {
-    @EnvironmentObject var persistentStore: PersistentStore
+    @EnvironmentObject private var persistentStore: PersistentStore
     
     @StateObject private var viewModel: GearShedData
     
@@ -29,12 +29,10 @@ struct AllBrandView: View {
             }
         }
         .fullScreenCover(isPresented: $isAddBrandShowing) {
-            NavigationView {
-                AddBrandView()
-            }
+            AddBrandView(persistentStore: persistentStore)
+                .environment(\.managedObjectContext, persistentStore.context)
         }
     }
-    
 }
 
 extension AllBrandView {
@@ -61,6 +59,7 @@ extension AllBrandView {
                 }
             }
             .padding(.bottom, 15)
+            .padding(.top, 10)
         }
     }
     

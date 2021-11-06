@@ -44,7 +44,8 @@ struct ShedDetailView: View {
                 }
             }
             .fullScreenCover(isPresented: $isEditShedShowing) {
-                ModifyShedView(shed: shed).environment(\.managedObjectContext, PersistentStore.shared.context)
+                ModifyShedView(persistentStore: persistentStore, shed: shed)
+                    .environment(\.managedObjectContext, persistentStore.context)
             }
         }
         

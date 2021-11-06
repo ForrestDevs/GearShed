@@ -13,6 +13,8 @@ struct AllGearLists: View {
 
     @StateObject private var viewModel: GearlistData
     
+    @State private var newList: Gearlist?
+    
     @State private var isAddListShowing: Bool = false
     @State private var isAlertShowing: Bool = false
     @State private var newListName: String = ""
@@ -34,14 +36,13 @@ struct AllGearLists: View {
             }
         }
         .fullScreenCover(isPresented: $isAddListShowing) {
-            NavigationView {
-                AddListView(persistentStore: persistentStore)
-            }
+            AddListView(persistentStore: persistentStore, gearlist: newList!)
         }
     }
 }
 
 extension AllGearLists {
+    
     private var gearlistList: some View {
         ScrollView(.vertical, showsIndicators: false) {
             LazyVStack {
@@ -52,7 +53,7 @@ extension AllGearLists {
                             gearlist1 = gearlist
                             isAlertShowing = true
                         }, deletionTrigger: {
-                            Gearlist.delete(gearlist)
+                            //Gearlist.delete(gearlist)
                         })}
                 }
             }
@@ -66,6 +67,7 @@ extension AllGearLists {
             HStack {
                 Spacer()
                 Button {
+                    newList = viewModel.addNewGearlistIDOnly()
                     isAddListShowing.toggle()
                 }
                 label: {
@@ -91,7 +93,7 @@ extension AllGearLists {
     
     private var renameListAlertOverlay: some View {
         AZAlert(title: "Rename List", isShown: $isAlertShowing, text: $newListName) { text in
-            gearlist1?.updateName(gearlist: gearlist1!, name: text)
+            //gearlist1?.updateName(gearlist: gearlist1!, name: text)
             newListName = ""
         }
     }

@@ -13,37 +13,46 @@ struct AddListView: View {
     
     @EnvironmentObject var persistentStore: PersistentStore
     
-    @StateObject private var viewModel: GearShedData
-    
+    @StateObject private var itemVM: GearShedData
+    @StateObject private var listVM: GearlistData
+
     @State private var itemsChecked: [Item] = []
     @State private var editableGearlistData: EditableGearlistData
     
-    var gearlist: Gearlist?
+    @ObservedObject private var gearlist: Gearlist
     
-    init(persistentStore: PersistentStore, gearlist: Gearlist? = nil, item: Item? = nil) {
+    init(persistentStore: PersistentStore, gearlist: Gearlist) {
+        
+        self.gearlist = gearlist
+        
         // Init viewModel
-        let viewModel = GearShedData(persistentStore: persistentStore)
-        _viewModel = StateObject(wrappedValue: viewModel)
+        let itemVM = GearShedData(persistentStore: persistentStore)
+        _itemVM = StateObject(wrappedValue: itemVM)
+        
+        // Gearlist VM
+        let listVM = GearlistData(persistentStore: persistentStore)
+        _listVM = StateObject(wrappedValue: listVM)
         
         // Init EditableGearlistData
-        _editableGearlistData = State(initialValue: EditableGearlistData(gearlist: gearlist))
-        self.gearlist = gearlist
+        _editableGearlistData = State(initialValue: EditableGearlistData(persistentStore: persistentStore, gearlist: gearlist))
     }
     
     var body: some View {
-        VStack {
-            listNameFeild
-            itemList
+        NavigationView {
+            VStack {
+                listNameFeild
+                addItemGroupButton
+                listGroupItemsList
+                //itemList
+            }
+            .navigationBarTitle("New List", displayMode: .inline)
+            .navigationBarBackButtonHidden(true)
+            .toolbar {
+                cancelButtonToolBarItem
+                saveButtonToolBarItem
+            }
         }
-        .navigationBarTitle("New List", displayMode: .inline)
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .cancellationAction, content: cancelButton)
-            ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!editableGearlistData.canGearlistBeSaved) }
-        }
-        .onDisappear { PersistentStore.shared.saveContext() }
     }
-    
 }
 
 extension AddListView {
@@ -51,15 +60,33 @@ extension AddListView {
     private var listNameFeild: some View {
         HStack {
             Text("List Name: ")
-            TextField("List Name", text: $editableGearlistData.gearlistName)
+            TextField("List Name", text: $editableGearlistData.name)
         }
         .padding(.horizontal, 20)
         .padding(.top, 10)
     }
     
+    private var addItemGroupButton: some View {
+        HStack(alignment: .center, spacing: 0) {
+            Button {
+                listVM.createNewListGroup(gearlist: gearlist)
+            } label: {
+                Text("Add Item Group")
+            }
+        }
+    }
+    
+    private var listGroupItemsList: some View {
+        ScrollView (.vertical, showsIndicators: false) {
+            ForEach(gearlist.listGroups) { listGroup in
+                ListGroupRowView(persistentStore: persistentStore, listGroup: listGroup, gearlist: gearlist)
+            }
+        }
+    }
+    
     private var itemList: some View {
         ScrollView(.vertical, showsIndicators: false) {
-            ForEach(viewModel.sectionByShed(itemArray: viewModel.items)) { section in
+            ForEach(itemVM.sectionByShed(itemArray: itemVM.items)) { section in
                 Section {
                     ForEach(section.items) { item in
                         ItemRowViewForList(item: item, respondToTapOnSelector: {
@@ -102,26 +129,30 @@ extension AddListView {
         self.itemsChecked.removeAll{$0.id == item.id}
     }
     
-    private func cancelButton() -> some View {
-        Button(action: { presentationMode.wrappedValue.dismiss() }) {
-            Text("Cancel")
+    private var cancelButtonToolBarItem: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button {
+                persistentStore.context.delete(gearlist)
+                presentationMode.wrappedValue.dismiss()
+            } label:  {
+                Text("Cancel")
+            }
         }
     }
     
-    private func saveButton() -> some View {
-        Button(action: commitData) {
-            Text("Save")
+    private var saveButtonToolBarItem: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Button {
+                listVM.updateGearlist(using: editableGearlistData)
+                presentationMode.wrappedValue.dismiss()
+            } label: {
+                Text("Save")
+            }
+            .disabled(!editableGearlistData.canGearlistBeSaved)
         }
     }
     
-    private func commitData() {
-        presentationMode.wrappedValue.dismiss()
-        if itemsChecked.count >= 1 {
-            Gearlist.addNewGearlist(using: editableGearlistData, itemArray: itemsChecked)
-        } else {
-            Gearlist.updateData(using: editableGearlistData)
-        }
-    }
+    
 }
 
 

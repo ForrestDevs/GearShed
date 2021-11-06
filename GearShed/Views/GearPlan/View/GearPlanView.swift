@@ -43,7 +43,7 @@ struct GearPlanView: View {
         }
         .padding(.top, 10)
         .ignoresSafeArea(.container, edges: .bottom)
-        .navigationBarTitle("Gear Shed", displayMode: .inline)
+        .navigationBarTitle("Gear Plan", displayMode: .inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button {
@@ -52,13 +52,6 @@ struct GearPlanView: View {
                     Image(systemName: "square.and.arrow.up")
                 }
             }
-        }
-        .onAppear {
-            logAppear(title: "GearPlan")
-        }
-        .onDisappear {
-            logDisappear(title: "GearPlan")
-            PersistentStore.shared.saveContext()
         }
     }
 }

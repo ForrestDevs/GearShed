@@ -11,15 +11,6 @@ import SwiftUI
 
 // MARK: - A Generic SectionData struct
 
-struct SectionGroupShedData: Identifiable, Hashable {
-    var id: Int { hashValue }
-    let title: String
-    let subtitle: String
-    let group: ItemGroup
-    let shed: Shed
-    let items: [Item]
-}
-
 struct SectionShedData: Identifiable, Hashable {
 	var id: Int { hashValue }
 	let title: String

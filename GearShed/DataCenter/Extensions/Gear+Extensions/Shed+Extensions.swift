@@ -11,9 +11,10 @@ import CoreData
 
 // constants
 let kUnknownShedName = "Uncategorized"
+let kUnknownShedID: Int32 = INT32_MAX
 
 extension Shed: Comparable {
-	
+    
 	// add Comparable conformance: sort by name
 	public static func < (lhs: Shed, rhs: Shed) -> Bool {
 		lhs.name < rhs.name
@@ -34,16 +35,8 @@ extension Shed: Comparable {
 		}
 	}
     
-    // an item's associated brand.  this fronts a Core Data optional attribute.
-    // if you change an item's brand, the old and the new Brand may want to
-    // know that some of their computed properties could be invalidated
-    var group: ItemGroup {
-        get { group_! }
-        set {
-            group_?.objectWillChange.send()
-            group_ = newValue
-            group_?.objectWillChange.send()
-        }
+    var unShedID: Int {
+        get { Int(unShedID_) }
     }
 	
 	// items: fronts Core Data attribute items_ that is an NSSet, and turns it into
@@ -74,13 +67,17 @@ extension Shed: Comparable {
 	
     // MARK: - Class Functions
 	
-	class func count() -> Int {
+	/*class func count() -> Int {
 		return count(context: PersistentStore.shared.context)
 	}
+    
+    class func object(withID id: UUID) -> Shed? {
+        return object(id: id, context: PersistentStore.shared.context) as Shed?
+    }*/
 
 	// return a list of all sheds, optionally returning only user-defined shed
 	// (i.e., excluding the unknown shed)
-	class func allSheds(userShedsOnly: Bool) -> [Shed] {
+	/*class func allSheds(userShedsOnly: Bool) -> [Shed] {
 		var allSheds = allObjects(context: PersistentStore.shared.context) as! [Shed]
 		if userShedsOnly {
 			if let index = allSheds.firstIndex(where: { $0.isUnknownShed }) {
@@ -88,26 +85,54 @@ extension Shed: Comparable {
 			}
 		}
 		return allSheds
-	}
+	}*/
 
 	// creates a new Shed having an id, but then it's the user's responsibility
 	// to fill in the field values (and eventually save)
-	class func addNewShed() -> Shed {
+	/*class func addNewShed() -> Shed {
 		let newShed = Shed(context: PersistentStore.shared.context)
 		newShed.id = UUID()
 		return newShed
-	}
+	}*/
 	
 	// parameters for the Unknown Shed.  call this only upon startup if
 	// the Core Data database has not yet been initialized
-	class func createUnknownShed() {
-		let unknownShed = addNewShed()
-		unknownShed.name_ = kUnknownShedName
+    /*class func createUnknownShed() -> Shed {
+        let context = Shed.managedObjectContext
+
+        let unSheded = Shed(context: context)
+        unSheded.name_ = kUnknownBrandName
+        unSheded.id = UUID()
+        unSheded.unShedID_ = kUnknownShedID
         PersistentStore.shared.saveContext()
-        //return unknownShed
-	}
+        
+        return unSheded
+    }*/
     
-    class func theUnknownShed() -> Shed {
+    
+    /*class func unknownShed() -> Shed {
+        // we only keep one "UnknownBrand" in the data store.  you can find it because its
+        // order is the largest 32-bit integer. to make the app work, however, we need this
+        // default brand to exist!
+        //
+        // so if we ever need to get the unknown brand from the database, we will fetch it;
+        // and if it's not there, we will create it then.
+        let fetchRequest: NSFetchRequest<Shed> = Shed.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "unShedID_ == %d", kUnknownShedID)
+        
+        do {
+            let shed = try PersistentStore.shared.context.fetch(fetchRequest)
+            if shed.count >= 1 {
+                return shed[0]
+            } else {
+                return createUnknownShed()
+            }
+        } catch let error as NSError {
+            fatalError("Error fetching unknown brand: \(error.localizedDescription), \(error.userInfo)")
+        }
+    }*/
+    
+    /*class func theUnknownShed() -> Shed {
         
         let fetchRequest: NSFetchRequest<Shed> = Shed.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "name_ == %@", kUnknownShedName)
@@ -118,11 +143,11 @@ extension Shed: Comparable {
         } catch let error as NSError {
             fatalError("Error fetching unknown shed: //\(error.localizedDescription), \(error.userInfo)")
         }
-    }
+    }*/
 	
-	class func delete(_ shed: Shed) {
+	/*class func delete(_ shed: Shed) {
 		// you cannot delete the unknownShed
-		guard shed.name_ != kUnknownShedName else { return }
+		guard shed.unShedID != kUnknownShedID else { return }
 
 		// retrieve the context of this Shed and get a list of
 		// all items for this shed so we can work with them
@@ -132,45 +157,43 @@ extension Shed: Comparable {
 		// reset shed associated with each of these to the unknownShed
 		// (which in turn, removes the current association with shed). additionally,
 		// this could affect each item's computed properties
-        let theUnknownShed = Shed.theUnknownShed()
+        let theUnknownShed = Shed.unknownShed()
         itemsAtThisShed.forEach({ $0.shed = theUnknownShed })
 		// now finish the deletion and save
 		context?.delete(shed)
 		try? context?.save()
-	}
+	}*/
 	
-	class func updateData(using editableData: EditableItemData) {
+	/*class func updateData(using editableData: EditableShedData) {
 		// if the incoming shed is not nil, then this is just a straight update.
 		// otherwise, we must create the new Shed here and add it
-		if let id = editableData.idShed,
+		if let id = editableData.id,
 			 let shed = Shed.object(id: id, context: PersistentStore.shared.context) {
 			shed.updateValues(from: editableData)
 		} else {
 			let newShed = Shed.addNewShed()
 			newShed.updateValues(from: editableData)
 		}		
-	}
+	}*/
     
-    class func addNewShedFromItem(using editableData: EditableItemData, shedOut: ( (Shed) -> () ) ) {
+    /*class func addNewShedFromItem(using editableData: EditableShedData, shedOut: ( (Shed) -> () ) ) {
         let newShed = Shed.addNewShed()
         newShed.updateValues(from: editableData)
         shedOut(newShed)
-    }
+    }*/
 	
-	class func object(withID id: UUID) -> Shed? {
-		return object(id: id, context: PersistentStore.shared.context) as Shed?
-	}
+	
 
 	
 	// MARK: - Object Methods
     
-    func updateName(shed: Shed, name: String) {
+    /*func updateName(shed: Shed, name: String) {
         
         shed.name_ = name
         PersistentStore.shared.saveContext()
-    }
+    }*/
 	
-	func updateValues(from editableData: EditableItemData) {
+    /*func updateValues(from editableData: EditableShedData) {
 		
 		// we first make these changes directly in Core Data
 		name_ = editableData.shedName
@@ -180,6 +203,6 @@ extension Shed: Comparable {
 		// usually, what i would do is this, to be sure that anyone who is
 		// observing an Item as an @ObservedObject knows about the Shed update:
 		items.forEach({ $0.objectWillChange.send() })
-	}
+	}*/
 	
 } // end of extension Shed

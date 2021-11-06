@@ -31,19 +31,12 @@ struct ItemDetailView: View {
             }
             .navigationBarTitle("\(item.shedName)", displayMode: .inline)
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button { self.isEditItemShowing.toggle() } label: { Image(systemName: "slider.horizontal.3") }
-                }
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        presentationMode.wrappedValue.dismiss()
-                    } label: {
-                        Image(systemName: "chevron.left")
-                    }
-                }
+                editButton
+                backButton
             }
             .fullScreenCover(isPresented: $isEditItemShowing) {
-                ModifyItemView(persistentStore: persistentStore,editableItem: item).environment(\.managedObjectContext, PersistentStore.shared.context)
+                ModifyItemView(persistentStore: persistentStore,editableItem: item)
+                    .environment(\.managedObjectContext, persistentStore.context)
             }
         }
     }
@@ -55,7 +48,13 @@ extension ItemDetailView {
     private var titleBar: some View {
         // Fav, Brand, Name
         HStack {
-            favouriteButton
+            if item.isFavourite_ {
+                favouriteButton
+            } else if item.isRegret_ {
+                regretButton
+            } else {
+                spaceFiller
+            }
             
             Text(item.brandName)
                 .formatBlackTitle()
@@ -163,36 +162,56 @@ extension ItemDetailView {
     }
     
     // MARK: Extras
+    private var backButton: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button {
+                presentationMode.wrappedValue.dismiss()
+            } label: {
+                Image(systemName: "chevron.left")
+            }
+        }
+    }
+    
+    private var editButton: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Button {
+                isEditItemShowing.toggle()
+            } label: {
+                Image(systemName: "slider.horizontal.3")
+            }
+        }
+    }
+    
     private var favouriteButton: some View {
-        Image(systemName: item.isFavourite ? "heart.fill" : "heart")
+        Image(systemName: "heart.fill")
             .resizable()
             .frame(width: 13, height: 12)
             .foregroundColor(Color.theme.green)
             .padding(.vertical, -1)
-            .onTapGesture {
+            /*.onTapGesture {
                 if item.isFavourite {
                     item.unmarkFavourite()
                 } else {
                     item.markFavourite()
                     item.unmarkRegret()
                 }
-            }
+            }*/
     }
     
     private var regretButton: some View {
-        Image(systemName: item.isRegret ? "circle.fill" : "circle")
+        Image(systemName: "hand.thumbsdown.fill")
             .resizable()
             .frame(width: 13, height: 12)
             .foregroundColor(Color.theme.green)
             .padding(.vertical, -1)
-            .onTapGesture {
+            /*.onTapGesture {
                 if item.isRegret {
                     item.unmarkRegret()
                 } else {
                     item.markRegret()
                     item.unmarkFavourite()
                 }
-            }
+            }*/
     }
     
     private var spaceFiller: some View {

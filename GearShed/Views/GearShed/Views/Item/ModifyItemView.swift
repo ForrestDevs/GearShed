@@ -20,41 +20,315 @@ struct ModifyItemView: View {
     @State private var confirmDeleteItemAlert: ConfirmDeleteItemAlert?
     @State private var shedNavLinkActive: Bool = false
     @State private var brandNavLinkActive: Bool = false
-    
+        
     init(persistentStore: PersistentStore, editableItem: Item) {
         let viewModel = GearShedData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
-        _editableItemData = State(initialValue: EditableItemData(item: editableItem))
+        _editableItemData = State(initialValue: EditableItemData(persistentStore: persistentStore, item: editableItem))
     }
     
     var body: some View {
         NavigationView {
-            ScrollView (.vertical, showsIndicators: false) {
-                VStack (alignment: .leading, spacing: 20) {
-                    itemNameFeild
-                    itemWeightPriceFeild
-                    itemShedBrandFeild
-                    itemWishlistToggle
-                    itemPurchaseDateFeild
-                    itemDetailsFeild
-                    deleteItemFeild
-                }
-                .padding()
-                .navigationBarTitle("Modify Item", displayMode: .inline)
-                .navigationBarBackButtonHidden(true)
-                .toolbar {
-                    ToolbarItem(placement: .cancellationAction) { cancelButton() }
-                    ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!editableItemData.canBeSaved) }
-                }
-                .onDisappear {
-                    PersistentStore.shared.saveContext()
-                }
+            ZStack {
+                backgroundLayer
+                contentLayer
+            }
+            .navigationBarTitle("Edit Item", displayMode: .inline)
+            .navigationBarBackButtonHidden(true)
+            .toolbar {
+               cancelButtonToolbarItem
+                saveButtonToolbarItem
             }
         }
     }
 }
 
 extension ModifyItemView {
+    // MARK: Main Content
+    private var backgroundLayer: some View {
+        Color.theme.silver
+            .ignoresSafeArea()
+    }
+    
+    private var contentLayer: some View {
+        ScrollView (.vertical, showsIndicators: false) {
+            VStack (alignment: .leading, spacing: 10) {
+                itemNameSection
+                itemShedSection
+                itemBrandSection
+                itemWeightSection
+                itemPriceSection
+                itemWishlistSection
+                itemPurchaseDateSection
+                itemDescriptionSection
+                regretButtonSection
+                itemDeleteButton
+            }
+            .padding(.horizontal)
+            .padding(.top)
+        }
+    }
+    
+    // MARK: Content Components
+    private var itemNameSection: some View {
+        Section {
+            VStack (alignment: .leading, spacing: 3) {
+                Text("Name")
+                    .formatEntryTitle()
+                TextField("", text: $editableItemData.name)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .disableAutocorrection(true)
+                    .font(.subheadline)
+            }
+        }
+    }
+    
+    private var itemShedSection: some View {
+        Section {
+            VStack (alignment: .leading, spacing: 3)  {
+                Text ("Shed")
+                    .formatEntryTitle()
+
+
+                Menu {
+                    Button {
+                        shedNavLinkActive.toggle()
+                    } label: {
+                        Text("Add New Shed")
+                        .font(.subheadline)
+                    }
+                    ForEach(viewModel.sheds) { shed in
+                        Button {
+                            editableItemData.shed = shed
+                        } label: {
+                            Text(shed.name)
+                                .tag(shed)
+                                .font(.subheadline)
+                        }
+                    }
+                } label: {
+                    HStack {
+                        Text(editableItemData.shed?.name ?? "Select Shed")
+                            .font(.subheadline)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                    }
+                    .padding(8)
+                    .background(Color.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 5))
+                }
+                .background(
+                    NavigationLink(destination: AddShedView(persistentStore: persistentStore,shedOut: { shed in editableItemData.shed = shed }, isAddFromItem: true), isActive: $shedNavLinkActive) {
+                        EmptyView()
+                    }
+                )
+            }
+        }
+
+    }
+    
+    private var itemBrandSection: some View {
+        Section {
+            VStack (alignment: .leading, spacing: 3) {
+                Text("Brand")
+                    .formatEntryTitle()
+
+
+                Menu {
+                    Button {
+                        brandNavLinkActive.toggle()
+                    } label: {
+                        Text("Add New Brand")
+                            .font(.subheadline)
+                    }
+                    ForEach(viewModel.brands) { brand in
+                        Button {
+                            editableItemData.brand = brand
+                        } label: {
+                            Text(brand.name)
+                                .tag(brand)
+                                .font(.subheadline)
+                        }
+                    }
+                } label: {
+                    HStack {
+                        Text(editableItemData.brand?.name ?? "Select Brand")
+                            .font(.subheadline)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                    }
+                    .padding(8)
+                    .background(Color.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 5))
+                }
+                .background(
+                    NavigationLink(destination: AddBrandView(persistentStore: persistentStore ,brandOut: { brand in editableItemData.brand = brand }, isAddFromItem: true), isActive: $brandNavLinkActive) {
+                        EmptyView()
+                    }
+                )
+            }
+        }
+
+    }
+    
+    private var itemWeightSection: some View {
+        Section {
+            VStack (alignment: .leading, spacing: 3)  {
+                Text ("Weight")
+                    .formatEntryTitle()
+
+
+                TextField("", text: $editableItemData.weight)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .disableAutocorrection(true)
+                    .font(.subheadline)
+            }
+        }
+
+    }
+    
+    private var itemPriceSection: some View {
+        Section {
+            VStack (alignment: .leading, spacing: 3)  {
+                Text ("Price")
+                    .formatEntryTitle()
+
+
+                TextField("", text: $editableItemData.price)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .disableAutocorrection(true)
+                    .font(.subheadline)
+                
+            }
+        }
+
+    }
+    
+    private var itemWishlistSection: some View {
+        Section {
+            VStack (alignment: .leading, spacing: 10) {
+                Text("Wishlist?")
+                    .formatEntryTitle()
+                Toggle(isOn: $editableItemData.wishlist) {EmptyView()}.labelsHidden()
+            }
+        }
+    }
+    
+    private var regretButtonSection: some View {
+        Section {
+            HStack {
+                Text("Regret?")
+                    .formatEntryTitle()
+                Image(systemName: editableItemData.associatedItem.isRegret ? "hand.thumbsdown.fill" : "hand.thumbsdown")
+                    .resizable()
+                    .frame(width: 17, height: 17)
+                    .foregroundColor(Color.theme.green)
+                    //.padding(.vertical, -1)
+                    .onTapGesture {
+                        if editableItemData.associatedItem.isRegret {
+                            editableItemData.associatedItem.unmarkRegret()
+                        } else {
+                            editableItemData.associatedItem.markRegret()
+                            editableItemData.associatedItem.unmarkFavourite()
+                        }
+                    }
+            }
+        }
+        
+    }
+
+    private var itemPurchaseDateSection: some View {
+        Section {
+            VStack (alignment: .leading, spacing: 3) {
+                Text("Purchase Date")
+                    .formatEntryTitle()
+
+                DatePicker("Purchase Date",selection: $editableItemData.datePurchased, displayedComponents: .date)
+                    .disabled(editableItemData.wishlist == true)
+                    .labelsHidden()
+                    .pickerStyle(.wheel)
+                    
+                
+                //.font(.subheadline)
+            }
+        }
+    }
+
+    private var itemDescriptionSection: some View {
+        Section {
+            VStack (alignment: .leading, spacing: 3) {
+                Text("Description")
+                    .formatEntryTitle()
+
+
+                TextField("", text: $editableItemData.details)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .font(.subheadline)
+        
+        /*ZStack {
+            if editableItemData.details.isEmpty == true {
+                Text("placeholder")
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                    .foregroundColor(Color.theme.secondaryText)
+            }
+            TextEditor(text: $editableItemData.details)
+                .frame(maxHeight: .infinity)
+                .padding(.horizontal, -5)
+        }
+        //.foregroundColor(Color.theme.green)
+        .font(.custom("HelveticaNeue", size: 17).bold())*/
+            }
+        }
+    }
+    
+    private var itemDeleteButton: some View {
+        Section {
+            Button {} label: {
+                Text("Delete Item")
+                    .foregroundColor(Color.red)
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 15))
+        }
+    }
+    
+    // MARK: ToolbarItems
+    private var cancelButtonToolbarItem: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button {
+                presentationMode.wrappedValue.dismiss()
+            } label: {
+                Text("Cancel")
+            }
+        }
+    }
+    
+    private var saveButtonToolbarItem: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Button {
+                viewModel.updateItem(using: editableItemData)
+                presentationMode.wrappedValue.dismiss()
+            } label: {
+                Text("Save")
+            }
+            .disabled(!editableItemData.canBeSaved)
+        }
+    }
+    
+}
+
+/*ScrollView (.vertical, showsIndicators: false) {
+    VStack (alignment: .leading, spacing: 20) {
+        itemNameFeild
+        itemWeightPriceFeild
+        itemShedBrandFeild
+        itemWishlistToggle
+        itemPurchaseDateFeild
+        itemDetailsFeild
+        deleteItemFeild
+    }
+    
+}*/
+
+
+/*extension ModifyItemView {
     private var itemNameFeild: some View {
         VStack (alignment: .leading, spacing: 10) {
             Text("Item Name")
@@ -254,4 +528,4 @@ extension ModifyItemView {
         
         presentationMode.wrappedValue.dismiss()
     }
-}
+}*/

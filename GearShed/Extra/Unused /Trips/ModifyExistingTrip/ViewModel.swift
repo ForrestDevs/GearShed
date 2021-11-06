@@ -6,10 +6,10 @@
 //  Copyright © 2021 All rights reserved.
 //
 
-import Foundation
-import CoreData
+//import Foundation
+//import CoreData
 
-class ViewModel: ObservableObject {
+/*class ViewModel: ObservableObject {
     
     // the manager that lets this model save, fetch,
     // write, delete, update, etc. back to core data.
@@ -22,4 +22,4 @@ class ViewModel: ObservableObject {
         }
     }
     
-}
+}*/

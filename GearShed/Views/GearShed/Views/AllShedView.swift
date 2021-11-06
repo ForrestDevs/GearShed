@@ -29,9 +29,8 @@ struct AllShedView: View {
             }
         }
         .fullScreenCover(isPresented: $isAddShedShowing) {
-            NavigationView {
-                AddShedView()
-            }
+            AddShedView(persistentStore: persistentStore)
+                .environment(\.managedObjectContext, persistentStore.context)
         }
     }
 }
@@ -60,6 +59,7 @@ extension AllShedView {
                 }
             }
             .padding(.bottom, 15)
+            .padding(.top, 10)
         }
     }
     

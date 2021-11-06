@@ -41,6 +41,7 @@ struct ItemRowViewInBrand: View {
         }
         .fullScreenCover (isPresented: $showEdit) {
             ModifyItemView(persistentStore: persistentStore, editableItem: item)
+                .environment(\.managedObjectContext, persistentStore.context)
         }
         .alert(item: $confirmDeleteItemAlert) { item in item.alert() }
     }
@@ -75,6 +76,7 @@ extension ItemRowViewInBrand {
     private var deleteContextButton: some View {
         Button {
             confirmDeleteItemAlert = ConfirmDeleteItemAlert (
+                persistentStore: persistentStore,
                 item: item,
                 destructiveCompletion: {
                     presentationMode.wrappedValue.dismiss()

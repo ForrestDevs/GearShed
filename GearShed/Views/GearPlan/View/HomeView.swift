@@ -42,7 +42,7 @@ struct HomeView: View {
                     //.padding(.top, 50)
 
                     // Side Tab Items
-                    NavigationLink(destination: PreferencesTabView()) { Text("Settings") }
+                    NavigationLink(destination: EmptyView()) { Text("Settings") }
                     
                     Spacer()
                 }

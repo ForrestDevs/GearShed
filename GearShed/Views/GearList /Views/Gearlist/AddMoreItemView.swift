@@ -42,7 +42,6 @@ struct AddMoreItemView: View {
             ToolbarItem(placement: .cancellationAction, content: cancelButton)
             ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!canGearlistBeSaved) }
         }
-        .onDisappear { PersistentStore.shared.saveContext() }
     }
     
 }
@@ -107,7 +106,7 @@ extension AddMoreItemView {
     
     private func commitData() {
         presentationMode.wrappedValue.dismiss()
-        Gearlist.addItemsToList(itemArray: itemsChecked, gearList: gearlist)
+        //Gearlist.addItemsToList(itemArray: itemsChecked, gearList: gearlist)
     }
 }
 

@@ -44,7 +44,7 @@ struct BrandDetailView: View {
                 }
             }
             .fullScreenCover(isPresented: $isEditBrandShowing) {
-                ModifyBrandView(brand: brand).environment(\.managedObjectContext, PersistentStore.shared.context)
+                ModifyBrandView(persistentStore: persistentStore, brand: brand).environment(\.managedObjectContext, persistentStore.context)
             }
         }
     }

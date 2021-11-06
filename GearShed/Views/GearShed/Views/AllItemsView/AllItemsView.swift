@@ -9,23 +9,19 @@
 import SwiftUI
 
 struct AllItemsView: View {
-    @EnvironmentObject var persistentStore: PersistentStore
-
-    @StateObject private var viewModel: GearShedData
-
-    @State private var selectedShed: Shed? = nil
+    let persistentStore: PersistentStore
     
-    @State private var showingUnlockView: Bool = false
-    @State private var isAddItemShowing: Bool = false
-    @State private var isQuickAddItemShowing: Bool = false
-    @State private var isAlertShowing: Bool = false
-    
-    @State private var newItemName: String = ""
-    @State private var item1: Item? = nil
+    @StateObject private var gsData: GearShedData
+    @StateObject private var vm: AllItemsViewModel
     
     init(persistentStore: PersistentStore) {
-        let viewModel = GearShedData(persistentStore: persistentStore)
-        _viewModel = StateObject(wrappedValue: viewModel)
+        self.persistentStore = persistentStore
+        
+        let gsData = GearShedData(persistentStore: persistentStore)
+        _gsData = StateObject(wrappedValue: gsData)
+        
+        let vm = AllItemsViewModel()
+        _vm = StateObject(wrappedValue: vm)
     }
 
     var body: some View {
@@ -36,14 +32,15 @@ struct AllItemsView: View {
                 addItemOverlay
             }
         }
-        .fullScreenCover(isPresented: $isAddItemShowing) {
-            AddItemView(persistentStore: persistentStore)
-                .environment(\.managedObjectContext, PersistentStore.shared.context)
+        .fullScreenCover(isPresented: $vm.isAddItemShowing) {
+            AddItemView(persistentStore: persistentStore, standard: true)
+                .environment(\.managedObjectContext, persistentStore.context)
         }
-        .fullScreenCover(isPresented: $isQuickAddItemShowing) {
-            AddItemView(persistentStore: persistentStore, shed: selectedShed).environment(\.managedObjectContext, PersistentStore.shared.context)
+        .fullScreenCover(isPresented: $vm.isQuickAddItemShowing) {
+            AddItemView(persistentStore: persistentStore, shedIn: vm.selectedShed!)
+                .environment(\.managedObjectContext, persistentStore.context)
         }
-        .sheet(isPresented: $showingUnlockView) {
+        .sheet(isPresented: $vm.showingUnlockView) {
             UnlockView()
         }
     }
@@ -55,15 +52,15 @@ extension AllItemsView {
         HStack (spacing: 20){
             HStack {
                 Text("Items:")
-                Text("\(viewModel.items.count)")
+                Text("\(gsData.items.count)")
             }
             HStack {
                 Text("Weight:")
-                Text("\(viewModel.totalWeight(array: viewModel.items))g")
+                Text("\(gsData.totalWeight(array: gsData.items))g")
             }
             HStack {
                 Text("Invested:")
-                Text("$\(viewModel.totalCost(array: viewModel.items))")
+                Text("$\(gsData.totalCost(array: gsData.items))")
             }
             Spacer()
         }
@@ -78,7 +75,7 @@ extension AllItemsView {
     private var itemList: some View {
         ScrollView(.vertical, showsIndicators: false) {
             LazyVStack {
-                ForEach(viewModel.sectionByShed(itemArray: viewModel.items)) { section in
+                ForEach(gsData.sectionByShed(itemArray: gsData.items)) { section in
                     Section {
                         ForEach(section.items, id: \.id) { item in
                             ItemRowView(item: item)
@@ -102,13 +99,14 @@ extension AllItemsView {
                     .font(.headline)
                 
                 Button {
-                    selectedShed = section.shed
                     let canCreate = self.persistentStore.fullVersionUnlocked ||
                         self.persistentStore.count(for: Item.fetchRequest()) < 3
                     if canCreate {
-                        isQuickAddItemShowing.toggle()
+                        let shed = section.shed
+                        vm.selectedShed = shed
+                        vm.isQuickAddItemShowing.toggle()
                     } else {
-                        showingUnlockView.toggle()
+                        vm.showingUnlockView.toggle()
                     }
                 } label: {
                     Image(systemName: "plus")
@@ -130,9 +128,9 @@ extension AllItemsView {
                     let canCreate = self.persistentStore.fullVersionUnlocked ||
                         self.persistentStore.count(for: Item.fetchRequest()) < 3
                     if canCreate {
-                        isAddItemShowing.toggle()
+                        vm.isAddItemShowing.toggle()
                     } else {
-                        showingUnlockView.toggle()
+                        vm.showingUnlockView.toggle()
                     }
                 }
                 label: {
@@ -152,7 +150,6 @@ extension AllItemsView {
             }
         }
     }
-    
     
 }
 

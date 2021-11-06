@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct PreferencesTabView: View {
+/*struct PreferencesTabView: View {
     static let tag: String? = "Preferences"
     // this view is a restructured version of the older DevToolTab to now handle
     // user preferences.  for the moment, the only preference we have is for
@@ -99,4 +99,4 @@ struct PreferencesTabView: View {
         .onDisappear { logDisappear(title: "Preferences") }
     } // end of body
     
-}
+}*/

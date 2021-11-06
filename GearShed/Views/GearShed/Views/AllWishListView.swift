@@ -34,7 +34,7 @@ struct AllWishListView: View {
         }
         .fullScreenCover(isPresented: $isAddItemShowing) {
             AddItemView(persistentStore: persistentStore, wishlist: true)
-                .environment(\.managedObjectContext, PersistentStore.shared.context)
+                .environment(\.managedObjectContext, persistentStore.context)
         }
         .sheet(isPresented: $showingUnlockView) {
             UnlockView()

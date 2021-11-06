@@ -27,11 +27,8 @@ struct GearShedApp: App {
         _persistentStore = StateObject(wrappedValue: persistentStore)
         _unlockManager = StateObject(wrappedValue: unlockManager)
         
-        // If app is loaded for the first time - create the Unknown Brand+Shed,
-        // then set to false so duplicates arent created every time.
         if isFirstLaunch == true {
-            Shed.createUnknownShed()
-            Brand.createUnknownBrand()
+            // actions to do on first launch
             isFirstLaunch = false
         }
     }
@@ -39,7 +36,7 @@ struct GearShedApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environment(\.managedObjectContext, PersistentStore.shared.context)
+                .environment(\.managedObjectContext, persistentStore.context)
                 .environmentObject(persistentStore)
                 .environmentObject(unlockManager)
                 .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification),

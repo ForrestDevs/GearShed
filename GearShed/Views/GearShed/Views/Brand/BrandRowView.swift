@@ -26,17 +26,17 @@ struct BrandRowView: View {
                 Button {
                     showDetail.toggle()
                 } label: {
-                    HStack{
+                    HStack {
                         Text(brand.name)
-                            .font(.headline)
+                        
                         Spacer()
-                        Text("\(brand.itemCount)")
-                            .font(.headline)
+                        
+                        Text("\(brand.items.count)")
                     }
                 }
             }
             .padding(.horizontal)
-            .padding(.vertical, 5)
+            .padding(.vertical, 2.5)
         }
         .contextMenu {
             editContextButton
@@ -46,14 +46,9 @@ struct BrandRowView: View {
             BrandDetailView(persistentStore: persistentStore, brand: brand)
         }
         .fullScreenCover (isPresented: $showEdit) {
-            ModifyBrandView(brand: brand)
+            ModifyBrandView(persistentStore: persistentStore, brand: brand)
         }
         .alert(item: $confirmDeleteBrandAlert) { brand in brand.alert() }
-        
-        
-        .fullScreenCover(isPresented: $showDetail) {
-            BrandDetailView(persistentStore: persistentStore,brand: brand)
-        }
     }
     
 }
@@ -74,6 +69,7 @@ extension BrandRowView {
     private var deleteContextButton: some View {
         Button {
             confirmDeleteBrandAlert = ConfirmDeleteBrandAlert (
+                persistentStore: persistentStore,
                 brand: brand,
                 destructiveCompletion: {
                     presentationMode.wrappedValue.dismiss()

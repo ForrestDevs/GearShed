@@ -23,6 +23,7 @@ struct ColorTheme {
     let green = Color("GreenColor")
     let red = Color("RedColor")
     let secondaryText = Color("SecondaryTextColor")
+    let silver = Color("Silver")
     
 }
 

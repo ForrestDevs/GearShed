@@ -17,6 +17,8 @@ struct GearlistDetailView: View {
     @StateObject private var itemVM: GearShedData
     
     @ObservedObject var gearlist: Gearlist
+    
+    @State private var isEditMode: Bool = true
         
     init(persistentStore: PersistentStore, gearlist: Gearlist) {
         let gearVM = GearlistData(persistentStore: persistentStore)
@@ -30,27 +32,62 @@ struct GearlistDetailView: View {
         NavigationView {
             VStack {
                 ZStack {
-                    itemList
-                    editListOverlay
+                    if isEditMode {
+                        listGroupList
+                        editListOverlay
+                    } else {
+                        
+                    }
                 }
             }
             .navigationBarTitle(gearlist.name, displayMode: .inline)
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        presentationMode.wrappedValue.dismiss()
-                    } label: {
-                        Image(systemName: "chevron.left")
-                    }
-                }
+                backButtonToolBarItem
+                listModeToolbarContent
             }
         }
-        
     }
 }
 
 extension GearlistDetailView {
-    private var itemList: some View {
+    
+    private var listModeToolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Toggle(isOn: $isEditMode) {
+                if isEditMode {
+                    Text("Edit Mode")
+                } else {
+                    Text("Packing Mode")
+                }
+            }
+        }
+    }
+    
+    private var backButtonToolBarItem: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button {
+                presentationMode.wrappedValue.dismiss()
+            } label: {
+                Image(systemName: "chevron.left")
+            }
+        }
+    }
+    
+    private var listGroupList: some View {
+        ScrollView(.vertical, showsIndicators: false) {
+            ForEach(gearlist.listGroups) { listGroup in
+                ListGroupRowView(persistentStore: persistentStore, listGroup: listGroup, gearlist: gearlist)
+            }
+        }
+    }
+    
+    private var packingModeList: some View {
+        VStack{
+            Text("Pack Mode")
+        }
+    }
+    
+    /*private var itemList: some View {
         ScrollView(.vertical, showsIndicators: false) {
             ForEach(itemVM.sectionByShed(itemArray: gearlist.items)) { section in
                 Section {
@@ -60,7 +97,7 @@ extension GearlistDetailView {
                                 listItemContextMenu (
                                     item: item,
                                     deletionTrigger: {
-                                        Gearlist.removeItemFromList(item: item, gearlist: gearlist)
+                                        //Gearlist.removeItemFromList(item: item, gearlist: gearlist)
                                     }
                                 )
                             }
@@ -82,7 +119,7 @@ extension GearlistDetailView {
             }
             .padding(.top, 10)
         }
-    }
+    }*/
     
     private var editListOverlay: some View {
         VStack {

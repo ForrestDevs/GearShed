@@ -67,7 +67,7 @@ extension Item {
 	// if you change an item's shed, the old and the new Shed may want to
 	// know that some of their computed properties could be invalidated
 	var shed: Shed {
-		get { shed_! }
+        get { shed_! }
 		set {
             shed_?.objectWillChange.send()
             shed_ = newValue
@@ -92,21 +92,25 @@ extension Item {
     
     // gearlists: fronts Core Data attribute gearlists_ that is an NSSet, and turns it into
     // a Swift array
-    var gearlists: [Gearlist] {
-        if let gearlists = gearlists_ as? Set<Gearlist> {
-            return gearlists.sorted(by: { $0.name < $1.name })
+    var listGroups: [ListGroup] {
+        if let listGroups = listgroups_ as? Set<ListGroup> {
+            return listGroups.sorted(by: { $0.name < $1.name })
         }
         return []
     }
     
     // tripCount: computed property from Core Data trips_
-    var gearlistCount: Int { gearlists_?.count ?? 0 }
+    var listGroupsCount: Int { listgroups_?.count ?? 0 }
     
 	// the name of its associated shed
 	var shedName: String { shed_?.name_ ?? "Not Available" }
     
     // the name of its associated brand
     var brandName: String { brand_?.name_ ?? "Not Available" }
+    
+    /*class func object(withID id: UUID) -> Item? {
+        return object(id: id, context: PersistentStore.shared.context) as Item?
+    }*/
 	
 	// MARK: - Useful Fetch Requests
 	
@@ -146,17 +150,15 @@ extension Item {
 	// this whole bunch of static functions lets me do a simple fetch and
 	// CRUD operations.
 	
-	class func count() -> Int {
-		return count(context: PersistentStore.shared.context)
+	/*class func count() -> Int {
+		return count(context: PersistentStore.context)
 	}
 
 	class func allItems() -> [Item] {
 		return allObjects(context: PersistentStore.shared.context) as! [Item]
 	}
 	
-	class func object(withID id: UUID) -> Item? {
-		return object(id: id, context: PersistentStore.shared.context) as Item?
-	}
+	
 	
 	// addNewItem is the user-facing add of a new entity.  since these are
 	// Identifiable objects, this makes sure we give the entity a unique id, then
@@ -179,7 +181,7 @@ extension Item {
 			let newItem = Item.addNewItem()
 			newItem.updateValues(from: editableData)
 		}
-	}
+	}*/
 
 	class func delete(_ item: Item) {
 		// remove the reference to this item from its associated shed
@@ -192,11 +194,11 @@ extension Item {
 		try? context?.save()
 	}
 	
-	class func moveAllItemsOffWishlist() {
+	/*class func moveAllItemsOffWishlist() {
 		for item in allItems() where item.wishlist {
 			item.wishlist_ = false
 		}
-	}
+	}*/
 	
 	// MARK: - Object Methods
 	
@@ -231,7 +233,7 @@ extension Item {
         isRegret_ = false
     }
     
-	private func updateValues(from editableData: EditableItemData) {
+	/*private func updateValues(from editableData: EditableItemData) {
 		name_ = editableData.name
         detail_ = editableData.details
 		quantity_ = Int32(editableData.quantity)
@@ -246,7 +248,7 @@ extension Item {
         
         gearlists.forEach({ $0.objectWillChange.send() })
         
-	}
+	}*/
 	
 }
 

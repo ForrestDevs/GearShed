@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 import SwiftUI
-
+/*
 // what i previously called a "Dev Tools" tab -- now incorporated into the
 // Preferences tab -- so that if you want to use this as a real app (device or simulator),
 // access to all the debugging stuff can be displayed or not by setting this global
@@ -125,7 +125,7 @@ func insertNewItems(from codableItems: [ItemCodableProxy]) {
         if let shed = name2Shed[codableItem.shedName]?.first {
             newItem.shed = shed
         } else {
-            newItem.shed = Shed.theUnknownShed() // if necessary, this creates the Unknown Shed
+            newItem.shed = Shed.unknownShed() // if necessary, this creates the Unknown Shed
         }
         
         // look up matching brand by name
@@ -133,7 +133,7 @@ func insertNewItems(from codableItems: [ItemCodableProxy]) {
         if let brand = name2Brand[codableItem.brandName]?.first {
             newItem.brand = brand
         } else {
-            newItem.brand = Brand.theUnknownBrand() // if necessary, this creates the Unknown Brand
+            newItem.brand = Brand.unknownBrand() // if necessary, this creates the Unknown Brand
         }
         
     }
@@ -174,7 +174,7 @@ extension Item: CodableStructRepresentable {
         return ItemCodableProxy(from: self)
     }
 }
-
+*/
 
 
 

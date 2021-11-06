@@ -23,7 +23,8 @@ struct GearlistView: View {
     }
 
     var body: some View {
-        PagerTabView(tint: Color.theme.accent, selection: $currentSelection) {
+        AllGearLists(persistentStore: persistentStore)
+        /*PagerTabView(tint: Color.theme.accent, selection: $currentSelection) {
             Text("PERSONAL LIST")
                 .pageLabel()
                 .font(.system(size: 12).bold())
@@ -36,12 +37,19 @@ struct GearlistView: View {
                 
             EmptyTripView()
                 .pageView(ignoresSafeArea: true, edges: .bottom)
-        }
+        }*/
         .padding(.top, 10)
         .ignoresSafeArea(.container, edges: .bottom)
         .navigationBarTitle("Gear List", displayMode: .inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button {} label: {
+                    Image(systemName: "square.and.arrow.up")
+                }
+            }
+        }
         .onDisappear() {
-            PersistentStore.shared.saveContext()
+            persistentStore.saveContext()
         }
     }
 }

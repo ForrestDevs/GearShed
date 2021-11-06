@@ -6,13 +6,16 @@
 //  Copyright © 2021 All rights reserved.
 //
 
-import SwiftUI
+//import SwiftUI
 
-struct AddItemToTripSheet: View {
+/*struct AddItemToTripSheet: View {
     
-    @StateObject var vm = ViewModel()
     
-    @Environment(\.presentationMode) var presentationMode
+    //@StateObject var vm = ViewModel()
+    
+    
+    
+   /* @Environment(\.presentationMode) var presentationMode
     // this is the @FetchRequest that ties this view to Core Data Items
     //@FetchRequest(fetchRequest: Item.allItemsFR(onList: true))
     //private var itemsToBePurchased: FetchedResults<Item>
@@ -30,7 +33,7 @@ struct AddItemToTripSheet: View {
     
     // custom init to set up editable data
     init(gearlist: Gearlist) {
-        _editableGearlistData = State(initialValue: EditableGearlistData(gearlist: gearlist))
+        _editableGearlistData = State(initialValue: EditableGearlistData(persistentStore: persistentStore, gearlist: gearlist))
         self.gearlist = gearlist
     }
     
@@ -39,7 +42,7 @@ struct AddItemToTripSheet: View {
     var body: some View {
         Form {
             
-            Button(action: {commitData()}) {Text("Add Items To Trip")}
+            Button(action: {}) {Text("Add Items To Trip")}
        // // DEV TOOL BUTTON REMOVE ON FINISHED APP
         Section(header: Text("DEVTOOL").sectionHeader()) {
             Button (action: {listItems()}) {Text("List Selected")}
@@ -119,10 +122,10 @@ struct AddItemToTripSheet: View {
         self.itemsChecked.removeAll{$0.id == item.id}
     }
 
-    func commitData() {
+    /*func commitData() {
         presentationMode.wrappedValue.dismiss()
         vm.saveItemsToGearlist(items: itemsChecked, gearlist: gearlist)
         Gearlist.updateData(using: editableGearlistData)
-    }
+    }*/*/
 
-}
+}*/
