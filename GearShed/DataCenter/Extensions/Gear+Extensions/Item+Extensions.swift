@@ -99,6 +99,20 @@ extension Item {
         return []
     }
     
+    var packingGroups: [PackingGroup] {
+        if let packingGroups = packingGroups_ as? Set<PackingGroup> {
+            return packingGroups.sorted(by: { $0.name < $1.name })
+        }
+        return []
+    }
+    
+    var packingBools: [PackingBool] {
+        if let packingBools = packingBools_ as? Set<PackingBool> {
+            return packingBools.sorted(by: { $0.id < $1.id })
+        }
+        return []
+    }
+    
     // tripCount: computed property from Core Data trips_
     var listGroupsCount: Int { listgroups_?.count ?? 0 }
     
@@ -107,6 +121,26 @@ extension Item {
     
     // the name of its associated brand
     var brandName: String { brand_?.name_ ?? "Not Available" }
+    
+    /// Function to return an Items Packing Group In a specifc Gearlist.
+    func gearlistPackingGroup(gearlist: Gearlist, listGroup: ListGroup) -> PackingGroup? {
+        // First Filter out all the packingGroups by Gearlist
+        let packingGroups = packingGroups.filter({ $0.gearlist == gearlist })
+        // Second Filter out all the packingGroups by listGroup 
+        let packingGroup = packingGroups.first(where: { $0.packingListGroup(listGroup: listGroup) == listGroup })
+        
+        return packingGroup ?? nil
+    }
+    
+    /// Function to return an Items PackingBool in a specific Packing Group. 
+    func packingGroupPackingBool(packingGroup: PackingGroup, item: Item) -> PackingBool? {
+        // First Filter out all the packingBools by PackingGroup
+        let packingBools = packingBools.filter({$0.packingGroup_ == packingGroup })
+        // Second return the packingBool associated with the item
+        let packingBool = packingBools.first(where: {$0.item == item })
+        
+        return packingBool ?? nil 
+    }
     
     /*class func object(withID id: UUID) -> Item? {
         return object(id: id, context: PersistentStore.shared.context) as Item?

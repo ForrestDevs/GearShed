@@ -10,23 +10,27 @@ import SwiftUI
 struct AddPackingGroupView: View {
     @Environment(\.presentationMode) var presentationMode
     
-    @EnvironmentObject var persistentStore: PersistentStore
-
+    let persistentStore: PersistentStore
+    
+    let gearlist: Gearlist
+    
     @State private var editableData: EditablePackingGroupData
     
     @StateObject private var viewModel: GearlistData
     
     private var packGroupOut: ((PackingGroup) -> ())?
     
-    init(persistentStore: PersistentStore, packGroupOut: ((PackingGroup) -> ())? = nil) {
-    
+    init(persistentStore: PersistentStore, gearlist: Gearlist, packGroupOut: ((PackingGroup) -> ())? = nil) {
+        self.persistentStore = persistentStore
+        self.gearlist = gearlist
+        self.packGroupOut = packGroupOut
+        
         let viewModel = GearlistData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
         
         let initialValue = EditablePackingGroupData(persistentStore: persistentStore)
         _editableData = State(initialValue: initialValue)
         
-        self.packGroupOut = packGroupOut
     }
 
     var body: some View {
@@ -60,7 +64,7 @@ extension AddPackingGroupView {
     private var saveToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
-                viewModel.addNewPackingGroupFromItem(using: editableData, packGroupOut: { packGroup in packGroupOut!(packGroup) })
+                viewModel.addNewPackingGroupFromItem(using: editableData, gearlist: gearlist, packGroupOut: { packGroup in packGroupOut!(packGroup) })
                 presentationMode.wrappedValue.dismiss()
             } label: {
                 Text("Save")

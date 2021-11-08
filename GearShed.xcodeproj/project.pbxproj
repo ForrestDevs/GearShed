@@ -43,6 +43,9 @@
 		0853ABFC271F8E3300123497 /* BrandDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0853ABFB271F8E3300123497 /* BrandDetailView.swift */; };
 		0853ABFE271F8EF100123497 /* ShedDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0853ABFD271F8EF100123497 /* ShedDetailView.swift */; };
 		0853AC00271F983000123497 /* StatBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0853ABFF271F983000123497 /* StatBarView.swift */; };
+		0863DC38273701CB00A9A3B2 /* EditableListGroupData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0863DC37273701CB00A9A3B2 /* EditableListGroupData.swift */; };
+		0863DC3A2737054E00A9A3B2 /* EditableItemData-InList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0863DC392737054E00A9A3B2 /* EditableItemData-InList.swift */; };
+		0863DC3C27388B3B00A9A3B2 /* PackingGroupRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0863DC3B27388B3B00A9A3B2 /* PackingGroupRowView.swift */; };
 		086C925227238D03009F962D /* ModifyItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086C925127238D03009F962D /* ModifyItemView.swift */; };
 		08877EE62735AB80000D7FF4 /* AllItemsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08877EE52735AB80000D7FF4 /* AllItemsViewModel.swift */; };
 		08877EE82735BBA4000D7FF4 /* ListGroup+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08877EE72735BBA4000D7FF4 /* ListGroup+Extensions.swift */; };
@@ -187,6 +190,9 @@
 		0853ABFB271F8E3300123497 /* BrandDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandDetailView.swift; sourceTree = "<group>"; };
 		0853ABFD271F8EF100123497 /* ShedDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShedDetailView.swift; sourceTree = "<group>"; };
 		0853ABFF271F983000123497 /* StatBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatBarView.swift; sourceTree = "<group>"; };
+		0863DC37273701CB00A9A3B2 /* EditableListGroupData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableListGroupData.swift; sourceTree = "<group>"; };
+		0863DC392737054E00A9A3B2 /* EditableItemData-InList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditableItemData-InList.swift"; sourceTree = "<group>"; };
+		0863DC3B27388B3B00A9A3B2 /* PackingGroupRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackingGroupRowView.swift; sourceTree = "<group>"; };
 		086C925127238D03009F962D /* ModifyItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyItemView.swift; sourceTree = "<group>"; };
 		08877EE52735AB80000D7FF4 /* AllItemsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllItemsViewModel.swift; sourceTree = "<group>"; };
 		08877EE72735BBA4000D7FF4 /* ListGroup+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListGroup+Extensions.swift"; sourceTree = "<group>"; };
@@ -348,6 +354,9 @@
 			isa = PBXGroup;
 			children = (
 				08C7D8B9270F41F300EC3984 /* GearlistView.swift */,
+				08C7D919270F70F400EC3984 /* AllGearLists.swift */,
+				08C7D92D270F844C00EC3984 /* AddListView.swift */,
+				08C7D928270F7F7500EC3984 /* GearlistDetailView.swift */,
 				08877EF127363760000D7FF4 /* PackingGroup */,
 				088B15572734964900ECBC11 /* ListGroup  */,
 				08A7D0072729F7E2006FA3F7 /* Gearlist */,
@@ -429,6 +438,7 @@
 			isa = PBXGroup;
 			children = (
 				08877EF227363779000D7FF4 /* AddPackingGroupView.swift */,
+				0863DC3B27388B3B00A9A3B2 /* PackingGroupRowView.swift */,
 			);
 			path = PackingGroup;
 			sourceTree = "<group>";
@@ -448,6 +458,8 @@
 			children = (
 				080015A4272731DB00E1BE4C /* EditableGearlistData.swift */,
 				08877EF627363818000D7FF4 /* EditablePackingGroupData.swift */,
+				0863DC37273701CB00A9A3B2 /* EditableListGroupData.swift */,
+				0863DC392737054E00A9A3B2 /* EditableItemData-InList.swift */,
 			);
 			path = EditableListData;
 			sourceTree = "<group>";
@@ -476,11 +488,8 @@
 		08A7D0072729F7E2006FA3F7 /* Gearlist */ = {
 			isa = PBXGroup;
 			children = (
-				08C7D919270F70F400EC3984 /* AllGearLists.swift */,
-				08C7D92D270F844C00EC3984 /* AddListView.swift */,
 				08A7CFFA2728A088006FA3F7 /* AddMoreItemView.swift */,
 				08C7D926270F7DC200EC3984 /* GearlistRowView.swift */,
-				08C7D928270F7F7500EC3984 /* GearlistDetailView.swift */,
 			);
 			path = Gearlist;
 			sourceTree = "<group>";
@@ -953,6 +962,7 @@
 				08C7D8BE270F42AD00EC3984 /* DevTools.swift in Sources */,
 				08ED0FD72719DA490072CB90 /* ViewModel.swift in Sources */,
 				08C7D8CC270F475A00EC3984 /* NotificationName+Extensions.swift in Sources */,
+				0863DC38273701CB00A9A3B2 /* EditableListGroupData.swift in Sources */,
 				08371B5F271DFEC90072AD94 /* AllShedView.swift in Sources */,
 				08C7D8CA270F475A00EC3984 /* View+Extensions.swift in Sources */,
 				080015AA27277C2B00E1BE4C /* OffsetTabView.swift in Sources */,
@@ -986,6 +996,7 @@
 				08FE3661272CDC61000035A9 /* Text+Extension.swift in Sources */,
 				08C7D91A270F70F400EC3984 /* AllGearLists.swift in Sources */,
 				08371B50271BC5010072AD94 /* GearShedData.swift in Sources */,
+				0863DC3A2737054E00A9A3B2 /* EditableItemData-InList.swift in Sources */,
 				080015AC27277C2B00E1BE4C /* PagerHelper.swift in Sources */,
 				088B154E2732EBBC00ECBC11 /* EditableShedData.swift in Sources */,
 				08C7D912270F6DFC00EC3984 /* CategoryCodableProxy.swift in Sources */,
@@ -1052,6 +1063,7 @@
 				0853ABFE271F8EF100123497 /* ShedDetailView.swift in Sources */,
 				08ED0FE22719EAE10072CB90 /* AppTabBarView.swift in Sources */,
 				08C7D8FB270F66EB00EC3984 /* AddItemView.swift in Sources */,
+				0863DC3C27388B3B00A9A3B2 /* PackingGroupRowView.swift in Sources */,
 				08D67E0E27250F5A0064F639 /* PurchaseButton.swift in Sources */,
 				08C7D8A0270F3D1800EC3984 /* GearShedApp.swift in Sources */,
 				08C7D8F7270F65E100EC3984 /* SLCenteredButton.swift in Sources */,

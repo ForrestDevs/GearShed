@@ -7,6 +7,7 @@
         <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="brand_" inverseEntity="Item"/>
     </entity>
     <entity name="Gearlist" representedClassName="Gearlist" syncable="YES" codeGenerationType="class">
+        <attribute name="details_" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name_" optional="YES" attributeType="String"/>
         <relationship name="listgroups_" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ListGroup" inverseName="gearlist_" inverseEntity="ListGroup"/>
@@ -39,6 +40,7 @@
         <attribute name="name_" optional="YES" attributeType="String"/>
         <relationship name="gearlist_" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Gearlist" inverseName="listgroups_" inverseEntity="Gearlist"/>
         <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="listgroups_" inverseEntity="Item"/>
+        <relationship name="packingGroups_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PackingGroup" inverseName="listGroups_" inverseEntity="PackingGroup"/>
     </entity>
     <entity name="PackingBool" representedClassName="PackingBool" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
@@ -51,6 +53,7 @@
         <attribute name="name_" optional="YES" attributeType="String"/>
         <relationship name="gearlist_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gearlist" inverseName="packingGroups_" inverseEntity="Gearlist"/>
         <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="packingGroups_" inverseEntity="Item"/>
+        <relationship name="listGroups_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ListGroup" inverseName="packingGroups_" inverseEntity="ListGroup"/>
         <relationship name="packingBools_" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PackingBool" inverseName="packingGroup_" inverseEntity="PackingBool"/>
     </entity>
     <entity name="PlanGroup" representedClassName="PlanGroup" syncable="YES" codeGenerationType="class">
@@ -73,15 +76,15 @@
     </entity>
     <elements>
         <element name="Brand" positionX="-75.25048828125011" positionY="-428.4825286865234" width="128" height="103"/>
-        <element name="Gearlist" positionX="402.0806274414062" positionY="-458.5285949707032" width="128" height="103"/>
+        <element name="Gearlist" positionX="422.6006469726562" positionY="-474.5142517089844" width="128" height="118"/>
         <element name="GearPlan" positionX="-50.50823974609375" positionY="-730.9864654541016" width="128" height="88"/>
         <element name="Item" positionX="86.57061767578125" positionY="-421.3070678710937" width="128" height="268"/>
-        <element name="ListGroup" positionX="362.3774414062501" positionY="-247.1487121582032" width="128" height="103"/>
+        <element name="ListGroup" positionX="425.3574829101564" positionY="-263.120330810547" width="128" height="118"/>
+        <element name="PackingBool" positionX="280.9324340820312" positionY="-524.9606628417969" width="128" height="28"/>
+        <element name="PackingGroup" positionX="258.3058471679688" positionY="-388.7012939453124" width="128" height="133"/>
         <element name="PlanGroup" positionX="131.9351806640625" positionY="-727.3628387451172" width="128" height="103"/>
         <element name="PlanItem" positionX="286.516845703125" positionY="-725.1248168945312" width="128" height="88"/>
         <element name="PlanItemLabel" positionX="135.4661865234375" positionY="-809.1134033203125" width="128" height="43"/>
         <element name="Shed" positionX="-78.34631347656256" positionY="-307.3035888671876" width="128" height="103"/>
-        <element name="PackingGroup" positionX="255.1138916015625" positionY="-396.2874145507812" width="128" height="118"/>
-        <element name="PackingBool" positionX="243.6504516601562" positionY="-532.05322265625" width="128" height="103"/>
     </elements>
 </model>

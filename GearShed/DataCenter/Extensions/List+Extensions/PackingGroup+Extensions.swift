@@ -47,4 +47,16 @@ extension PackingGroup {
         }
     }
     
+    var listGroups: [ListGroup] {
+        if let listGroups = listGroups_ as? Set<ListGroup> {
+            return listGroups.sorted(by: { $0.name < $1.name } )
+        }
+        return []
+    }
+    
+    func packingListGroup(listGroup: ListGroup) -> ListGroup {
+        let listGroup = listGroups.first(where: { $0 == listGroup })
+        return listGroup!
+    }
+    
 }

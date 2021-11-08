@@ -12,11 +12,12 @@ struct ListGroupRowView: View {
     let persistentStore: PersistentStore
     
     let gearlist: Gearlist
+    
+    let listGroup: ListGroup
         
-    @StateObject private var itemVM: GearShedData
-    @StateObject private var listVM: GearlistData
-
-    @ObservedObject private var listGroup: ListGroup
+    @StateObject private var viewModel: GearlistData
+    
+    @State private var editableData: EditableListGroupData
     
     @State private var addItemsToListGroup: Bool = false
     
@@ -24,101 +25,101 @@ struct ListGroupRowView: View {
         self.persistentStore = persistentStore
         self.listGroup = listGroup
         self.gearlist = gearlist
-        // Init viewModel
-        let itemVM = GearShedData(persistentStore: persistentStore)
-        _itemVM = StateObject(wrappedValue: itemVM)
         
-        // Gearlist VM
-        let listVM = GearlistData(persistentStore: persistentStore)
-        _listVM = StateObject(wrappedValue: listVM)
+        let viewModel = GearlistData(persistentStore: persistentStore)
+        _viewModel = StateObject(wrappedValue: viewModel)
+        
+        let initialValue = EditableListGroupData(persistentStore: persistentStore, listGroup: listGroup)
+        _editableData = State(initialValue: initialValue)
     }
     
     var body: some View {
         VStack {
-            // Header
-            VStack {
-                HStack {
-                    TextField("", text: $listGroup.name)
-
-                    Button {
-                        addItemsToListGroup.toggle()
-                    } label: {
-                        Image(systemName: "plus")
-                    }
-                }
-                
-                Rectangle()
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 1)
-            }
-            // Item List
-            ForEach(listGroup.items) { item in
-                ItemRowViewInList(persistentStore: persistentStore, item: item, gearlist: gearlist)
-            }
-            .padding(.horizontal)
+            listGroupHeader
+            itemsList
         }
         .padding()
         .fullScreenCover(isPresented: $addItemsToListGroup) {
             AddListGroupItemView(persistentStore: persistentStore, listGroup: listGroup)
         }
+        .onDisappear {
+            viewModel.updateListGroup(using: editableData, listGroup: listGroup)
+        }
     }
 }
 
-struct ItemRowViewInList: View {
+extension ListGroupRowView {
     
-    @Environment(\.presentationMode) var presentationMode
+    private var listGroupHeader: some View {
+        VStack {
+            HStack {
+                TextField("", text: $editableData.name)
+                Button {
+                    addItemsToListGroup.toggle()
+                } label: {
+                    Image(systemName: "plus")
+                }
+            }
+            Rectangle()
+                .frame(maxWidth: .infinity)
+                .frame(height: 1)
+        }
+    }
     
-    @StateObject private var viewModel: GearlistData
+    private var itemsList: some View {
+        ForEach(listGroup.items) { item in
+            ItemRowViewInListGroup(persistentStore: persistentStore, item: item, listGroup: listGroup, gearlist: gearlist)
+        }
+        .padding(.horizontal)
+    }
+    
+}
 
+struct ItemRowViewInListGroup: View {
+        
     let persistentStore: PersistentStore
     
     let gearList: Gearlist
         
-    @ObservedObject var item: Item
+    let item: Item
     
-    @State private var editableData: EditablePackingGroupData
+    @StateObject private var viewModel: GearlistData
     
-    @State private var confirmDeleteItemAlert: ConfirmDeleteItemAlert?
-    @State private var showDetail: Bool = false
-    @State private var showEdit: Bool = false
+    @State private var editableData: EditableItemDataInList
+            
+    @State private var addNewPackingGroup: Bool = false
     
-    @State private var addNewPackingGroupNavLinkActive: Bool = false
+    init(persistentStore: PersistentStore, item: Item, listGroup: ListGroup, gearlist: Gearlist) {
+        self.persistentStore = persistentStore
+        self.item = item
+        self.gearList = gearlist
+        
+        let viewModel = GearlistData(persistentStore: persistentStore)
+        _viewModel = StateObject(wrappedValue: viewModel)
+        
+        let initialValue = EditableItemDataInList(persistentStore: persistentStore, item: item, listGroup: listGroup, gearlist: gearlist)
+        _editableData = State(initialValue: initialValue)
+    }
 
-    
     var body: some View {
         ZStack {
             Color.clear
-            
             itemBody
-            
-            
         }
-        .contextMenu {
-            deleteContextButton
+        .fullScreenCover(isPresented: $addNewPackingGroup) {
+            AddPackingGroupView (
+                persistentStore: persistentStore,
+                gearlist: gearList,
+                packGroupOut: { packGroup in editableData.packingGroup = packGroup })
         }
-        .alert(item: $confirmDeleteItemAlert) { item in item.alert() }
+        .onDisappear {
+            viewModel.updateItemPackingGroup(using: editableData)
+        }
     }
 }
 
-extension ItemRowViewInList {
-    
-    private var deleteContextButton: some View {
-        Button {
-            confirmDeleteItemAlert = ConfirmDeleteItemAlert (
-                persistentStore: persistentStore,
-                item: item,
-                destructiveCompletion: {
-                    presentationMode.wrappedValue.dismiss()
-                }
-            )
-        } label: {
-            HStack {
-                Text("Delete Item")
-                Image(systemName: "trash")
-            }
-        }
-    }
-    
+extension ItemRowViewInListGroup {
+        
     private var itemBody: some View {
         HStack {
             HStack {
@@ -134,27 +135,22 @@ extension ItemRowViewInList {
     }
     
     private var packInMenu: some View {
-        
         Menu {
-            // Add New Packing Group Button
             Button {
-                addNewPackingGroupNavLinkActive.toggle()
+                addNewPackingGroup.toggle()
             } label: {
                 Text("Add New PackIn")
                 .font(.subheadline)
             }
             
-            // List Of Current Sheds
             ForEach(viewModel.gearlistPackingGroups(gearlist: gearList)) { packingGroup in
                 Button {
                     editableData.packingGroup = packingGroup
                 } label: {
                     Text(packingGroup.name)
-                        .tag(packingGroup)
                         .font(.subheadline)
                 }
             }
-            
         } label: {
             HStack {
                 Text(editableData.packingGroup?.name ?? "Select PackGroup")
@@ -165,38 +161,6 @@ extension ItemRowViewInList {
             .background(Color.white)
             .clipShape(RoundedRectangle(cornerRadius: 5))
         }
-        .background(
-            NavigationLink(
-                destination: AddPackingGroupView (
-                                persistentStore: persistentStore,
-                                packGroupOut: { packGroup in editableData.packingGroup = packGroup }),
-                isActive: $addNewPackingGroupNavLinkActive) {
-                EmptyView()
-            }
-        )
-        
-        /*Menu {
-            ForEach(1..<5) { item in
-                Text("item \(item) ")
-            }
-        } label: {
-             Text("Packed In")
-                .background(Color.blue)
-        }*/
-        
-        
-    }
-    
-    init(persistentStore: PersistentStore, item: Item, gearlist: Gearlist) {
-        self.persistentStore = persistentStore
-        self.item = item
-        self.gearList = gearlist
-        
-        let viewModel = GearlistData(persistentStore: persistentStore)
-        _viewModel = StateObject(wrappedValue: viewModel)
-        
-        let initialValue = EditablePackingGroupData(persistentStore: persistentStore)
-        _editableData = State(initialValue: initialValue)
     }
     
 }

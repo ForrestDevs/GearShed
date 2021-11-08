@@ -16,9 +16,9 @@ struct EditablePackingGroupData {
     // (nil if data for a new item that does not yet exist)
     var id: UUID? = nil
     // all of the values here provide suitable defaults for a new Shed
-    var name: String = ""
+    var name: String
     
-    var packingGroup: PackingGroup? 
+    //var packingGroup: PackingGroup? 
     
     // to do a save/commit of an Item, it must have a non-empty name
     var canPackGroupBeSaved: Bool { name.count > 0 }
@@ -37,10 +37,9 @@ struct EditablePackingGroupData {
 extension EditablePackingGroupData {
     
     // this copies all the editable data from an incoming Shed
-    init(persistentStore: PersistentStore, packingGroup: PackingGroup) {
+    init(persistentStore: PersistentStore) {
         self.persistentStore = persistentStore
-        self.id = packingGroup.id
-        self.name = packingGroup.name
+        self.name = ""
     }
     
 }

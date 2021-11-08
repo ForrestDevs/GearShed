@@ -12,9 +12,7 @@ struct AllGearLists: View {
     @EnvironmentObject var persistentStore: PersistentStore
 
     @StateObject private var viewModel: GearlistData
-    
-    @State private var newList: Gearlist?
-    
+        
     @State private var isAddListShowing: Bool = false
     @State private var isAlertShowing: Bool = false
     @State private var newListName: String = ""
@@ -32,11 +30,10 @@ struct AllGearLists: View {
                 gearlistList
                 addListButtonOverlay
                 renameListAlertOverlay
-                //addListAlertOverlay
             }
         }
         .fullScreenCover(isPresented: $isAddListShowing) {
-            AddListView(persistentStore: persistentStore, gearlist: newList!)
+            AddListView(persistentStore: persistentStore)
         }
     }
 }
@@ -45,7 +42,7 @@ extension AllGearLists {
     
     private var gearlistList: some View {
         ScrollView(.vertical, showsIndicators: false) {
-            LazyVStack {
+            LazyVStack (alignment: .leading, spacing: 5) {
                 ForEach(viewModel.gearlists) { gearlist in
                     GearlistRowView(gearlist: gearlist)
                         .padding(.top, 15)
@@ -67,7 +64,6 @@ extension AllGearLists {
             HStack {
                 Spacer()
                 Button {
-                    newList = viewModel.addNewGearlistIDOnly()
                     isAddListShowing.toggle()
                 }
                 label: {

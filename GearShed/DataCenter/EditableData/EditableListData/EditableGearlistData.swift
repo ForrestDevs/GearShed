@@ -13,6 +13,8 @@ struct EditableGearlistData {
         
     var id: UUID?
     var name: String
+    
+    var details: String
         
     // to do a save/commit of an Item, it must have a non-empty name
     var canGearlistBeSaved: Bool { name.count > 0 }
@@ -33,6 +35,13 @@ extension EditableGearlistData {
         self.persistentStore = persistentStore
         id = gearlist.id
         name = gearlist.name
+        details = gearlist.details
+    }
+    
+    init(persistentStore: PersistentStore) {
+        self.persistentStore = persistentStore
+        self.name = ""
+        self.details = "" 
     }
     
 }

@@ -121,15 +121,18 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         persistentStore.saveContext()
     }
     
-    /// Function to create a new ItemGroup In List
+    /// Function to create a new ListGroup. 
     func createNewListGroup(gearlist: Gearlist) {
         let newListGroup = ListGroup(context: persistentStore.context)
-        
         newListGroup.id = UUID()
         newListGroup.name_ = "New List Group"
         newListGroup.gearlist = gearlist
-        
         persistentStore.saveContext()
+    }
+    
+    /// Function to edit ListGroup values.
+    func updateListGroup(using editableData: EditableListGroupData, listGroup: ListGroup) {
+        listGroup.name = editableData.name
     }
     
     /// Function to add Items to a List Group
@@ -140,12 +143,59 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     }
     
     /// Function to create a new PackingGroup from the Item Row In List Group then pass it back so it can populate as the selected PackingGroup.
-    func addNewPackingGroupFromItem(using editableData: EditablePackingGroupData, packGroupOut: ((PackingGroup) -> ())) {
+    func addNewPackingGroupFromItem(using editableData: EditablePackingGroupData, gearlist: Gearlist, packGroupOut: ((PackingGroup) -> ())) {
         let newPackingGroup = PackingGroup(context: persistentStore.context)
         newPackingGroup.id = UUID()
-        newPackingGroup.name_ = editableData.name
+        newPackingGroup.name = editableData.name
+        newPackingGroup.gearlist = gearlist
+        
         persistentStore.saveContext()
+        
         packGroupOut(newPackingGroup)
+    }
+    
+    func updateItemPackingGroup(using editableData: EditableItemDataInList) {
+        let item = editableData.associatedItem
+        //let packingGroup = editableData.packingGroup
+        //let packingBool = editableData.packingBool
+        
+        if let oldPackingGroup = editableData.oldPackingGroup {
+            item.removeFromPackingGroups_(oldPackingGroup)
+        }
+        
+        if let packingGroup = editableData.packingGroup {
+            packingGroup.addToListGroups_(editableData.listGroup!)
+            item.addToPackingGroups_(packingGroup)
+        }
+        
+        
+    }
+    
+    func updatePackingBools(using editableData: EditableItemDataInList) {
+        let item = editableData.associatedItem
+        
+        if let packingBool = item.packingGroupPackingBool(packingGroup: editableData.packingGroup!, item: item) {
+            packingBool.packingGroup_ = editableData.packingGroup
+        } else {
+            createNewPackingBool(packingGroup: editableData.packingGroup!, item: item)
+        }
+    }
+    
+    func addPackingGroupToItem(item: Item, packingGroup: PackingGroup) {
+        item.addToPackingGroups_(packingGroup)
+        persistentStore.saveContext()
+    }
+    
+    func createNewPackingBool(packingGroup: PackingGroup, item: Item) {
+        if item.packingGroupPackingBool(packingGroup: packingGroup, item: item) != nil {
+            return
+        } else {
+            let newPackingBool = PackingBool(context: persistentStore.context)
+            newPackingBool.id = UUID()
+            newPackingBool.isPacked = false
+            newPackingBool.packingGroup = packingGroup
+            newPackingBool.item = item
+        }
     }
     
     /// Function for returning only items that arent already in the list

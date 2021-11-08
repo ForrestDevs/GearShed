@@ -29,7 +29,6 @@ struct GearlistRowView: View {
                     HStack {
                         Text(gearlist.name)
                         Spacer()
-                        //Text("\(gearlist.listGroup.count)")
                     }
                 }
             }
@@ -47,6 +46,7 @@ struct GearlistRowView: View {
 }
 
 extension GearlistRowView {
+    
     private var editContextButton: some View {
         Button {
             showEdit.toggle()

@@ -19,8 +19,10 @@ struct AddListGroupItemView: View {
     
     init(persistentStore: PersistentStore, listGroup: ListGroup) {
         self.listGroup = listGroup
+        
         let itemVM = GearShedData(persistentStore: persistentStore)
         _itemVM = StateObject(wrappedValue: itemVM)
+        
         let listVM = GearlistData(persistentStore: persistentStore)
         _listVM = StateObject(wrappedValue: listVM)
     }
@@ -95,6 +97,7 @@ extension AddListGroupItemView {
             }
         }
     }
+    
     private var saveButtonToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {

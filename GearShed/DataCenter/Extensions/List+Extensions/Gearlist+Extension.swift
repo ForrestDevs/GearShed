@@ -25,6 +25,14 @@ extension Gearlist {
         }
     }
     
+    var details: String {
+        get { details_ ?? "Unknown Detials" }
+        set {
+            details_ = newValue
+            listGroups.forEach({ $0.objectWillChange.send() })
+        }
+    }
+    
     // items: fronts Core Data attribute items_ that is an NSSet, and turns it into
     // a Swift array
     var listGroups: [ListGroup] {
