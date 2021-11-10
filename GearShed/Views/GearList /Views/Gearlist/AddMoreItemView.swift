@@ -4,7 +4,7 @@
 //
 //  Created by Luke Forrest Gannon on 2021-10-26.
 //
-
+/*
 import SwiftUI
 
 struct AddMoreItemView: View {
@@ -109,4 +109,4 @@ extension AddMoreItemView {
         //Gearlist.addItemsToList(itemArray: itemsChecked, gearList: gearlist)
     }
 }
-
+*/

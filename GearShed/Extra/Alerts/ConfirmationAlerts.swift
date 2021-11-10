@@ -8,7 +8,6 @@
 
 import SwiftUI
 
-// MARK: - Confirm DELETE ITEM Alert
 struct ConfirmDeleteItemAlert: ConfirmationAlertProtocol {
     
     @EnvironmentObject var persistentStore: PersistentStore
@@ -28,10 +27,10 @@ struct ConfirmDeleteItemAlert: ConfirmationAlertProtocol {
 	
 	var item: Item
 	
-	var title: String { "Delete \'\(item.name)\'?" }
+	var title: String { "Delete \(item.name)?" }
 	
 	var message: String {
-		"Are you sure you want to delete the Item named \'\(item.name)\'? This action cannot be undone"
+		"Are you sure you want to delete \(item.name)? This action cannot be undone"
 	}
 	
 	func destructiveAction() {
@@ -40,28 +39,48 @@ struct ConfirmDeleteItemAlert: ConfirmationAlertProtocol {
 	
 	var destructiveCompletion: (() -> Void)?
 	var nonDestructiveCompletion: (() -> Void)?
-	
-	
 }
 
-// MARK: - Confirm MOVE ALL ITEMS OF LIST Alert
-/*struct ConfirmMoveAllItemsOffShoppingListAlert: ConfirmationAlertProtocol {
-	var id = UUID()
-	
-	var title: String { "Move All Items Off-List" }
-	
-	var message: String { "" }
-	
-	func destructiveAction() {
-		Item.moveAllItemsOffShoppingList()
-	}
-	
-	var destructiveCompletion: (() -> Void)?
-	var nonDestructiveCompletion: (() -> Void)?
-}*/
+struct ConfirmRemoveItemFromListAlert: ConfirmationAlertProtocol {
+    
+    @EnvironmentObject var persistentStore: PersistentStore
+    
+    @StateObject private var viewModel: GearlistData
+    
+    init(persistentStore: PersistentStore, item: Item, listGroup: ListGroup, packingGroup: PackingGroup?, destructiveCompletion: (() -> Void)? = nil) {
+        self.item = item
+        self.listGroup = listGroup
+        self.packingGroup = packingGroup
+        self.destructiveCompletion = destructiveCompletion
+        
+        let viewModel = GearlistData(persistentStore: persistentStore)
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
+    
+    var id = UUID()
+    
+    var item: Item
+    
+    var listGroup: ListGroup
+    
+    var packingGroup: PackingGroup?
+    
+    var title: String { "Remove \(item.name) ?" }
+    
+    var message: String {
+        "Are you sure you want to remove \(item.name) from List? This action cannot be undone"
+    }
+    
+    func destructiveAction() {
+        viewModel.removeItemFromList(item: item, listGroup: listGroup, packingGroup: packingGroup)
+    }
+    
+    var destructiveCompletion: (() -> Void)?
+    var nonDestructiveCompletion: (() -> Void)?
+}
 
-// MARK: - Confirm DELETE Shed Alert
 struct ConfirmDeleteShedAlert: ConfirmationAlertProtocol {
+    
     @EnvironmentObject var persistentStore: PersistentStore
     
     @StateObject private var viewModel: GearShedData
@@ -79,10 +98,10 @@ struct ConfirmDeleteShedAlert: ConfirmationAlertProtocol {
 	
 	var shed: Shed
 	
-	var title: String { "Delete \'\(shed.name)\'?" }
+	var title: String { "Delete \(shed.name)?" }
 	
 	var message: String {
-		"Are you sure you want to delete the Shed named \'\(shed.name)\'? All items at this shed will be moved to the Unknown Shed.  This action cannot be undone."
+		"Are you sure you want to delete \(shed.name)? All items at this shed will be moved to the Unknown Shed. This action cannot be undone."
 	}
 	
 	func destructiveAction() {
@@ -91,13 +110,10 @@ struct ConfirmDeleteShedAlert: ConfirmationAlertProtocol {
 	
 	var destructiveCompletion: (() -> Void)?
 	var nonDestructiveCompletion: (() -> Void)?
-	
-	
-	
 }
 
-// MARK: - Confirm DELETE BRAND Alert
 struct ConfirmDeleteBrandAlert: ConfirmationAlertProtocol {
+    
     @EnvironmentObject var persistentStore: PersistentStore
     
     @StateObject private var viewModel: GearShedData
@@ -115,10 +131,10 @@ struct ConfirmDeleteBrandAlert: ConfirmationAlertProtocol {
     
     var brand: Brand
     
-    var title: String { "Delete \'\(brand.name)\'?" }
+    var title: String { "Delete \(brand.name)?" }
     
     var message: String {
-        "Are you sure you want to delete the Brand named \'\(brand.name)\'? All items at this brand will be moved to the Unknown Brand.  This action cannot be undone."
+        "Are you sure you want to delete \(brand.name)? All items at this brand will be moved to the Unknown Brand. This action cannot be undone."
     }
     
     func destructiveAction() {
@@ -127,12 +143,8 @@ struct ConfirmDeleteBrandAlert: ConfirmationAlertProtocol {
     
     var destructiveCompletion: (() -> Void)?
     var nonDestructiveCompletion: (() -> Void)?
-    
-    
-    
 }
 
-// MARK: - Confirm DELETE Gearlist Alert
 struct ConfirmDeleteGearlistAlert: ConfirmationAlertProtocol {
     @EnvironmentObject var persistentStore: PersistentStore
     
@@ -151,10 +163,10 @@ struct ConfirmDeleteGearlistAlert: ConfirmationAlertProtocol {
     
     var gearlist: Gearlist
     
-    var title: String { "Delete \'\(gearlist.name)\'?" }
+    var title: String { "Delete \(gearlist.name)?" }
     
     var message: String {
-        "Are you sure you want to delete the Gearlist named \(gearlist.name)?  This action cannot be undone."
+        "Are you sure you want to delete \(gearlist.name)? This action cannot be undone."
     }
     
     func destructiveAction() {
@@ -163,7 +175,4 @@ struct ConfirmDeleteGearlistAlert: ConfirmationAlertProtocol {
     
     var destructiveCompletion: (() -> Void)?
     var nonDestructiveCompletion: (() -> Void)?
-    
 }
-
-

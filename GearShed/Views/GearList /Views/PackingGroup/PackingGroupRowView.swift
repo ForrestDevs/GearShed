@@ -44,7 +44,7 @@ extension PackingGroupRowView {
     
     private var packingGroupItems: some View {
         ForEach(packingGroup.items) { item in
-            ItemRowViewInPackingGroup(item: item, packingGroup: packingGroup, viewModel: viewModel)
+            ItemRowViewInPackingGroup(item: item, packingGroup: packingGroup, persistentStore: persistentStore)
         }
     }
     
@@ -56,13 +56,19 @@ struct ItemRowViewInPackingGroup: View {
     
     let packingGroup: PackingGroup
     
-    @State private var isPacked: Bool = false
+    @StateObject private var viewModel: GearlistData
+
+    @State private var isPacked: Bool
     
-    init(item: Item, packingGroup: PackingGroup, viewModel: GearlistData) {
+    init(item: Item, packingGroup: PackingGroup, persistentStore: PersistentStore) {
         self.item = item
         self.packingGroup = packingGroup
         
-        viewModel.createNewPackingBool(packingGroup: packingGroup, item: item)
+        let viewModel = GearlistData(persistentStore: persistentStore)
+        _viewModel = StateObject(wrappedValue: viewModel)
+        
+        let initialState = item.packingGroupPackingBool(packingGroup: packingGroup, item: item)?.isPacked
+        _isPacked = State(initialValue: initialState!)
     }
     
     var body: some View {
@@ -78,22 +84,23 @@ extension ItemRowViewInPackingGroup {
     
     private var packedButton: some View {
         Button {
-            if item.packingGroupPackingBool(packingGroup: packingGroup, item: item)!.isPacked == true {
+            isPacked.toggle()
+            viewModel.togglePackingBoolState(packingBool: item.packingGroupPackingBool(packingGroup: packingGroup, item: item)!)
+            /*if item.packingGroupPackingBool(packingGroup: packingGroup, item: item)!.isPacked == true {
                 item.packingGroupPackingBool(packingGroup: packingGroup, item: item)!.isPacked = false
             } else {
                 item.packingGroupPackingBool(packingGroup: packingGroup, item: item)!.isPacked = true
-            }
+            }*/
         } label: {
             ZStack {
                 Rectangle()
                     .strokeBorder(Color.theme.accent, lineWidth: 2)
                     .frame(width: 25, height: 25)
-                if item.packingGroupPackingBool(packingGroup: packingGroup, item: item)!.isPacked == true {
+                if isPacked == true {
                     Image(systemName: "checkmark")
                         .foregroundColor(Color.green)
                 }
             }
-            
         }
         
     }

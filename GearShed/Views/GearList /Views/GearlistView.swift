@@ -11,19 +11,20 @@ import SwiftUI
 struct GearlistView: View {
     static let tag: String? = "GearList"
     
-    @EnvironmentObject var persistentStore: PersistentStore
-    
-    @StateObject private var viewModel: GearlistData
-    
-    @State private var currentSelection: Int = 0
+    let persistentStore: PersistentStore
         
+    @StateObject private var viewModel: GearlistData
+            
     init(persistentStore: PersistentStore) {
+        self.persistentStore = persistentStore
+        
         let viewModel = GearlistData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
     }
 
     var body: some View {
         AllGearLists(persistentStore: persistentStore)
+        .environmentObject(viewModel)
         .padding(.top, 10)
         .ignoresSafeArea(.container, edges: .bottom)
         .navigationBarTitle("Gear List", displayMode: .inline)
@@ -40,6 +41,7 @@ struct GearlistView: View {
     }
 }
 
+//@State private var currentSelection: Int = 0
 
 /*PagerTabView(tint: Color.theme.accent, selection: $currentSelection) {
     Text("PERSONAL LIST")

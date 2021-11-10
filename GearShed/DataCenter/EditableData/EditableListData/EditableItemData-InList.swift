@@ -38,8 +38,8 @@ extension EditableItemDataInList {
         self.name = item.name
         self.gearlist = gearlist
         self.listGroup = listGroup
-        self.packingGroup = item.gearlistPackingGroup(gearlist: gearlist, listGroup: listGroup)
-        self.oldPackingGroup = item.gearlistPackingGroup(gearlist: gearlist, listGroup: listGroup)
+        self.packingGroup = item.listGroupPackingGroup(gearlist: gearlist, listGroup: listGroup)
+        self.oldPackingGroup = item.listGroupPackingGroup(gearlist: gearlist, listGroup: listGroup)
         self.packingBool = nil
     }
     

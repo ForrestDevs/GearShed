@@ -123,7 +123,7 @@ extension Item {
     var brandName: String { brand_?.name_ ?? "Not Available" }
     
     /// Function to return an Items Packing Group In a specifc Gearlist.
-    func gearlistPackingGroup(gearlist: Gearlist, listGroup: ListGroup) -> PackingGroup? {
+    func listGroupPackingGroup(gearlist: Gearlist, listGroup: ListGroup) -> PackingGroup? {
         // First Filter out all the packingGroups by Gearlist
         let packingGroups = packingGroups.filter({ $0.gearlist == gearlist })
         // Second Filter out all the packingGroups by listGroup 

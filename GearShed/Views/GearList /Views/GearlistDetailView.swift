@@ -11,19 +11,27 @@ import SwiftUI
 struct GearlistDetailView: View {
     @Environment(\.presentationMode) var presentationMode
 
-    let persistentStore: PersistentStore
+    @EnvironmentObject var viewModel: GearlistData
     
-    @StateObject private var viewModel: GearlistData
+    @EnvironmentObject var detailManager: DetailViewManager
+    
+    @EnvironmentObject var persistentStore: PersistentStore
+    
+    //let persistentStore: PersistentStore
+    
+    //@StateObject private var viewModel: GearlistData
     
     @ObservedObject private var gearlist: Gearlist
     
     @State private var isEditMode: Bool = true
+            
+    init(/*persistentStore: PersistentStore,*/ gearlist: Gearlist) {
         
-    init(persistentStore: PersistentStore, gearlist: Gearlist) {
-        self.persistentStore = persistentStore
+        //self.persistentStore = persistentStore
         self.gearlist = gearlist
-        let viewModel = GearlistData(persistentStore: persistentStore)
-        _viewModel = StateObject(wrappedValue: viewModel)
+        
+        //let viewModel = GearlistData(persistentStore: persistentStore)
+        //_viewModel = StateObject(wrappedValue: viewModel)
     }
     
     var body: some View {
@@ -44,10 +52,15 @@ struct GearlistDetailView: View {
                 listModeToolbarContent
             }
         }
+        .transition(.moveAndFade)
+        //.transition(.slide)
+        //.transition(.scale)
+        //.transition(.move(edge: .trailing))
     }
 }
 
 extension GearlistDetailView {
+    
     private var listModeToolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
@@ -65,7 +78,10 @@ extension GearlistDetailView {
     private var backButtonToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
-                presentationMode.wrappedValue.dismiss()
+                withAnimation {
+                    detailManager.showGearlistDetail = false
+                }
+                //presentationMode.wrappedValue.dismiss()
             } label: {
                 Image(systemName: "chevron.left")
             }
@@ -124,6 +140,7 @@ extension GearlistDetailView {
         }
     }
 }
+
 
 
 /*private var itemList: some View {

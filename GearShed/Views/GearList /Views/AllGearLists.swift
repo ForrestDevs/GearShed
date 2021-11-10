@@ -14,11 +14,7 @@ struct AllGearLists: View {
     @StateObject private var viewModel: GearlistData
         
     @State private var isAddListShowing: Bool = false
-    @State private var isAlertShowing: Bool = false
-    @State private var newListName: String = ""
-    @State private var gearlist1: Gearlist? = nil
-    @State private var activateAddItems: Bool = false
-    
+   
     init(persistentStore: PersistentStore) {
         let viewModel = GearlistData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -29,7 +25,6 @@ struct AllGearLists: View {
             ZStack {
                 gearlistList
                 addListButtonOverlay
-                renameListAlertOverlay
             }
         }
         .fullScreenCover(isPresented: $isAddListShowing) {
@@ -46,12 +41,6 @@ extension AllGearLists {
                 ForEach(viewModel.gearlists) { gearlist in
                     GearlistRowView(gearlist: gearlist)
                         .padding(.top, 15)
-                        .contextMenu{ listRowContextMenu(editTrigger: {
-                            gearlist1 = gearlist
-                            isAlertShowing = true
-                        }, deletionTrigger: {
-                            //Gearlist.delete(gearlist)
-                        })}
                 }
             }
             .padding(.bottom, 75)
@@ -86,12 +75,20 @@ extension AllGearLists {
             }
         }
     }
-    
-    private var renameListAlertOverlay: some View {
-        AZAlert(title: "Rename List", isShown: $isAlertShowing, text: $newListName) { text in
-            //gearlist1?.updateName(gearlist: gearlist1!, name: text)
-            newListName = ""
-        }
-    }
 }
+
+
+
+
+//@State private var isAlertShowing: Bool = false
+ //@State private var newListName: String = ""
+ //@State private var gearlist1: Gearlist? = nil
+ //@State private var activateAddItems: Bool = false
+/*private var renameListAlertOverlay: some View {
+    AZAlert(title: "Rename List", isShown: $isAlertShowing, text: $newListName) { text in
+        //gearlist1?.updateName(gearlist: gearlist1!, name: text)
+        newListName = ""
+    }
+}*/
+
 

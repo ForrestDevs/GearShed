@@ -9,8 +9,12 @@
 import SwiftUI
 
 struct GearlistRowView: View {
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.presentationMode) private var presentationMode
 
+    @EnvironmentObject var viewModel: GearlistData
+    
+    @EnvironmentObject var detailManager: DetailViewManager
+    
     @EnvironmentObject var persistentStore: PersistentStore
 
     @ObservedObject var gearlist: Gearlist
@@ -24,7 +28,20 @@ struct GearlistRowView: View {
             Color.clear
             VStack {
                 Button {
-                    showDetail.toggle()
+                    withAnimation {
+                        detailManager.content = AnyView (
+                            GearlistDetailView (
+                                //persistentStore: persistentStore,
+                                gearlist: gearlist
+                            )
+                            .environmentObject(viewModel)
+                            .environmentObject(persistentStore)
+                            .environmentObject(detailManager)
+                        )
+                        
+                        detailManager.showGearlistDetail = true
+                        //showDetail.toggle()
+                    }
                 } label: {
                     HStack {
                         Text(gearlist.name)
@@ -38,10 +55,14 @@ struct GearlistRowView: View {
             editContextButton
             deleteContextButton
         }
-        .alert(item: $confirmDeleteGearlistAlert) { gearlist in gearlist.alert() }
-        .fullScreenCover(isPresented: $showDetail) {
+        
+        /*.fullScreenCover(isPresented: $showDetail) {
             GearlistDetailView(persistentStore: persistentStore, gearlist: gearlist)
+        }*/
+        .fullScreenCover(isPresented: $showEdit) {
+            ModifyListView(persistentStore: persistentStore, gearlist: gearlist)
         }
+        .alert(item: $confirmDeleteGearlistAlert) { gearlist in gearlist.alert() }
     }
 }
 
@@ -75,5 +96,7 @@ extension GearlistRowView {
         }
     }
 }
+
+
 
 
