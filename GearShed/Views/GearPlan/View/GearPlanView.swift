@@ -73,20 +73,20 @@ struct DevView: View {
     @FetchRequest(entity: Gearlist.entity(), sortDescriptors: [])
     private var gearlists: FetchedResults<Gearlist>
     
-    @FetchRequest(entity: ListGroup.entity(), sortDescriptors: [])
-    private var listGroups: FetchedResults<ListGroup>
+    @FetchRequest(entity: Cluster.entity(), sortDescriptors: [])
+    private var listGroups: FetchedResults<Cluster>
     
-    @FetchRequest(entity: PackingGroup.entity(), sortDescriptors: [])
-    private var packingGroups: FetchedResults<PackingGroup>
+    @FetchRequest(entity: Container.entity(), sortDescriptors: [])
+    private var packingGroups: FetchedResults<Container>
     
-    @FetchRequest(entity: PackingBool.entity(), sortDescriptors: [])
-    private var packingBools: FetchedResults<PackingBool>
+    @FetchRequest(entity: ContainerBool.entity(), sortDescriptors: [])
+    private var packingBools: FetchedResults<ContainerBool>
     
     
     var body: some View {
         ScrollView(.vertical) {
             VStack {
-                VStack {
+                /*VStack {
                     Text("Items")
                         .font(.headline)
                     ForEach(items) { item in
@@ -107,7 +107,7 @@ struct DevView: View {
                     ForEach(brands) { brand in
                         Text(brand.name)
                     }
-                }
+                }*/
                 
                 VStack {
                     Text("Lists")
@@ -118,26 +118,40 @@ struct DevView: View {
                 }
                 
                 VStack {
-                    Text("ListGroups")
+                    Text("Clusters")
                         .font(.headline)
                     ForEach(listGroups) { listGroup in
-                        Text(listGroup.name)
+                        HStack {
+                            Text(listGroup.name)
+                            ForEach(listGroup.items) { item in
+                                Text(item.name)
+                            }
+                        }
                     }
                 }
                 
                 VStack {
-                    Text("PackingGroups")
+                    Text("Containers")
                         .font(.headline)
                     ForEach(packingGroups) { packingGroup in
-                        Text(packingGroup.name)
+                        HStack {
+                            Text(packingGroup.name)
+                            ForEach(packingGroup.items) { item in
+                                Text(item.name)
+                            }
+                        }
                     }
                 }
                 
                 VStack {
-                    Text("PackingBools")
+                    Text("ContainerBools")
                         .font(.headline)
                     ForEach(packingBools) { packingBool in
-                        Text(packingBool.item.name)
+                        HStack {
+                            Text(packingBool.item.name)
+                            Text(packingBool.container?.name ?? "")
+                        }
+                        
                     }
                 }
         

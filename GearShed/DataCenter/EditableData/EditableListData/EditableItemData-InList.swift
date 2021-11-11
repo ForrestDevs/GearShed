@@ -13,14 +13,15 @@ struct EditableItemDataInList {
     
     var id: UUID?
     var name: String
+    var gearlist: Gearlist
     
-    var gearlist: Gearlist?
-    var listGroup: ListGroup?
-
-    var packingGroup: PackingGroup?
-    var packingBool: PackingBool?
+    var cluster: Cluster?
+    var previousCluster: Cluster?
     
-    let oldPackingGroup: PackingGroup?
+    var container: Container?
+    var previousContainer: Container?
+    
+    var containerBool: ContainerBool?
     
     /// If the item has an ID then the item has already been created and exists in CoreData Store.
     var representsExistingItem: Bool { id != nil }
@@ -32,15 +33,19 @@ struct EditableItemDataInList {
 
 extension EditableItemDataInList {
     
-    init(persistentStore: PersistentStore, item: Item, listGroup: ListGroup, gearlist: Gearlist) {
+    init(persistentStore: PersistentStore, item: Item, gearlist: Gearlist) {
         self.persistentStore = persistentStore
         self.id = item.id
         self.name = item.name
         self.gearlist = gearlist
-        self.listGroup = listGroup
-        self.packingGroup = item.listGroupPackingGroup(gearlist: gearlist, listGroup: listGroup)
-        self.oldPackingGroup = item.listGroupPackingGroup(gearlist: gearlist, listGroup: listGroup)
-        self.packingBool = nil
+        
+        self.cluster = item.gearlistCluster(gearlist: gearlist)
+        self.previousCluster = item.gearlistCluster(gearlist: gearlist)
+        
+        self.container = item.gearlistContainer(gearlist: gearlist)
+        self.previousContainer = item.gearlistContainer(gearlist: gearlist)
+        
+        self.containerBool = item.gearlistContainerBool(gearlist: gearlist)
     }
     
     

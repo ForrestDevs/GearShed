@@ -30,17 +30,13 @@ struct GearlistRowView: View {
                 Button {
                     withAnimation {
                         detailManager.content = AnyView (
-                            GearlistDetailView (
-                                //persistentStore: persistentStore,
-                                gearlist: gearlist
-                            )
+                            GearlistDetailView (gearlist: gearlist)
                             .environmentObject(viewModel)
                             .environmentObject(persistentStore)
                             .environmentObject(detailManager)
                         )
                         
                         detailManager.showGearlistDetail = true
-                        //showDetail.toggle()
                     }
                 } label: {
                     HStack {
@@ -55,10 +51,6 @@ struct GearlistRowView: View {
             editContextButton
             deleteContextButton
         }
-        
-        /*.fullScreenCover(isPresented: $showDetail) {
-            GearlistDetailView(persistentStore: persistentStore, gearlist: gearlist)
-        }*/
         .fullScreenCover(isPresented: $showEdit) {
             ModifyListView(persistentStore: persistentStore, gearlist: gearlist)
         }
@@ -96,6 +88,7 @@ extension GearlistRowView {
         }
     }
 }
+
 
 
 

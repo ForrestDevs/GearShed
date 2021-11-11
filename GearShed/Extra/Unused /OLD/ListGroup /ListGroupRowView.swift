@@ -1,27 +1,27 @@
 //
-//  ListGroupRowView.swift
+//  ClusterRowView.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-11-04.
 //
 
-import SwiftUI
-
-struct ListGroupRowView: View {
+//import SwiftUI
+/*
+struct ClusterRowView: View {
 
     let persistentStore: PersistentStore
     
     let gearlist: Gearlist
     
-    let listGroup: ListGroup
+    let listGroup: Cluster
         
     @StateObject private var viewModel: GearlistData
     
-    @State private var editableData: EditableListGroupData
+    @State private var editableData: EditableClusterData
     
-    @State private var addItemsToListGroup: Bool = false
+    @State private var addItemsToCluster: Bool = false
     
-    init(persistentStore: PersistentStore, listGroup: ListGroup, gearlist: Gearlist) {
+    init(persistentStore: PersistentStore, listGroup: Cluster, gearlist: Gearlist) {
         self.persistentStore = persistentStore
         self.listGroup = listGroup
         self.gearlist = gearlist
@@ -29,7 +29,7 @@ struct ListGroupRowView: View {
         let viewModel = GearlistData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
         
-        let initialValue = EditableListGroupData(persistentStore: persistentStore, listGroup: listGroup)
+        let initialValue = EditableClusterData(persistentStore: persistentStore, listGroup: listGroup)
         _editableData = State(initialValue: initialValue)
     }
     
@@ -39,28 +39,29 @@ struct ListGroupRowView: View {
             itemsList
         }
         .padding()
-        .fullScreenCover(isPresented: $addItemsToListGroup) {
-            AddListGroupItemView(persistentStore: persistentStore, listGroup: listGroup)
+        .fullScreenCover(isPresented: $addItemsToCluster) {
+            /*AddClusterItemView(persistentStore: persistentStore, listGroup: listGroup)*/
         }
     }
 }
 
-extension ListGroupRowView {
+extension ClusterRowView {
+    
     
     private var listGroupHeader: some View {
         VStack {
             HStack {
-                TextField("", text: $editableData.name.onChange(updateListGroupName))
+                TextField("Add list Group Name", text: $editableData.name.onChange(updateClusterName))
                 Button {
-                    addItemsToListGroup.toggle()
+                    addItemsToCluster.toggle()
                 } label: {
                     Image(systemName: "plus")
                 }
-                Button {
-                    viewModel.deleteListGroup(listGroup: listGroup, gearlist: gearlist)
+                /*Button {
+                    viewModel.deleteCluster(listGroup: listGroup, gearlist: gearlist)
                 } label: {
                     Image(systemName: "trash")
-                }
+                }*/
             }
             Rectangle()
                 .frame(maxWidth: .infinity)
@@ -68,19 +69,19 @@ extension ListGroupRowView {
         }
     }
     
-    func updateListGroupName(to value: String) {
-        viewModel.updateListGroup(using: editableData, listGroup: listGroup)
+    func updateClusterName(to value: String) {
+        viewModel.updateCluster(using: editableData, listGroup: listGroup)
     }
     private var itemsList: some View {
         ForEach(listGroup.items) { item in
-            ItemRowViewInListGroup(persistentStore: persistentStore, item: item, listGroup: listGroup, gearlist: gearlist)
+            ItemRowViewInCluster(persistentStore: persistentStore, item: item, listGroup: listGroup, gearlist: gearlist)
         }
         .padding(.horizontal)
     }
     
 }
 
-struct ItemRowViewInListGroup: View {
+struct ItemRowViewInCluster: View {
     @Environment(\.presentationMode) private var presentationMode
         
     let persistentStore: PersistentStore
@@ -89,7 +90,7 @@ struct ItemRowViewInListGroup: View {
         
     let item: Item
     
-    let listGroup: ListGroup
+    let listGroup: Cluster
     
     @StateObject private var viewModel: GearlistData
     
@@ -101,7 +102,7 @@ struct ItemRowViewInListGroup: View {
     @State private var addNewPackingGroup: Bool = false
     @State private var confirmRemoveItemAlert: ConfirmRemoveItemFromListAlert?
 
-    init(persistentStore: PersistentStore, item: Item, listGroup: ListGroup, gearlist: Gearlist) {
+    init(persistentStore: PersistentStore, item: Item, listGroup: Cluster, gearlist: Gearlist) {
         self.persistentStore = persistentStore
         self.item = item
         self.gearList = gearlist
@@ -135,7 +136,7 @@ struct ItemRowViewInListGroup: View {
     }
 }
 
-extension ItemRowViewInListGroup {
+extension ItemRowViewInCluster {
         
     private var itemBody: some View {
         ZStack {
@@ -243,3 +244,4 @@ struct LukeView: View {
         print("Name changed to \(name)!")
     }
 }
+*/

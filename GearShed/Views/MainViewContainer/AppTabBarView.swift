@@ -37,7 +37,7 @@ extension AppTabBarView {
     private var tabLayer: some View {
         VStack {
             Spacer()
-            HStack (spacing: 75) {
+            HStack (spacing: 50) {
                 gearShedButton
                 gearListButton
                 gearPlanButton
@@ -70,7 +70,7 @@ extension AppTabBarView {
     
     private var gearShedButton: some View {
         VStack (alignment: .center, spacing: 0) {
-            Image(systemName: "bag")
+            //Image(systemName: "bag")
             
             Text("Gear Shed")
                 .formatNoColorSmall()
@@ -86,7 +86,7 @@ extension AppTabBarView {
 
     private var gearListButton: some View {
         VStack (alignment: .center, spacing: 0) {
-            Image(systemName: "list.bullet.rectangle")
+            //Image(systemName: "list.bullet.rectangle")
             Text("Gear List")
                 .formatNoColorSmall()
         }
@@ -102,7 +102,7 @@ extension AppTabBarView {
     
     private var gearPlanButton: some View {
         VStack (alignment: .center, spacing: 0) {
-            Image(systemName: "list.bullet.rectangle")
+            //Image(systemName: "list.bullet.rectangle")
             Text("Gear Plan")
                 .formatNoColorSmall()
         }

@@ -26,10 +26,16 @@ extension Item {
     }
 	
 	// whether the item is a favourtie or not.  this fronts a Core Data boolean
-	var isFavourite: Bool { isFavourite_ }
+	var isFavourite: Bool {
+        get { isFavourite_ }
+        set { isFavourite_ = newValue }
+    }
     
     // whether the item is a regret or not.  this fronts a Core Data boolean
-    var isRegret: Bool { isRegret_ }
+    var isRegret: Bool {
+        get { isRegret_ }
+        set { isRegret_ = newValue }
+    }
 	
 	// whether the item is on the list or wishlist.  this fronts a Core Data boolean,
 	// but when changed from true to false, it signals a purchase, so update
@@ -87,34 +93,39 @@ extension Item {
         }
     }
     
+    var gearlists: [Gearlist] {
+        if let gearlists = gearlists_ as? Set<Gearlist> {
+            return gearlists.sorted(by: { $0.name < $1.name })
+        }
+        return []
+    }
+    
     // the date purchased
-    var datePurchased: Date { datePurchased_ ?? Date() }
+    var datePurchased: Date? {
+        get { datePurchased_ ?? nil }
+        set { datePurchased_ = newValue }
+    }
     
-    // gearlists: fronts Core Data attribute gearlists_ that is an NSSet, and turns it into
-    // a Swift array
-    var listGroups: [ListGroup] {
-        if let listGroups = listgroups_ as? Set<ListGroup> {
-            return listGroups.sorted(by: { $0.name < $1.name })
+    var clusters: [Cluster] {
+        if let clusters = clusters_ as? Set<Cluster> {
+            return clusters.sorted(by: { $0.name < $1.name })
         }
         return []
     }
     
-    var packingGroups: [PackingGroup] {
-        if let packingGroups = packingGroups_ as? Set<PackingGroup> {
-            return packingGroups.sorted(by: { $0.name < $1.name })
+    var containers: [Container] {
+        if let containers = containers_ as? Set<Container> {
+            return containers.sorted(by: { $0.name < $1.name })
         }
         return []
     }
     
-    var packingBools: [PackingBool] {
-        if let packingBools = packingBools_ as? Set<PackingBool> {
-            return packingBools.sorted(by: { $0.id < $1.id })
+    var containerBools: [ContainerBool] {
+        if let containerBools = containerBools_ as? Set<ContainerBool> {
+            return containerBools.sorted(by: { $0.id < $1.id })
         }
         return []
     }
-    
-    // tripCount: computed property from Core Data trips_
-    var listGroupsCount: Int { listgroups_?.count ?? 0 }
     
 	// the name of its associated shed
 	var shedName: String { shed_?.name_ ?? "Not Available" }
@@ -122,138 +133,60 @@ extension Item {
     // the name of its associated brand
     var brandName: String { brand_?.name_ ?? "Not Available" }
     
-    /// Function to return an Items Packing Group In a specifc Gearlist.
-    func listGroupPackingGroup(gearlist: Gearlist, listGroup: ListGroup) -> PackingGroup? {
+    /// Function to return an Items Container In a specifc Gearlist.
+    func gearlistContainer(gearlist: Gearlist) -> Container? {
         // First Filter out all the packingGroups by Gearlist
-        let packingGroups = packingGroups.filter({ $0.gearlist == gearlist })
-        // Second Filter out all the packingGroups by listGroup 
-        let packingGroup = packingGroups.first(where: { $0.packingListGroup(listGroup: listGroup) == listGroup })
-        
-        return packingGroup ?? nil
+        let container = containers.first(where: { $0.gearlist == gearlist })
+        return container ?? nil
     }
     
-    /// Function to return an Items PackingBool in a specific Packing Group. 
-    func packingGroupPackingBool(packingGroup: PackingGroup, item: Item) -> PackingBool? {
-        // First Filter out all the packingBools by PackingGroup
-        let packingBools = packingBools.filter({$0.packingGroup_ == packingGroup })
-        // Second return the packingBool associated with the item
-        let packingBool = packingBools.first(where: {$0.item == item })
-        
-        return packingBool ?? nil 
+    /// Function to return an Items Cluster In a specifc Gearlist.
+    func gearlistCluster(gearlist: Gearlist) -> Cluster? {
+        let cluster = clusters.first(where: { $0.gearlist == gearlist })
+        return cluster ?? nil
     }
     
-    /*class func object(withID id: UUID) -> Item? {
-        return object(id: id, context: PersistentStore.shared.context) as Item?
-    }*/
-	
-	// MARK: - Useful Fetch Requests
-	
-    /*class func allItemsFR(at shed: Shed, onList: Bool = false) -> NSFetchRequest<Item> {
-		let request: NSFetchRequest<Item> = Item.fetchRequest()
-        let p1 = NSPredicate(format: "shed_ == %@", shed)
-        let p2 = NSPredicate(format: "wishlist_ == %d", onList)
-        let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [p1, p2])
-		request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
-		request.predicate = predicate
-		return request
-	}
-    
-    class func allItemsFR(at brand: Brand) -> NSFetchRequest<Item> {
-        let request: NSFetchRequest<Item> = Item.fetchRequest()
-        request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
-        request.predicate = NSPredicate(format: "brand_ == %@", brand)
-        return request
+    /// Function to return an Items ContainerBool in a specific Gearlist.
+    func gearlistContainerBool(gearlist: Gearlist) -> ContainerBool? {
+        let containerBool = containerBools.first(where: {$0.gearlist == gearlist })
+        return containerBool ?? nil
     }
     
-    static func allItemsFR(at gearlist: Gearlist) -> NSFetchRequest<Item> {
-        let request: NSFetchRequest<Item> = Item.fetchRequest()
-        request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
-        request.predicate = NSPredicate(format: "gearlists_ == %@", gearlist)
-        return request
+    /// Function to return an Items ContainerBool in a specific Container.
+    func containerContainerBool(container: Container) -> ContainerBool? {
+        let containerBool = containerBools.first(where: {$0.container == container })
+        return containerBool ?? nil
     }
-	
-	class func allItemsFR(onList: Bool) -> NSFetchRequest<Item> {
-		let request: NSFetchRequest<Item> = Item.fetchRequest()
-		request.predicate = NSPredicate(format: "wishlist_ == %d", onList)
-		request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
-		return request
-	}*/
-
-	// MARK: - Class functions for CRUD operations
-	
-	// this whole bunch of static functions lets me do a simple fetch and
-	// CRUD operations.
-	
-	/*class func count() -> Int {
-		return count(context: PersistentStore.context)
-	}
-
-	class func allItems() -> [Item] {
-		return allObjects(context: PersistentStore.shared.context) as! [Item]
-	}
-	
-	
-	
-	// addNewItem is the user-facing add of a new entity.  since these are
-	// Identifiable objects, this makes sure we give the entity a unique id, then
-	// hand it back so the user can fill in what's important to them.
-	class func addNewItem() -> Item {
-        let context = PersistentStore.shared.context
-        let newItem = Item(context: context)
-        newItem.id = UUID()
-        return newItem
-	}
-	
-	// updates data for an Item that the user has directed from an Add or Modify View.
-	// if the incoming data is not associated with an item, we need to create it first
-	class func updateData(using editableData: EditableItemData) {
-		// if we can find an Item with the right id, use it, else create one
-		if let id = editableData.id,
-        let item = Item.object(id: id, context: PersistentStore.shared.context) {
-			item.updateValues(from: editableData)
-		} else {
-			let newItem = Item.addNewItem()
-			newItem.updateValues(from: editableData)
-		}
-	}*/
-
-	class func delete(_ item: Item) {
-		// remove the reference to this item from its associated shed
-		// by resetting its (real, Core Data) shed to nil
-		item.shed_ = nil
+    
+    class func delete(_ item: Item) {
+        // remove the reference to this item from its associated shed
+        // by resetting its (real, Core Data) shed to nil
+        item.shed_ = nil
         item.brand_ = nil
-		// now delete and save
-		let context = item.managedObjectContext
-		context?.delete(item)
-		try? context?.save()
-	}
-	
-	/*class func moveAllItemsOffWishlist() {
-		for item in allItems() where item.wishlist {
-			item.wishlist_ = false
-		}
-	}*/
-	
-	// MARK: - Object Methods
-	
-	// toggles the availability flag for an item
-	func toggleFavouriteStatus() {
+        // now delete and save
+        let context = item.managedObjectContext
+        context?.delete(item)
+        try? context?.save()
+    }
+    
+    // toggles the availability flag for an item
+    func toggleFavouriteStatus() {
         isFavourite_ = !isFavourite_
-	}
+    }
     
     // toggles the availability flag for an item
     func toggleRegretStatus() {
         isRegret_ = !isRegret_
     }
 
-	// changes onList flag for an item
-	func toggleWishlistStatus() {
-		wishlist = !wishlist
-	}
+    // changes onList flag for an item
+    func toggleWishlistStatus() {
+        wishlist = !wishlist
+    }
 
-	func markFavourite() {
-		isFavourite_ = true
-	}
+    func markFavourite() {
+        isFavourite_ = true
+    }
     
     func markRegret() {
         isRegret_ = true
@@ -266,24 +199,6 @@ extension Item {
     func unmarkRegret() {
         isRegret_ = false
     }
-    
-	/*private func updateValues(from editableData: EditableItemData) {
-		name_ = editableData.name
-        detail_ = editableData.details
-		quantity_ = Int32(editableData.quantity)
-        weight_ = editableData.weight
-        price_ = editableData.price
-		wishlist_ = editableData.wishlist
-        isFavourite_ = editableData.isFavourite
-        isRegret_ = editableData.isRegret 
-		shed = editableData.shed
-        brand = editableData.brand
-        datePurchased_ = editableData.datePurchased
-        
-        gearlists.forEach({ $0.objectWillChange.send() })
-        
-	}*/
-	
 }
 
 /* Discussion
@@ -368,4 +283,135 @@ to reference that item, you should expect that every attribute will be 0 (e.g., 
 Integer 32, and nil for every optional attribute).
 
 */
+
+
+
+// tripCount: computed property from Core Data trips_
+//var listGroupsCount: Int { listgroups_?.count ?? 0 }
+
+/// Function to return an Items Packing Group In a specifc Gearlist.
+/*func listGroupPackingGroup(gearlist: Gearlist, listGroup: Cluster) -> PackingGroup? {
+    // First Filter out all the packingGroups by Gearlist
+    let packingGroups = packingGroups.filter({ $0.gearlist == gearlist })
+    // Second Filter out all the packingGroups by listGroup
+    let packingGroup = packingGroups.first(where: { $0.packingCluster(listGroup: listGroup) == listGroup })
+    
+    return packingGroup ?? nil
+}*/
+
+/// Function to return an Items PackingBool in a specific Packing Group.
+/*func packingGroupPackingBool(packingGroup: Container, item: Item) -> PackingBool? {
+    // First Filter out all the packingBools by PackingGroup
+    let packingBools = packingBools.filter({$0.packingGroup_ == packingGroup })
+    // Second return the packingBool associated with the item
+    let packingBool = packingBools.first(where: {$0.item == item })
+    
+    return packingBool ?? nil
+}*/
+
+
+
+/*class func object(withID id: UUID) -> Item? {
+    return object(id: id, context: PersistentStore.shared.context) as Item?
+}*/
+
+// MARK: - Useful Fetch Requests
+
+/*class func allItemsFR(at shed: Shed, onList: Bool = false) -> NSFetchRequest<Item> {
+    let request: NSFetchRequest<Item> = Item.fetchRequest()
+    let p1 = NSPredicate(format: "shed_ == %@", shed)
+    let p2 = NSPredicate(format: "wishlist_ == %d", onList)
+    let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [p1, p2])
+    request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
+    request.predicate = predicate
+    return request
+}
+
+class func allItemsFR(at brand: Brand) -> NSFetchRequest<Item> {
+    let request: NSFetchRequest<Item> = Item.fetchRequest()
+    request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
+    request.predicate = NSPredicate(format: "brand_ == %@", brand)
+    return request
+}
+
+static func allItemsFR(at gearlist: Gearlist) -> NSFetchRequest<Item> {
+    let request: NSFetchRequest<Item> = Item.fetchRequest()
+    request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
+    request.predicate = NSPredicate(format: "gearlists_ == %@", gearlist)
+    return request
+}
+
+class func allItemsFR(onList: Bool) -> NSFetchRequest<Item> {
+    let request: NSFetchRequest<Item> = Item.fetchRequest()
+    request.predicate = NSPredicate(format: "wishlist_ == %d", onList)
+    request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
+    return request
+}*/
+
+// MARK: - Class functions for CRUD operations
+
+// this whole bunch of static functions lets me do a simple fetch and
+// CRUD operations.
+
+/*class func count() -> Int {
+    return count(context: PersistentStore.context)
+}
+
+class func allItems() -> [Item] {
+    return allObjects(context: PersistentStore.shared.context) as! [Item]
+}
+
+
+
+// addNewItem is the user-facing add of a new entity.  since these are
+// Identifiable objects, this makes sure we give the entity a unique id, then
+// hand it back so the user can fill in what's important to them.
+class func addNewItem() -> Item {
+    let context = PersistentStore.shared.context
+    let newItem = Item(context: context)
+    newItem.id = UUID()
+    return newItem
+}
+
+// updates data for an Item that the user has directed from an Add or Modify View.
+// if the incoming data is not associated with an item, we need to create it first
+class func updateData(using editableData: EditableItemData) {
+    // if we can find an Item with the right id, use it, else create one
+    if let id = editableData.id,
+    let item = Item.object(id: id, context: PersistentStore.shared.context) {
+        item.updateValues(from: editableData)
+    } else {
+        let newItem = Item.addNewItem()
+        newItem.updateValues(from: editableData)
+    }
+}*/
+
+
+
+/*class func moveAllItemsOffWishlist() {
+    for item in allItems() where item.wishlist {
+        item.wishlist_ = false
+    }
+}*/
+
+// MARK: - Object Methods
+
+
+
+/*private func updateValues(from editableData: EditableItemData) {
+    name_ = editableData.name
+    detail_ = editableData.details
+    quantity_ = Int32(editableData.quantity)
+    weight_ = editableData.weight
+    price_ = editableData.price
+    wishlist_ = editableData.wishlist
+    isFavourite_ = editableData.isFavourite
+    isRegret_ = editableData.isRegret
+    shed = editableData.shed
+    brand = editableData.brand
+    datePurchased_ = editableData.datePurchased
+    
+    gearlists.forEach({ $0.objectWillChange.send() })
+    
+}*/
 

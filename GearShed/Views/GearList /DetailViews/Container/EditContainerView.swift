@@ -1,36 +1,22 @@
 //
-//  AddPackingGroupView.swift
+//  EditContainerView.swift
 //  GearShed
 //
-//  Created by Luke Forrest Gannon on 2021-11-06.
+//  Created by Luke Forrest Gannon on 2021-11-11.
 //
 
 import SwiftUI
 
-struct AddPackingGroupView: View {
+struct EditContainerView: View {
     @Environment(\.presentationMode) var presentationMode
     
-    let persistentStore: PersistentStore
+    @EnvironmentObject private var viewModel: GearlistData
     
-    let gearlist: Gearlist
+    @State private var editableData: EditableContainerData
     
-    @State private var editableData: EditablePackingGroupData
-    
-    @StateObject private var viewModel: GearlistData
-    
-    private var packGroupOut: ((PackingGroup) -> ())?
-    
-    init(persistentStore: PersistentStore, gearlist: Gearlist, packGroupOut: ((PackingGroup) -> ())? = nil) {
-        self.persistentStore = persistentStore
-        self.gearlist = gearlist
-        self.packGroupOut = packGroupOut
-        
-        let viewModel = GearlistData(persistentStore: persistentStore)
-        _viewModel = StateObject(wrappedValue: viewModel)
-        
-        let initialValue = EditablePackingGroupData(persistentStore: persistentStore)
+    init(persistentStore: PersistentStore, container: Container) {
+        let initialValue = EditableContainerData(persistentStore: persistentStore, container: container)
         _editableData = State(initialValue: initialValue)
-        
     }
 
     var body: some View {
@@ -39,7 +25,7 @@ struct AddPackingGroupView: View {
                 backgroundLayer
                 scrollViewLayer
             }
-            .navigationBarTitle("Add New Shed", displayMode: .inline)
+            .navigationBarTitle("Edit Container", displayMode: .inline)
             .navigationBarBackButtonHidden(true)
             .toolbar {
                 cancelToolBarItem
@@ -49,7 +35,7 @@ struct AddPackingGroupView: View {
     }
 }
 
-extension AddPackingGroupView {
+extension EditContainerView {
     
     private var cancelToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
@@ -64,12 +50,12 @@ extension AddPackingGroupView {
     private var saveToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
-                viewModel.addNewPackingGroupFromItem(using: editableData, gearlist: gearlist, packGroupOut: { packGroup in packGroupOut!(packGroup) })
+                viewModel.updateContainer(using: editableData)
                 presentationMode.wrappedValue.dismiss()
             } label: {
                 Text("Save")
             }
-            .disabled(!editableData.canPackGroupBeSaved)
+            .disabled(!editableData.canContainerBeSaved)
         }
     }
     
@@ -85,7 +71,7 @@ extension AddPackingGroupView {
                     VStack(alignment: .leading, spacing: 3) {
                         Text("Name")
                             .formatEntryTitle()
-                        TextField("Pack Group Name", text: $editableData.name)
+                        TextField("Container Name", text: $editableData.name)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .disableAutocorrection(true)
                             .font(.subheadline)
@@ -95,7 +81,6 @@ extension AddPackingGroupView {
             .padding()
         }
     }
-    
 }
 
 

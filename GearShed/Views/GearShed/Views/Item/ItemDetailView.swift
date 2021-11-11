@@ -101,7 +101,8 @@ extension ItemDetailView {
                         Text("Purchased:")
                             .formatBlackSmall()
                         
-                        Text("\(item.datePurchased.asShortDateString())")
+                        //Text()
+                        Text(item.datePurchased?.asShortDateString() ?? "" )
                             .formatGreenSmall()
                     }
                     HStack {

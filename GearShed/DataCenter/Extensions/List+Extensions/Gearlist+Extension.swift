@@ -21,7 +21,7 @@ extension Gearlist {
         get { name_ ?? "Unknown Name" }
         set {
             name_ = newValue
-            listGroups.forEach({ $0.objectWillChange.send() })
+            clusters.forEach({ $0.objectWillChange.send() })
         }
     }
     
@@ -29,24 +29,55 @@ extension Gearlist {
         get { details_ ?? "Unknown Detials" }
         set {
             details_ = newValue
-            listGroups.forEach({ $0.objectWillChange.send() })
+            clusters.forEach({ $0.objectWillChange.send() })
         }
     }
     
-    // items: fronts Core Data attribute items_ that is an NSSet, and turns it into
-    // a Swift array
-    var listGroups: [ListGroup] {
-        if let listGroups = listgroups_ as? Set<ListGroup> {
-            return listGroups.sorted(by: { $0.name < $1.name })
+    var clusters: [Cluster] {
+        if let clusters = clusters_ as? Set<Cluster> {
+            return clusters.sorted(by: { $0.name < $1.name } )
         }
         return []
     }
     
-    var packingGroups: [PackingGroup] {
-        if let packingGroups = packingGroups_ as? Set<PackingGroup> {
-            return packingGroups.sorted(by: { $0.name < $1.name })
+    var items: [Item] {
+        if let items = items_ as? Set<Item> {
+            return items.sorted(by: { $0.name < $1.name } )
+        }
+        return []
+    }
+    
+    var containers: [Container] {
+        if let containers = containers_ as? Set<Container> {
+            return containers.sorted(by: { $0.name < $1.name })
         }
         return [] 
+    }
+    
+    func gearlistContainerTotals(gearlist: Gearlist) -> Int {
+        var counter: Int = 0
+        
+        for container in gearlist.containers {
+            for _ in container.items {
+                counter = counter + 1
+            }
+        }
+        
+        return counter
+    }
+    
+    func gearlistContainerBoolTotals(gearlist: Gearlist) -> Int {
+        var counter: Int = 0
+        
+        for container in gearlist.containers {
+            for item in container.items {
+                if item.containerContainerBool(container: container)!.isPacked == true {
+                    counter = counter + 1
+                }
+            }
+        }
+        
+        return counter
     }
     
     
@@ -61,7 +92,7 @@ extension Gearlist {
     }*/
     
     // itemCount: computed property from Core Data items_
-    var listGroupsCount: Int { listgroups_?.count ?? 0 }
+    var clustersCount: Int { clusters_?.count ?? 0 }
     
     // tripCount: computed property from Core Data trips_
    // var tripCount: Int { trips_?.count ?? 0 }

@@ -141,33 +141,36 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     func addNewItem(using editableData: EditableItemData) {
         let newItem = Item(context: persistentStore.context)
         newItem.id = UUID()
-        newItem.name_ = editableData.name
-        newItem.detail_ = editableData.details
-        newItem.quantity_ = Int32(editableData.quantity)
-        newItem.weight_ = editableData.weight
-        newItem.price_ = editableData.price
-        newItem.wishlist_ = editableData.wishlist
-        newItem.shed_ = editableData.shed
-        newItem.brand_ = editableData.brand
-        newItem.datePurchased_ = editableData.datePurchased
+        newItem.name = editableData.name
+        newItem.detail = editableData.details
+        newItem.quantity = Int(editableData.quantity)
+        newItem.weight = editableData.weight
+        newItem.price = editableData.price
+        newItem.wishlist = editableData.wishlist
+        newItem.shed = editableData.shed!
+        newItem.brand = editableData.brand!
+        newItem.datePurchased = editableData.datePurchased
         persistentStore.saveContext()
     }
     /// Function to update an Item's values using the temp stored data.
     func updateItem(using editableData: EditableItemData) {
         let item = editableData.associatedItem
-        item.name_ = editableData.name
-        item.detail_ = editableData.details
-        item.quantity_ = Int32(editableData.quantity)
-        item.weight_ = editableData.weight
-        item.price_ = editableData.price
-        item.wishlist_ = editableData.wishlist
-        item.isFavourite_ = editableData.isFavourite
-        item.isRegret_ = editableData.isRegret
-        item.shed_ = editableData.shed
-        item.brand_ = editableData.brand
-        item.datePurchased_ = editableData.datePurchased
+        item.name = editableData.name
+        item.detail = editableData.details
+        item.quantity = Int(editableData.quantity)
+        item.weight = editableData.weight
+        item.price = editableData.price
+        item.wishlist = editableData.wishlist
+        item.isFavourite = editableData.isFavourite
+        item.isRegret = editableData.isRegret
+        item.shed = editableData.shed!
+        item.brand = editableData.brand!
+        item.datePurchased = editableData.datePurchased
         
-        item.listGroups.forEach({ $0.objectWillChange.send() })
+        item.gearlists.forEach({ $0.objectWillChange.send() })
+        item.clusters.forEach({ $0.objectWillChange.send() })
+        item.containers.forEach({ $0.objectWillChange.send() })
+        item.containerBools.forEach({ $0.objectWillChange.send() })
         persistentStore.saveContext()
     }
     /// Function to delete an Item and move all items at the brand to the Unknown Brand.

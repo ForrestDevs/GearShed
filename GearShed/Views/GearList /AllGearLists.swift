@@ -9,7 +9,10 @@
 import SwiftUI
 
 struct AllGearLists: View {
+    
     @EnvironmentObject var persistentStore: PersistentStore
+    
+    @EnvironmentObject private var detailManager: DetailViewManager
 
     @StateObject private var viewModel: GearlistData
         
@@ -26,9 +29,6 @@ struct AllGearLists: View {
                 gearlistList
                 addListButtonOverlay
             }
-        }
-        .fullScreenCover(isPresented: $isAddListShowing) {
-            AddListView(persistentStore: persistentStore)
         }
     }
 }
@@ -53,7 +53,14 @@ extension AllGearLists {
             HStack {
                 Spacer()
                 Button {
-                    isAddListShowing.toggle()
+                    withAnimation {
+                        detailManager.content = AnyView (
+                            AddListView(persistentStore: persistentStore)
+                            .environmentObject(detailManager)
+                                .environmentObject(viewModel)
+                        )
+                        detailManager.showAddNewGearlist = true
+                    }
                 }
                 label: {
                     VStack{

@@ -20,10 +20,30 @@ struct ContentView: View {
         AppTabBarView()
             .environmentObject(detailManager)
             .ignoresSafeArea(.all, edges: .bottom)
-            //.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+        
             .overlay(detailManager.showGearlistDetail ? detailManager.content.animation(.default, value: detailManager.showGearlistDetail) : nil)
+        
+            .overlay(detailManager.showAddNewGearlist ? detailManager.content.animation(.default, value: detailManager.showAddNewGearlist) : nil)
+        
+            .overlay(detailManager.showSelectGearlistItems ? detailManager.content.animation(.default, value: detailManager.showSelectGearlistItems) : nil)
     }
 }
+
+class DetailViewManager: ObservableObject {
+    
+    @Published var showGearlistDetail: Bool = false
+    
+    @Published var showAddNewGearlist: Bool = false
+    
+    @Published var showSelectGearlistItems: Bool = false
+
+    @Published var content: AnyView = AnyView(EmptyView())
+    
+    init() {
+        
+    }
+}
+
 
 
 struct tger: View {
@@ -54,17 +74,6 @@ struct FullScreen: View {
                 isShowSheet = false
             }
             .edgesIgnoringSafeArea(.all)
-    }
-}
-
-class DetailViewManager: ObservableObject {
-    
-    @Published var showGearlistDetail: Bool = false
-    
-    @Published var content: AnyView = AnyView(EmptyView())
-    
-    init() {
-        
     }
 }
 

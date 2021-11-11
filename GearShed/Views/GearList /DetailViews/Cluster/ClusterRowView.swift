@@ -1,0 +1,81 @@
+//
+//  ClusterRowView.swift
+//  GearShed
+//
+//  Created by Luke Forrest Gannon on 2021-11-10.
+//
+
+import SwiftUI
+
+struct ClusterRowView: View {
+    @Environment (\.presentationMode) var presentationMode
+    
+    @EnvironmentObject private var persistentStore: PersistentStore
+    
+    @ObservedObject var cluster: Cluster
+    
+    @State private var showEdit: Bool = false
+    
+    @State private var confirmDeleteClusterAlert: ConfirmDeleteClusterAlert?
+    
+    var body: some View {
+        VStack (alignment: .leading, spacing: 0) {
+            clusterHeader
+            clusterItems
+        }
+        .padding(.horizontal)
+        .fullScreenCover(isPresented: $showEdit) {
+            EditClusterView(persistentStore: persistentStore, cluster: cluster)
+        }
+        .alert(item: $confirmDeleteClusterAlert) { cluster in cluster.alert() }
+    }
+    
+}
+
+extension ClusterRowView {
+    
+    private var clusterHeader: some View {
+        VStack (alignment: .leading, spacing: 0) {
+            Text(cluster.name)
+            Rectangle()
+                .frame(maxWidth: .infinity)
+                .frame(height: 1)
+            
+        }
+        .contextMenu {
+            editContextButton
+            deleteContextButton
+        }
+    }
+    
+    private var clusterItems: some View {
+        ForEach(cluster.items) { item in
+            ItemRowView_InCluster(item: item)
+        }
+        .padding(.horizontal)
+    }
+    
+    private var editContextButton: some View {
+        Button {
+            showEdit.toggle()
+        } label: {
+            Text("Edit Cluster")
+        }
+    }
+    
+    private var deleteContextButton: some View {
+        Button {
+            confirmDeleteClusterAlert = ConfirmDeleteClusterAlert (
+                persistentStore: persistentStore,
+                cluster: cluster,
+                destructiveCompletion: {
+                    presentationMode.wrappedValue.dismiss()
+                }
+            )
+        } label: {
+            Text("Delete Cluster")
+        }
+    }
+    
+}
+

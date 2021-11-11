@@ -9,21 +9,19 @@
 import SwiftUI
 
 struct AddListView: View {
-    @Environment(\.presentationMode) var presentationMode
+    
+    @EnvironmentObject private var detailManager: DetailViewManager
+    
+    @EnvironmentObject private var viewModel: GearlistData
     
     let persistentStore: PersistentStore
     
-    @StateObject private var viewModel: GearlistData
-
     @State private var editableData: EditableGearlistData
     
     @State private var isTrip: Bool = false
     
     init(persistentStore: PersistentStore) {
         self.persistentStore = persistentStore
-        
-        let viewModel = GearlistData(persistentStore: persistentStore)
-        _viewModel = StateObject(wrappedValue: viewModel)
         
         let initialValue = EditableGearlistData(persistentStore: persistentStore)
         _editableData = State(initialValue: initialValue)
@@ -35,13 +33,14 @@ struct AddListView: View {
                 backgroundLayer
                 contentLayer
             }
-            .navigationBarTitle("New List", displayMode: .inline)
+            .navigationBarTitle("Add List", displayMode: .inline)
             .navigationBarBackButtonHidden(true)
             .toolbar {
                 cancelButtonToolBarItem
                 saveButtonToolBarItem
             }
         }
+        .transition(.move(edge: .trailing))
     }
 }
 
@@ -50,7 +49,9 @@ extension AddListView {
     private var cancelButtonToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
-                presentationMode.wrappedValue.dismiss()
+                withAnimation {
+                    detailManager.showAddNewGearlist = false
+                }
             } label:  {
                 Text("Cancel")
             }
@@ -60,8 +61,16 @@ extension AddListView {
     private var saveButtonToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
-                viewModel.addNewGearlist(using: editableData)
-                presentationMode.wrappedValue.dismiss()
+                let newGearList = viewModel.addNewGearlist(using: editableData)
+                withAnimation {
+                    detailManager.showAddNewGearlist = false
+                    detailManager.content = AnyView (
+                        AddItemsToGearListView(persistentStore: persistentStore, gearlist: newGearList)
+                            .environmentObject(detailManager)
+                            .environmentObject(viewModel)
+                    )
+                    detailManager.showSelectGearlistItems = true
+                }
             } label: {
                 Text("Save")
             }
@@ -150,7 +159,7 @@ extension AddListView {
 private var listGroupItemsList: some View {
     ScrollView (.vertical, showsIndicators: false) {
         ForEach(gearlist.listGroups) { listGroup in
-            ListGroupRowView(persistentStore: persistentStore, listGroup: listGroup, gearlist: gearlist)
+            ClusterRowView(persistentStore: persistentStore, listGroup: listGroup, gearlist: gearlist)
         }
     }
 }*/

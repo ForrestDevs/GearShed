@@ -57,7 +57,7 @@ extension Text {
     }
     
     func formatNoColorSmall() -> some View {
-        self.font(.custom("HelveticaNeue", size: 12).bold())
+        self.font(.custom("HelveticaNeue", size: 18).bold())
     }
     
     func formatNoColorLarge() -> some View {

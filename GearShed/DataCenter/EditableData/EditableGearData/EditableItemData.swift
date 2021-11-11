@@ -23,7 +23,7 @@ struct EditableItemData {
     var wishlist: Bool
     var isFavourite: Bool
     var isRegret: Bool
-    var datePurchased: Date
+    var datePurchased: Date?
 	
 	/// To  save/commit an Item, it must have a non-empty name, shed and brand.
 	var canBeSaved: Bool { name.count > 0 && shed != nil && brand != nil }
@@ -51,7 +51,7 @@ extension EditableItemData {
         self.wishlist = item.wishlist
         self.isFavourite = item.isFavourite
         self.isRegret = item.isRegret
-        self.datePurchased = item.datePurchased
+        self.datePurchased = item.datePurchased ?? nil 
     }
 }
 
@@ -69,7 +69,7 @@ extension EditableItemData {
         self.wishlist = false
         self.isFavourite = false
         self.isRegret = false
-        self.datePurchased = Date()
+        self.datePurchased = nil
     }
 }
 
@@ -87,7 +87,7 @@ extension EditableItemData {
         self.wishlist = wishlistInEdit
         self.isFavourite = false
         self.isRegret = false
-        self.datePurchased = Date()
+        self.datePurchased = nil
     }
 }
 
@@ -105,7 +105,7 @@ extension EditableItemData {
         self.wishlist = false
         self.isFavourite = false
         self.isRegret = false
-        self.datePurchased = Date()
+        self.datePurchased = nil
     }
 }
 

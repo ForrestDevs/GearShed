@@ -1,5 +1,5 @@
 //
-//  ListGroup+Extensions.swift
+//  Cluster+Extensions.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-11-05.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension ListGroup {
+extension Cluster {
     
     var name: String {
         get { name_ ?? "Unknown Name" }

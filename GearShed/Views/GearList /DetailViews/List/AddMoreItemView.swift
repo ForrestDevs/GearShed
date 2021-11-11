@@ -4,7 +4,7 @@
 //
 //  Created by Luke Forrest Gannon on 2021-10-26.
 //
-/*
+
 import SwiftUI
 
 struct AddMoreItemView: View {
@@ -32,15 +32,17 @@ struct AddMoreItemView: View {
     }
     
     var body: some View {
-        VStack {
-            itemsList
-                .padding(.top,10)
-        }
-        .navigationBarTitle("Add Items to \(gearlist.name)", displayMode: .inline)
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .cancellationAction, content: cancelButton)
-            ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!canGearlistBeSaved) }
+        NavigationView {
+            VStack {
+                itemsList
+                    .padding(.top,10)
+            }
+            .navigationBarTitle("Add Items to \(gearlist.name)", displayMode: .inline)
+            .navigationBarBackButtonHidden(true)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction, content: cancelButton)
+                ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!canGearlistBeSaved) }
+            }
         }
     }
     
@@ -105,8 +107,8 @@ extension AddMoreItemView {
     }
     
     private func commitData() {
+        gearVM.addItemsToGearlist(gearlist: gearlist, itemArray: itemsChecked)
         presentationMode.wrappedValue.dismiss()
-        //Gearlist.addItemsToList(itemArray: itemsChecked, gearList: gearlist)
     }
 }
-*/
+

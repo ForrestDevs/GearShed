@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension PackingGroup {
+extension Container {
     
     var name: String {
         get { name_ ?? "Unknown Name" }
@@ -17,8 +17,6 @@ extension PackingGroup {
         }
     }
     
-    // items: fronts Core Data attribute items_ that is an NSSet, and turns it into
-    // a Swift array
     var items: [Item] {
         if let items = items_ as? Set<Item> {
             return items.sorted(by: { $0.name < $1.name })
@@ -26,18 +24,13 @@ extension PackingGroup {
         return []
     }
     
-    // items: fronts Core Data attribute items_ that is an NSSet, and turns it into
-    // a Swift array
-    var packingBools: [PackingBool] {
-        if let packingBools = packingBools_ as? Set<PackingBool> {
-            return packingBools.sorted(by: { $0.item.name < $1.item.name })
+    var containerBools: [ContainerBool] {
+        if let containerBools = containerBools_ as? Set<ContainerBool> {
+            return containerBools.sorted(by: { $0.item.name < $1.item.name })
         }
         return []
     }
     
-    // an item's associated shed.  this fronts a Core Data optional attribute.
-    // if you change an item's shed, the old and the new Shed may want to
-    // know that some of their computed properties could be invalidated
     var gearlist: Gearlist {
         get { gearlist_! }
         set {
@@ -45,18 +38,6 @@ extension PackingGroup {
             gearlist_ = newValue
             gearlist_?.objectWillChange.send()
         }
-    }
-    
-    var listGroups: [ListGroup] {
-        if let listGroups = listGroups_ as? Set<ListGroup> {
-            return listGroups.sorted(by: { $0.name < $1.name } )
-        }
-        return []
-    }
-    
-    func packingListGroup(listGroup: ListGroup) -> ListGroup {
-        let listGroup = listGroups.first(where: { $0 == listGroup })
-        return listGroup!
     }
     
 }

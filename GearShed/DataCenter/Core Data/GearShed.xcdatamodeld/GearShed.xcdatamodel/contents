@@ -6,12 +6,34 @@
         <attribute name="unBrandID_" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="brand_" inverseEntity="Item"/>
     </entity>
+    <entity name="Cluster" representedClassName="Cluster" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name_" optional="YES" attributeType="String"/>
+        <relationship name="gearlist_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gearlist" inverseName="clusters_" inverseEntity="Gearlist"/>
+        <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="clusters_" inverseEntity="Item"/>
+    </entity>
+    <entity name="Container" representedClassName="Container" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name_" optional="YES" attributeType="String"/>
+        <relationship name="containerBools_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ContainerBool" inverseName="container_" inverseEntity="ContainerBool"/>
+        <relationship name="gearlist_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gearlist" inverseName="containers_" inverseEntity="Gearlist"/>
+        <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="containers_" inverseEntity="Item"/>
+    </entity>
+    <entity name="ContainerBool" representedClassName="ContainerBool" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isPacked_" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <relationship name="container_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Container" inverseName="containerBools_" inverseEntity="Container"/>
+        <relationship name="gearlist_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gearlist" inverseName="containerBools_" inverseEntity="Gearlist"/>
+        <relationship name="item_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Item" inverseName="containerBools_" inverseEntity="Item"/>
+    </entity>
     <entity name="Gearlist" representedClassName="Gearlist" syncable="YES" codeGenerationType="class">
         <attribute name="details_" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name_" optional="YES" attributeType="String"/>
-        <relationship name="listgroups_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ListGroup" inverseName="gearlist_" inverseEntity="ListGroup"/>
-        <relationship name="packingGroups_" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PackingGroup" inverseName="gearlist_" inverseEntity="PackingGroup"/>
+        <relationship name="clusters_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Cluster" inverseName="gearlist_" inverseEntity="Cluster"/>
+        <relationship name="containerBools_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ContainerBool" inverseName="gearlist_" inverseEntity="ContainerBool"/>
+        <relationship name="containers_" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Container" inverseName="gearlist_" inverseEntity="Container"/>
+        <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="gearlists_" inverseEntity="Item"/>
     </entity>
     <entity name="GearPlan" representedClassName="GearPlan" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
@@ -30,31 +52,11 @@
         <attribute name="weight_" optional="YES" attributeType="String"/>
         <attribute name="wishlist_" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <relationship name="brand_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Brand" inverseName="items_" inverseEntity="Brand"/>
-        <relationship name="listgroups_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ListGroup" inverseName="items_" inverseEntity="ListGroup"/>
-        <relationship name="packingBools_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PackingBool" inverseName="item_" inverseEntity="PackingBool"/>
-        <relationship name="packingGroups_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PackingGroup" inverseName="items_" inverseEntity="PackingGroup"/>
+        <relationship name="clusters_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Cluster" inverseName="items_" inverseEntity="Cluster"/>
+        <relationship name="containerBools_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ContainerBool" inverseName="item_" inverseEntity="ContainerBool"/>
+        <relationship name="containers_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Container" inverseName="items_" inverseEntity="Container"/>
+        <relationship name="gearlists_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Gearlist" inverseName="items_" inverseEntity="Gearlist"/>
         <relationship name="shed_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Shed" inverseName="items_" inverseEntity="Shed"/>
-    </entity>
-    <entity name="ListGroup" representedClassName="ListGroup" syncable="YES" codeGenerationType="class">
-        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="name_" optional="YES" attributeType="String"/>
-        <relationship name="gearlist_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gearlist" inverseName="listgroups_" inverseEntity="Gearlist"/>
-        <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="listgroups_" inverseEntity="Item"/>
-        <relationship name="packingGroups_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PackingGroup" inverseName="listGroups_" inverseEntity="PackingGroup"/>
-    </entity>
-    <entity name="PackingBool" representedClassName="PackingBool" syncable="YES" codeGenerationType="class">
-        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="isPacked_" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <relationship name="item_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Item" inverseName="packingBools_" inverseEntity="Item"/>
-        <relationship name="packingGroup_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PackingGroup" inverseName="packingBools_" inverseEntity="PackingGroup"/>
-    </entity>
-    <entity name="PackingGroup" representedClassName="PackingGroup" syncable="YES" codeGenerationType="class">
-        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="name_" optional="YES" attributeType="String"/>
-        <relationship name="gearlist_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gearlist" inverseName="packingGroups_" inverseEntity="Gearlist"/>
-        <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="packingGroups_" inverseEntity="Item"/>
-        <relationship name="listGroups_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ListGroup" inverseName="packingGroups_" inverseEntity="ListGroup"/>
-        <relationship name="packingBools_" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PackingBool" inverseName="packingGroup_" inverseEntity="PackingBool"/>
     </entity>
     <entity name="PlanGroup" representedClassName="PlanGroup" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
@@ -76,12 +78,12 @@
     </entity>
     <elements>
         <element name="Brand" positionX="-75.25048828125011" positionY="-428.4825286865234" width="128" height="103"/>
-        <element name="Gearlist" positionX="422.6006469726562" positionY="-474.5142517089844" width="128" height="118"/>
+        <element name="Gearlist" positionX="236.3492431640625" positionY="-567.7434387207031" width="128" height="148"/>
         <element name="GearPlan" positionX="-50.50823974609375" positionY="-730.9864654541016" width="128" height="88"/>
-        <element name="Item" positionX="86.57061767578125" positionY="-421.3070678710937" width="128" height="268"/>
-        <element name="ListGroup" positionX="425.3574829101564" positionY="-263.120330810547" width="128" height="118"/>
-        <element name="PackingBool" positionX="280.9324340820312" positionY="-524.9606628417969" width="128" height="73"/>
-        <element name="PackingGroup" positionX="258.3058471679688" positionY="-388.7012939453124" width="128" height="133"/>
+        <element name="Item" positionX="86.57061767578125" positionY="-421.3070678710937" width="128" height="283"/>
+        <element name="Cluster" positionX="477.7100830078127" positionY="-282.7850646972657" width="128" height="103"/>
+        <element name="ContainerBool" positionX="255.4966430664062" positionY="-343.8049011230469" width="128" height="118"/>
+        <element name="Container" positionX="488.2400512695313" positionY="-487.154815673828" width="128" height="118"/>
         <element name="PlanGroup" positionX="131.9351806640625" positionY="-727.3628387451172" width="128" height="103"/>
         <element name="PlanItem" positionX="286.516845703125" positionY="-725.1248168945312" width="128" height="88"/>
         <element name="PlanItemLabel" positionX="135.4661865234375" positionY="-809.1134033203125" width="128" height="43"/>

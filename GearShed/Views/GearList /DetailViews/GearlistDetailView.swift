@@ -11,11 +11,11 @@ import SwiftUI
 struct GearlistDetailView: View {
     @Environment(\.presentationMode) var presentationMode
 
-    @EnvironmentObject var viewModel: GearlistData
+    @EnvironmentObject private var viewModel: GearlistData
     
-    @EnvironmentObject var detailManager: DetailViewManager
+    @EnvironmentObject private var detailManager: DetailViewManager
     
-    @EnvironmentObject var persistentStore: PersistentStore
+    @EnvironmentObject private var persistentStore: PersistentStore
     
     //let persistentStore: PersistentStore
     
@@ -23,57 +23,44 @@ struct GearlistDetailView: View {
     
     @ObservedObject private var gearlist: Gearlist
     
+    @State private var currentScreen: Int = 0
     @State private var isEditMode: Bool = true
+    @State private var addCluster: Bool = false
             
-    init(/*persistentStore: PersistentStore,*/ gearlist: Gearlist) {
+    init(gearlist: Gearlist) {
         
-        //self.persistentStore = persistentStore
         self.gearlist = gearlist
         
-        //let viewModel = GearlistData(persistentStore: persistentStore)
-        //_viewModel = StateObject(wrappedValue: viewModel)
     }
     
     var body: some View {
         NavigationView {
-            VStack {
-                ZStack {
-                    if isEditMode {
-                        listGroupList
-                        addListGroupOverlay
-                    } else {
-                        packingModeList
-                    }
-                }
+            PagerTabView(tint: Color.theme.accent, selection: $currentScreen) {
+                Text("List")
+                    .pageLabel()
+                Text("Cluster")
+                    .pageLabel()
+                Text("Container")
+                    .pageLabel()
+            } content: {
+                GearlistItemListView(gearlist: gearlist)
+                    .pageView()
+                GearlistClusterView(gearlist: gearlist)
+                    .pageView()
+                GearlistContainerView(gearlist: gearlist)
+                    .pageView()
             }
+            .padding(.top, 10)
             .navigationBarTitle(gearlist.name, displayMode: .inline)
             .toolbar {
                 backButtonToolBarItem
-                listModeToolbarContent
             }
         }
-        .transition(.moveAndFade)
-        //.transition(.slide)
-        //.transition(.scale)
-        //.transition(.move(edge: .trailing))
+        .transition(.move(edge: .trailing))
     }
 }
 
 extension GearlistDetailView {
-    
-    private var listModeToolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarTrailing) {
-            Button {
-                isEditMode.toggle()
-            } label: {
-                if isEditMode {
-                    Text("Edit Mode")
-                } else {
-                    Text("Packing Mode")
-                }
-            }
-        }
-    }
     
     private var backButtonToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
@@ -81,51 +68,26 @@ extension GearlistDetailView {
                 withAnimation {
                     detailManager.showGearlistDetail = false
                 }
-                //presentationMode.wrappedValue.dismiss()
             } label: {
                 Image(systemName: "chevron.left")
             }
         }
     }
     
-    private var listGroupList: some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            if gearlist.listGroups.count == 0 {
-                Text("You have No List Groups Click To Add One Below")
-            } else {
-                ForEach(gearlist.listGroups) { listGroup in
-                    ListGroupRowView(persistentStore: persistentStore, listGroup: listGroup, gearlist: gearlist)
-                }
-            }
-        }
-    }
-    
-    private var packingModeList: some View {
-        VStack{
-            ForEach(viewModel.gearlistPackingGroups(gearlist: gearlist)) { packingGroup in
-                PackingGroupRowView(persistentStore: persistentStore, packingGroup: packingGroup)
-            }
-            Spacer()
-        }
-        .onDisappear{
-            persistentStore.saveContext()
-        }
-    }
-    
-    private var addListGroupOverlay: some View {
+    private var addItemOverlay: some View {
         VStack {
             Spacer()
             HStack {
                 Spacer()
                 Button {
-                    viewModel.createNewListGroup(gearlist: gearlist)
+                
                 } label: {
                     VStack{
                         Text("Add")
                             .font(.system(size: 12, weight: .regular))
                             .foregroundColor(Color.theme.background)
                             
-                        Text("Group")
+                        Text("Item")
                             .font(.system(size: 12, weight: .regular))
                             .foregroundColor(Color.theme.background)
                     }
@@ -139,9 +101,68 @@ extension GearlistDetailView {
             }
         }
     }
+
 }
 
+/*private var listModeToolbarContent: some ToolbarContent {
+    ToolbarItem(placement: .navigationBarTrailing) {
+        Button {
+            isEditMode.toggle()
+        } label: {
+            if isEditMode {
+                Text("Edit Mode")
+            } else {
+                Text("Packing Mode")
+            }
+        }
+    }
+}*/
 
+/*private var listGroupList: some View {
+    ScrollView(.vertical, showsIndicators: false) {
+        if gearlist.listGroups.count == 0 {
+            Text("You have No List Groups Click To Add One Below")
+        } else {
+            ForEach(gearlist.listGroups) { listGroup in
+                ClusterRowView(persistentStore: persistentStore, listGroup: listGroup, gearlist: gearlist)
+            }
+        }
+    }
+}*/
+
+/*private var packingModeList: some View {
+    VStack{
+        ForEach(viewModel.gearlistPackingGroups(gearlist: gearlist)) { packingGroup in
+            PackingGroupRowView(persistentStore: persistentStore, packingGroup: packingGroup)
+        }
+        Spacer()
+    }
+    .onDisappear{
+        persistentStore.saveContext()
+    }
+}*/
+
+/*private var listGroupMenuList: some View {
+    ForEach(viewModel.listgroups) { listGroup in
+        Button {
+            
+            //editableData.packingGroup = packingGroup
+            //viewModel.updateItemPackingGroup(using: editableData)
+        } label: {
+            Text(listGroup.name)
+                .font(.subheadline)
+        }
+    }
+}*/
+
+/*private var addNewClusterButton: some View {
+    Button {
+        addCluster.toggle()
+    } label: {
+        Text("Add New List Group")
+            .font(.subheadline)
+    }
+}*/
 
 /*private var itemList: some View {
     ScrollView(.vertical, showsIndicators: false) {

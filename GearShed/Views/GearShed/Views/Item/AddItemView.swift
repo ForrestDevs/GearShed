@@ -28,7 +28,7 @@ struct AddItemView: View {
                 backgroundLayer
                 contentLayer
             }
-            .navigationBarTitle("Add New Item", displayMode: .inline)
+            .navigationBarTitle("Add Item", displayMode: .inline)
             .navigationBarBackButtonHidden(true)
             .toolbar {
                 cancelButtonToolbarItem
@@ -220,7 +220,8 @@ extension AddItemView {
                 Text("Purchase Date")
                     .formatEntryTitle()
 
-                DatePicker("Purchase Date",selection: $editableItemData.datePurchased, displayedComponents: .date)
+                DatePicker("Purchase Date",selection: Binding<Date>(get: {editableItemData.datePurchased ?? Date()}, set: {editableItemData.datePurchased = $0}),
+                    displayedComponents: .date)
                     .disabled(editableItemData.wishlist == true)
                     .labelsHidden()
                     .pickerStyle(.wheel)

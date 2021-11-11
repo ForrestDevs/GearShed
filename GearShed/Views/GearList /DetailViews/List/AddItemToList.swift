@@ -1,5 +1,5 @@
 //
-//  AddListGroupItemView.swift
+//  AddClusterItemView.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-11-05.
@@ -7,24 +7,26 @@
 
 import SwiftUI
 
-struct AddListGroupItemView: View {
-    @Environment(\.presentationMode) var presentationMode
+struct AddItemsToGearListView: View {
         
+    @EnvironmentObject private var detailManager: DetailViewManager
+    
+    @EnvironmentObject private var viewModel: GearlistData
+    
     @StateObject private var itemVM: GearShedData
-    @StateObject private var listVM: GearlistData
 
     @State private var itemsChecked: [Item] = []
     
-    let listGroup: ListGroup
+    let gearlist: Gearlist
     
-    init(persistentStore: PersistentStore, listGroup: ListGroup) {
-        self.listGroup = listGroup
+    let persistentStore: PersistentStore
+    
+    init(persistentStore: PersistentStore, gearlist: Gearlist) {
+        self.gearlist = gearlist
+        self.persistentStore = persistentStore
         
         let itemVM = GearShedData(persistentStore: persistentStore)
         _itemVM = StateObject(wrappedValue: itemVM)
-        
-        let listVM = GearlistData(persistentStore: persistentStore)
-        _listVM = StateObject(wrappedValue: listVM)
     }
     
     var body: some View {
@@ -32,17 +34,18 @@ struct AddListGroupItemView: View {
             VStack {
                 itemList
             }
-            .navigationBarTitle("Add Items To Group", displayMode: .inline)
+            .navigationBarTitle("Select Items", displayMode: .inline)
             .navigationBarBackButtonHidden(true)
             .toolbar {
                 cancelButtonToolBarItem
                 saveButtonToolBarItem
             }
         }
+        .transition(.move(edge: .trailing))
     }
 }
 
-extension AddListGroupItemView {
+extension AddItemsToGearListView {
     // MARK: Content
     private var itemList: some View {
         ScrollView(.vertical, showsIndicators: false) {
@@ -91,7 +94,9 @@ extension AddListGroupItemView {
     private var cancelButtonToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
-                presentationMode.wrappedValue.dismiss()
+                withAnimation {
+                    detailManager.showSelectGearlistItems = false
+                }
             } label:  {
                 Text("Cancel")
             }
@@ -101,8 +106,17 @@ extension AddListGroupItemView {
     private var saveButtonToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
-                listVM.addItemsToListGroup(listGroup: listGroup, itemArray: itemsChecked)
-                presentationMode.wrappedValue.dismiss()
+                viewModel.addItemsToGearlist(gearlist: gearlist, itemArray: itemsChecked)
+                withAnimation {
+                    detailManager.content = AnyView (
+                        GearlistDetailView(gearlist: gearlist)
+                            .environmentObject(detailManager)
+                            .environmentObject(persistentStore)
+                            .environmentObject(viewModel)
+                    )
+                    detailManager.showGearlistDetail = true
+                    detailManager.showSelectGearlistItems = false
+                }
             } label: {
                 Text("Save")
             }
@@ -110,4 +124,5 @@ extension AddListGroupItemView {
         }
     }
 }
+ 
 
