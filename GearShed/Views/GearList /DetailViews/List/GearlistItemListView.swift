@@ -59,6 +59,7 @@ extension GearlistItemListView {
                 Text(section.title)
                     .font(.headline)
                 Spacer()
+                Text("\(viewModel.totalWeight(array: section.items))" + "g" ) 
             }
             Rectangle()
                 .frame(maxWidth: .infinity)

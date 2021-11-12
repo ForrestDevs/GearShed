@@ -39,8 +39,6 @@ struct ItemRowView_InContainer: View {
                 itemBody
                 Spacer()
             }
-            .padding(.horizontal)
-            .padding(.top, 6)
         }
         .contextMenu {
             Button {
@@ -92,6 +90,7 @@ extension ItemRowView_InContainer {
             }
             Spacer()
         }
+        .padding(.bottom, 5)
     }
     
 }

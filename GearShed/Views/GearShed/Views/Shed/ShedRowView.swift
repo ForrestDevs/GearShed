@@ -47,6 +47,7 @@ struct ShedRowView: View {
         }
         .fullScreenCover (isPresented: $showEdit) {
             ModifyShedView(persistentStore: persistentStore ,shed: shed)
+                //.environmentObject(persistentStore)
         }
         .alert(item: $confirmDeleteShedAlert) { shed in shed.alert() }
     }

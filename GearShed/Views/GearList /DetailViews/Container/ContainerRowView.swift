@@ -27,7 +27,6 @@ struct ContainerRowView: View {
             containerHeader
             containerItems
         }
-        .padding(.horizontal)
         .fullScreenCover(isPresented: $showEdit) {
             EditContainerView(persistentStore: persistentStore, container: container)
         }
@@ -41,6 +40,8 @@ extension ContainerRowView {
         VStack (alignment: .leading, spacing: 0) {
             HStack {
                 Text(container.name)
+                    .font(.headline)
+                Spacer()
                 Text("\(viewModel.containerTotalWeight(container: container))g")
             }
             Rectangle()
@@ -57,6 +58,8 @@ extension ContainerRowView {
         ForEach(container.items) { item in
             ItemRowView_InContainer(item: item, gearlist: gearlist, container: container)
         }
+        .padding(.horizontal)
+        .padding(.top, 7)
     }
     
     private var editContextButton: some View {

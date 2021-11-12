@@ -26,7 +26,7 @@ struct AddShedView: View {
         let viewModel = GearShedData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
         
-		_editableData = State(initialValue: EditableShedData(shed: shed))
+		_editableData = State(initialValue: EditableShedData(persistentStore: persistentStore, shed: shed))
 		self.shed = shed
         self.shedOut = shedOut
         self.isAddFromItem = isAddFromItem ?? false

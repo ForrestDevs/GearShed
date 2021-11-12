@@ -37,7 +37,7 @@ struct AddMoreItemView: View {
                 itemsList
                     .padding(.top,10)
             }
-            .navigationBarTitle("Add Items to \(gearlist.name)", displayMode: .inline)
+            .navigationBarTitle("Select Additional Items", displayMode: .inline)
             .navigationBarBackButtonHidden(true)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction, content: cancelButton)

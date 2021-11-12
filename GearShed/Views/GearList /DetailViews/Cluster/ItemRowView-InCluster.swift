@@ -21,11 +21,12 @@ struct ItemRowView_InCluster: View {
             HStack {
                 VStack (alignment: .leading, spacing: 0) {
                     HStack {
-                        Text(item.brandName)
-                            .foregroundColor(Color.theme.accent)
-                        Text("|")
                         Text(item.name)
                             .foregroundColor(Color.theme.green)
+                        Text("|")
+                        Text(item.brandName)
+                            .foregroundColor(Color.theme.accent)
+                            .italic()
                     }
                     HStack {
                         Text(item.weight + "g")
@@ -40,6 +41,7 @@ struct ItemRowView_InCluster: View {
                 }
                 Spacer()
             }
+            .padding(.bottom, 5)
             
         }
         .contextMenu {

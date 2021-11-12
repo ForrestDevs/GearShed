@@ -40,6 +40,8 @@ extension GearlistContainerView {
                 ForEach(gearlist.containers) { container in
                     ContainerRowView(container: container, gearlist: gearlist)
                 }
+                .padding(.horizontal)
+                .padding(.top,5)
             }
         }
     }

@@ -10,7 +10,7 @@ import SwiftUI
 
 struct EditableShedData {
     
-    @EnvironmentObject private var persistentStore: PersistentStore
+    let persistentStore: PersistentStore
     
     // the id of the Shed, if any, associated with this data collection
     // (nil if data for a new item that does not yet exist)
@@ -19,7 +19,8 @@ struct EditableShedData {
     var shedName: String = ""
     
     // this copies all the editable data from an incoming Shed
-    init(shed: Shed?) {
+    init(persistentStore: PersistentStore, shed: Shed?) {
+        self.persistentStore = persistentStore
         if let shed = shed {
             id = shed.id!
             shedName = shed.name

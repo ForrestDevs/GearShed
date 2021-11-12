@@ -336,6 +336,23 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         return trueGearlistContainerBools
     }
     
+    func totalWeight(array: [Item]) -> String {
+        var arrayItem = [Item]()
+        var arrayString = [String]()
+
+        for item in array {
+            arrayItem.append(item)
+        }
+        
+        for item in arrayItem {
+            arrayString.append(item.weight)
+        }
+        
+        let intArray = arrayString.map { Int($0) ?? 0 }
+        let total = intArray.reduce(0, +)
+        let totalString = String(total)
+        return totalString
+    }
     func gearlistTotalWeight(gearlist: Gearlist) -> String {
         var array = [Item]()
         var arrayString = [String]()

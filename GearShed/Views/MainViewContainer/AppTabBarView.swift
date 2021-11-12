@@ -40,7 +40,7 @@ extension AppTabBarView {
             HStack (spacing: 50) {
                 gearShedButton
                 gearListButton
-                gearPlanButton
+                //gearPlanButton
             }
             .frame(maxWidth: .infinity)
             .frame(height: 30)
@@ -59,8 +59,8 @@ extension AppTabBarView {
                 NavigationView { GearlistView(persistentStore: persistentStore) }
                     .pageView(ignoresSafeArea: true)
                 
-                NavigationView { GearPlanView(persistentStore: persistentStore) }
-                    .pageView(ignoresSafeArea: true)
+                /*NavigationView { GearPlanView(persistentStore: persistentStore) }
+                    .pageView(ignoresSafeArea: true)*/
             }
             .frame(maxWidth: .infinity)
         }
@@ -80,7 +80,7 @@ extension AppTabBarView {
             self.offset = newOffset
         }
         .foregroundColor (
-            (0.0 <= tabInt && tabInt <= 0.17) ? Color.white : Color.black
+            (-1 <= tabInt && tabInt <= 0.30) ? Color.white : Color.black
         )
     }
 
@@ -95,7 +95,7 @@ extension AppTabBarView {
             self.offset = newOffset
         }
         .foregroundColor (
-            (0.18 <= tabInt && tabInt <= 0.49) ? Color.white : Color.black
+            (0.31 <= tabInt && tabInt <= 1) ? Color.white : Color.black
         )
 
     }

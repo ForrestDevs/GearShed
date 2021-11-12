@@ -83,13 +83,6 @@ struct GearShedView: View {
                     Image(systemName: "square.and.arrow.up")
                 }
             }
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button {
-                    //populateDatabaseFromJSON()
-                } label: {
-                    Text("Load Data ")
-                }
-            }
         }
         .fullScreenCover(isPresented: $showPDFScreen) {
             NavigationView {

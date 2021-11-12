@@ -70,6 +70,9 @@ extension ItemRowView_InGearlist {
     
     private var itemBody: some View {
         HStack {
+            Rectangle()
+                .opacity(0)
+                .frame(width: 5, height: 10)
             VStack (alignment: .leading, spacing: 0) {
                 HStack {
                     Text(item.brandName)
@@ -78,15 +81,17 @@ extension ItemRowView_InGearlist {
                     Text(item.name)
                         .foregroundColor(Color.theme.green)
                 }
-                HStack {
+                HStack (spacing: 0){
                     clusterMenu
                     containerMenu
-                    Spacer()
+                    //Spacer()
                 }
+                .padding(.horizontal, 5)
             }
             Spacer()
         }
-        .padding(.horizontal)
+        //.padding(.horizontal)
+        .padding(.bottom, 5)
     }
     
     // MARK: Context Menus
@@ -133,11 +138,23 @@ extension ItemRowView_InGearlist {
     }
     
     private var containerMenuLabel: some View {
-        HStack {
-            Text(item.gearlistContainer(gearlist: gearlist)?.name ?? "Container")
-                .font(.subheadline)
+        if ((item.gearlistContainer(gearlist: gearlist)?.name) != nil) {
+            return AnyView (
+                Text ("Container: " + (item.gearlistContainer(gearlist: gearlist)!.name))
+                            .font(.caption)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            )
+        } else {
+            return AnyView (
+                HStack (spacing: 0){
+                    Text ("Container: ")
+                        .font(.caption)
+                    Text("Select Container")
+                        .foregroundColor(Color.red)
+                        .font(.caption)
+                }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-            Image(systemName: "chevron.down")
+            )
         }
     }
     
@@ -174,11 +191,23 @@ extension ItemRowView_InGearlist {
     }
     
     private var clusterMenuLabel: some View {
-        HStack {
-            Text(item.gearlistCluster(gearlist: gearlist)?.name ?? "Cluster")
-                .font(.subheadline)
+        if ((item.gearlistCluster(gearlist: gearlist)?.name) != nil) {
+            return AnyView (
+                Text ("Cluster: " + (item.gearlistCluster(gearlist: gearlist)!.name))
+                            .font(.caption)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            )
+        } else {
+            return AnyView (
+                HStack (spacing: 0) {
+                    Text("Cluster: ")
+                        .font(.caption)
+                    Text ("Select Cluster")
+                        .foregroundColor(Color.red)
+                        .font(.caption)
+                }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-            Image(systemName: "chevron.down")
+            )
         }
     }
     

@@ -40,6 +40,8 @@ extension GearlistClusterView {
                 ForEach(gearlist.clusters) { listGroup in
                     ClusterRowView(cluster: listGroup)
                 }
+                .padding(.horizontal)
+                .padding(.top,5)
             }
         }
     }
