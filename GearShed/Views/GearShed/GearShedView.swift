@@ -31,14 +31,14 @@ struct GearShedView: View {
                     .pageLabel()
                     .font(.system(size: 12).bold())
                 
-                Text("SHED")
-                    .pageLabel()
-                    .font(.system(size: 12).bold())
-
                 Text("BRAND")
                     .pageLabel()
                     .font(.system(size: 12).bold())
                 
+                Text("SHED")
+                    .pageLabel()
+                    .font(.system(size: 12).bold())
+
                 Text("WISH")
                     .pageLabel()
                     .font(.system(size: 12).bold())
@@ -57,10 +57,10 @@ struct GearShedView: View {
             AllItemsView(persistentStore: persistentStore)
                 .pageView(ignoresSafeArea: true, edges: .bottom)
             
-            AllShedView(persistentStore: persistentStore)
+            AllBrandView(persistentStore: persistentStore)
                 .pageView(ignoresSafeArea: true, edges: .bottom)
             
-            AllBrandView(persistentStore: persistentStore)
+            AllShedView(persistentStore: persistentStore)
                 .pageView(ignoresSafeArea: true, edges: .bottom)
             
             AllWishListView(persistentStore: persistentStore)

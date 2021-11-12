@@ -39,18 +39,10 @@ struct ItemRowView_InContainer: View {
                 itemBody
                 Spacer()
             }
+            .padding(.bottom, 5)
         }
         .contextMenu {
-            Button {
-                withAnimation {
-                    viewModel.removeItemFromContainer(item: item, container: container)
-                }
-            } label: {
-                HStack {
-                    Text("Remove Item From Container")
-                    Image(systemName: "trash")
-                }
-            }
+            deleteContextButton
         }
     }
 }
@@ -81,16 +73,29 @@ extension ItemRowView_InContainer {
         HStack {
             VStack (alignment: .leading, spacing: 0) {
                 HStack {
-                    Text(item.brandName)
-                        .foregroundColor(Color.theme.accent)
-                    Text("|")
                     Text(item.name)
                         .foregroundColor(Color.theme.green)
+                    Text("|")
+                    Text(item.brandName)
+                        .foregroundColor(Color.theme.accent)
                 }
             }
             Spacer()
         }
-        .padding(.bottom, 5)
+    }
+    
+    private var deleteContextButton: some View {
+        Button {
+            withAnimation {
+                viewModel.removeItemFromContainer(item: item, container: container)
+            }
+        } label: {
+            HStack {
+                Text("Remove Item From Container")
+                Image(systemName: "trash")
+            }
+        }
+        
     }
     
 }

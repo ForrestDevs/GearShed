@@ -75,22 +75,21 @@ extension ItemRowView_InGearlist {
                 .frame(width: 5, height: 10)
             VStack (alignment: .leading, spacing: 0) {
                 HStack {
-                    Text(item.brandName)
-                        .foregroundColor(Color.theme.accent)
-                    Text("|")
                     Text(item.name)
                         .foregroundColor(Color.theme.green)
+                    Text("|")
+                    Text(item.brandName)
+                        .foregroundColor(Color.theme.accent)
                 }
                 HStack (spacing: 0){
                     clusterMenu
                     containerMenu
-                    //Spacer()
                 }
                 .padding(.horizontal, 5)
             }
             Spacer()
         }
-        //.padding(.horizontal)
+        .padding(.horizontal)
         .padding(.bottom, 5)
     }
     
@@ -140,16 +139,16 @@ extension ItemRowView_InGearlist {
     private var containerMenuLabel: some View {
         if ((item.gearlistContainer(gearlist: gearlist)?.name) != nil) {
             return AnyView (
-                Text ("Container: " + (item.gearlistContainer(gearlist: gearlist)!.name))
+                Text ("Pack: " + (item.gearlistContainer(gearlist: gearlist)!.name))
                             .font(.caption)
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
             )
         } else {
             return AnyView (
                 HStack (spacing: 0){
-                    Text ("Container: ")
+                    Text ("Pack: ")
                         .font(.caption)
-                    Text("Select Container")
+                    Text("Select Pack")
                         .foregroundColor(Color.red)
                         .font(.caption)
                 }
@@ -162,7 +161,7 @@ extension ItemRowView_InGearlist {
         Button {
             showAddNewContainer.toggle()
         } label: {
-            Text("New Container")
+            Text("New Pack")
             .font(.subheadline)
         }
     }
@@ -193,16 +192,16 @@ extension ItemRowView_InGearlist {
     private var clusterMenuLabel: some View {
         if ((item.gearlistCluster(gearlist: gearlist)?.name) != nil) {
             return AnyView (
-                Text ("Cluster: " + (item.gearlistCluster(gearlist: gearlist)!.name))
+                Text ("Pile: " + (item.gearlistCluster(gearlist: gearlist)!.name))
                             .font(.caption)
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
             )
         } else {
             return AnyView (
                 HStack (spacing: 0) {
-                    Text("Cluster: ")
+                    Text("Pile: ")
                         .font(.caption)
-                    Text ("Select Cluster")
+                    Text ("Select Pile")
                         .foregroundColor(Color.red)
                         .font(.caption)
                 }
@@ -215,7 +214,7 @@ extension ItemRowView_InGearlist {
         Button {
             showAddNewCluster.toggle()
         } label: {
-            Text("New Cluster")
+            Text("New Pile")
             .font(.subheadline)
         }
     }

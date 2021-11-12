@@ -56,7 +56,7 @@ extension AllWishListView {
             }
              Spacer()
         }
-        .font(.caption)
+        .font(.subheadline)
         .foregroundColor(Color.white)
         .padding(.horizontal)
         .padding(.vertical, 5)

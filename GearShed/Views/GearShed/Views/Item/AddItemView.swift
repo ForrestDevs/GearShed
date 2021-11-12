@@ -50,8 +50,8 @@ extension AddItemView {
         ScrollView (.vertical, showsIndicators: false) {
             VStack (alignment: .leading, spacing: 10) {
                 itemNameSection
-                itemShedSection
                 itemBrandSection
+                itemShedSection
                 itemWeightSection
                 itemPriceSection
                 itemWishlistSection

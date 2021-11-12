@@ -43,7 +43,7 @@ extension AllShedView {
             Text("\(viewModel.sheds.count)")
             Spacer()
         }
-        .font(.caption)
+        .font(.subheadline)
         .foregroundColor(Color.white)
         .padding(.horizontal)
         .padding(.vertical, 5)

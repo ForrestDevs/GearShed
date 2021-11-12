@@ -43,7 +43,7 @@ extension AllBrandView {
             Text("\(viewModel.brands.count)")
             Spacer()
         }
-        .font(.caption)
+        .font(.subheadline)
         .foregroundColor(Color.white)
         .padding(.horizontal)
         .padding(.vertical, 5)

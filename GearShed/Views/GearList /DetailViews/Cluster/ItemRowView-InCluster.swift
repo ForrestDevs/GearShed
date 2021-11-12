@@ -18,44 +18,55 @@ struct ItemRowView_InCluster: View {
     var body: some View {
         ZStack {
             Color.clear
-            HStack {
-                VStack (alignment: .leading, spacing: 0) {
-                    HStack {
-                        Text(item.name)
-                            .foregroundColor(Color.theme.green)
-                        Text("|")
-                        Text(item.brandName)
-                            .foregroundColor(Color.theme.accent)
-                            .italic()
-                    }
-                    HStack {
-                        Text(item.weight + "g")
-                        .font(.caption)
-                        .foregroundColor(Color.theme.green)
-                        
-                        Text(item.detail)
-                            .font(.caption)
-                            .foregroundColor(Color.theme.secondaryText)
-                            .frame(maxHeight: 35)
-                    }
-                }
-                Spacer()
-            }
-            .padding(.bottom, 5)
-            
+            itemBody
         }
         .contextMenu {
-            Button {
-                withAnimation {
-                    viewModel.removeItemFromCluster(item: item, cluster: cluster)
-                }
-            } label: {
-                HStack {
-                    Text("Remove Item From Cluster")
-                    Image(systemName: "trash")
-                }
-            }
+            deleteContextButton
         }
     }
 
+}
+
+extension ItemRowView_InCluster {
+    
+    private var itemBody: some View {
+        HStack {
+            VStack (alignment: .leading, spacing: 0) {
+                HStack {
+                    Text(item.name)
+                        .foregroundColor(Color.theme.green)
+                    Text("|")
+                    Text(item.brandName)
+                        .foregroundColor(Color.theme.accent)
+                }
+                HStack {
+                    Text(item.weight + "g")
+                    .font(.caption)
+                    .foregroundColor(Color.theme.green)
+                    
+                    Text(item.detail)
+                        .font(.caption)
+                        .foregroundColor(Color.theme.secondaryText)
+                        .frame(maxHeight: 35)
+                }
+            }
+            Spacer()
+        }
+        .padding(.horizontal)
+        .padding(.bottom, 5)
+    }
+    
+    private var deleteContextButton: some View {
+        Button {
+            withAnimation {
+                viewModel.removeItemFromCluster(item: item, cluster: cluster)
+            }
+        } label: {
+            HStack {
+                Text("Remove Item From Cluster")
+                Image(systemName: "trash")
+            }
+        }
+    }
+    
 }

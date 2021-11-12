@@ -25,6 +25,7 @@ struct ContainerRowView: View {
     var body: some View {
         VStack (alignment: .leading, spacing: 0) {
             containerHeader
+                .padding(.horizontal)
             containerItems
         }
         .fullScreenCover(isPresented: $showEdit) {

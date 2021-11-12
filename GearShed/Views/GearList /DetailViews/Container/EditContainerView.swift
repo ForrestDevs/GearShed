@@ -25,7 +25,7 @@ struct EditContainerView: View {
                 backgroundLayer
                 scrollViewLayer
             }
-            .navigationBarTitle("Edit Container", displayMode: .inline)
+            .navigationBarTitle("Edit Pack", displayMode: .inline)
             .navigationBarBackButtonHidden(true)
             .toolbar {
                 cancelToolBarItem
@@ -71,7 +71,7 @@ extension EditContainerView {
                     VStack(alignment: .leading, spacing: 3) {
                         Text("Name")
                             .formatEntryTitle()
-                        TextField("Container Name", text: $editableData.name)
+                        TextField("Pack Name", text: $editableData.name)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .disableAutocorrection(true)
                             .font(.subheadline)

@@ -18,7 +18,7 @@ struct GearlistClusterView: View {
     @State private var showAddCluster: Bool = false
     
     var body: some View {
-        VStack {
+        VStack (spacing: 0) {
             statBar
             ZStack {
                 gearlistClusterList
@@ -36,13 +36,13 @@ extension GearlistClusterView {
     
     private var gearlistClusterList: some View {
         ScrollView(.vertical, showsIndicators: false) {
-            VStack (alignment: .leading, spacing: 5) {
+            LazyVStack {
                 ForEach(gearlist.clusters) { listGroup in
                     ClusterRowView(cluster: listGroup)
                 }
-                .padding(.horizontal)
-                .padding(.top,5)
             }
+            .padding(.top, 10)
+            .padding(.bottom, 75)
         }
     }
     
@@ -55,8 +55,12 @@ extension GearlistClusterView {
                     showAddCluster.toggle()
                 }
                 label: {
-                    Image(systemName: "plus")
-                        .foregroundColor(Color.theme.background)
+                    VStack{
+                        Text("Add")
+                        Text("Pile")
+                    }
+                    .font(.system(size: 12, weight: .regular))
+                    .foregroundColor(Color.theme.background)
                 }
                 .frame(width: 55, height: 55)
                 .background(Color.theme.accent)
@@ -83,14 +87,12 @@ extension GearlistClusterView {
             
             Spacer()
         }
-        .font(.caption)
+        .font(.subheadline)
         .foregroundColor(Color.white)
         .padding(.horizontal)
         .padding(.vertical, 5)
         .background(Color.theme.green)
         .padding(.top, 10)
     }
-
-    
     
 }

@@ -38,9 +38,9 @@ struct GearlistDetailView: View {
             PagerTabView(tint: Color.theme.accent, selection: $currentScreen) {
                 Text("List")
                     .pageLabel()
-                Text("Cluster")
+                Text("Pile")
                     .pageLabel()
-                Text("Container")
+                Text("Pack")
                     .pageLabel()
             } content: {
                 GearlistItemListView(gearlist: gearlist)

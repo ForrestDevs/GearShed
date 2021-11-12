@@ -25,7 +25,7 @@ struct EditClusterView: View {
                 backgroundLayer
                 scrollViewLayer
             }
-            .navigationBarTitle("Edit Cluster", displayMode: .inline)
+            .navigationBarTitle("Edit Pile", displayMode: .inline)
             .navigationBarBackButtonHidden(true)
             .toolbar {
                 cancelToolBarItem
@@ -71,7 +71,7 @@ extension EditClusterView {
                     VStack(alignment: .leading, spacing: 3) {
                         Text("Name")
                             .formatEntryTitle()
-                        TextField("Cluster Name", text: $editableData.name)
+                        TextField("Pile Name", text: $editableData.name)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .disableAutocorrection(true)
                             .font(.subheadline)

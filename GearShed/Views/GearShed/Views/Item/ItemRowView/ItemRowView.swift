@@ -100,11 +100,11 @@ extension ItemRowView {
         HStack {
             VStack (alignment: .leading, spacing: 0) {
                 HStack {
-                    Text(item.brandName)
-                        .foregroundColor(Color.theme.accent)
-                    Text("|")
                     Text(item.name)
                         .foregroundColor(Color.theme.green)
+                    Text("|")
+                    Text(item.brandName)
+                        .foregroundColor(Color.theme.accent)
                 }
                 
                 HStack {

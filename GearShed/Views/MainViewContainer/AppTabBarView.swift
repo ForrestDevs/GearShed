@@ -70,7 +70,7 @@ extension AppTabBarView {
     
     private var gearShedButton: some View {
         VStack (alignment: .center, spacing: 0) {
-            //Image(systemName: "bag")
+            Image(systemName: "house")
             
             Text("Gear Shed")
                 .formatNoColorSmall()
@@ -86,7 +86,7 @@ extension AppTabBarView {
 
     private var gearListButton: some View {
         VStack (alignment: .center, spacing: 0) {
-            //Image(systemName: "list.bullet.rectangle")
+            Image(systemName: "list.bullet.rectangle")
             Text("Gear List")
                 .formatNoColorSmall()
         }

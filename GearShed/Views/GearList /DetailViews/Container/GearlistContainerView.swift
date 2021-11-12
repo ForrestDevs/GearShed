@@ -18,7 +18,7 @@ struct GearlistContainerView: View {
     @State private var showAddContainer: Bool = false
 
     var body: some View {
-        VStack {
+        VStack (spacing: 0) {
             statBar
             ZStack {
                 packingContainerList
@@ -36,13 +36,13 @@ extension GearlistContainerView {
     
     private var packingContainerList: some View {
         ScrollView(.vertical, showsIndicators: false) {
-            VStack (alignment: .leading, spacing: 5) {
+            LazyVStack {
                 ForEach(gearlist.containers) { container in
                     ContainerRowView(container: container, gearlist: gearlist)
                 }
-                .padding(.horizontal)
-                .padding(.top,5)
             }
+            .padding(.top, 10)
+            .padding(.bottom, 75)
         }
     }
     
@@ -55,8 +55,12 @@ extension GearlistContainerView {
                     showAddContainer.toggle()
                 }
                 label: {
-                    Image(systemName: "plus")
-                        .foregroundColor(Color.theme.background)
+                    VStack{
+                        Text("Add")
+                        Text("Pack")
+                    }
+                    .font(.system(size: 12, weight: .regular))
+                    .foregroundColor(Color.theme.background)
                 }
                 .frame(width: 55, height: 55)
                 .background(Color.theme.accent)
@@ -86,7 +90,7 @@ extension GearlistContainerView {
             
             Spacer()
         }
-        .font(.caption)
+        .font(.subheadline)
         .foregroundColor(Color.white)
         .padding(.horizontal)
         .padding(.vertical, 5)

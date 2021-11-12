@@ -18,7 +18,7 @@ struct GearlistItemListView: View {
     @State private var showAddItem: Bool = false
     
     var body: some View {
-        VStack {
+        VStack (spacing: 0) {
             statBar
             ZStack {
                 itemList
@@ -35,15 +35,18 @@ extension GearlistItemListView {
     
     private var itemList: some View {
         ScrollView(.vertical, showsIndicators: false) {
-            ForEach(viewModel.sectionByShed(itemArray: gearlist.items)) { section in
-                Section {
-                    sectionItems(section: section)
-                } header: {
-                    sectionHeader(section: section)
+            LazyVStack {
+                ForEach(viewModel.sectionByShed(itemArray: gearlist.items)) { section in
+                    Section {
+                        sectionItems(section: section)
+                    } header: {
+                        sectionHeader(section: section)
+                            .padding(.horizontal)
+                    }
                 }
             }
-            .padding(.horizontal)
-            .padding(.top,5)
+            .padding(.top, 10)
+            .padding(.bottom, 75)
         }
     }
     
@@ -54,7 +57,7 @@ extension GearlistItemListView {
     }
     
     private func sectionHeader(section: SectionShedData) -> some View {
-        VStack (spacing: 0) {
+        VStack (alignment: .leading, spacing: 0) {
             HStack {
                 Text(section.title)
                     .font(.headline)
@@ -76,8 +79,12 @@ extension GearlistItemListView {
                     showAddItem.toggle()
                 }
                 label: {
-                    Image(systemName: "plus")
-                        .foregroundColor(Color.theme.background)
+                    VStack{
+                        Text("Add")
+                        Text("Item")
+                    }
+                    .font(.system(size: 12, weight: .regular))
+                    .foregroundColor(Color.theme.background)
                 }
                 .frame(width: 55, height: 55)
                 .background(Color.theme.accent)
@@ -90,7 +97,7 @@ extension GearlistItemListView {
     }
     
     private var statBar: some View {
-        HStack (spacing: 20){
+        HStack (spacing: 20) {
             HStack {
                 Text("Items:")
                 Text("\(gearlist.items.count)")
@@ -101,7 +108,7 @@ extension GearlistItemListView {
             }
             Spacer()
         }
-        .font(.caption)
+        .font(.subheadline)
         .foregroundColor(Color.white)
         .padding(.horizontal)
         .padding(.vertical, 5)

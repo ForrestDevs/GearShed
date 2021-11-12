@@ -23,7 +23,9 @@ struct ClusterRowView: View {
     var body: some View {
         VStack (alignment: .leading, spacing: 0) {
             clusterHeader
+                .padding(.horizontal)
             clusterItems
+                .padding(.horizontal)
         }
         .fullScreenCover(isPresented: $showEdit) {
             EditClusterView(persistentStore: persistentStore, cluster: cluster)
@@ -43,11 +45,9 @@ extension ClusterRowView {
                 Spacer()
                 Text("\(viewModel.clusterTotalWeight(cluster: cluster))g")
             }
-            
             Rectangle()
                 .frame(maxWidth: .infinity)
                 .frame(height: 1)
-            
         }
         .contextMenu {
             editContextButton
@@ -59,7 +59,6 @@ extension ClusterRowView {
         ForEach(cluster.items) { item in
             ItemRowView_InCluster(cluster: cluster, item: item)
         }
-        .padding(.horizontal)
         .padding(.top, 7)
     }
     

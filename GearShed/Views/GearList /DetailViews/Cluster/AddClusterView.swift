@@ -29,7 +29,7 @@ struct AddClusterView: View {
                 backgroundLayer
                 scrollViewLayer
             }
-            .navigationBarTitle("New Cluster", displayMode: .inline)
+            .navigationBarTitle("New Pile", displayMode: .inline)
             .navigationBarBackButtonHidden(true)
             .toolbar {
                 cancelToolBarItem
@@ -81,7 +81,7 @@ extension AddClusterView     {
                     VStack(alignment: .leading, spacing: 3) {
                         Text("Name")
                             .formatEntryTitle()
-                        TextField("Cluster Name", text: $editableData.name)
+                        TextField("Pile Name", text: $editableData.name)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .disableAutocorrection(true)
                             .font(.subheadline)
