@@ -17,11 +17,14 @@ struct ItemRowView_InContainer: View {
     
     @ObservedObject private var gearlist: Gearlist
     
+    @ObservedObject private var container: Container
+    
     @State private var isPacked: Bool
     
-    init(item: Item, gearlist: Gearlist) {
+    init(item: Item, gearlist: Gearlist, container: Container) {
         self.item = item
         self.gearlist = gearlist
+        self.container = container
         
         let initialState = item.gearlistContainerBool(gearlist: gearlist)?.isPacked
         
@@ -29,13 +32,28 @@ struct ItemRowView_InContainer: View {
     }
     
     var body: some View {
-        HStack {
-            packedButton
-            itemBody
-            Spacer()
+        ZStack {
+            Color.clear
+            HStack {
+                packedButton
+                itemBody
+                Spacer()
+            }
+            .padding(.horizontal)
+            .padding(.top, 6)
         }
-        .padding(.horizontal)
-        .padding(.top, 6)
+        .contextMenu {
+            Button {
+                withAnimation {
+                    viewModel.removeItemFromContainer(item: item, container: container)
+                }
+            } label: {
+                HStack {
+                    Text("Remove Item From Container")
+                    Image(systemName: "trash")
+                }
+            }
+        }
     }
 }
 
@@ -63,11 +81,16 @@ extension ItemRowView_InContainer {
     
     private var itemBody: some View {
         HStack {
-            Text(item.brandName)
-                .foregroundColor(Color.theme.accent)
-            Text("|")
-            Text(item.name)
-                .foregroundColor(Color.theme.green)
+            VStack (alignment: .leading, spacing: 0) {
+                HStack {
+                    Text(item.brandName)
+                        .foregroundColor(Color.theme.accent)
+                    Text("|")
+                    Text(item.name)
+                        .foregroundColor(Color.theme.green)
+                }
+            }
+            Spacer()
         }
     }
     

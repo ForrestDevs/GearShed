@@ -54,34 +54,6 @@ extension Gearlist {
         return [] 
     }
     
-    func gearlistContainerTotals(gearlist: Gearlist) -> Int {
-        var counter: Int = 0
-        
-        for container in gearlist.containers {
-            for _ in container.items {
-                counter = counter + 1
-            }
-        }
-        
-        return counter
-    }
-    
-    func gearlistContainerBoolTotals(gearlist: Gearlist) -> Int {
-        var counter: Int = 0
-        
-        for container in gearlist.containers {
-            for item in container.items {
-                if item.containerContainerBool(container: container)!.isPacked == true {
-                    counter = counter + 1
-                }
-            }
-        }
-        
-        return counter
-    }
-    
-    
-    
     // trips: fronts Core Data attribute trips_ that is an NSSet, and turns it into
     // a Swift array
     /*var trips: [Trip] {

@@ -11,6 +11,8 @@ struct GearlistClusterView: View {
     
     @EnvironmentObject private var persistentStore: PersistentStore
     
+    @EnvironmentObject private var viewModel: GearlistData
+    
     @ObservedObject var gearlist: Gearlist
     
     @State private var showAddCluster: Bool = false
@@ -66,14 +68,17 @@ extension GearlistClusterView {
     
     private var statBar: some View {
         HStack (spacing: 20){
-            HStack {
-                Text("Items:")
-                Text("\(gearlist.items.count)")
-            }
-            HStack {
-                Text("Weight:")
-                Text("\(gearlist.items.count)g")
-            }
+            Text (
+                "Items: " +
+                "\(viewModel.gearlistClusterTotalItems(gearlist: gearlist))"
+            )
+            
+            Text (
+                "Weight: " +
+                "\(viewModel.gearlistClusterTotalWeight(gearlist: gearlist))" +
+                "g"
+            )
+            
             Spacer()
         }
         .font(.caption)

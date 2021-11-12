@@ -9,24 +9,51 @@ import SwiftUI
 
 struct ItemRowView_InCluster: View {
     
+    @EnvironmentObject private var viewModel: GearlistData
+    
+    @ObservedObject var cluster: Cluster
+    
     @ObservedObject var item: Item
     
     var body: some View {
-        VStack (alignment: .leading, spacing: 0) {
+        ZStack {
+            Color.clear
             HStack {
-                Text(item.brandName)
-                    .foregroundColor(Color.theme.accent)
-                Text("|")
-                Text(item.name)
-                    .foregroundColor(Color.theme.green)
+                VStack (alignment: .leading, spacing: 0) {
+                    HStack {
+                        Text(item.brandName)
+                            .foregroundColor(Color.theme.accent)
+                        Text("|")
+                        Text(item.name)
+                            .foregroundColor(Color.theme.green)
+                    }
+                    HStack {
+                        Text(item.weight + "g")
+                        .font(.caption)
+                        .foregroundColor(Color.theme.green)
+                        
+                        Text(item.detail)
+                            .font(.caption)
+                            .foregroundColor(Color.theme.secondaryText)
+                            .frame(maxHeight: 35)
+                    }
+                }
+                Spacer()
             }
-            HStack {
-                Text(item.weight + "g")
-                Text(item.detail)
-                    .font(.caption)
-                    .foregroundColor(Color.theme.secondaryText)
-                    .frame(maxHeight: 35)
+            
+        }
+        .contextMenu {
+            Button {
+                withAnimation {
+                    viewModel.removeItemFromCluster(item: item, cluster: cluster)
+                }
+            } label: {
+                HStack {
+                    Text("Remove Item From Cluster")
+                    Image(systemName: "trash")
+                }
             }
         }
     }
+
 }

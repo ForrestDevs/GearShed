@@ -96,7 +96,7 @@ extension GearlistItemListView {
             }
             HStack {
                 Text("Weight:")
-                Text("\(gearlist.items.count)g")
+                Text("\(viewModel.gearlistTotalWeight(gearlist: gearlist))g")
             }
             Spacer()
         }

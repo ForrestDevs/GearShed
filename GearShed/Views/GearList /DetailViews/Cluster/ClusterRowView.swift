@@ -12,6 +12,8 @@ struct ClusterRowView: View {
     
     @EnvironmentObject private var persistentStore: PersistentStore
     
+    @EnvironmentObject private var viewModel: GearlistData
+    
     @ObservedObject var cluster: Cluster
     
     @State private var showEdit: Bool = false
@@ -36,7 +38,11 @@ extension ClusterRowView {
     
     private var clusterHeader: some View {
         VStack (alignment: .leading, spacing: 0) {
-            Text(cluster.name)
+            HStack {
+                Text(cluster.name)
+                Text("\(viewModel.clusterTotalWeight(cluster: cluster))g")
+            }
+            
             Rectangle()
                 .frame(maxWidth: .infinity)
                 .frame(height: 1)
@@ -50,7 +56,7 @@ extension ClusterRowView {
     
     private var clusterItems: some View {
         ForEach(cluster.items) { item in
-            ItemRowView_InCluster(item: item)
+            ItemRowView_InCluster(cluster: cluster, item: item)
         }
         .padding(.horizontal)
     }

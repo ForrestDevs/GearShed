@@ -92,12 +92,15 @@ extension ItemRowView_InGearlist {
     // MARK: Context Menus
     private var deleteContextButton: some View {
         Button {
-            confirmRemoveItemAlert = ConfirmRemoveItemFromListAlert (
+            withAnimation {
+                viewModel.removeItemFromGearlist(item: item, gearlist: gearlist)
+            }
+            /*confirmRemoveItemAlert = ConfirmRemoveItemFromListAlert (
                 persistentStore: persistentStore,
                 item: item,
                 gearlist: gearlist,
                 destructiveCompletion: { presentationMode.wrappedValue.dismiss() }
-            )
+            )*/
         } label: {
             HStack {
                 Text("Remove Item From List")
@@ -133,7 +136,8 @@ extension ItemRowView_InGearlist {
         HStack {
             Text(item.gearlistContainer(gearlist: gearlist)?.name ?? "Container")
                 .font(.subheadline)
-                //.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            Image(systemName: "chevron.down")
         }
     }
     
@@ -173,7 +177,8 @@ extension ItemRowView_InGearlist {
         HStack {
             Text(item.gearlistCluster(gearlist: gearlist)?.name ?? "Cluster")
                 .font(.subheadline)
-                //.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            Image(systemName: "chevron.down")
         }
     }
     

@@ -12,6 +12,8 @@ struct ContainerRowView: View {
     
     @EnvironmentObject private var persistentStore: PersistentStore
     
+    @EnvironmentObject private var viewModel: GearlistData
+    
     @ObservedObject var container: Container
     
     @ObservedObject var gearlist: Gearlist
@@ -37,7 +39,10 @@ extension ContainerRowView {
     
     private var containerHeader: some View {
         VStack (alignment: .leading, spacing: 0) {
-            Text(container.name)
+            HStack {
+                Text(container.name)
+                Text("\(viewModel.containerTotalWeight(container: container))g")
+            }
             Rectangle()
                 .frame(maxWidth: .infinity)
                 .frame(height: 1)
@@ -50,7 +55,7 @@ extension ContainerRowView {
     
     private var containerItems: some View {
         ForEach(container.items) { item in
-            ItemRowView_InContainer(item: item, gearlist: gearlist)
+            ItemRowView_InContainer(item: item, gearlist: gearlist, container: container)
         }
     }
     

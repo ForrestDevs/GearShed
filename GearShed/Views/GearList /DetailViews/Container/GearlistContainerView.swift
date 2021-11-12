@@ -68,16 +68,20 @@ extension GearlistContainerView {
     
     private var statBar: some View {
         HStack (spacing: 20){
-            HStack {
-                Text("Packed:")
-                Text("\(viewModel.gearlistContainerBoolTotals(gearlist: gearlist))")
-                Text("of")
-                Text("\(gearlist.gearlistContainerTotals(gearlist: gearlist))")
-            }
-            HStack {
-                Text("Weight:")
-                Text("\(gearlist.items.count)g")
-            }
+            
+            Text (
+                "Packed: " +
+                "\(viewModel.gearlistContainerBoolTotals(gearlist: gearlist))" +
+                " of " +
+                "\(viewModel.gearlistContainerTotalItems(gearlist: gearlist))"
+            )
+            
+            Text (
+                "Weight: " +
+                "\(viewModel.gearlistContainerTotalWeight(gearlist: gearlist))" +
+                "g"
+            )
+            
             Spacer()
         }
         .font(.caption)
@@ -88,4 +92,9 @@ extension GearlistContainerView {
         .padding(.top, 10)
     }
 }
+
+/* Text("Packed:")
+ Text("\(viewModel.gearlistContainerBoolTotals(gearlist: gearlist))")
+ Text("of")
+ Text("\(gearlist.gearlistContainerTotals(gearlist: gearlist))")*/
 

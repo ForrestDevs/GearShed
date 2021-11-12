@@ -175,6 +175,19 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         // Save the changes.
         persistentStore.saveContext()
     }
+    /// Function to remove an Item from a Cluster.
+    func removeItemFromCluster(item: Item, cluster: Cluster) {
+        cluster.removeFromItems_(item)
+        persistentStore.saveContext()
+    }
+    /// Function to remove an Item from a Container.
+    func removeItemFromContainer(item: Item, container: Container) {
+        item.containerContainerBool(container: container)?.isPacked = false
+        item.containerContainerBool(container: container)?.container = nil
+        container.removeFromItems_(item)
+        persistentStore.saveContext()
+    }
+    
     
     // MARK: Cluster Methods
     /// Function to create a new Cluster.
@@ -323,15 +336,119 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         return trueGearlistContainerBools
     }
     
-    func gearlistContainerTotals(gearlist: Gearlist) -> Int {
-        var counter: Int = 0
+    func gearlistTotalWeight(gearlist: Gearlist) -> String {
+        var array = [Item]()
+        var arrayString = [String]()
+
+        for item in gearlist.items {
+            array.append(item)
+        }
         
+        for item in array {
+            arrayString.append(item.weight)
+        }
+        
+        let intArray = arrayString.map { Int($0) ?? 0 }
+        let total = intArray.reduce(0, +)
+        let totalString = String(total)
+        return totalString
+    }
+    
+    func gearlistContainerTotalWeight(gearlist: Gearlist) -> String {
+        var array = [Item]()
+        var arrayString = [String]()
+
+        for container in gearlist.containers {
+            for item in container.items {
+                array.append(item)
+            }
+        }
+        
+        for item in array {
+            arrayString.append(item.weight)
+        }
+        
+        let intArray = arrayString.map { Int($0) ?? 0 }
+        let total = intArray.reduce(0, +)
+        let totalString = String(total)
+        return totalString
+    }
+    
+    func gearlistClusterTotalWeight(gearlist: Gearlist) -> String {
+        var array = [Item]()
+        var arrayString = [String]()
+
+        for cluster in gearlist.clusters {
+            for item in cluster.items {
+                array.append(item)
+            }
+        }
+        
+        for item in array {
+            arrayString.append(item.weight)
+        }
+        
+        let intArray = arrayString.map { Int($0) ?? 0 }
+        let total = intArray.reduce(0, +)
+        let totalString = String(total)
+        return totalString
+    }
+    
+    func containerTotalWeight(container: Container) -> String {
+        var array = [Item]()
+        var arrayString = [String]()
+        
+        for item in container.items {
+            array.append(item)
+        }
+        
+        for item in array {
+            arrayString.append(item.weight)
+        }
+        
+        let intArray = arrayString.map { Int($0) ?? 0 }
+        let total = intArray.reduce(0, +)
+        let totalString = String(total)
+        return totalString
+    }
+    
+    func clusterTotalWeight(cluster: Cluster) -> String {
+        var array = [Item]()
+        var arrayString = [String]()
+        
+        for item in cluster.items {
+            array.append(item)
+        }
+        
+        for item in array {
+            arrayString.append(item.weight)
+        }
+        
+        let intArray = arrayString.map { Int($0) ?? 0 }
+        let total = intArray.reduce(0, +)
+        let totalString = String(total)
+        return totalString
+        
+    }
+    
+    
+    func gearlistContainerTotalItems(gearlist: Gearlist) -> Int {
+        var counter: Int = 0
         for container in gearlist.containers {
             for _ in container.items {
                 counter = counter + 1
             }
         }
-        
+        return counter
+    }
+    
+    func gearlistClusterTotalItems(gearlist: Gearlist) -> Int {
+        var counter: Int = 0
+        for cluster in gearlist.clusters {
+            for _ in cluster.items {
+                counter = counter + 1
+            }
+        }
         return counter
     }
     
