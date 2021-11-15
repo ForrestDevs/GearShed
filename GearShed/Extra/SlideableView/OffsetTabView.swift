@@ -7,9 +7,6 @@
 
 import SwiftUI
 
-// See My Animated Indicator video...
-// Video in the description....
-
 // Custom View that will return offset for Paging Control....
 struct OffsetPageTabView<Content: View>: UIViewRepresentable {
     
@@ -31,6 +28,7 @@ struct OffsetPageTabView<Content: View>: UIViewRepresentable {
     func makeUIView(context: Context) -> UIScrollView {
         
         let scrollview = UIScrollView()
+        
         
         // Extracting SwiftUI View and embedding into UIKit ScrollView...
         let hostview = UIHostingController(rootView: content)
@@ -69,14 +67,12 @@ struct OffsetPageTabView<Content: View>: UIViewRepresentable {
         let currentOffset = uiView.contentOffset.x
         
         if currentOffset != offset{
-        
-            print("updating")
             uiView.setContentOffset(CGPoint(x: offset, y: 0), animated: true)
         }
     }
     
     // Pager Offset...
-    class Coordinator: NSObject,UIScrollViewDelegate{
+    class Coordinator: NSObject, UIScrollViewDelegate {
         
         var parent: OffsetPageTabView
         

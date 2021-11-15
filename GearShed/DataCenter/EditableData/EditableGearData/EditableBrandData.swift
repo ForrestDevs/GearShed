@@ -10,7 +10,7 @@ import SwiftUI
 
 struct EditableBrandData {
     
-    @EnvironmentObject private var persistentStore: PersistentStore
+    let persistentStore: PersistentStore
     
     // the id of the Brand, if any, associated with this data collection
     // (nil if data for a new item that does not yet exist)
@@ -19,7 +19,8 @@ struct EditableBrandData {
     var brandName: String = ""
     
     // this copies all the editable data from an incoming Brand
-    init(brand: Brand?) {
+    init(persistentStore: PersistentStore, brand: Brand?) {
+        self.persistentStore = persistentStore
         if let brand = brand {
             id = brand.id!
             brandName = brand.name

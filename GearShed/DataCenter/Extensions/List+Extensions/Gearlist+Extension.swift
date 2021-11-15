@@ -25,6 +25,26 @@ extension Gearlist {
         }
     }
     
+    var isTrip: Bool {
+        get { isTrip_ }
+        set { isTrip_ = newValue }
+    }
+    
+    var startDate: Date {
+        get { startDate_ ?? Date() }
+        set { startDate_ = newValue }
+    }
+    
+    var endDate: Date {
+        get { endDate_ ?? Date() }
+        set { endDate_ = newValue }
+    }
+    
+    var location: String {
+        get { location_ ?? "" }
+        set { location_ = newValue}
+    }
+    
     var details: String {
         get { details_ ?? "Unknown Detials" }
         set {

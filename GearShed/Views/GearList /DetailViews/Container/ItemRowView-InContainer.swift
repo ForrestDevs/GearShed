@@ -21,6 +21,8 @@ struct ItemRowView_InContainer: View {
     
     @State private var isPacked: Bool
     
+    @State private var showDetail: Bool = false 
+    
     init(item: Item, gearlist: Gearlist, container: Container) {
         self.item = item
         self.gearlist = gearlist
@@ -35,6 +37,9 @@ struct ItemRowView_InContainer: View {
         ZStack {
             Color.clear
             HStack {
+                Rectangle()
+                    .frame(width: 0.2, height: 5)
+                    .opacity(0)
                 packedButton
                 itemBody
                 Spacer()
@@ -43,6 +48,10 @@ struct ItemRowView_InContainer: View {
         }
         .contextMenu {
             deleteContextButton
+            itemDetailContextButton
+        }
+        .sheet(isPresented: $showDetail) {
+            ItemDetailView(item: item)
         }
     }
 }
@@ -79,9 +88,20 @@ extension ItemRowView_InContainer {
                     Text(item.brandName)
                         .foregroundColor(Color.theme.accent)
                 }
+                .font(.system(size: 16.2))
             }
             Spacer()
         }
+        .padding(.horizontal, 2)
+    }
+    
+    private var itemDetailContextButton: some View {
+        Button {
+            showDetail.toggle()
+        } label: {
+            Text("Item Detail")
+        }
+        
     }
     
     private var deleteContextButton: some View {
@@ -91,7 +111,7 @@ extension ItemRowView_InContainer {
             }
         } label: {
             HStack {
-                Text("Remove Item From Container")
+                Text("Remove From Pack")
                 Image(systemName: "trash")
             }
         }

@@ -110,10 +110,11 @@ extension ItemRowView {
                 HStack {
                     HStack {
                         Text("\(item.weight)g")
+                            .foregroundColor(Color.theme.accent)
                         Text("$\(item.price)")
+                            .foregroundColor(Color.theme.green)
                     }
                     .font(.caption)
-                    .foregroundColor(Color.theme.green)
                     
                     Text(item.detail)
                         .font(.caption)

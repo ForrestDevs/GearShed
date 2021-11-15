@@ -73,7 +73,7 @@ extension ItemRowView_InGearlist {
             Rectangle()
                 .opacity(0)
                 .frame(width: 5, height: 10)
-            VStack (alignment: .leading, spacing: 0) {
+            VStack (alignment: .leading, spacing: 2) {
                 HStack {
                     Text(item.name)
                         .foregroundColor(Color.theme.green)
@@ -81,11 +81,16 @@ extension ItemRowView_InGearlist {
                     Text(item.brandName)
                         .foregroundColor(Color.theme.accent)
                 }
-                HStack (spacing: 0){
-                    clusterMenu
-                    containerMenu
+                HStack (spacing: 20){
+                    Text(item.weight + "g")
+                        .font(.system(size: 13))
+                        .foregroundColor(Color.theme.accent)
+                    HStack {
+                        clusterMenu
+                        containerMenu
+                    }
                 }
-                .padding(.horizontal, 5)
+                .padding(.horizontal, 10)
             }
             Spacer()
         }
@@ -107,7 +112,7 @@ extension ItemRowView_InGearlist {
             )*/
         } label: {
             HStack {
-                Text("Remove Item From List")
+                Text("Remove From List")
                 Image(systemName: "trash")
             }
         }
@@ -140,17 +145,17 @@ extension ItemRowView_InGearlist {
         if ((item.gearlistContainer(gearlist: gearlist)?.name) != nil) {
             return AnyView (
                 Text ("Pack: " + (item.gearlistContainer(gearlist: gearlist)!.name))
-                            .font(.caption)
+                    .font(.system(size: 13))
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
             )
         } else {
             return AnyView (
                 HStack (spacing: 0){
                     Text ("Pack: ")
-                        .font(.caption)
-                    Text("Select Pack")
+                        .font(.system(size: 13))
+                    Text("Select")
                         .foregroundColor(Color.red)
-                        .font(.caption)
+                        .font(.system(size: 13))
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
             )
@@ -161,7 +166,7 @@ extension ItemRowView_InGearlist {
         Button {
             showAddNewContainer.toggle()
         } label: {
-            Text("New Pack")
+            Text("Add New Pack")
             .font(.subheadline)
         }
     }
@@ -193,17 +198,17 @@ extension ItemRowView_InGearlist {
         if ((item.gearlistCluster(gearlist: gearlist)?.name) != nil) {
             return AnyView (
                 Text ("Pile: " + (item.gearlistCluster(gearlist: gearlist)!.name))
-                            .font(.caption)
+                    .font(.system(size: 13))
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
             )
         } else {
             return AnyView (
                 HStack (spacing: 0) {
                     Text("Pile: ")
-                        .font(.caption)
-                    Text ("Select Pile")
+                        .font(.system(size: 13))
+                    Text ("Select")
                         .foregroundColor(Color.red)
-                        .font(.caption)
+                        .font(.system(size: 13))
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
             )
@@ -214,7 +219,7 @@ extension ItemRowView_InGearlist {
         Button {
             showAddNewCluster.toggle()
         } label: {
-            Text("New Pile")
+            Text("Add New Pile")
             .font(.subheadline)
         }
     }

@@ -62,6 +62,20 @@
 		088B154E2732EBBC00ECBC11 /* EditableShedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088B154D2732EBBC00ECBC11 /* EditableShedData.swift */; };
 		088B155427335BE000ECBC11 /* DevData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088B155327335BDF00ECBC11 /* DevData.swift */; };
 		088B15562734964300ECBC11 /* ListGroupRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088B15552734964200ECBC11 /* ListGroupRowView.swift */; };
+		08A5FB91274054DF008A5D28 /* ImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A5FB90274054DF008A5D28 /* ImageHelper.swift */; };
+		08A5FB952740AD93008A5D28 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A5FB942740AD92008A5D28 /* ActivityView.swift */; };
+		08A5FB972740B4B5008A5D28 /* TripView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A5FB962740B4B5008A5D28 /* TripView.swift */; };
+		08A5FB992740B81B008A5D28 /* AddTripView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A5FB982740B81B008A5D28 /* AddTripView.swift */; };
+		08A5FB9B2740DD62008A5D28 /* CustomDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A5FB9A2740DD62008A5D28 /* CustomDatePicker.swift */; };
+		08A5FBA42740DDDB008A5D28 /* MDPDayOfMonth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A5FB9D2740DDDA008A5D28 /* MDPDayOfMonth.swift */; };
+		08A5FBA52740DDDB008A5D28 /* MDPDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A5FB9E2740DDDA008A5D28 /* MDPDayView.swift */; };
+		08A5FBA62740DDDB008A5D28 /* MDPMonthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A5FB9F2740DDDA008A5D28 /* MDPMonthView.swift */; };
+		08A5FBA72740DDDB008A5D28 /* MDPModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A5FBA02740DDDB008A5D28 /* MDPModel.swift */; };
+		08A5FBA82740DDDB008A5D28 /* MDPMonthYearPickerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A5FBA12740DDDB008A5D28 /* MDPMonthYearPickerButton.swift */; };
+		08A5FBA92740DDDB008A5D28 /* MDPContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A5FBA22740DDDB008A5D28 /* MDPContentView.swift */; };
+		08A5FBAA2740DDDB008A5D28 /* MDPMonthYearPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A5FBA32740DDDB008A5D28 /* MDPMonthYearPicker.swift */; };
+		08A5FBAE2741A32D008A5D28 /* DetailManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A5FBAD2741A32D008A5D28 /* DetailManager.swift */; };
+		08A5FBB02741BAF5008A5D28 /* TripRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A5FBAF2741BAF5008A5D28 /* TripRowView.swift */; };
 		08A7CFFB2728A088006FA3F7 /* AddMoreItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A7CFFA2728A088006FA3F7 /* AddMoreItemView.swift */; };
 		08A7CFFD2728D25D006FA3F7 /* CustomAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A7CFFC2728D25D006FA3F7 /* CustomAlert.swift */; };
 		08A7D0002729F597006FA3F7 /* ItemRowViewInBrand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A7CFFF2729F597006FA3F7 /* ItemRowViewInBrand.swift */; };
@@ -139,7 +153,7 @@
 		08C7D921270F72F700EC3984 /* SectionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C7D91F270F72F700EC3984 /* SectionData.swift */; };
 		08C7D927270F7DC200EC3984 /* GearlistRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C7D926270F7DC200EC3984 /* GearlistRowView.swift */; };
 		08C7D929270F7F7500EC3984 /* GearlistDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C7D928270F7F7500EC3984 /* GearlistDetailView.swift */; };
-		08C7D92E270F844C00EC3984 /* AddListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C7D92D270F844C00EC3984 /* AddListView.swift */; };
+		08C7D92E270F844C00EC3984 /* AddActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C7D92D270F844C00EC3984 /* AddActivityView.swift */; };
 		08C7D930270F846500EC3984 /* TripItemsSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C7D92F270F846500EC3984 /* TripItemsSelector.swift */; };
 		08C7D93E2710EEEE00EC3984 /* AddItemToTripSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C7D93D2710EEEE00EC3984 /* AddItemToTripSheet.swift */; };
 		08C9C4E9272DFEB4007DBCF9 /* TabBarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C9C4E8272DFEB4007DBCF9 /* TabBarManager.swift */; };
@@ -221,6 +235,20 @@
 		088B154D2732EBBC00ECBC11 /* EditableShedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableShedData.swift; sourceTree = "<group>"; };
 		088B155327335BDF00ECBC11 /* DevData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevData.swift; sourceTree = "<group>"; };
 		088B15552734964200ECBC11 /* ListGroupRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListGroupRowView.swift; sourceTree = "<group>"; };
+		08A5FB90274054DF008A5D28 /* ImageHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHelper.swift; sourceTree = "<group>"; };
+		08A5FB942740AD92008A5D28 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
+		08A5FB962740B4B5008A5D28 /* TripView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripView.swift; sourceTree = "<group>"; };
+		08A5FB982740B81B008A5D28 /* AddTripView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTripView.swift; sourceTree = "<group>"; };
+		08A5FB9A2740DD62008A5D28 /* CustomDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDatePicker.swift; sourceTree = "<group>"; };
+		08A5FB9D2740DDDA008A5D28 /* MDPDayOfMonth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDPDayOfMonth.swift; sourceTree = "<group>"; };
+		08A5FB9E2740DDDA008A5D28 /* MDPDayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDPDayView.swift; sourceTree = "<group>"; };
+		08A5FB9F2740DDDA008A5D28 /* MDPMonthView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDPMonthView.swift; sourceTree = "<group>"; };
+		08A5FBA02740DDDB008A5D28 /* MDPModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDPModel.swift; sourceTree = "<group>"; };
+		08A5FBA12740DDDB008A5D28 /* MDPMonthYearPickerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDPMonthYearPickerButton.swift; sourceTree = "<group>"; };
+		08A5FBA22740DDDB008A5D28 /* MDPContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDPContentView.swift; sourceTree = "<group>"; };
+		08A5FBA32740DDDB008A5D28 /* MDPMonthYearPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDPMonthYearPicker.swift; sourceTree = "<group>"; };
+		08A5FBAD2741A32D008A5D28 /* DetailManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailManager.swift; sourceTree = "<group>"; };
+		08A5FBAF2741BAF5008A5D28 /* TripRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripRowView.swift; sourceTree = "<group>"; };
 		08A7CFFA2728A088006FA3F7 /* AddMoreItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMoreItemView.swift; sourceTree = "<group>"; };
 		08A7CFFC2728D25D006FA3F7 /* CustomAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlert.swift; sourceTree = "<group>"; };
 		08A7CFFF2729F597006FA3F7 /* ItemRowViewInBrand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemRowViewInBrand.swift; sourceTree = "<group>"; };
@@ -300,7 +328,7 @@
 		08C7D91F270F72F700EC3984 /* SectionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionData.swift; sourceTree = "<group>"; };
 		08C7D926270F7DC200EC3984 /* GearlistRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GearlistRowView.swift; sourceTree = "<group>"; };
 		08C7D928270F7F7500EC3984 /* GearlistDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GearlistDetailView.swift; sourceTree = "<group>"; };
-		08C7D92D270F844C00EC3984 /* AddListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddListView.swift; sourceTree = "<group>"; };
+		08C7D92D270F844C00EC3984 /* AddActivityView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddActivityView.swift; sourceTree = "<group>"; };
 		08C7D92F270F846500EC3984 /* TripItemsSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripItemsSelector.swift; sourceTree = "<group>"; };
 		08C7D93D2710EEEE00EC3984 /* AddItemToTripSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemToTripSheet.swift; sourceTree = "<group>"; };
 		08C9C4E8272DFEB4007DBCF9 /* TabBarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarManager.swift; sourceTree = "<group>"; };
@@ -481,6 +509,42 @@
 			path = "ListGroup ";
 			sourceTree = "<group>";
 		};
+		08A5FB922740AD49008A5D28 /* Activity */ = {
+			isa = PBXGroup;
+			children = (
+				08C7D926270F7DC200EC3984 /* GearlistRowView.swift */,
+				08C7D92D270F844C00EC3984 /* AddActivityView.swift */,
+				081E8A5B2739D54A0096CBE8 /* ModifyListView.swift */,
+				08A5FB942740AD92008A5D28 /* ActivityView.swift */,
+			);
+			path = Activity;
+			sourceTree = "<group>";
+		};
+		08A5FB932740AD53008A5D28 /* Trip */ = {
+			isa = PBXGroup;
+			children = (
+				08A5FB962740B4B5008A5D28 /* TripView.swift */,
+				08A5FB982740B81B008A5D28 /* AddTripView.swift */,
+				08A5FBAF2741BAF5008A5D28 /* TripRowView.swift */,
+			);
+			path = Trip;
+			sourceTree = "<group>";
+		};
+		08A5FB9C2740DDB9008A5D28 /* CustomDatePicker */ = {
+			isa = PBXGroup;
+			children = (
+				08A5FB9A2740DD62008A5D28 /* CustomDatePicker.swift */,
+				08A5FBA22740DDDB008A5D28 /* MDPContentView.swift */,
+				08A5FB9D2740DDDA008A5D28 /* MDPDayOfMonth.swift */,
+				08A5FB9E2740DDDA008A5D28 /* MDPDayView.swift */,
+				08A5FBA02740DDDB008A5D28 /* MDPModel.swift */,
+				08A5FB9F2740DDDA008A5D28 /* MDPMonthView.swift */,
+				08A5FBA32740DDDB008A5D28 /* MDPMonthYearPicker.swift */,
+				08A5FBA12740DDDB008A5D28 /* MDPMonthYearPickerButton.swift */,
+			);
+			path = CustomDatePicker;
+			sourceTree = "<group>";
+		};
 		08A7CFFE2729F57A006FA3F7 /* ItemRowView */ = {
 			isa = PBXGroup;
 			children = (
@@ -579,6 +643,7 @@
 		08B8252E273CD52900326CE9 /* OLD */ = {
 			isa = PBXGroup;
 			children = (
+				08C7D919270F70F400EC3984 /* AllGearLists.swift */,
 				088B15572734964900ECBC11 /* ListGroup  */,
 				08877EF127363760000D7FF4 /* PackingGroup */,
 				08371B46271BB0470072AD94 /* ViewModel */,
@@ -628,10 +693,8 @@
 			isa = PBXGroup;
 			children = (
 				08C7D8B9270F41F300EC3984 /* GearlistView.swift */,
-				08C7D919270F70F400EC3984 /* AllGearLists.swift */,
-				08C7D926270F7DC200EC3984 /* GearlistRowView.swift */,
-				08C7D92D270F844C00EC3984 /* AddListView.swift */,
-				081E8A5B2739D54A0096CBE8 /* ModifyListView.swift */,
+				08A5FB932740AD53008A5D28 /* Trip */,
+				08A5FB922740AD49008A5D28 /* Activity */,
 				08B8251C273CAF9600326CE9 /* DetailViews */,
 			);
 			path = "GearList ";
@@ -642,6 +705,7 @@
 			children = (
 				08C7D8B7270F41CC00EC3984 /* GearShedView.swift */,
 				08371B51271BD4D60072AD94 /* Views */,
+				08A5FB90274054DF008A5D28 /* ImageHelper.swift */,
 			);
 			path = GearShed;
 			sourceTree = "<group>";
@@ -788,6 +852,7 @@
 		08C9C4E7272DFD37007DBCF9 /* MainViewContainer */ = {
 			isa = PBXGroup;
 			children = (
+				08A5FBAD2741A32D008A5D28 /* DetailManager.swift */,
 				084EDA12272BAE2B00475891 /* ContentView.swift */,
 				08ED0FDD2719EAE10072CB90 /* AppTabBarView.swift */,
 			);
@@ -914,6 +979,7 @@
 			isa = PBXGroup;
 			children = (
 				08FE365E272CC2B9000035A9 /* CustomTextFeild.swift */,
+				08A5FB9C2740DDB9008A5D28 /* CustomDatePicker */,
 			);
 			path = "CustomViews ";
 			sourceTree = "<group>";
@@ -997,9 +1063,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08A5FBA92740DDDB008A5D28 /* MDPContentView.swift in Sources */,
 				08371B25271A42890072AD94 /* TestView.swift in Sources */,
 				088B155427335BE000ECBC11 /* DevData.swift in Sources */,
 				08A7D0062729F62F006FA3F7 /* ItemRowViewInWishlist.swift in Sources */,
+				08A5FB972740B4B5008A5D28 /* TripView.swift in Sources */,
 				08B8252B273CD39A00326CE9 /* ItemRowView-InCluster.swift in Sources */,
 				08371B70271E56C00072AD94 /* AddOrModifyTagView.swift in Sources */,
 				088B154A2730E0A300ECBC11 /* GearPlanView.swift in Sources */,
@@ -1011,9 +1079,10 @@
 				08D67E11272523680064F639 /* SKProduct-LocalizedPrice.swift in Sources */,
 				08C7D8F6270F65E100EC3984 /* SLSimpleHeaderView.swift in Sources */,
 				08D67E152725EEA60064F639 /* ToggleStyles.swift in Sources */,
+				08A5FBA62740DDDB008A5D28 /* MDPMonthView.swift in Sources */,
 				08C7D8F4270F65E100EC3984 /* SLFormLabelText.swift in Sources */,
 				08C7D8AC270F3D1D00EC3984 /* GearShed.xcdatamodeld in Sources */,
-				08C7D92E270F844C00EC3984 /* AddListView.swift in Sources */,
+				08C7D92E270F844C00EC3984 /* AddActivityView.swift in Sources */,
 				08C7D902270F680400EC3984 /* ConfirmationAlertProtocol.swift in Sources */,
 				08371B3F271B72BF0072AD94 /* UIApplication.swift in Sources */,
 				08371B2A271AA4DB0072AD94 /* HomeView.swift in Sources */,
@@ -1028,6 +1097,7 @@
 				08371B5F271DFEC90072AD94 /* AllShedView.swift in Sources */,
 				08C7D8CA270F475A00EC3984 /* View+Extensions.swift in Sources */,
 				080015AA27277C2B00E1BE4C /* OffsetTabView.swift in Sources */,
+				08A5FB91274054DF008A5D28 /* ImageHelper.swift in Sources */,
 				084EDA15272BAFD900475891 /* CustomTabBar.swift in Sources */,
 				08C7D93E2710EEEE00EC3984 /* AddItemToTripSheet.swift in Sources */,
 				080015AF272787E700E1BE4C /* AllRegretsView.swift in Sources */,
@@ -1035,7 +1105,9 @@
 				08ED0FE5271A2C8A0072CB90 /* UnusedCode.swift in Sources */,
 				08D67E0C27250F5A0064F639 /* UnlockManager.swift in Sources */,
 				08877EF327363779000D7FF4 /* AddContainerView.swift in Sources */,
+				08A5FB9B2740DD62008A5D28 /* CustomDatePicker.swift in Sources */,
 				08C7D900270F680400EC3984 /* ConfirmationAlerts.swift in Sources */,
+				08A5FBA82740DDDB008A5D28 /* MDPMonthYearPickerButton.swift in Sources */,
 				08B6FD33272E636E00B8A9AE /* Array+Extensions.swift in Sources */,
 				088B153B273041DD00ECBC11 /* CustomCornerRadius.swift in Sources */,
 				08B82533273D983800326CE9 /* EditContainerView.swift in Sources */,
@@ -1051,6 +1123,7 @@
 				0853ABF8271F824700123497 /* ModifyBrandView.swift in Sources */,
 				080015A5272731DB00E1BE4C /* EditableGearlistData.swift in Sources */,
 				08A7D0022729F5C6006FA3F7 /* ItemRowViewInShed.swift in Sources */,
+				08A5FBAE2741A32D008A5D28 /* DetailManager.swift in Sources */,
 				08371B48271BB1DC0072AD94 /* GearlistContextMenu.swift in Sources */,
 				08371B3D271B72BF0072AD94 /* Color.swift in Sources */,
 				08C7D8CB270F475A00EC3984 /* Bundle+Extensions.swift in Sources */,
@@ -1059,6 +1132,7 @@
 				08B82522273CB2E300326CE9 /* GearlistContainerView.swift in Sources */,
 				08371B3C271B72BF0072AD94 /* Double.swift in Sources */,
 				08C7D8DC270F480E00EC3984 /* BrandRowView.swift in Sources */,
+				08A5FBA42740DDDB008A5D28 /* MDPDayOfMonth.swift in Sources */,
 				08FE3661272CDC61000035A9 /* Text+Extension.swift in Sources */,
 				08C7D91A270F70F400EC3984 /* AllGearLists.swift in Sources */,
 				08371B50271BC5010072AD94 /* GearShedData.swift in Sources */,
@@ -1091,10 +1165,12 @@
 				08A7CFFB2728A088006FA3F7 /* AddMoreItemView.swift in Sources */,
 				08C7D8DD270F480E00EC3984 /* BrandsTabView.swift in Sources */,
 				08877EEA2735BD34000D7FF4 /* AddItemToList.swift in Sources */,
+				08A5FB992740B81B008A5D28 /* AddTripView.swift in Sources */,
 				08C7D8F9270F65E100EC3984 /* SelectionIndicatorView.swift in Sources */,
 				08C7D8B8270F41CC00EC3984 /* GearShedView.swift in Sources */,
 				08ED0FDF2719EAE10072CB90 /* CustomTabBarView.swift in Sources */,
 				08371B63271DFEE60072AD94 /* AllFavouriteView.swift in Sources */,
+				08A5FBAA2740DDDB008A5D28 /* MDPMonthYearPicker.swift in Sources */,
 				08C7D909270F6D1D00EC3984 /* Item+Extensions.swift in Sources */,
 				08877EE82735BBA4000D7FF4 /* ListGroup+Extensions.swift in Sources */,
 				08A7CFFD2728D25D006FA3F7 /* CustomAlert.swift in Sources */,
@@ -1134,9 +1210,13 @@
 				08C7D8FB270F66EB00EC3984 /* AddItemView.swift in Sources */,
 				0863DC3C27388B3B00A9A3B2 /* PackingGroupRowView.swift in Sources */,
 				08D67E0E27250F5A0064F639 /* PurchaseButton.swift in Sources */,
+				08A5FB952740AD93008A5D28 /* ActivityView.swift in Sources */,
 				08B8251B273C737E00326CE9 /* AddClusterView.swift in Sources */,
 				08B8251E273CAFBB00326CE9 /* GearlistItemListView.swift in Sources */,
+				08A5FBA52740DDDB008A5D28 /* MDPDayView.swift in Sources */,
+				08A5FBA72740DDDB008A5D28 /* MDPModel.swift in Sources */,
 				08B82525273CBFD900326CE9 /* ItemRowView-InGearlist.swift in Sources */,
+				08A5FBB02741BAF5008A5D28 /* TripRowView.swift in Sources */,
 				08C7D8A0270F3D1800EC3984 /* GearShedApp.swift in Sources */,
 				08C7D8F7270F65E100EC3984 /* SLCenteredButton.swift in Sources */,
 				0853ABFA271F876F00123497 /* ModifyShedView.swift in Sources */,

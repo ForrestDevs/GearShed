@@ -26,34 +26,30 @@ struct GearShedView: View {
     
     var body: some View {
         PagerTabView(tint: Color.theme.accent,selection: $currentSelection) {
-            HStack(spacing: 0) {
-                Text("ITEM")
-                    .pageLabel()
-                    .font(.system(size: 12).bold())
+            Text("ITEM")
+                .pageLabel()
+                .font(.system(size: 12).bold())
                 
-                Text("BRAND")
-                    .pageLabel()
-                    .font(.system(size: 12).bold())
-                
-                Text("SHED")
-                    .pageLabel()
-                    .font(.system(size: 12).bold())
-
-                Text("WISH")
-                    .pageLabel()
-                    .font(.system(size: 12).bold())
-                
-                Text("FAV")
-                    .pageLabel()
-                    .font(.system(size: 12).bold())
-
-                Text("REGRET")
-                    .pageLabel()
-                    .font(.system(size: 12).bold())
-            }
-        }
-        content: {
+            Text("BRAND")
+                .pageLabel()
+                .font(.system(size: 12).bold())
             
+            Text("SHED")
+                .pageLabel()
+                .font(.system(size: 12).bold())
+
+            Text("WISH")
+                .pageLabel()
+                .font(.system(size: 12).bold())
+            
+            Text("FAV")
+                .pageLabel()
+                .font(.system(size: 12).bold())
+
+            Text("REGRET")
+                .pageLabel()
+                .font(.system(size: 12).bold())
+        } content: {
             AllItemsView(persistentStore: persistentStore)
                 .pageView(ignoresSafeArea: true, edges: .bottom)
             

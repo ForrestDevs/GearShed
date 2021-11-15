@@ -29,7 +29,7 @@ struct AddClusterView: View {
                 backgroundLayer
                 scrollViewLayer
             }
-            .navigationBarTitle("New Pile", displayMode: .inline)
+            .navigationBarTitle("Add Pile", displayMode: .inline)
             .navigationBarBackButtonHidden(true)
             .toolbar {
                 cancelToolBarItem

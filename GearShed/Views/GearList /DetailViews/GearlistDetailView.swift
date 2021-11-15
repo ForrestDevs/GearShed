@@ -17,10 +17,6 @@ struct GearlistDetailView: View {
     
     @EnvironmentObject private var persistentStore: PersistentStore
     
-    //let persistentStore: PersistentStore
-    
-    //@StateObject private var viewModel: GearlistData
-    
     @ObservedObject private var gearlist: Gearlist
     
     @State private var currentScreen: Int = 0
@@ -102,6 +98,17 @@ extension GearlistDetailView {
         }
     }
 
+}
+
+struct testView1: View {
+    @ObservedObject var gearlist: Gearlist
+    
+    var body: some View {
+        
+        Text("Hello")
+        
+    }
+    
 }
 
 /*private var listModeToolbarContent: some ToolbarContent {

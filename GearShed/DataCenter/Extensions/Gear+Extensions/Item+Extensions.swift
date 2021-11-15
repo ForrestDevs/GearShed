@@ -24,6 +24,13 @@ extension Item {
         get { detail_ ?? "Not Available" }
         set { detail_ = newValue }
     }
+    
+    var images: [ItemImage] {
+        if let images = images_ as? Set<ItemImage> {
+            return images.sorted(by: [] )
+        }
+        return []
+    }
 	
 	// whether the item is a favourtie or not.  this fronts a Core Data boolean
 	var isFavourite: Bool {

@@ -209,21 +209,27 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     }
     /// Function to delete a brand and move all items at the brand to the Unknown Brand.
     func deleteBrand(brand: Brand)  {
+        
+        if brand.unBrandID_ == kUnknownBrandID && brand.items.count >= 1 {
+            return
+        } else {
+            // Get list of all items for this brand so we can work with them
+            let itemsAtThisBrand = brand.items
+            
+            // reset brand associated with each of these Items to the unknownBrand
+            // (which in turn, removes the current association with brand). additionally,
+            // this could affect each item's computed properties
+            let theUnknownBrand = unknownBrand()
+            itemsAtThisBrand.forEach({ $0.brand = theUnknownBrand })
+            
+            // now finish the deletion and save
+            persistentStore.context.delete(brand)
+            persistentStore.saveContext()
+        }
         // you cannot delete the unknownBrand
-        guard brand.unBrandID_ != kUnknownBrandID else { return }
+        //guard brand.unBrandID_ != kUnknownBrandID else { return }
         
-        // Get list of all items for this brand so we can work with them
-        let itemsAtThisBrand = brand.items
         
-        // reset brand associated with each of these Items to the unknownBrand
-        // (which in turn, removes the current association with brand). additionally,
-        // this could affect each item's computed properties
-        let theUnknownBrand = unknownBrand()
-        itemsAtThisBrand.forEach({ $0.brand = theUnknownBrand })
-        
-        // now finish the deletion and save
-        persistentStore.context.delete(brand)
-        persistentStore.saveContext()
     }
     
     // Shed ------------------------------------------------------------------------------------------------
@@ -253,27 +259,30 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     /// Function to delete a shed and move all items at the shed to the Unknown Shed.
     func deleteShed(shed: Shed) {
         // you cannot delete the unknownBrand
-        guard shed.unShedID_ != kUnknownShedID else { return }
-        
-        // Get list of all items for this brand so we can work with them
-        let itemsAtThisShed = shed.items
-        
-        // reset brand associated with each of these Items to the unknownBrand
-        // (which in turn, removes the current association with brand). additionally,
-        // this could affect each item's computed properties
-        let theUnknownShed = unknownShed()
-        itemsAtThisShed.forEach({ $0.shed = theUnknownShed })
-        
-        // now finish the deletion and save
-        persistentStore.context.delete(shed)
-        persistentStore.saveContext()
+        if shed.unShedID_ == kUnknownShedID && shed.items.count >= 1 {
+            return
+        } else {
+            // Get list of all items for this brand so we can work with them
+            let itemsAtThisShed = shed.items
+            
+            // reset brand associated with each of these Items to the unknownBrand
+            // (which in turn, removes the current association with brand). additionally,
+            // this could affect each item's computed properties
+            let theUnknownShed = unknownShed()
+            itemsAtThisShed.forEach({ $0.shed = theUnknownShed })
+            
+            // now finish the deletion and save
+            persistentStore.context.delete(shed)
+            persistentStore.saveContext()
+        }
+        //guard shed.unShedID_ != kUnknownShedID else { return }
     }
     
     // Unknown Shed + Brand ---------------------------------------------------------------------------------
     /// Function to create an UnknownBrand and return it when needed.
     func createUnknownBrand() -> Brand {
         let unbranded = Brand(context: persistentStore.context)
-        unbranded.name_ = kUnknownBrandName
+        unbranded.name = "No Brand"
         unbranded.id = UUID()
         unbranded.unBrandID_ = kUnknownBrandID
         kUnknownBrandUUID = unbranded.id
@@ -298,7 +307,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     /// Function to create an UnknownShed and return it when needed.
     func createUnknownShed() -> Shed {
         let unSheded = Shed(context: persistentStore.context)
-        unSheded.name_ = kUnknownBrandName
+        unSheded.name = "No Shed"
         unSheded.id = UUID()
         unSheded.unShedID_ = kUnknownShedID
         persistentStore.saveContext()
@@ -317,7 +326,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
                 return createUnknownShed()
             }
         } catch let error as NSError {
-            fatalError("Error fetching unknown brand: \(error.localizedDescription), \(error.userInfo)")
+            fatalError("Error fetching unknown shed: \(error.localizedDescription), \(error.userInfo)")
         }
     }
     

@@ -35,7 +35,6 @@ struct GearlistRowView: View {
                             .environmentObject(persistentStore)
                             .environmentObject(detailManager)
                         )
-                        
                         detailManager.showGearlistDetail = true
                     }
                 } label: {

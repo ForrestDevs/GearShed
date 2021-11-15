@@ -49,33 +49,35 @@ extension AddItemsToGearListView {
     // MARK: Content
     private var itemList: some View {
         ScrollView(.vertical, showsIndicators: false) {
-            ForEach(itemVM.sectionByShed(itemArray: itemVM.items)) { section in
-                Section {
-                    ForEach(section.items) { item in
-                        ItemRowViewForList(item: item, respondToTapOnSelector: {
-                            handleItemSelected(item)
-                        }, respondToTapOffSelector: {
-                            handleItemUnSelected(item)
-                        })
-                        .padding(.horizontal, 15)
-                        .padding(.bottom, 5)
-                    }
-                } header: {
-                    VStack (spacing: 0) {
-                        HStack {
-                            Text(section.title)
-                                .font(.headline)
-                            Spacer()
+            LazyVStack {
+                ForEach(itemVM.sectionByShed(itemArray: itemVM.items)) { section in
+                    Section {
+                        ForEach(section.items) { item in
+                            ItemRowViewForList(item: item, respondToTapOnSelector: {
+                                handleItemSelected(item)
+                            }, respondToTapOffSelector: {
+                                handleItemUnSelected(item)
+                            })
+                            .padding(.horizontal, 15)
+                            .padding(.bottom, 5)
                         }
-                        Rectangle()
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 1)
+                    } header: {
+                        VStack (spacing: 0) {
+                            HStack {
+                                Text(section.title)
+                                    .font(.headline)
+                                Spacer()
+                            }
+                            Rectangle()
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 1)
+                        }
+                        .padding(.horizontal)
                     }
-                    .padding(.horizontal)
                 }
             }
-            .padding(.top,10)
         }
+        //.padding(.top, 5)
     }
     
     // MARK: Methods

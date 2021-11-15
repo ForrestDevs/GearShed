@@ -72,7 +72,7 @@ struct PagerTabView<Content: View,Label: View>: View {
                 }
                 // Getting How many tabs are there by getting the total Content Size...
                 .overlay(
-                    GeometryReader{proxy in
+                    GeometryReader { proxy in
                         Color.clear
                             .preference(key: TabPreferenceKey.self, value: proxy.frame(in: .global))
                     }
@@ -241,23 +241,23 @@ struct TabPreferenceKey: PreferenceKey {
 // Extending View for PageLabel and PageView Modifiers....
 extension View {
     
-    func pageLabel()->some View{
+    func pageLabel() -> some View {
         // Just Filling all Empty Space...
         self
-            .frame(maxWidth: .infinity,alignment: .center)
+        .frame(maxWidth: .infinity,alignment: .center)
     }
     
     // Modifications for SafeArea Ignoring...
     // Same For PageView...
-    func pageView(ignoresSafeArea: Bool = false,edges: Edge.Set = [])->some View{
+    func pageView(ignoresSafeArea: Bool = false, edges: Edge.Set = [] ) -> some View {
         // Just Filling all Empty Space...
         self
             .frame(width: getScreenBounds().width,alignment: .center)
             .ignoresSafeArea(ignoresSafeArea ? .container : .init(), edges: edges)
     }
     
-    // Getting SCreen Bounds...
-    func getScreenBounds()->CGRect{
+    // Getting Screen Bounds...
+    func getScreenBounds() -> CGRect {
         return UIScreen.main.bounds
     }
 }

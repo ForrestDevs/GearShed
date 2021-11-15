@@ -14,7 +14,9 @@ struct GearlistView: View {
     let persistentStore: PersistentStore
         
     @StateObject private var viewModel: GearlistData
-            
+     
+    @State private var currentScreen: Int = 0
+
     init(persistentStore: PersistentStore) {
         self.persistentStore = persistentStore
         
@@ -23,22 +25,43 @@ struct GearlistView: View {
     }
 
     var body: some View {
-        AllGearLists(persistentStore: persistentStore)
-        .environmentObject(viewModel)
+        PagerTabView(tint: Color.theme.accent, selection: $currentScreen) {
+            Text("Activity")
+                .pageLabel()
+                .font(.system(size: 12).bold())
+
+            Text("Trip")
+                .pageLabel()
+                .font(.system(size: 12).bold())
+        } content: {
+            ActivityView()
+            .pageView(ignoresSafeArea: true, edges: .bottom)
+            TripView()
+            .pageView(ignoresSafeArea: true, edges: .bottom)
+        }
         .padding(.top, 10)
         .ignoresSafeArea(.container, edges: .bottom)
+        .environmentObject(viewModel)
         .navigationBarTitle("Gear List", displayMode: .inline)
         .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button {} label: {
-                    Image(systemName: "square.and.arrow.up")
-                }
-            }
+            shareList
         }
         .onDisappear() {
             persistentStore.saveContext()
         }
     }
+}
+
+extension GearlistView {
+    
+    private var shareList: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button {} label: {
+                Image(systemName: "square.and.arrow.up")
+            }
+        }
+    }
+    
 }
 
 //@State private var currentSelection: Int = 0

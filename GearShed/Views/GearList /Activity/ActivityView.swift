@@ -1,49 +1,66 @@
 //
-//  TripListDisplay.swift
+//  ActivityView.swift
 //  GearShed
 //
-//  Created by Luke Forrest Gannon on 18/10/21
-//  Copyright © 2021 All rights reserved.
+//  Created by Luke Forrest Gannon on 2021-11-13.
 //
 
 import SwiftUI
 
-struct AllGearLists: View {
+struct ActivityView: View {
     
-    @EnvironmentObject var persistentStore: PersistentStore
+    @EnvironmentObject private var persistentStore: PersistentStore
+
+    @EnvironmentObject private var viewModel: GearlistData
     
     @EnvironmentObject private var detailManager: DetailViewManager
-
-    @StateObject private var viewModel: GearlistData
-        
-    @State private var isAddListShowing: Bool = false
-   
-    init(persistentStore: PersistentStore) {
-        let viewModel = GearlistData(persistentStore: persistentStore)
-        _viewModel = StateObject(wrappedValue: viewModel)
-    }
     
     var body: some View {
-        VStack {
+        VStack (spacing: 0) {
+            statBar
+            Spacer()
             ZStack {
-                gearlistList
+                activitiesList
                 addListButtonOverlay
             }
         }
     }
 }
 
-extension AllGearLists {
+extension ActivityView {
     
-    private var gearlistList: some View {
+    private var statBar: some View {
+        HStack (spacing: 20){
+            HStack {
+                Text("Items:")
+                //Text("\(gsData.items.count)")
+            }
+            HStack {
+                Text("Weight:")
+                //Text("\(gsData.totalWeight(array: gsData.items))g")
+            }
+            HStack {
+                Text("Invested:")
+                //Text("$\(gsData.totalCost(array: gsData.items))")
+            }
+            Spacer()
+        }
+        .font(.subheadline)
+        .foregroundColor(Color.white)
+        .padding(.horizontal)
+        .padding(.vertical, 5)
+        .background(Color.theme.green)
+        .padding(.top, 10)
+    }
+
+    private var activitiesList: some View {
         ScrollView(.vertical, showsIndicators: false) {
             LazyVStack (alignment: .leading, spacing: 5) {
-                ForEach(viewModel.gearlists) { gearlist in
-                    GearlistRowView(gearlist: gearlist)
+                ForEach(viewModel.activities) { activity in
+                    GearlistRowView(gearlist: activity)
                         .padding(.top, 15)
                 }
             }
-            .padding(.bottom, 75)
         }
     }
     
@@ -55,9 +72,9 @@ extension AllGearLists {
                 Button {
                     withAnimation {
                         detailManager.content = AnyView (
-                            AddListView(persistentStore: persistentStore)
+                            AddActivityView(persistentStore: persistentStore)
                             .environmentObject(detailManager)
-                                .environmentObject(viewModel)
+                            .environmentObject(viewModel)
                         )
                         detailManager.showAddNewGearlist = true
                     }
@@ -85,17 +102,5 @@ extension AllGearLists {
 }
 
 
-
-
-//@State private var isAlertShowing: Bool = false
- //@State private var newListName: String = ""
- //@State private var gearlist1: Gearlist? = nil
- //@State private var activateAddItems: Bool = false
-/*private var renameListAlertOverlay: some View {
-    AZAlert(title: "Rename List", isShown: $isAlertShowing, text: $newListName) { text in
-        //gearlist1?.updateName(gearlist: gearlist1!, name: text)
-        newListName = ""
-    }
-}*/
 
 

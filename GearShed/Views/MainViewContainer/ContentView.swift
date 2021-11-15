@@ -25,57 +25,12 @@ struct ContentView: View {
         
             .overlay(detailManager.showAddNewGearlist ? detailManager.content.animation(.default, value: detailManager.showAddNewGearlist) : nil)
         
+            .overlay(detailManager.showRangeDatePicker ? detailManager.secondaryContent.animation(.default, value: detailManager.showRangeDatePicker) : nil)
+        
             .overlay(detailManager.showSelectGearlistItems ? detailManager.content.animation(.default, value: detailManager.showSelectGearlistItems) : nil)
     }
 }
 
-class DetailViewManager: ObservableObject {
-    
-    @Published var showGearlistDetail: Bool = false
-    
-    @Published var showAddNewGearlist: Bool = false
-    
-    @Published var showSelectGearlistItems: Bool = false
-
-    @Published var content: AnyView = AnyView(EmptyView())
-    
-    init() {
-        
-    }
-}
-
-
-
-struct tger: View {
-    @State var isShowSheet: Bool = false
-    
-    var body: some View {
-        VStack{
-            Button("Show Sheet") {
-                withAnimation {
-                    isShowSheet.toggle()
-                }
-            }
-        }
-        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-        .overlay(isShowSheet ? FullScreen(isShowSheet: $isShowSheet.animation()) : nil)
-    }
-}
-
-struct FullScreen: View {
-    
-    @Binding var isShowSheet: Bool
-
-    
-    var body: some View {
-        Color.blue
-            .transition(.move(edge: .leading))
-            .onTapGesture {
-                isShowSheet = false
-            }
-            .edgesIgnoringSafeArea(.all)
-    }
-}
 
 
 

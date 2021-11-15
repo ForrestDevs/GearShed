@@ -42,7 +42,7 @@ extension ItemRowView_InCluster {
                 HStack {
                     Text(item.weight + "g")
                     .font(.caption)
-                    .foregroundColor(Color.theme.green)
+                    .foregroundColor(Color.theme.accent)
                     
                     Text(item.detail)
                         .font(.caption)
@@ -63,7 +63,7 @@ extension ItemRowView_InCluster {
             }
         } label: {
             HStack {
-                Text("Remove Item From Cluster")
+                Text("Remove From Pile")
                 Image(systemName: "trash")
             }
         }

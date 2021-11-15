@@ -53,13 +53,16 @@ extension AppTabBarView {
     private var contentLayer: some View {
         VStack {
             PagerTabView1(selection: $tabInt, offset: $offset, tabOffset: $tabOffset) {
+                
                 NavigationView { GearShedView(persistentStore: persistentStore) }
+                //.navigationViewStyle(.stack)
                     .pageView(ignoresSafeArea: true)
                 
                 NavigationView { GearlistView(persistentStore: persistentStore) }
+                //.navigationViewStyle(.stack)
                     .pageView(ignoresSafeArea: true)
                 
-                /*NavigationView { GearPlanView(persistentStore: persistentStore) }
+                /*NavigationView { ImageView1() }
                     .pageView(ignoresSafeArea: true)*/
             }
             .frame(maxWidth: .infinity)

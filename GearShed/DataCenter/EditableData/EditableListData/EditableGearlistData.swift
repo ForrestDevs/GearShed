@@ -13,8 +13,11 @@ struct EditableGearlistData {
         
     var id: UUID?
     var name: String
-    
     var details: String
+    var isTrip: Bool
+    var location: String?
+    var startDate: Date?
+    var endDate: Date?
         
     // to do a save/commit of an Item, it must have a non-empty name
     var canGearlistBeSaved: Bool { name.count > 0 }
@@ -33,15 +36,23 @@ extension EditableGearlistData {
     /// Initializer for loading a gearlist that already exists.
     init(persistentStore: PersistentStore, gearlist: Gearlist) {
         self.persistentStore = persistentStore
-        id = gearlist.id
-        name = gearlist.name
-        details = gearlist.details
+        self.id = gearlist.id
+        self.name = gearlist.name
+        self.details = gearlist.details
+        self.isTrip = gearlist.isTrip
+        self.location = gearlist.location
+        self.startDate = gearlist.startDate
+        self.endDate = gearlist.endDate
     }
     
-    init(persistentStore: PersistentStore) {
+    init(persistentStore: PersistentStore, isTrip: Bool) {
         self.persistentStore = persistentStore
         self.name = ""
-        self.details = "" 
+        self.details = ""
+        self.isTrip = isTrip
+        self.location = ""
+        self.startDate = nil
+        self.endDate = nil
     }
     
 }

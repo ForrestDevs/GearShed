@@ -18,6 +18,10 @@ struct ItemDetailView: View {
     @State private var isEditItemShowing: Bool = false
     @State private var currentSelection: Int = 0
         
+    @State public var image: Data = .init(count: 0)
+    
+    @State private var addImage: Bool = false
+
     var body: some View {
         NavigationView {
             VStack (alignment: .leading) {
@@ -38,7 +42,22 @@ struct ItemDetailView: View {
                 ModifyItemView(persistentStore: persistentStore,editableItem: item)
                     .environment(\.managedObjectContext, persistentStore.context)
             }
+            .sheet(isPresented: $addImage) {
+                saveImg()
+            } content: {
+                ImagePicker(show: self.$addImage, image: self.$image)
+            }
+
+            
         }
+    }
+    
+    func saveImg() {
+        let newImage = ItemImage(context: persistentStore.context)
+        newImage.id = UUID()
+        newImage.img = self.image
+        item.addToImages_(newImage)
+        persistentStore.saveContext()
     }
     
 }
@@ -126,11 +145,27 @@ extension ItemDetailView {
     
     private var itemImage: some View {
         ZStack {
-            Rectangle()
-                .frame(width: 100, height: 100)
-                .foregroundColor(Color.gray)
-            
-            Text("Image N/a")
+            if item.images.count == 0 {
+                Rectangle()
+                    .frame(width: 100, height: 100)
+                    .foregroundColor(Color.gray)
+                
+                Text("Image N/a")
+            } else {
+                Image(uiImage: UIImage(data: (item.images.first?.img)!)!)
+                    .renderingMode(.original)
+                    .resizable()
+                    .frame(width: 100, height: 100)
+                    .scaledToFit()
+                    .cornerRadius(15)
+            }
+        }
+        .contextMenu {
+            Button {
+                self.addImage.toggle()
+            } label: {
+                Text("Add Image")
+            }
         }
     }
     

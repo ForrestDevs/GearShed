@@ -26,7 +26,7 @@ struct AddBrandView: View {
         let viewModel = GearShedData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
         
-        _editableData = State(initialValue: EditableBrandData(brand: brand))
+        _editableData = State(initialValue: EditableBrandData(persistentStore: persistentStore, brand: brand))
         self.brand = brand
         self.brandOut = brandOut
         self.isAddFromItem = isAddFromItem ?? false

@@ -13,8 +13,11 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     
     let persistentStore: PersistentStore
     
-    private let gearlistController: NSFetchedResultsController<Gearlist>
-    @Published var gearlists = [Gearlist]()
+    private let tripController: NSFetchedResultsController<Gearlist>
+    @Published var trips = [Gearlist]()
+    
+    private let activityController: NSFetchedResultsController<Gearlist>
+    @Published var activities = [Gearlist]()
     
     private let listGroupController: NSFetchedResultsController<Cluster>
     @Published var listgroups = [Cluster]()
@@ -28,10 +31,17 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     init(persistentStore: PersistentStore) {
         self.persistentStore = persistentStore
         
-        let gearlistRequest: NSFetchRequest<Gearlist> = Gearlist.fetchRequest()
-        gearlistRequest.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
+        let tripRequest: NSFetchRequest<Gearlist> = Gearlist.fetchRequest()
+        tripRequest.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
+        tripRequest.predicate = NSPredicate(format: "isTrip_ == %d", true)
         
-        gearlistController = NSFetchedResultsController(fetchRequest: gearlistRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
+        tripController = NSFetchedResultsController(fetchRequest: tripRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
+        
+        let activityRequest: NSFetchRequest<Gearlist> = Gearlist.fetchRequest()
+        activityRequest.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
+        activityRequest.predicate = NSPredicate(format: "isTrip_ == %d", false)
+
+        activityController = NSFetchedResultsController(fetchRequest: activityRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
         
         let listGroupRequest: NSFetchRequest<Cluster> = Cluster.fetchRequest()
         listGroupRequest.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
@@ -50,16 +60,24 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         trueContainerBoolController = NSFetchedResultsController(fetchRequest: trueContainerBoolRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
         
         super.init()
-        gearlistController.delegate = self
+        tripController.delegate = self
+        activityController.delegate = self
         listGroupController.delegate = self
         packingGroupController.delegate = self
         trueContainerBoolController.delegate = self
         
         do {
-            try gearlistController.performFetch()
-            gearlists = gearlistController.fetchedObjects ?? []
+            try tripController.performFetch()
+            trips = tripController.fetchedObjects ?? []
         } catch {
-            print("Failed to fetch gearlists")
+            print("Failed to fetch Trips")
+        }
+        
+        do {
+            try activityController.performFetch()
+            activities = activityController.fetchedObjects ?? []
+        } catch {
+            print("Failed to fetch Activities")
         }
         
         do {
@@ -85,7 +103,8 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     }
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        gearlists = gearlistController.fetchedObjects ?? []
+        trips = tripController.fetchedObjects ?? []
+        activities = activityController.fetchedObjects ?? []
         listgroups = listGroupController.fetchedObjects ?? []
         packingGroups = packingGroupController.fetchedObjects ?? []
         trueContainerBools = trueContainerBoolController.fetchedObjects ?? []
@@ -116,6 +135,20 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         let newGearlist = Gearlist(context: persistentStore.context)
         newGearlist.id = UUID()
         newGearlist.name = editableData.name
+        newGearlist.details = editableData.details
+        newGearlist.isTrip = editableData.isTrip
+        if let location = editableData.location {
+            newGearlist.location = location
+        }
+        
+        if let startDate = editableData.startDate {
+            newGearlist.startDate = startDate
+        }
+        
+        if let endDate = editableData.endDate {
+            newGearlist.endDate = endDate
+        }
+        
         persistentStore.saveContext()
         return newGearlist
     }

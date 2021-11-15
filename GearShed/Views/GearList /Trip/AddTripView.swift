@@ -1,14 +1,13 @@
 //
-//  AddListView.swift
+//  AddTripView.swift
 //  GearShed
 //
-//  Created by Luke Forrest Gannon on 18/10/21
-//  Copyright © 2021 All rights reserved.
+//  Created by Luke Forrest Gannon on 2021-11-13.
 //
 
 import SwiftUI
 
-struct AddListView: View {
+struct AddTripView: View {
     
     @EnvironmentObject private var detailManager: DetailViewManager
     
@@ -18,12 +17,15 @@ struct AddListView: View {
     
     @State private var editableData: EditableGearlistData
     
-    @State private var isTrip: Bool = false
+    @State private var dateRange: ClosedRange<Date>? = nil
+
+    @State private var showOverlay = false
+
     
     init(persistentStore: PersistentStore) {
         self.persistentStore = persistentStore
         
-        let initialValue = EditableGearlistData(persistentStore: persistentStore)
+        let initialValue = EditableGearlistData(persistentStore: persistentStore, isTrip: true)
         _editableData = State(initialValue: initialValue)
     }
     
@@ -33,7 +35,7 @@ struct AddListView: View {
                 backgroundLayer
                 contentLayer
             }
-            .navigationBarTitle("Add List", displayMode: .inline)
+            .navigationBarTitle("Add Trip", displayMode: .inline)
             .navigationBarBackButtonHidden(true)
             .toolbar {
                 cancelButtonToolBarItem
@@ -42,9 +44,10 @@ struct AddListView: View {
         }
         .transition(.move(edge: .trailing))
     }
+    
 }
 
-extension AddListView {
+extension AddTripView {
     
     private var cancelButtonToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
@@ -86,15 +89,16 @@ extension AddListView {
     private var contentLayer: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .leading, spacing: 10) {
-                listNameSection
-                listDescriptionSection
-                tripSection
+                tripNameSection
+                tripDescriptionSection
+                tripLocationSection
+                tripDurationSection
             }
             .padding()
         }
     }
     
-    private var listNameSection: some View {
+    private var tripNameSection: some View {
         Section {
             VStack(alignment: .leading, spacing: 3) {
                 Text("Name")
@@ -107,7 +111,7 @@ extension AddListView {
         }
     }
     
-    private var listDescriptionSection: some View {
+    private var tripDescriptionSection: some View {
         Section {
             VStack (alignment: .leading, spacing: 3) {
                 Text("Description")
@@ -119,101 +123,69 @@ extension AddListView {
             }
         }
     }
-
-    private var tripSection: some View {
+    
+    private var tripLocationSection: some View {
         Section {
-            VStack (alignment: .leading, spacing: 3) {
-                Toggle(isOn: $isTrip) {
-                    Text("Is Trip List?")
-                }
-                if isTrip {
-                    Text("Trip Length")
-                    Text("Trip Location")
-                    Text("")
-                }
+            VStack(alignment: .leading, spacing: 3) {
+                Text("Location")
+                    .formatEntryTitle()
+                TextField("", text: $editableData.location ?? "")
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .disableAutocorrection(true)
+                    .font(.subheadline)
             }
         }
-        
     }
     
-}
-
-/*VStack {
-    listNameFeild
-    addItemGroupButton
-    listGroupItemsList
-    //itemList
-}*/
-
-/*private var listNameFeild: some View {
-    HStack {
-        Text("List Name: ")
-        TextField("List Name", text: $editableData.name)
-    }
-    .padding(.horizontal, 20)
-    .padding(.top, 10)
-}
-
-
-
-private var listGroupItemsList: some View {
-    ScrollView (.vertical, showsIndicators: false) {
-        ForEach(gearlist.listGroups) { listGroup in
-            ClusterRowView(persistentStore: persistentStore, listGroup: listGroup, gearlist: gearlist)
-        }
-    }
-}*/
-
-/*private var itemList: some View {
-    ScrollView(.vertical, showsIndicators: false) {
-        ForEach(itemVM.sectionByShed(itemArray: itemVM.items)) { section in
-            Section {
-                ForEach(section.items) { item in
-                    ItemRowViewForList(item: item, respondToTapOnSelector: {
-                        handleItemSelected(item)
-                    }, respondToTapOffSelector: {
-                        handleItemUnSelected(item)
-                    })
-                    .padding(.horizontal, 15)
-                    .padding(.bottom, 5)
-                }
-            } header: {
-                VStack (spacing: 0) {
-                    HStack {
-                        Text(section.title)
-                            .font(.headline)
-                        Spacer()
-                    }
-                    Rectangle()
+    private var tripDurationSection: some View {
+        Section {
+            VStack (alignment: .leading, spacing: 2) {
+                Text("Duration")
+                    .formatEntryTitle()
+                ZStack (alignment: .leading) {
+                    RoundedRectangle(cornerRadius: 5)
                         .frame(maxWidth: .infinity)
-                        .frame(height: 1)
+                        .frame(height: 35)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 5)
+                                .stroke(Color.theme.green, lineWidth: 1)
+                        )
+                        .foregroundColor(Color.theme.background)
+                    Button {
+                        withAnimation {
+                            detailManager.showRangeDatePicker = true
+                            detailManager.secondaryContent = AnyView (
+                                CustomDatePicker(dateRange: self.$dateRange)
+                                    .environmentObject(detailManager)
+                            )
+                        }
+                    } label: {
+                        if let range = dateRange {
+                            HStack {
+                                Text(range.lowerBound.dateText(style: .medium))
+                                Text("-")
+                                Text(range.upperBound.dateText(style: .medium))
+                            }.padding(.horizontal, 5)
+                        } else {
+                            Text("Select Start/End Dates").padding(.horizontal, 5)
+                        }
+                    }
+                    .onChange(of: dateRange) { newValue in
+                        editableData.startDate = newValue?.lowerBound
+                        editableData.endDate = newValue?.upperBound
+                    }
                 }
-                .padding(.horizontal)
             }
         }
-        .padding(.top,10)
     }
-}*/
+}
 
-// The purpose of this function is to add the selected
-// item to our temporary array itemsChecked
-/*private func handleItemSelected(_ item: Item) {
-    if !itemsChecked.contains(item) {
-        itemsChecked.append(item)
-    }
-}*/
-
-// The purpose of this function is to remove the selected item
-// from our temporary array itemsChecked, if the user unselects an item
-/*private func handleItemUnSelected(_ item: Item) {
-    self.itemsChecked.removeAll{$0.id == item.id}
-}*/
-
-
-
-
-
-
+func ??<T>(lhs: Binding<Optional<T>>, rhs: T) -> Binding<T> {
+    Binding(
+        get: { lhs.wrappedValue ?? rhs },
+        set: { lhs.wrappedValue = $0 }
+    )
+}
 
 
 
