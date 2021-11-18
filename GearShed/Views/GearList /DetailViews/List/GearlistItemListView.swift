@@ -9,6 +9,8 @@ import SwiftUI
 
 struct GearlistItemListView: View {
     
+    @EnvironmentObject private var detailManager: DetailViewManager
+    
     @EnvironmentObject private var persistentStore: PersistentStore
     
     @EnvironmentObject private var viewModel: GearlistData
@@ -21,12 +23,14 @@ struct GearlistItemListView: View {
         VStack (spacing: 0) {
             statBar
             ZStack {
-                itemList
+                if gearlist.items.count == 0 {
+                    EmptyViewText(emptyText: "Items in this List", buttonName: "Select Item")
+                } else {
+                    itemList
+                }
+                
                 addItemButtonOverlay
             }
-        }
-        .fullScreenCover(isPresented: $showAddItem) {
-            AddMoreItemView(persistentStore: persistentStore, gearlist: gearlist)
         }
     }
 }
@@ -34,19 +38,24 @@ struct GearlistItemListView: View {
 extension GearlistItemListView {
     
     private var itemList: some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            LazyVStack {
+        VStack {
+            List {
                 ForEach(viewModel.sectionByShed(itemArray: gearlist.items)) { section in
                     Section {
-                        sectionItems(section: section)
+                        ForEach(section.items) { item in
+                            ItemRowView_InGearlist(persistentStore: persistentStore, item: item, gearlist: gearlist)
+                        }
                     } header: {
-                        sectionHeader(section: section)
-                            .padding(.horizontal)
+                        HStack {
+                            Text(section.title)
+                                .font(.headline)
+                            Spacer()
+                            Text("\(viewModel.totalWeight(array: section.items))" + "g" )
+                        }
                     }
                 }
             }
-            .padding(.top, 10)
-            .padding(.bottom, 75)
+            .listStyle(.insetGrouped)
         }
     }
     
@@ -76,11 +85,14 @@ extension GearlistItemListView {
             HStack {
                 Spacer()
                 Button {
-                    showAddItem.toggle()
+                    detailManager.selectedGearlist = gearlist
+                    withAnimation {
+                        detailManager.showAddItemsToGearlist = true
+                    }
                 }
                 label: {
                     VStack{
-                        Text("Add")
+                        Text("Select")
                         Text("Item")
                     }
                     .font(.system(size: 12, weight: .regular))
@@ -117,4 +129,20 @@ extension GearlistItemListView {
     }
 
 }
+
+
+/*ScrollView(.vertical, showsIndicators: false) {
+    LazyVStack {
+        ForEach(viewModel.sectionByShed(itemArray: gearlist.items)) { section in
+            Section {
+                sectionItems(section: section)
+            } header: {
+                sectionHeader(section: section)
+                    .padding(.horizontal)
+            }
+        }
+    }
+    .padding(.top, 10)
+    .padding(.bottom, 75)
+}*/
 

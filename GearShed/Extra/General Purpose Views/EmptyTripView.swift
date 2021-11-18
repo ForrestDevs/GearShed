@@ -8,6 +8,30 @@
 
 import SwiftUI
 
+
+struct EmptyViewText: View {
+    
+    var emptyText: String
+    var buttonName: String
+    
+    var body: some View {
+        ZStack {
+            Color.theme.offWhite
+                .edgesIgnoringSafeArea(.bottom)
+            VStack {
+                Text ("""
+                You have no \(emptyText), please click the \(buttonName) button below to get started.
+                """)
+                    .formatEmptyTitle()
+                Spacer()
+            }
+            .padding()
+            .padding(.top, 50)
+        }
+        
+    }
+}
+
 // this consolidates the code for what to show when a list is empty
 struct EmptyTripView: View {
     var body: some View {

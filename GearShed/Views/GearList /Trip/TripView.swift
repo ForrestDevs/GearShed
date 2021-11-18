@@ -9,26 +9,28 @@ import SwiftUI
 
 struct TripView: View {
     
-    @EnvironmentObject private var persistentStore: PersistentStore
+    //@EnvironmentObject private var persistentStore: PersistentStore
 
     @EnvironmentObject private var viewModel: GearlistData
     
-    @EnvironmentObject private var detailManager: DetailViewManager
+    //@EnvironmentObject private var detailManager: DetailViewManager
     
     var body: some View {
         VStack {
-            statBar
-            ZStack {
+            tripsList
+            
+            //statBar
+            /*ZStack {
                 tripsList
                 addListButtonOverlay
-            }
+            }*/
         }
     }
 }
 
 extension TripView {
     
-    private var statBar: some View {
+    /*private var statBar: some View {
         HStack (spacing: 20){
             HStack {
                 Text("Items:")
@@ -50,20 +52,28 @@ extension TripView {
         .padding(.vertical, 5)
         .background(Color.theme.green)
         .padding(.top, 10)
-    }
+    }*/
 
     private var tripsList: some View {
-        ScrollView(.vertical, showsIndicators: false) {
+        VStack {
+            List {
+                ForEach(viewModel.trips) { trip in
+                    TripRowView(trip: trip)
+                }
+            }
+            .listStyle(.insetGrouped)
+        }
+        /*ScrollView(.vertical, showsIndicators: false) {
             LazyVStack (alignment: .leading, spacing: 5) {
                 ForEach(viewModel.trips) { trip in
                     TripRowView(trip: trip)
                         .padding(.top, 15)
                 }
             }
-        }
+        }*/
     }
     
-    private var addListButtonOverlay: some View {
+    /*private var addListButtonOverlay: some View {
         VStack {
             Spacer()
             HStack {
@@ -76,7 +86,7 @@ extension TripView {
                                 .environmentObject(viewModel)
                             
                         )
-                        detailManager.showAddNewGearlist = true
+                        detailManager.showContent = true
                     }
                 }
                 label: {
@@ -98,5 +108,5 @@ extension TripView {
                 .shadow(color: Color.theme.accent.opacity(0.3), radius: 3,x: 3,y: 3)
             }
         }
-    }
+    }*/
 }

@@ -39,7 +39,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         // MARK: Item Fetch Requests
         let itemRequest: NSFetchRequest<Item> = Item.fetchRequest()
         itemRequest.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
-        itemRequest.predicate = NSPredicate(format: "wishlist_ == %d", false)
+        //itemRequest.predicate = NSPredicate(format: "isWishlist_ == %d", false)
         
         itemsController = NSFetchedResultsController(fetchRequest: itemRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
         
@@ -57,7 +57,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         
         let wishlistItemRequest: NSFetchRequest<Item> = Item.fetchRequest()
         wishlistItemRequest.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
-        wishlistItemRequest.predicate = NSPredicate(format: "wishlist_ == %d", true)
+        wishlistItemRequest.predicate = NSPredicate(format: "isWishlist_ == %d", true)
         
         wishlistItemsController = NSFetchedResultsController(fetchRequest: wishlistItemRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
         
@@ -146,7 +146,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         newItem.quantity = Int(editableData.quantity)
         newItem.weight = editableData.weight
         newItem.price = editableData.price
-        newItem.wishlist = editableData.wishlist
+        newItem.isWishlist = editableData.isWishlist
         newItem.shed = editableData.shed!
         newItem.brand = editableData.brand!
         newItem.datePurchased = editableData.datePurchased
@@ -160,7 +160,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         item.quantity = Int(editableData.quantity)
         item.weight = editableData.weight
         item.price = editableData.price
-        item.wishlist = editableData.wishlist
+        item.isWishlist = editableData.isWishlist
         item.isFavourite = editableData.isFavourite
         item.isRegret = editableData.isRegret
         item.shed = editableData.shed!
@@ -189,21 +189,21 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     func addNewBrand(using editableData: EditableBrandData) {
         let newBrand = Brand(context: persistentStore.context)
         newBrand.id = UUID()
-        newBrand.name_ = editableData.brandName
+        newBrand.name_ = editableData.name
         persistentStore.saveContext()
     }
     /// Function to create a new Brand from the Item entry form then pass It back so it can populate as the selected Brand.
     func addNewBrandFromItem(using editableData: EditableBrandData, brandOut: ((Brand) -> ())) {
         let newBrand = Brand(context: persistentStore.context)
         newBrand.id = UUID()
-        newBrand.name_ = editableData.brandName
+        newBrand.name_ = editableData.name
         persistentStore.saveContext()
         brandOut(newBrand)
     }
     /// Function to update a Brand's values using the temp stored data.
     func updateBrand(using editableData: EditableBrandData) {
         let brand = editableData.associatedBrand
-        brand.name_ = editableData.brandName
+        brand.name_ = editableData.name
         brand.items.forEach({ $0.objectWillChange.send() })
         persistentStore.saveContext()
     }
@@ -237,14 +237,14 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     func addNewShed(using editableData: EditableShedData) {
         let newShed = Shed(context: persistentStore.context)
         newShed.id = UUID()
-        newShed.name_ = editableData.shedName
+        newShed.name_ = editableData.name
         persistentStore.saveContext()
     }
     /// Function to create a new Shed from the Item entry form, then pass it back so it can populate as the selected Shed.
     func addNewShedFromItem(using editableData: EditableShedData, shedOut: ((Shed) -> ())) {
         let newShed = Shed(context: persistentStore.context)
         newShed.id = UUID()
-        newShed.name_ = editableData.shedName
+        newShed.name_ = editableData.name
         persistentStore.saveContext()
         shedOut(newShed)
     }
@@ -252,7 +252,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     func updateShed(using editableData: EditableShedData) {
         let shed = editableData.associatedShed
         //editableData.associatedShed.name_ = editableData.shedName
-        shed.name_ = editableData.shedName
+        shed.name_ = editableData.name
         shed.items.forEach({ $0.objectWillChange.send() })
         persistentStore.saveContext()
     }

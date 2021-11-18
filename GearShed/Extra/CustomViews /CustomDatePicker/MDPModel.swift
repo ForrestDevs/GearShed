@@ -48,7 +48,7 @@ class CustomDatePickerModel: NSObject, ObservableObject {
     // MARK: - PRIVATE VARS
     
     // holds the bindings from the app and get updated as the selection changes
-    private var singleDayWrapper: Binding<Date>?
+    private var singleDayWrapper: Binding<Date?>?
     private var anyDatesWrapper: Binding<[Date]>?
     private var dateRangeWrapper: Binding<ClosedRange<Date>?>?
     
@@ -85,7 +85,7 @@ class CustomDatePickerModel: NSObject, ObservableObject {
         buildDays()
     }
     
-    convenience init(singleDay: Binding<Date>,
+    convenience init(singleDay: Binding<Date?>,
                      includeDays: CustomDatePicker.DateSelectionChoices,
                      minDate: Date?,
                      maxDate: Date?) {
@@ -94,10 +94,10 @@ class CustomDatePickerModel: NSObject, ObservableObject {
         self.selectionType = includeDays
         self.minDate = minDate
         self.maxDate = maxDate
-        setSelection(singleDay.wrappedValue)
+        setSelection(singleDay.wrappedValue ?? Date())
         
         // set the controlDate to be this singleDay
-        controlDate = singleDay.wrappedValue
+        controlDate = singleDay.wrappedValue ?? Date()
         buildDays()
     }
     

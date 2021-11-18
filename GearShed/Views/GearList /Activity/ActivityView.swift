@@ -76,7 +76,7 @@ extension ActivityView {
                             .environmentObject(detailManager)
                             .environmentObject(viewModel)
                         )
-                        detailManager.showAddNewGearlist = true
+                        detailManager.showContent = true
                     }
                 }
                 label: {

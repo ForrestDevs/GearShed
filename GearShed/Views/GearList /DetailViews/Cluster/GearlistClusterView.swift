@@ -8,26 +8,32 @@
 import SwiftUI
 
 struct GearlistClusterView: View {
+    @Environment(\.presentationMode) var presentationMode
+    
+    @EnvironmentObject private var detailManager: DetailViewManager
     
     @EnvironmentObject private var persistentStore: PersistentStore
     
     @EnvironmentObject private var viewModel: GearlistData
     
-    @ObservedObject var gearlist: Gearlist
+    @State private var confirmDeleteClusterAlert: ConfirmDeleteClusterAlert?
     
-    @State private var showAddCluster: Bool = false
+    @ObservedObject var gearlist: Gearlist
     
     var body: some View {
         VStack (spacing: 0) {
             statBar
             ZStack {
-                gearlistClusterList
+                if gearlist.clusters.count == 0 {
+                    EmptyViewText(emptyText: "Piles", buttonName: "Add Pile")
+                } else {
+                    gearlistClusterList
+                }
+                
                 addClusterButtonOverlay
             }
         }
-        .fullScreenCover(isPresented: $showAddCluster) {
-            AddClusterView(persistentStore: persistentStore, gearlist: gearlist)
-        }
+        .alert(item: $confirmDeleteClusterAlert) { cluster in cluster.alert() }
     }
     
 }
@@ -35,14 +41,59 @@ struct GearlistClusterView: View {
 extension GearlistClusterView {
     
     private var gearlistClusterList: some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            LazyVStack {
-                ForEach(gearlist.clusters) { listGroup in
-                    ClusterRowView(cluster: listGroup)
+        VStack {
+            List {
+                ForEach(gearlist.clusters) { cluster in
+                    Section {
+                        ForEach(cluster.items) { item in
+                            ItemRowView_InCluster(cluster: cluster, item: item)
+                        }
+                    } header: {
+                        HStack {
+                            Text(cluster.name)
+                                .font(.headline)
+                            Text("\(viewModel.clusterTotalWeight(cluster: cluster))g")
+                            Spacer()
+                            Menu {
+                                Button {
+                                    detailManager.selectedCluster = cluster
+                                    withAnimation {
+                                        detailManager.showModifyCluster = true
+                                    }
+                                } label: {
+                                    HStack {
+                                        Text("Edit Pile Name").textCase(.none)
+                                        Image(systemName: "square.and.pencil")
+                                    }
+                                }
+                                
+                                Button {
+                                    confirmDeleteClusterAlert = ConfirmDeleteClusterAlert (
+                                        persistentStore: persistentStore,
+                                        cluster: cluster,
+                                        destructiveCompletion: {
+                                            presentationMode.wrappedValue.dismiss()
+                                        }
+                                    )
+                                } label: {
+                                    HStack {
+                                        Text("Delete Pile").textCase(.none)
+                                        Image(systemName: "trash") 
+                                    }
+                                    
+                                }
+                            } label: {
+                                Image(systemName: "square.and.pencil")
+                                    .resizable()
+                                    .frame(width: 17, height: 17)
+                                    .padding(.horizontal, 2)
+                            }
+                        }
+                    }
+                    
                 }
             }
-            .padding(.top, 10)
-            .padding(.bottom, 75)
+            .listStyle(.insetGrouped)
         }
     }
     
@@ -52,7 +103,10 @@ extension GearlistClusterView {
             HStack {
                 Spacer()
                 Button {
-                    showAddCluster.toggle()
+                    detailManager.selectedGearlist = gearlist
+                    withAnimation {
+                        detailManager.showAddCluster = true
+                    }
                 }
                 label: {
                     VStack{

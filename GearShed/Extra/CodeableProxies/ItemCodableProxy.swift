@@ -15,7 +15,7 @@ import Foundation
 // to its Shed
 struct ItemCodableProxy: Codable {
 	var name: String
-	var wishlist: Bool
+	var isWishlist: Bool
 	var isFavourite: Bool
     
 	var quantity: Int
@@ -29,7 +29,7 @@ struct ItemCodableProxy: Codable {
     
 	init(from item: Item) {
 		name = item.name
-		wishlist = item.wishlist
+        isWishlist = item.isWishlist
         isFavourite = item.isFavourite
         
 		quantity = item.quantity

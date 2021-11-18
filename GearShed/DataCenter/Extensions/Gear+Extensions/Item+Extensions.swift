@@ -25,13 +25,15 @@ extension Item {
         set { detail_ = newValue }
     }
     
-    var images: [ItemImage] {
-        if let images = images_ as? Set<ItemImage> {
-            return images.sorted(by: [] )
+    var image: ItemImage {
+        get { image_! }
+        set {
+            image_?.objectWillChange.send()
+            image_ = newValue
+            image_?.objectWillChange.send()
         }
-        return []
     }
-	
+    
 	// whether the item is a favourtie or not.  this fronts a Core Data boolean
 	var isFavourite: Bool {
         get { isFavourite_ }
@@ -47,14 +49,9 @@ extension Item {
 	// whether the item is on the list or wishlist.  this fronts a Core Data boolean,
 	// but when changed from true to false, it signals a purchase, so update
 	// the lastDatePurchased
-	var wishlist: Bool { 
-		get { wishlist_ }
-		set {
-            wishlist_ = newValue
-			if !wishlist_ { // just moved off wishlist, so record date Purchased
-				datePurchased_ = Date()
-			}
-		}
+	var isWishlist: Bool {
+		get { isWishlist_ }
+        set { isWishlist_ = newValue }
 	}
 	
 	// quantity of the item.   this fronts a Core Data optional attribute
@@ -176,35 +173,35 @@ extension Item {
         try? context?.save()
     }
     
-    // toggles the availability flag for an item
-    func toggleFavouriteStatus() {
-        isFavourite_ = !isFavourite_
-    }
     
-    // toggles the availability flag for an item
-    func toggleRegretStatus() {
-        isRegret_ = !isRegret_
-    }
-
-    // changes onList flag for an item
-    func toggleWishlistStatus() {
-        wishlist = !wishlist
-    }
-
     func markFavourite() {
-        isFavourite_ = true
+        isWishlist = false
+        isRegret = false
+        isFavourite = true
     }
     
     func markRegret() {
-        isRegret_ = true
+        isFavourite = false
+        isWishlist = false
+        isRegret = true
     }
     
     func unmarkFavourite() {
-        isFavourite_ = false
+        isFavourite = false
     }
     
     func unmarkRegret() {
-        isRegret_ = false
+        isRegret = false
+    }
+    
+    func unmarkWish() {
+        isWishlist = false
+    }
+    
+    func markWish() {
+        isFavourite = false
+        isRegret = false
+        isWishlist = true
     }
 }
 

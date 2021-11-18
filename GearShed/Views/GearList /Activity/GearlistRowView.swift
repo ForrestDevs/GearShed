@@ -28,13 +28,8 @@ struct GearlistRowView: View {
             Color.clear
             VStack {
                 Button {
+                    detailManager.selectedGearlist = gearlist
                     withAnimation {
-                        detailManager.content = AnyView (
-                            GearlistDetailView (gearlist: gearlist)
-                            .environmentObject(viewModel)
-                            .environmentObject(persistentStore)
-                            .environmentObject(detailManager)
-                        )
                         detailManager.showGearlistDetail = true
                     }
                 } label: {

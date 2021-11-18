@@ -27,13 +27,8 @@ struct TripRowView: View {
             Color.clear
             VStack {
                 Button {
+                    detailManager.selectedGearlist = trip
                     withAnimation {
-                        detailManager.content = AnyView (
-                            GearlistDetailView (gearlist: trip)
-                            .environmentObject(viewModel)
-                            .environmentObject(persistentStore)
-                            .environmentObject(detailManager)
-                        )
                         detailManager.showGearlistDetail = true
                     }
                 } label: {
@@ -76,7 +71,10 @@ extension TripRowView {
     
     private var editContextButton: some View {
         Button {
-            showEdit.toggle()
+            detailManager.selectedGearlist = trip
+            withAnimation {
+                detailManager.showModifyGearlist = true
+            }
         } label: {
             HStack {
                 Text("Edit List")

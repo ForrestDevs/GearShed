@@ -10,16 +10,16 @@ import SwiftUI
 struct ItemRowView_InGearlist: View {
     @Environment (\.presentationMode) private var presentationMode
     
+    @EnvironmentObject private var detailManager: DetailViewManager
     @EnvironmentObject private var viewModel: GearlistData
     @EnvironmentObject private var persistentStore: PersistentStore
     
     @ObservedObject private var gearlist: Gearlist
     @ObservedObject private var item: Item
     
-    @State private var confirmRemoveItemAlert: ConfirmRemoveItemFromListAlert?
-    
-    @State private var showAddNewCluster: Bool = false
-    @State private var showAddNewContainer: Bool = false
+    //@State private var confirmRemoveItemAlert: ConfirmRemoveItemFromListAlert?
+    //@State private var showAddNewCluster: Bool = false
+    //@State private var showAddNewContainer: Bool = false
     
     @State var itemCluster: Cluster?
     @State var previousItemCluster: Cluster?
@@ -41,14 +41,11 @@ struct ItemRowView_InGearlist: View {
     }
     
     var body: some View {
-        ZStack {
-            Color.clear
-            itemBody
-        }
+        itemBody
         .contextMenu {
             deleteContextButton
         }
-        .fullScreenCover(isPresented: $showAddNewCluster) {
+        /*.fullScreenCover(isPresented: $showAddNewCluster) {
             AddClusterView(persistentStore: persistentStore, gearlist: gearlist) { cluster in
                 itemCluster = cluster
                 viewModel.updateItemCluster(newCluster: itemCluster, oldCluster: previousItemCluster, item: item)
@@ -61,8 +58,8 @@ struct ItemRowView_InGearlist: View {
                 viewModel.updateItemContainer(newContainer: itemContainer, oldContainer: previousItemContainer, item: item, gearlist: gearlist)
                 previousItemContainer = itemContainer
             }
-        }
-        .alert(item: $confirmRemoveItemAlert) { item in item.alert() }
+        }*/
+        //.alert(item: $confirmRemoveItemAlert) { item in item.alert() }
     }
 }
 
@@ -104,12 +101,6 @@ extension ItemRowView_InGearlist {
             withAnimation {
                 viewModel.removeItemFromGearlist(item: item, gearlist: gearlist)
             }
-            /*confirmRemoveItemAlert = ConfirmRemoveItemFromListAlert (
-                persistentStore: persistentStore,
-                item: item,
-                gearlist: gearlist,
-                destructiveCompletion: { presentationMode.wrappedValue.dismiss() }
-            )*/
         } label: {
             HStack {
                 Text("Remove From List")
@@ -121,7 +112,6 @@ extension ItemRowView_InGearlist {
     // MARK: ContainerMenu
     private var containerMenu: some View {
         Menu {
-            addNewContainer
             containerList
         } label: {
             containerMenuLabel
@@ -135,8 +125,14 @@ extension ItemRowView_InGearlist {
                 viewModel.updateItemContainer(newContainer: itemContainer, oldContainer: previousItemContainer, item: item, gearlist: gearlist)
                 previousItemContainer = itemContainer
             } label: {
-                Text(container.name)
-                    .font(.subheadline)
+                HStack {
+                    Text(container.name)
+                        .font(.subheadline)
+                    if item.containers.contains(container) {
+                        Image(systemName: "checkmark")
+                            .foregroundColor(Color.theme.green)
+                    }
+                }
             }
         }
     }
@@ -162,19 +158,45 @@ extension ItemRowView_InGearlist {
         }
     }
     
-    private var addNewContainer: some View {
+    /*private var addNewContainer: some View {
         Button {
-            showAddNewContainer.toggle()
+            detailManager.content = AnyView (
+                AddContainerView(persistentStore: persistentStore, gearlist: gearlist) { container in
+                    itemContainer = container
+                    viewModel.updateItemContainer(newContainer: itemContainer, oldContainer: previousItemContainer, item: item, gearlist: gearlist)
+                    previousItemContainer = itemContainer
+                }.environmentObject(detailManager)
+            )
+            withAnimation {
+                detailManager.showContent = true
+            }
         } label: {
-            Text("Add New Pack")
+            Text("Add")
             .font(.subheadline)
         }
     }
     
+    private var containerMenuEdit: some View {
+        Button {
+            
+        } label: {
+            Text("Edit")
+        }
+    }
+    
+    private var containerMenuDelete: some View {
+        Button {
+            
+        } label: {
+            Text("Delete")
+        }
+    }*/
+    
+    
+    
     // MARK: ClusterMenu
     private var clusterMenu: some View {
         Menu {
-            addNewCluster
             clusterList
         } label: {
             clusterMenuLabel
@@ -188,8 +210,14 @@ extension ItemRowView_InGearlist {
                 viewModel.updateItemCluster(newCluster: itemCluster, oldCluster: previousItemCluster, item: item)
                 previousItemCluster = itemCluster
             } label: {
-                Text(cluster.name)
-                    .font(.subheadline)
+                HStack {
+                    Text(cluster.name)
+                        .font(.subheadline)
+                    if item.clusters.contains(cluster) {
+                        Image(systemName: "checkmark")
+                            .foregroundColor(Color.theme.green)
+                    }
+                }
             }
         }
     }
@@ -217,7 +245,16 @@ extension ItemRowView_InGearlist {
     
     private var addNewCluster: some View {
         Button {
-            showAddNewCluster.toggle()
+            detailManager.content = AnyView (
+                AddClusterView(persistentStore: persistentStore, gearlist: gearlist) { cluster in
+                    itemCluster = cluster
+                    viewModel.updateItemCluster(newCluster: itemCluster, oldCluster: previousItemCluster, item: item)
+                    previousItemCluster = itemCluster
+                }.environmentObject(detailManager)
+            )
+            withAnimation {
+                detailManager.showContent = true
+            }
         } label: {
             Text("Add New Pile")
             .font(.subheadline)

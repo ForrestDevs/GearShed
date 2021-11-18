@@ -54,7 +54,7 @@ struct CustomDatePicker: View {
     @EnvironmentObject var detailManager: DetailViewManager
     // selects only a single date
     
-    init(singleDay: Binding<Date>,
+    init(singleDay: Binding<Date?>,
          includeDays: DateSelectionChoices = .allDays,
          minDate: Date? = nil,
          maxDate: Date? = nil
@@ -88,7 +88,7 @@ struct CustomDatePicker: View {
                 .edgesIgnoringSafeArea(.all)
                 .onTapGesture {
                     withAnimation {
-                        detailManager.showRangeDatePicker = false
+                        detailManager.showSecondaryContent = false
                     }
                 }
             MDPMonthView()

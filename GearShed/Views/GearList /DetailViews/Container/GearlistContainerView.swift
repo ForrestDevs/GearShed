@@ -9,25 +9,32 @@ import SwiftUI
 
 struct GearlistContainerView: View {
     
+    @Environment(\.presentationMode) private var presentationMode
+    
+    @EnvironmentObject private var detailManager: DetailViewManager
+    
     @EnvironmentObject private var persistentStore: PersistentStore
     
     @EnvironmentObject private var viewModel: GearlistData
     
     @ObservedObject var gearlist: Gearlist
-        
-    @State private var showAddContainer: Bool = false
-
+    
+    @State private var confirmDeleteContainerAlert: ConfirmDeleteContainerAlert?
+    
     var body: some View {
         VStack (spacing: 0) {
             statBar
             ZStack {
-                packingContainerList
+                if gearlist.containers.count == 0 {
+                    EmptyViewText(emptyText: "Packs", buttonName: "Add Pack")
+                } else {
+                    packingContainerList
+                }
+                
                 addContainerButtonOverlay
             }
         }
-        .fullScreenCover(isPresented: $showAddContainer) {
-            AddContainerView(persistentStore: persistentStore, gearlist: gearlist)
-        }
+        .alert(item: $confirmDeleteContainerAlert) { container in container.alert() }
     }
 
 }
@@ -35,15 +42,62 @@ struct GearlistContainerView: View {
 extension GearlistContainerView {
     
     private var packingContainerList: some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            LazyVStack {
+        VStack {
+            List {
                 ForEach(gearlist.containers) { container in
-                    ContainerRowView(container: container, gearlist: gearlist)
+                    Section {
+                        ForEach(container.items) { item in
+                            ItemRowView_InContainer(item: item, gearlist: gearlist, container: container)
+                        }
+                    } header: {
+                        HStack {
+                            HStack {
+                                Text(container.name)
+                                    .font(.headline)
+                                Text("\(viewModel.containerTotalWeight(container: container))g")
+                                Spacer()
+                                Menu {
+                                    Button {
+                                        detailManager.selectedContainer = container
+                                        withAnimation {
+                                            detailManager.showModifyContainer = true
+                                        }
+                                    } label: {
+                                        HStack {
+                                            Text("Edit Pack Name").textCase(.none)
+                                            Image(systemName: "square.and.pencil")
+                                        }
+                                    }
+                                    
+                                    Button {
+                                        confirmDeleteContainerAlert = ConfirmDeleteContainerAlert (
+                                            persistentStore: persistentStore,
+                                            container: container,
+                                            destructiveCompletion: {
+                                                presentationMode.wrappedValue.dismiss()
+                                            }
+                                        )
+                                    } label: {
+                                        HStack {
+                                            Text("Delete Pack").textCase(.none)
+                                            Image(systemName: "trash")
+                                        }
+                                        
+                                    }
+                                } label: {
+                                    Image(systemName: "square.and.pencil")
+                                        .resizable()
+                                        .frame(width: 17, height: 17)
+                                        .padding(.horizontal, 2)
+                                }
+                            }
+                        }
+                    }
                 }
             }
-            .padding(.top, 10)
-            .padding(.bottom, 75)
+            .listStyle(.insetGrouped)
         }
+        
     }
     
     private var addContainerButtonOverlay: some View {
@@ -52,7 +106,9 @@ extension GearlistContainerView {
             HStack {
                 Spacer()
                 Button {
-                    showAddContainer.toggle()
+                    withAnimation {
+                        detailManager.showAddContainer = true
+                    }
                 }
                 label: {
                     VStack{

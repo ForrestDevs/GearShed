@@ -34,17 +34,14 @@ struct ItemRowView_InContainer: View {
     }
     
     var body: some View {
-        ZStack {
-            Color.clear
+        Button {
+            isPacked.toggle()
+            viewModel.toggleContainerBoolState(containerBool: item.gearlistContainerBool(gearlist: gearlist)!)
+        } label: {
             HStack {
-                Rectangle()
-                    .frame(width: 0.2, height: 5)
-                    .opacity(0)
-                packedButton
+                itemPackStatus
                 itemBody
-                Spacer()
             }
-            .padding(.bottom, 5)
         }
         .contextMenu {
             deleteContextButton
@@ -58,24 +55,15 @@ struct ItemRowView_InContainer: View {
 
 extension ItemRowView_InContainer {
     
-    private var packedButton: some View {
-        Button {
-            isPacked.toggle()
-            viewModel.toggleContainerBoolState(containerBool: item.gearlistContainerBool(gearlist: gearlist)!)
-        } label: {
-            ZStack {
-                Image(systemName: "circle")
+    private var itemPackStatus: some View {
+        ZStack {
+            Image(systemName: "circle")
+                .foregroundColor(Color.theme.green)
+            if isPacked == true {
+                Image(systemName: "bag.circle.fill")
                     .foregroundColor(Color.theme.green)
-                /*Rectangle()
-                    .strokeBorder(Color.theme.accent, lineWidth: 1)
-                    .frame(width: 20, height: 20)*/
-                if isPacked == true {
-                    Image(systemName: "bag.circle.fill")
-                        .foregroundColor(Color.theme.green)
-                }
             }
         }
-        
     }
     
     private var itemBody: some View {

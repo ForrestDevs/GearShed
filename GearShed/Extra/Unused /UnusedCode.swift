@@ -2548,4 +2548,101 @@ private var allSheds: FetchedResults<Shed>*/
  }*/
  
  
+ /*VStack (spacing: 0) {
+     itemsList
+ }*/
+
+ /*private var itemsList: some View {
+     ScrollView(.vertical, showsIndicators: false) {
+         LazyVStack {
+             ForEach(gsData.sectionByShed(itemArray: gsData.favItems)) { section in
+                 Section {
+                     ForEach(section.items) { item in
+                         ItemRowView(item: item)
+                             .padding(.horizontal)
+                             .padding(.bottom, 5)
+
+                     }
+                 } header: {
+                     VStack (spacing: 0) {
+                         HStack {
+                             Text(section.title)
+                                 .font(.headline)
+                             Spacer()
+                         }
+                         Rectangle()
+                             .frame(maxWidth: .infinity)
+                             .frame(height: 1)
+                     }
+                     .padding(.horizontal)
+                 }
+             }
+         }
+         .padding(.top, 10)
+         .padding(.bottom, 75)
+     }
+ }*/
+
+ /*private var itemsList: some View {
+     ScrollView(.vertical, showsIndicators: false) {
+         LazyVStack {
+             ForEach(gsData.sectionByShed(itemArray: gsData.regretItems)) { section in
+                 Section {
+                     ForEach(section.items) { item in
+                         ItemRowView(item: item)
+                             .padding(.horizontal)
+                             .padding(.bottom, 5)
+                     }
+                 } header: {
+                     VStack (spacing: 0) {
+                         HStack {
+                             Text(section.title)
+                                 .font(.headline)
+                             Spacer()
+                         }
+                         Rectangle()
+                             .frame(maxWidth: .infinity)
+                             .frame(height: 1)
+                     }
+                     .padding(.horizontal)
+                 }
+             }
+         }
+         .padding(.top, 10)
+         .padding(.bottom, 75)
+     }
+ }*/
+ /* private var itemsList: some View {
+  ScrollView(.vertical, showsIndicators: false) {
+      LazyVStack {
+          ForEach(gsData.sectionByShed(itemArray: gsData.wishListItems)) { section in
+              Section {
+                  ForEach(section.items) { item in
+                      ItemRowViewInWishList(item: item)
+                          .padding(.bottom, 5)
+                  }
+              } header: {
+                  VStack (spacing: 0) {
+                      HStack {
+                          Text(section.title)
+                              .font(.headline)
+                          Spacer()
+                      }
+                      Rectangle()
+                          .frame(maxWidth: .infinity)
+                          .frame(height: 1)
+                  }
+                  .padding(.horizontal)
+              }
+          }
+      }
+      .padding(.top, 10)
+      .padding(.bottom, 75)
+  }
+ }
+ */
+
+
+ 
+ 
  */

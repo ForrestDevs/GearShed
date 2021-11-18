@@ -11,6 +11,8 @@ struct AddContainerView: View {
     
     @Environment(\.presentationMode) var presentationMode
     
+    @EnvironmentObject private var detailManager: DetailViewManager
+    
     let persistentStore: PersistentStore
     
     let gearlist: Gearlist
@@ -29,13 +31,14 @@ struct AddContainerView: View {
                 backgroundLayer
                 scrollViewLayer
             }
-            .navigationBarTitle("Add Pack", displayMode: .inline)
-            .navigationBarBackButtonHidden(true)
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 cancelToolBarItem
+                viewTitle
                 saveToolBarItem
             }
         }
+        .transition(.move(edge: .trailing))
     }
 }
 
@@ -44,16 +47,31 @@ extension AddContainerView {
     private var cancelToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
-                presentationMode.wrappedValue.dismiss()
+                withAnimation {
+                    detailManager.showContent = false
+                    detailManager.showAddContainer = false
+                }
             } label: {
                 Text("Cancel")
             }
         }
     }
     
+    private var viewTitle: some ToolbarContent {
+        ToolbarItem(placement: .principal) {
+            Text("Add Pack")
+                .formatGreen()
+        }
+    }
+    
     private var saveToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
+                withAnimation {
+                    detailManager.showContent = false
+                    detailManager.showAddContainer = false
+                }
+                
                 if isAddFromItem {
                     viewModel.addNewContainerFromItem(using: editableData, gearlist: gearlist) { container in
                         containerOut!(container)
@@ -61,7 +79,6 @@ extension AddContainerView {
                 } else {
                     viewModel.addNewContainer(using: editableData, gearlist: gearlist)
                 }
-                presentationMode.wrappedValue.dismiss()
             } label: {
                 Text("Save")
             }

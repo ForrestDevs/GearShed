@@ -4,7 +4,7 @@
 //
 //  Created by Luke Forrest Gannon on 2021-10-26.
 //
-
+/*
 import SwiftUI
 
 struct AddMoreItemView: View {
@@ -55,7 +55,7 @@ extension AddMoreItemView {
                 ForEach(itemVM.sectionByShed(itemArray: gearVM.itemsNotInList)) { section in
                     Section {
                         ForEach(section.items) { item in
-                            ItemRowViewForList(item: item, respondToTapOnSelector: {
+                            ItemRowViewForList(item: item, gearlist: gearlist ,respondToTapOnSelector: {
                                 handleItemSelected(item)
                             }, respondToTapOffSelector: {
                                 handleItemUnSelected(item)
@@ -114,4 +114,4 @@ extension AddMoreItemView {
         presentationMode.wrappedValue.dismiss()
     }
 }
-
+*/

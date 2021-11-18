@@ -8,22 +8,20 @@
 import SwiftUI
 
 struct AddItemsToGearListView: View {
-        
+    
     @EnvironmentObject private var detailManager: DetailViewManager
-    
-    @EnvironmentObject private var viewModel: GearlistData
-    
+    @StateObject private var viewModel: GearlistData
     @StateObject private var itemVM: GearShedData
-
     @State private var itemsChecked: [Item] = []
-    
-    let gearlist: Gearlist
-    
-    let persistentStore: PersistentStore
-    
+    @State private var itemsUnChecked: [Item] = []
+    @State private var canSave: Bool = false
+    private let gearlist: Gearlist
+        
     init(persistentStore: PersistentStore, gearlist: Gearlist) {
         self.gearlist = gearlist
-        self.persistentStore = persistentStore
+        
+        let viewModel = GearlistData(persistentStore: persistentStore)
+        _viewModel = StateObject(wrappedValue: viewModel)
         
         let itemVM = GearShedData(persistentStore: persistentStore)
         _itemVM = StateObject(wrappedValue: itemVM)
@@ -31,13 +29,11 @@ struct AddItemsToGearListView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
-                itemList
-            }
-            .navigationBarTitle("Select Items", displayMode: .inline)
-            .navigationBarBackButtonHidden(true)
+            itemList
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 cancelButtonToolBarItem
+                viewTitle
                 saveButtonToolBarItem
             }
         }
@@ -48,47 +44,54 @@ struct AddItemsToGearListView: View {
 extension AddItemsToGearListView {
     // MARK: Content
     private var itemList: some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            LazyVStack {
+        VStack {
+            List {
                 ForEach(itemVM.sectionByShed(itemArray: itemVM.items)) { section in
                     Section {
                         ForEach(section.items) { item in
-                            ItemRowViewForList(item: item, respondToTapOnSelector: {
-                                handleItemSelected(item)
-                            }, respondToTapOffSelector: {
-                                handleItemUnSelected(item)
-                            })
-                            .padding(.horizontal, 15)
-                            .padding(.bottom, 5)
+                            ItemRowViewForList (
+                                gearlist: gearlist,
+                                item: item) {
+                                    handleItemSelected(item)
+                                } respondToTapOffSelector: {
+                                    handleItemUnSelected(item)
+                                }
+                                .padding(.horizontal, 15)
+                                .padding(.bottom, 5)
                         }
                     } header: {
-                        VStack (spacing: 0) {
-                            HStack {
-                                Text(section.title)
-                                    .font(.headline)
-                                Spacer()
-                            }
-                            Rectangle()
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 1)
+                        HStack {
+                            Text(section.title)
+                                .font(.headline)
+                            Spacer()
                         }
-                        .padding(.horizontal)
                     }
                 }
             }
         }
-        //.padding(.top, 5)
     }
     
     // MARK: Methods
     /// Function to add selected Item to temp array.
     private func handleItemSelected(_ item: Item) {
+        canSave = true
+        
+        if gearlist.items.contains(item) {
+            self.itemsUnChecked.removeAll{$0.id == item.id}
+        }
+        
         if !itemsChecked.contains(item) {
             itemsChecked.append(item)
         }
+        
     }
     /// Function to remove selected Item from temp array.
     private func handleItemUnSelected(_ item: Item) {
+        canSave = true
+        if gearlist.items.contains(item) {
+            self.itemsUnChecked.append(item)
+        }
+        
         self.itemsChecked.removeAll{$0.id == item.id}
     }
     
@@ -97,7 +100,7 @@ extension AddItemsToGearListView {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
                 withAnimation {
-                    detailManager.showSelectGearlistItems = false
+                    detailManager.showAddItemsToGearlist = false
                 }
             } label:  {
                 Text("Cancel")
@@ -105,26 +108,59 @@ extension AddItemsToGearListView {
         }
     }
     
+    private var viewTitle: some ToolbarContent {
+        ToolbarItem (placement: .principal) {
+            Text("Select Items")
+                .formatGreen()
+        }
+    }
+    
     private var saveButtonToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
+                viewModel.updateGearlistItems(gearlist: gearlist, addingItems: itemsChecked, removingItems: itemsUnChecked)
                 viewModel.addItemsToGearlist(gearlist: gearlist, itemArray: itemsChecked)
+                detailManager.selectedGearlist = gearlist
                 withAnimation {
-                    detailManager.content = AnyView (
-                        GearlistDetailView(gearlist: gearlist)
-                            .environmentObject(detailManager)
-                            .environmentObject(persistentStore)
-                            .environmentObject(viewModel)
-                    )
+                    detailManager.showAddItemsToGearlist = false
                     detailManager.showGearlistDetail = true
-                    detailManager.showSelectGearlistItems = false
                 }
             } label: {
                 Text("Save")
             }
-            .disabled(itemsChecked.count == 0)
+            .disabled(!canSave)
         }
     }
 }
+
+/*ScrollView(.vertical, showsIndicators: false) {
+    LazyVStack {
+        ForEach(itemVM.sectionByShed(itemArray: itemVM.items)) { section in
+            Section {
+                ForEach(section.items) { item in
+                    ItemRowViewForList(item: item, respondToTapOnSelector: {
+                        handleItemSelected(item)
+                    }, respondToTapOffSelector: {
+                        handleItemUnSelected(item)
+                    })
+                    
+                }
+            } header: {
+                VStack (spacing: 0) {
+                    HStack {
+                        Text(section.title)
+                            .font(.headline)
+                        Spacer()
+                    }
+                    Rectangle()
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 1)
+                }
+                .padding(.horizontal)
+            }
+        }
+    }
+}*/
+//.padding(.top, 5)
  
 

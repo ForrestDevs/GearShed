@@ -50,23 +50,23 @@
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="isFavourite_" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="isRegret_" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isWishlist_" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="name_" optional="YES" attributeType="String"/>
         <attribute name="price_" optional="YES" attributeType="String"/>
         <attribute name="quantity_" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="weight_" optional="YES" attributeType="String"/>
-        <attribute name="wishlist_" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <relationship name="brand_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Brand" inverseName="items_" inverseEntity="Brand"/>
         <relationship name="clusters_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Cluster" inverseName="items_" inverseEntity="Cluster"/>
         <relationship name="containerBools_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ContainerBool" inverseName="item_" inverseEntity="ContainerBool"/>
         <relationship name="containers_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Container" inverseName="items_" inverseEntity="Container"/>
         <relationship name="gearlists_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Gearlist" inverseName="items_" inverseEntity="Gearlist"/>
-        <relationship name="images_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ItemImage" inverseName="item_" inverseEntity="ItemImage"/>
+        <relationship name="image_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ItemImage" inverseName="item_" inverseEntity="ItemImage"/>
         <relationship name="shed_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Shed" inverseName="items_" inverseEntity="Shed"/>
     </entity>
     <entity name="ItemImage" representedClassName="ItemImage" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="img" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
-        <relationship name="item_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Item" inverseName="images_" inverseEntity="Item"/>
+        <relationship name="item_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Item" inverseName="image_" inverseEntity="Item"/>
     </entity>
     <entity name="PlanGroup" representedClassName="PlanGroup" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
@@ -93,11 +93,11 @@
         <element name="ContainerBool" positionX="266.4309692382812" positionY="-341.7029724121094" width="128" height="118"/>
         <element name="Gearlist" positionX="271.7427368164062" positionY="-552.1617736816406" width="128" height="208"/>
         <element name="GearPlan" positionX="-50.50823974609375" positionY="-730.9864654541016" width="128" height="88"/>
-        <element name="Item" positionX="90.17779541015625" positionY="-435.9819946289062" width="128" height="298"/>
+        <element name="Item" positionX="91.51422119140625" positionY="-416.1770935058593" width="128" height="298"/>
+        <element name="ItemImage" positionX="-88.090576171875" positionY="-326.7626647949219" width="128" height="88"/>
         <element name="PlanGroup" positionX="131.9351806640625" positionY="-727.3628387451172" width="128" height="103"/>
         <element name="PlanItem" positionX="286.516845703125" positionY="-725.1248168945312" width="128" height="88"/>
         <element name="PlanItemLabel" positionX="135.4661865234375" positionY="-809.1134033203125" width="128" height="43"/>
-        <element name="Shed" positionX="-99.55682373046881" positionY="-247.7298583984376" width="128" height="103"/>
-        <element name="ItemImage" positionX="-89.37469482421875" positionY="-349.4181213378906" width="128" height="88"/>
+        <element name="Shed" positionX="-83.93133544921875" positionY="-228.1786499023439" width="128" height="103"/>
     </elements>
 </model>

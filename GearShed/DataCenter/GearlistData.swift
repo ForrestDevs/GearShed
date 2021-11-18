@@ -188,6 +188,22 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         }
         persistentStore.saveContext()
     }
+    
+    /// Function to update a Gearlists Items and create an associated packingBool upon entry.
+    func updateGearlistItems(gearlist: Gearlist, addingItems: [Item], removingItems: [Item]) {
+        
+        
+        for item in addingItems {
+            gearlist.addToItems_(item)
+            createNewContainerBool(gearlist: gearlist, item: item)
+        }
+        
+        for item in removingItems {
+            removeItemFromGearlist(item: item, gearlist: gearlist)
+        }
+        persistentStore.saveContext()
+    }
+    
     /// Function to remove an Item from a Cluster + associated clean up.
     func removeItemFromGearlist(item: Item, gearlist: Gearlist) {
         // First lets delete the items containerBool
@@ -348,7 +364,7 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     /// Function for returning only items that arent already in the list
     var itemsNotInList = [Item]()
 
-    func getItemsNotInList(gearlist: Gearlist) {
+    /*func getItemsNotInList(gearlist: Gearlist) {
         let request: NSFetchRequest<Item> = Item.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
         request.predicate = NSPredicate(format: "wishlist_ == %d", false)
@@ -362,7 +378,7 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         } catch let error {
             print("Error fetching. \(error.localizedDescription)")
         }
-    }
+    }*/
         
     func gearListTrueContainerBools(gearlist: Gearlist) -> [ContainerBool] {
         let trueGearlistContainerBools: [ContainerBool] = trueContainerBools.filter( { $0.gearlist == gearlist } )

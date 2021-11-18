@@ -10,8 +10,6 @@ import SwiftUI
 
 struct GearlistDetailView: View {
     @Environment(\.presentationMode) var presentationMode
-
-    @EnvironmentObject private var viewModel: GearlistData
     
     @EnvironmentObject private var detailManager: DetailViewManager
     
@@ -19,14 +17,18 @@ struct GearlistDetailView: View {
     
     @ObservedObject private var gearlist: Gearlist
     
+    @StateObject private var viewModel: GearlistData
+    
     @State private var currentScreen: Int = 0
     @State private var isEditMode: Bool = true
     @State private var addCluster: Bool = false
             
-    init(gearlist: Gearlist) {
+    init(persistentStore: PersistentStore, gearlist: Gearlist) {
+        
+        let viewModel = GearlistData(persistentStore: persistentStore)
+        _viewModel = StateObject(wrappedValue: viewModel)
         
         self.gearlist = gearlist
-        
     }
     
     var body: some View {
@@ -40,15 +42,20 @@ struct GearlistDetailView: View {
                     .pageLabel()
             } content: {
                 GearlistItemListView(gearlist: gearlist)
+                    .environmentObject(viewModel)
                     .pageView()
                 GearlistClusterView(gearlist: gearlist)
+                    .environmentObject(viewModel)
                     .pageView()
                 GearlistContainerView(gearlist: gearlist)
+                    .environmentObject(viewModel)
                     .pageView()
             }
             .padding(.top, 10)
-            .navigationBarTitle(gearlist.name, displayMode: .inline)
+            .edgesIgnoringSafeArea(.bottom)
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                viewTitle
                 backButtonToolBarItem
             }
         }
@@ -67,6 +74,13 @@ extension GearlistDetailView {
             } label: {
                 Image(systemName: "chevron.left")
             }
+        }
+    }
+    
+    private var viewTitle: some ToolbarContent {
+        ToolbarItem(placement: .principal) {
+            Text(gearlist.name)
+                .formatGreen()
         }
     }
     

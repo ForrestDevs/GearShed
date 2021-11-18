@@ -10,6 +10,8 @@ import SwiftUI
 struct EditContainerView: View {
     @Environment(\.presentationMode) var presentationMode
     
+    @EnvironmentObject private var detailManager: DetailViewManager
+    
     @EnvironmentObject private var viewModel: GearlistData
     
     @State private var editableData: EditableContainerData
@@ -25,13 +27,14 @@ struct EditContainerView: View {
                 backgroundLayer
                 scrollViewLayer
             }
-            .navigationBarTitle("Edit Pack", displayMode: .inline)
-            .navigationBarBackButtonHidden(true)
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 cancelToolBarItem
+                viewTitle
                 saveToolBarItem
             }
         }
+        .transition(.move(edge: .trailing))
     }
 }
 
@@ -40,18 +43,29 @@ extension EditContainerView {
     private var cancelToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
-                presentationMode.wrappedValue.dismiss()
+                withAnimation {
+                    detailManager.showModifyContainer = false
+                }
             } label: {
                 Text("Cancel")
             }
         }
     }
     
+    private var viewTitle: some ToolbarContent {
+        ToolbarItem(placement: .principal) {
+            Text("Edit Pack Name")
+                .formatGreen()
+        }
+    }
+    
     private var saveToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
+                withAnimation {
+                    detailManager.showModifyContainer = false
+                }
                 viewModel.updateContainer(using: editableData)
-                presentationMode.wrappedValue.dismiss()
             } label: {
                 Text("Save")
             }

@@ -16,27 +16,34 @@ struct EditableBrandData {
     // (nil if data for a new item that does not yet exist)
     var id: UUID? = nil
     // all of the values here provide suitable defaults for a new Brand
-    var brandName: String = ""
+    var name: String 
     
-    // this copies all the editable data from an incoming Brand
-    init(persistentStore: PersistentStore, brand: Brand?) {
-        self.persistentStore = persistentStore
-        if let brand = brand {
-            id = brand.id!
-            brandName = brand.name
-        }
-    }
-
     // to do a save/commit of an Item, it must have a non-empty name
-    var canBrandBeSaved: Bool { brandName.count > 0 }
+    var canBrandBeSaved: Bool { name.count > 0 }
 
     // useful to know if this is associated with an existing Brand
-    var representsExistingBrand: Bool { id != nil /*&& Brand.object(withID: id!) != nil*/}
+    var representsExistingBrand: Bool { id != nil }
     // useful to know the associated brand (which we'll force unwrap, so
     // be sure you check representsExistingBrand first (!)
     var associatedBrand: Brand {
         Brand.object(id: id!, context: persistentStore.context)!
-        //Brand.object(withID: id!)!
     }
+}
+
+extension EditableBrandData {
+    
+    /// Initializer for loading a new Brand
+    init(persistentStore: PersistentStore) {
+        self.persistentStore = persistentStore
+        self.name = ""
+    }
+    
+    /// Initializer for loading an existing Brand
+    init(persistentStore: PersistentStore, brand: Brand) {
+        self.persistentStore = persistentStore
+        self.id = brand.id
+        self.name = brand.name
+    }
+    
 }
 

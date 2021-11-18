@@ -10,6 +10,12 @@ import SwiftUI
 
 extension Text {
     
+    
+    func formatEmptyTitle() -> some View {
+        self.foregroundColor(Color.theme.green)
+            .font(.custom("HelveticaNeue", size: 20))
+    }
+    
     func formatEntryTitle() -> some View {
         self.foregroundColor(Color.theme.green)
             .font(.custom("HelveticaNeue", size: 15.5))
@@ -41,6 +47,31 @@ extension Text {
             .font(.custom("HelveticaNeue", size: 17).bold())
     }
     
+    func formatItemNameGreen() -> some View {
+        self.foregroundColor(Color.theme.green)
+            .font(.custom("HelveticaNeue", size: 16.5))
+    }
+    
+    func formatItemNameBlack() -> some View {
+        self.foregroundColor(Color.theme.accent)
+            .font(.custom("HelveticaNeue", size: 16.5))
+    }
+    
+    func formatItemWeightBlack() -> some View {
+        self.foregroundColor(Color.theme.accent)
+            .font(.custom("HelveticaNeue", size: 13))
+    }
+    
+    func formatItemPriceGreen() -> some View {
+        self.foregroundColor(Color.theme.green)
+            .font(.custom("HelveticaNeue", size: 13))
+    }
+    
+    func formatItemDetailsGrey() -> some View {
+        self.foregroundColor(Color.theme.secondaryText)
+            .font(.custom("HelveticaNeue", size: 13))
+    }
+    
     func formatGreen17Gradi() -> some View {
         self.foregroundColor(Color.theme.green)
             .font(.custom("HelveticaNeue", size: 17).bold())
@@ -57,7 +88,7 @@ extension Text {
     }
     
     func formatNoColorSmall() -> some View {
-        self.font(.custom("HelveticaNeue", size: 18).bold())
+        self.font(.custom("HelveticaNeue", size: 16.5))
     }
     
     func formatNoColorLarge() -> some View {

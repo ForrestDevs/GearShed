@@ -8,7 +8,10 @@
 import SwiftUI
 
 struct EditClusterView: View {
+    
     @Environment(\.presentationMode) var presentationMode
+    
+    @EnvironmentObject private var detailManager: DetailViewManager
     
     @EnvironmentObject private var viewModel: GearlistData
     
@@ -25,13 +28,14 @@ struct EditClusterView: View {
                 backgroundLayer
                 scrollViewLayer
             }
-            .navigationBarTitle("Edit Pile", displayMode: .inline)
-            .navigationBarBackButtonHidden(true)
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 cancelToolBarItem
+                viewTitle
                 saveToolBarItem
             }
         }
+        .transition(.move(edge: .trailing))
     }
 }
 
@@ -40,18 +44,29 @@ extension EditClusterView {
     private var cancelToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
-                presentationMode.wrappedValue.dismiss()
+                withAnimation {
+                    detailManager.showModifyCluster = false
+                }
             } label: {
                 Text("Cancel")
             }
         }
     }
     
+    private var viewTitle: some ToolbarContent {
+        ToolbarItem(placement: .principal) {
+            Text("Edit Cluster Name")
+                .formatGreen()
+        }
+    }
+    
     private var saveToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
+                withAnimation {
+                    detailManager.showModifyCluster = false
+                }
                 viewModel.updateCluster(using: editableData)
-                presentationMode.wrappedValue.dismiss()
             } label: {
                 Text("Save")
             }

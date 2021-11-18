@@ -20,7 +20,7 @@ struct EditableItemData {
     var details: String
     var shed: Shed?
     var brand: Brand?
-    var wishlist: Bool
+    var isWishlist: Bool
     var isFavourite: Bool
     var isRegret: Bool
     var datePurchased: Date?
@@ -48,14 +48,12 @@ extension EditableItemData {
         self.details = item.detail
         self.shed = item.shed
         self.brand = item.brand
-        self.wishlist = item.wishlist
+        self.isWishlist = item.isWishlist
         self.isFavourite = item.isFavourite
         self.isRegret = item.isRegret
         self.datePurchased = item.datePurchased ?? nil 
     }
-}
-
-extension EditableItemData {
+    
     /// Initializer for loading a new Item with shed Passed In
     init(persistentStore: PersistentStore, shedInEdit: Shed) {
         self.persistentStore = persistentStore
@@ -66,14 +64,28 @@ extension EditableItemData {
         self.details = ""
         self.shed = shedInEdit
         self.brand = nil
-        self.wishlist = false
+        self.isWishlist = false
         self.isFavourite = false
         self.isRegret = false
         self.datePurchased = nil
     }
-}
-
-extension EditableItemData {
+    
+    /// Initializer for loading a new Item with shed Passed In
+    init(persistentStore: PersistentStore, brandInEdit: Brand) {
+        self.persistentStore = persistentStore
+        self.name = ""
+        self.weight = ""
+        self.price = ""
+        self.quantity = 1
+        self.details = ""
+        self.shed = nil
+        self.brand = brandInEdit
+        self.isWishlist = false
+        self.isFavourite = false
+        self.isRegret = false
+        self.datePurchased = nil
+    }
+    
     /// Initializer for loading a new Item wishlist passed In.
     init(persistentStore: PersistentStore, wishlistInEdit: Bool) {
         self.persistentStore = persistentStore
@@ -84,14 +96,12 @@ extension EditableItemData {
         self.details = ""
         self.shed = nil
         self.brand = nil
-        self.wishlist = wishlistInEdit
+        self.isWishlist = wishlistInEdit
         self.isFavourite = false
         self.isRegret = false
         self.datePurchased = nil
     }
-}
-
-extension EditableItemData {
+    
     /// Initializer for standard add Item
     init(persistentStore: PersistentStore) {
         self.persistentStore = persistentStore
@@ -102,13 +112,12 @@ extension EditableItemData {
         self.details = ""
         self.shed = nil
         self.brand = nil
-        self.wishlist = false
+        self.isWishlist = false
         self.isFavourite = false
         self.isRegret = false
         self.datePurchased = nil
     }
 }
-
 
 /*struct EditableItemData {
     

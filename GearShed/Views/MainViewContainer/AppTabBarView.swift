@@ -55,10 +55,12 @@ extension AppTabBarView {
             PagerTabView1(selection: $tabInt, offset: $offset, tabOffset: $tabOffset) {
                 
                 NavigationView { GearShedView(persistentStore: persistentStore) }
+                .navigationViewStyle(.stack)
                 //.navigationViewStyle(.stack)
                     .pageView(ignoresSafeArea: true)
                 
                 NavigationView { GearlistView(persistentStore: persistentStore) }
+                .navigationViewStyle(.stack)
                 //.navigationViewStyle(.stack)
                     .pageView(ignoresSafeArea: true)
                 
@@ -72,9 +74,8 @@ extension AppTabBarView {
     }
     
     private var gearShedButton: some View {
-        VStack (alignment: .center, spacing: 0) {
+        VStack (alignment: .center, spacing: 1) {
             Image(systemName: "house")
-            
             Text("Gear Shed")
                 .formatNoColorSmall()
         }
@@ -83,12 +84,12 @@ extension AppTabBarView {
             self.offset = newOffset
         }
         .foregroundColor (
-            (-1 <= tabInt && tabInt <= 0.30) ? Color.white : Color.black
+            (-1 <= tabInt && tabInt <= 0.30) ?  Color.white : Color.theme.accent
         )
     }
 
     private var gearListButton: some View {
-        VStack (alignment: .center, spacing: 0) {
+        VStack (alignment: .center, spacing: 1) {
             Image(systemName: "list.bullet.rectangle")
             Text("Gear List")
                 .formatNoColorSmall()
@@ -98,14 +99,13 @@ extension AppTabBarView {
             self.offset = newOffset
         }
         .foregroundColor (
-            (0.31 <= tabInt && tabInt <= 1) ? Color.white : Color.black
+            (0.31 <= tabInt && tabInt <= 1) ? Color.white : Color.theme.accent
         )
 
     }
     
     private var gearPlanButton: some View {
         VStack (alignment: .center, spacing: 0) {
-            //Image(systemName: "list.bullet.rectangle")
             Text("Gear Plan")
                 .formatNoColorSmall()
         }

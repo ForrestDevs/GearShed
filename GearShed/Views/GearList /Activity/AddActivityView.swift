@@ -50,7 +50,7 @@ extension AddActivityView {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
                 withAnimation {
-                    detailManager.showAddNewGearlist = false
+                    detailManager.showContent = false
                 }
             } label:  {
                 Text("Cancel")
@@ -63,13 +63,13 @@ extension AddActivityView {
             Button {
                 let newGearList = viewModel.addNewGearlist(using: editableData)
                 withAnimation {
-                    detailManager.showAddNewGearlist = false
+                    detailManager.showContent = false
                     detailManager.content = AnyView (
                         AddItemsToGearListView(persistentStore: persistentStore, gearlist: newGearList)
                             .environmentObject(detailManager)
                             .environmentObject(viewModel)
                     )
-                    detailManager.showSelectGearlistItems = true
+                    detailManager.showContent = true
                 }
             } label: {
                 Text("Save")

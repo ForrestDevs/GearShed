@@ -44,7 +44,7 @@ extension Shed: Comparable {
 	var items: [Item] {
 		if let items = items_ as? Set<Item> {
             // returns an array of items sorted by name and filtering out any wishList Items
-            return items.sorted(by: { $0.name < $1.name }).filter { !$0.wishlist }
+            return items.sorted(by: { $0.name < $1.name })//.filter { !$0.wishlist }
 		}
 		return []
 	}

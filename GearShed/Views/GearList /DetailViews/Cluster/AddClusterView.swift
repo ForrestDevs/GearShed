@@ -11,6 +11,8 @@ struct AddClusterView: View {
     
     @Environment(\.presentationMode) var presentationMode
     
+    @EnvironmentObject private var detailManager: DetailViewManager
+    
     let persistentStore: PersistentStore
     
     let gearlist: Gearlist
@@ -29,13 +31,14 @@ struct AddClusterView: View {
                 backgroundLayer
                 scrollViewLayer
             }
-            .navigationBarTitle("Add Pile", displayMode: .inline)
-            .navigationBarBackButtonHidden(true)
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 cancelToolBarItem
+                viewTitle
                 saveToolBarItem
             }
         }
+        .transition(.move(edge: .trailing))
     }
 }
 
@@ -44,16 +47,30 @@ extension AddClusterView     {
     private var cancelToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
-                presentationMode.wrappedValue.dismiss()
+                withAnimation {
+                    detailManager.showContent = false
+                    detailManager.showAddCluster = false
+                }
             } label: {
                 Text("Cancel")
             }
+        }
+    }
+    
+    private var viewTitle: some ToolbarContent {
+        ToolbarItem(placement: .principal) {
+            Text("Add Pile")
+                .formatGreen()
         }
     }
 
     private var saveToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
+                withAnimation {
+                    detailManager.showContent = false
+                    detailManager.showAddCluster = false
+                }
                 if isAddFromItem {
                     viewModel.addNewClusterFromItem(using: editableData, gearlist: gearlist) { cluster in
                         clusterOut!(cluster)
@@ -61,7 +78,6 @@ extension AddClusterView     {
                 } else {
                     viewModel.addNewCluster(using: editableData, gearlist: gearlist)
                 }
-                presentationMode.wrappedValue.dismiss()
             } label: {
                 Text("Save")
             }
