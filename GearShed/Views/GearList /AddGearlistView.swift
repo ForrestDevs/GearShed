@@ -108,6 +108,11 @@ extension AddGearlistView {
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .disableAutocorrection(true)
                     .font(.subheadline)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 5)
+                            .stroke(Color.theme.green, lineWidth: 1)
+                    )
+                
             }
         }
     }
@@ -121,6 +126,11 @@ extension AddGearlistView {
                 TextField("", text: $editableData.details)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .font(.subheadline)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 5)
+                            .stroke(Color.theme.green, lineWidth: 1)
+                    )
+
             }
         }
     }
@@ -134,6 +144,11 @@ extension AddGearlistView {
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .disableAutocorrection(true)
                     .font(.subheadline)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 5)
+                            .stroke(Color.theme.green, lineWidth: 1)
+                    )
+
             }
         }
     }
@@ -168,7 +183,7 @@ extension AddGearlistView {
                                 Text(range.upperBound.dateText(style: .medium))
                             }.padding(.horizontal, 5)
                         } else {
-                            Text("Select Start/End Dates").padding(.horizontal, 5)
+                            Text("Select Both Start & End Dates").padding(.horizontal, 5)
                         }
                     }
                     .onChange(of: dateRange) { newValue in

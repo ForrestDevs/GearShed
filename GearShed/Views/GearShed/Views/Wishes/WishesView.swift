@@ -33,7 +33,7 @@ struct WishesView: View {
                         }
                     }
                 }
-                .listStyle(.insetGrouped)
+                .listStyle(.plain)
             }
             
         }

@@ -68,6 +68,7 @@
 		088B154E2732EBBC00ECBC11 /* EditableShedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088B154D2732EBBC00ECBC11 /* EditableShedData.swift */; };
 		088B155427335BE000ECBC11 /* DevData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088B155327335BDF00ECBC11 /* DevData.swift */; };
 		088B15562734964300ECBC11 /* ListGroupRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088B15552734964200ECBC11 /* ListGroupRowView.swift */; };
+		088FBF9D2746ABEF00F1BFF7 /* ActivityType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088FBF9C2746ABEE00F1BFF7 /* ActivityType+Extensions.swift */; };
 		08A5FB91274054DF008A5D28 /* ImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A5FB90274054DF008A5D28 /* ImageHelper.swift */; };
 		08A5FB952740AD93008A5D28 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A5FB942740AD92008A5D28 /* ActivityView.swift */; };
 		08A5FB972740B4B5008A5D28 /* TripView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A5FB962740B4B5008A5D28 /* TripView.swift */; };
@@ -247,6 +248,7 @@
 		088B154D2732EBBC00ECBC11 /* EditableShedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableShedData.swift; sourceTree = "<group>"; };
 		088B155327335BDF00ECBC11 /* DevData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevData.swift; sourceTree = "<group>"; };
 		088B15552734964200ECBC11 /* ListGroupRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListGroupRowView.swift; sourceTree = "<group>"; };
+		088FBF9C2746ABEE00F1BFF7 /* ActivityType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ActivityType+Extensions.swift"; sourceTree = "<group>"; };
 		08A5FB90274054DF008A5D28 /* ImageHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHelper.swift; sourceTree = "<group>"; };
 		08A5FB942740AD92008A5D28 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		08A5FB962740B4B5008A5D28 /* TripView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripView.swift; sourceTree = "<group>"; };
@@ -532,6 +534,7 @@
 				08877EE72735BBA4000D7FF4 /* ListGroup+Extensions.swift */,
 				08877EED27362DF0000D7FF4 /* PackingGroup+Extensions.swift */,
 				08877EEF273631C1000D7FF4 /* PackingBool+Extensions.swift */,
+				088FBF9C2746ABEE00F1BFF7 /* ActivityType+Extensions.swift */,
 			);
 			path = "List+Extensions";
 			sourceTree = "<group>";
@@ -1211,6 +1214,7 @@
 				08C7D912270F6DFC00EC3984 /* CategoryCodableProxy.swift in Sources */,
 				08C7D8D9270F480E00EC3984 /* LocationsListViewModel.swift in Sources */,
 				08C7D8F1270F65E100EC3984 /* EmptyViewText.swift in Sources */,
+				088FBF9D2746ABEF00F1BFF7 /* ActivityType+Extensions.swift in Sources */,
 				08C7D8A9270F3D1D00EC3984 /* PersistentStore.swift in Sources */,
 				08877EEE27362DF0000D7FF4 /* PackingGroup+Extensions.swift in Sources */,
 				08B6FD3C272E64CD00B8A9AE /* PDFPreviews.swift in Sources */,

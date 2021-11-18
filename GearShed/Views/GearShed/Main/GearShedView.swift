@@ -18,6 +18,8 @@ struct GearShedView: View {
     @StateObject private var gsData: GearShedData
     @StateObject private var viewModel = GearShedViewModel()
     
+    @State private var searchText: String = ""
+    @State private var showSearch: Bool = false
     @State private var showFilterOptions: Bool = false
     
     init(persistentStore: PersistentStore) {
@@ -33,6 +35,7 @@ struct GearShedView: View {
         .navigationBarTitle(navTitle(), displayMode: .inline)
         .toolbar {
             filterButton
+            searchButton
             shareButton
         }
         .fullScreenCover(isPresented: $viewModel.showPDFScreen) {
@@ -70,6 +73,35 @@ extension GearShedView {
         }
         
         return title
+    }
+    
+    private var searchButton: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            HStack {
+                if #available(iOS 15.0, *) {
+                    Button {
+                        showSearch = true
+                    } label: {
+                        Image(systemName: "magnifyingglass")
+                            .resizable()
+                            .frame(width: 20, height: 20)
+                            .padding(.horizontal, 5)
+                    }
+                } else {
+                    // Fallback on earlier versions
+                }
+                if showSearch {
+                    HStack {
+                        TextField("Search Item, Shed, Brand", text: $searchText)
+                            .textFieldStyle(.roundedBorder)
+                        Image(systemName: "x.circle.fill")
+                        
+                    }
+                    
+                }
+                
+            }
+        }
     }
     
     private var shareButton: some ToolbarContent {

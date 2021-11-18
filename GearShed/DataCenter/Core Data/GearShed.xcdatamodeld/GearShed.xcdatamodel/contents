@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19461" systemVersion="20G165" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+    <entity name="ActivityType" representedClassName="ActivityType" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name_" optional="YES" attributeType="String"/>
+        <relationship name="gearlists_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Gearlist" inverseName="activityType_" inverseEntity="Gearlist"/>
+    </entity>
     <entity name="Brand" representedClassName="Brand" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name_" optional="YES" attributeType="String"/>
@@ -34,6 +39,7 @@
         <attribute name="location_" optional="YES" attributeType="String"/>
         <attribute name="name_" optional="YES" attributeType="String"/>
         <attribute name="startDate_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="activityType_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ActivityType" inverseName="gearlists_" inverseEntity="ActivityType"/>
         <relationship name="clusters_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Cluster" inverseName="gearlist_" inverseEntity="Cluster"/>
         <relationship name="containerBools_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ContainerBool" inverseName="gearlist_" inverseEntity="ContainerBool"/>
         <relationship name="containers_" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Container" inverseName="gearlist_" inverseEntity="Container"/>
@@ -90,8 +96,8 @@
         <element name="Brand" positionX="-72.79943847656261" positionY="-461.1977691650391" width="128" height="103"/>
         <element name="Cluster" positionX="486.2406005859377" positionY="-268.9909973144532" width="128" height="103"/>
         <element name="Container" positionX="514.5755004882812" positionY="-482.6740417480468" width="128" height="118"/>
-        <element name="ContainerBool" positionX="266.4309692382812" positionY="-341.7029724121094" width="128" height="118"/>
-        <element name="Gearlist" positionX="271.7427368164062" positionY="-552.1617736816406" width="128" height="208"/>
+        <element name="ContainerBool" positionX="288.0172729492187" positionY="-346.3129272460938" width="128" height="118"/>
+        <element name="Gearlist" positionX="286.2225341796874" positionY="-603.1289825439453" width="128" height="223"/>
         <element name="GearPlan" positionX="-50.50823974609375" positionY="-730.9864654541016" width="128" height="88"/>
         <element name="Item" positionX="91.51422119140625" positionY="-416.1770935058593" width="128" height="298"/>
         <element name="ItemImage" positionX="-88.090576171875" positionY="-326.7626647949219" width="128" height="88"/>
@@ -99,5 +105,6 @@
         <element name="PlanItem" positionX="286.516845703125" positionY="-725.1248168945312" width="128" height="88"/>
         <element name="PlanItemLabel" positionX="135.4661865234375" positionY="-809.1134033203125" width="128" height="43"/>
         <element name="Shed" positionX="-83.93133544921875" positionY="-228.1786499023439" width="128" height="103"/>
+        <element name="ActivityType" positionX="104.6557006835938" positionY="-573.5013580322266" width="128" height="88"/>
     </elements>
 </model>

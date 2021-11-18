@@ -33,7 +33,7 @@ struct FavsView: View {
                         }
                     }
                 }
-                .listStyle(.insetGrouped)
+                .listStyle(.plain)
             }
         }
         

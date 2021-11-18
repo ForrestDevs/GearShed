@@ -90,7 +90,7 @@ struct BrandItemsView: View {
                         }
                     }
                 }
-                .listStyle(.insetGrouped)
+                .listStyle(.plain)
             }
             ExpandableButton()
                 .environmentObject(detailManager)

@@ -20,8 +20,11 @@ struct ShedItemsView: View {
     @StateObject private var vm = ShedItemsViewModel()
     
     @State private var confirmDeleteShedAlert: ConfirmDeleteShedAlert?
+    
+    @State private var searchText: String = ""
 
     var body: some View {
+        
         ZStack {
             VStack {
                 List {
@@ -40,7 +43,7 @@ struct ShedItemsView: View {
                                 Menu {
                                     Button {
                                         let canCreate = self.persistentStore.fullVersionUnlocked ||
-                                            self.persistentStore.count(for: Item.fetchRequest()) < 3
+                                        self.persistentStore.count(for: Item.fetchRequest()) < 3
                                         if canCreate {
                                             detailManager.selectedShed = shed
                                             withAnimation {
@@ -91,8 +94,7 @@ struct ShedItemsView: View {
                         }
                     }
                 }
-                .listStyle(.insetGrouped)
-                
+                .listStyle(.plain)
             }
             ExpandableButton()
                 .environmentObject(detailManager)

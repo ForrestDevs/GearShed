@@ -180,6 +180,7 @@ class CustomDatePickerModel: NSObject, ObservableObject {
                 }
             }
         } else {
+            // Is a multiDay Picker
             if selections.count == 0 {
                 return false
             }

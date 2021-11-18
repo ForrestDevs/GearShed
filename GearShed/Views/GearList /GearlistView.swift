@@ -19,6 +19,8 @@ struct GearlistView: View {
      
     @State private var viewFilter: ViewFilter = .multiDay
     
+    @State private var currentSelection: Int = 0
+    
     private enum ViewFilter {
         case all, singleDay, multiDay, noDay
     }
@@ -31,13 +33,23 @@ struct GearlistView: View {
     }
 
     var body: some View {
-        VStack (spacing: 0) {
+        TabView (selection: $currentSelection) {
+            TripView()
+                .tag(1)
+            ActivityView()
+                .tag(2)
+        }
+        .tabViewStyle(.page(indexDisplayMode: .never))
+        //.tabViewStyle(PageTabViewStyle(indexDisplayMode: .none))
+        
+        
+        /*VStack (spacing: 0) {
             statBar
             ZStack {
                 content
                 addButtonOverlay
             }
-        }
+        }*/
         .environmentObject(viewModel)
         .navigationBarTitle("Gear List", displayMode: .inline)
         .toolbar {

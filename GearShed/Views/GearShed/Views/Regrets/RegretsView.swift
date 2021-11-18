@@ -32,7 +32,7 @@ struct RegretsView: View {
                         }
                     }
                 }
-                .listStyle(.insetGrouped)
+                .listStyle(.plain)
             }
             
         }

@@ -17,21 +17,42 @@ struct MDPDayView: View {
     var dayOfMonth: MDPDayOfMonth
     
     // outline "today"
-    private var strokeColor: Color {
+    /*private var strokeColor: Color {
         dayOfMonth.isToday ? Color.accentColor : Color.clear
+    }*/
+    
+    // outline "first day"
+    private var strokeColor: Color {
+        if monthDataModel.selections.count == 1 {
+            return monthDataModel.isSelected(dayOfMonth) ? Color.theme.accent : Color.clear
+        } else {
+            return Color.clear
+        }
+    }
+    
+    private var currentDayColor: Color {
+        dayOfMonth.isToday ? Color.red : Color.theme.accent
     }
     
     // filled if selected
     private var fillColor: Color {
-        monthDataModel.isSelected(dayOfMonth) ? Color.theme.green.opacity(0.55) : Color.clear
+        if monthDataModel.selections.count == 1 {
+            return Color.clear
+        } else {
+            return monthDataModel.isSelected(dayOfMonth) ? Color.theme.green.opacity(0.55) : Color.clear
+        }
     }
     
     // reverse color for selections or gray if not selectable
     private var textColor: Color {
-        if dayOfMonth.isSelectable {
-            return monthDataModel.isSelected(dayOfMonth) ? Color.theme.background : Color.theme.accent
+        if dayOfMonth.isToday {
+            return Color.red
         } else {
-            return Color.gray
+            if dayOfMonth.isSelectable {
+                return monthDataModel.isSelected(dayOfMonth) ? Color.theme.green : Color.theme.accent
+            } else {
+                return Color.gray
+            }
         }
     }
     
@@ -42,7 +63,9 @@ struct MDPDayView: View {
     }
     
     var body: some View {
-        Button( action: {handleSelection()} ) {
+        Button {
+            handleSelection()
+        } label: {
             Text("\(dayOfMonth.day)")
                 .font(.headline)
                 .fontWeight(.medium)

@@ -60,6 +60,11 @@ extension Gearlist {
         return []
     }
     
+    var activityType: ActivityType {
+        get { activityType_! }
+        set { activityType_ = newValue } 
+    }
+    
     var items: [Item] {
         if let items = items_ as? Set<Item> {
             return items.sorted(by: { $0.name < $1.name } )
