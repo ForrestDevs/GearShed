@@ -172,6 +172,40 @@ struct ConfirmDeleteGearlistAlert: ConfirmationAlertProtocol {
     var nonDestructiveCompletion: (() -> Void)?
 }
 
+struct ConfirmDeleteActivityTypeAlert: ConfirmationAlertProtocol {
+    
+    @EnvironmentObject var persistentStore: PersistentStore
+    
+    @StateObject private var viewModel: GearlistData
+
+    init(persistentStore: PersistentStore, type: ActivityType, destructiveCompletion: (() -> Void)? = nil) {
+        
+        let viewModel = GearlistData(persistentStore: persistentStore)
+        _viewModel = StateObject(wrappedValue: viewModel)
+        
+        self.type = type
+        self.destructiveCompletion = destructiveCompletion
+    }
+    
+    var id = UUID()
+    
+    var type: ActivityType
+    
+    var title: String { "Delete \(type.name) ?" }
+    
+    var message: String {
+        "Are you sure you want to delete \(type.name)? All activities in \(type.name) will be deleted as well. This action cannot be undone."
+    }
+    
+    func destructiveAction() {
+        viewModel.deleteActivityType(type: type)
+    }
+    
+    var destructiveCompletion: (() -> Void)?
+    var nonDestructiveCompletion: (() -> Void)?
+}
+
+
 struct ConfirmDeleteClusterAlert: ConfirmationAlertProtocol {
     @EnvironmentObject var persistentStore: PersistentStore
     

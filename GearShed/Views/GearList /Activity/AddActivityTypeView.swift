@@ -1,24 +1,24 @@
 //
-//  AddShedView.swift
+//  AddActivityTypeView.swift
 //  GearShed
 //
-//  Created by Luke Forrest Gannon on 18/10/21
-//  Copyright © 2021 All rights reserved.
+//  Created by Luke Forrest Gannon on 2021-11-18.
 //
 
 import SwiftUI
 
-struct AddShedView: View {
+struct AddActivityTypeView: View {
+    
     @EnvironmentObject private var detailManager: DetailViewManager
     
-	@State private var editableData: EditableShedData
+    @State private var editableData: EditableActivityTypeData
     
-    @StateObject private var viewModel: GearShedData
+    @StateObject private var glData: GearlistData
     
-    private var isAddFromItem: Bool = false
-    private var shedOut: ((Shed) -> ())?
+    private var isAddFromList: Bool = false
+    private var typeOut: ((ActivityType) -> ())?
     
-	var body: some View {
+    var body: some View {
         NavigationView {
             ZStack {
                 backgroundLayer
@@ -32,22 +32,22 @@ struct AddShedView: View {
             }
         }
         .transition(.move(edge: .trailing))
-	}
+    }
     
 }
 
-extension AddShedView {
+extension AddActivityTypeView {
     
     private var cancelToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
-                if isAddFromItem {
+                if isAddFromList {
                     withAnimation {
                         detailManager.showContent = false
                     }
                 } else {
                     withAnimation {
-                        detailManager.showAddShed = false
+                        detailManager.showAddActivityType = false
                     }
                 }
             } label: {
@@ -58,7 +58,7 @@ extension AddShedView {
     
     private var viewTitle: some ToolbarContent {
         ToolbarItem(placement: .principal) {
-            Text("Add Shed")
+            Text("Add Activity Type")
                 .formatGreen()
         }
     }
@@ -66,21 +66,22 @@ extension AddShedView {
     private var saveToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
-                if isAddFromItem {
+                if isAddFromList {
                     withAnimation {
                         detailManager.showContent = false
                     }
-                    viewModel.addNewShedFromItem(using: editableData, shedOut: { shed in shedOut!(shed) })
+                    glData.addNewActivityType(using: editableData, typeOut: {
+                        type in typeOut!(type) })
                 } else {
                     withAnimation {
-                        detailManager.showAddShed = false
+                        detailManager.showAddActivityType = false
                     }
-                    viewModel.addNewShed(using: editableData)
+                    glData.addNewActivityType(using: editableData)
                 }
             } label: {
                 Text("Save")
             }
-            .disabled(!editableData.canShedBeSaved)
+            .disabled(!editableData.canBeSaved)
         }
     }
     
@@ -96,7 +97,7 @@ extension AddShedView {
                     VStack(alignment: .leading, spacing: 3) {
                         Text("Name")
                             .formatEntryTitle()
-                        TextField("Shed name", text: $editableData.name)
+                        TextField("Activity Type Name", text: $editableData.name)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .disableAutocorrection(true)
                             .font(.subheadline)
@@ -109,29 +110,33 @@ extension AddShedView {
     
 }
 
-extension AddShedView {
+extension AddActivityTypeView {
     
     /// Initializer for loading standard Add Shed.
     init(persistentStore: PersistentStore) {
         
-        let viewModel = GearShedData(persistentStore: persistentStore)
-        _viewModel = StateObject(wrappedValue: viewModel)
+        let glData = GearlistData(persistentStore: persistentStore)
+        _glData = StateObject(wrappedValue: glData)
         
-        let initialData = EditableShedData(persistentStore: persistentStore)
+        let initialData = EditableActivityTypeData(persistentStore: persistentStore)
         _editableData = State(initialValue: initialData)
     }
     
     /// Initializer for loading Add Shed from an Add Item View.
-    init(persistentStore: PersistentStore, shedOut: @escaping ((Shed) -> ()) ) {
+    init(persistentStore: PersistentStore, typeOut: @escaping ((ActivityType) -> ()) ) {
         
-        let viewModel = GearShedData(persistentStore: persistentStore)
-        _viewModel = StateObject(wrappedValue: viewModel)
+        let glData = GearlistData(persistentStore: persistentStore)
+        _glData = StateObject(wrappedValue: glData)
         
-        let initialData = EditableShedData(persistentStore: persistentStore)
+        let initialData = EditableActivityTypeData(persistentStore: persistentStore)
         _editableData = State(initialValue: initialData)
         
-        self.shedOut = shedOut
-        self.isAddFromItem = true
+        self.typeOut = typeOut
+        self.isAddFromList = true
     }
     
 }
+
+
+
+

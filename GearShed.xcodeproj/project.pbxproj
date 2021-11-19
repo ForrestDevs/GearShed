@@ -69,10 +69,13 @@
 		088B155427335BE000ECBC11 /* DevData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088B155327335BDF00ECBC11 /* DevData.swift */; };
 		088B15562734964300ECBC11 /* ListGroupRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088B15552734964200ECBC11 /* ListGroupRowView.swift */; };
 		088FBF9D2746ABEF00F1BFF7 /* ActivityType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088FBF9C2746ABEE00F1BFF7 /* ActivityType+Extensions.swift */; };
+		088FBF9F274714CB00F1BFF7 /* EditableActivityTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088FBF9E274714CB00F1BFF7 /* EditableActivityTypeView.swift */; };
+		088FBFA12747183D00F1BFF7 /* AddActivityTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088FBFA02747183D00F1BFF7 /* AddActivityTypeView.swift */; };
+		088FBFA32747408A00F1BFF7 /* ModifyActivityTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088FBFA22747408A00F1BFF7 /* ModifyActivityTypeView.swift */; };
 		08A5FB91274054DF008A5D28 /* ImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A5FB90274054DF008A5D28 /* ImageHelper.swift */; };
 		08A5FB952740AD93008A5D28 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A5FB942740AD92008A5D28 /* ActivityView.swift */; };
 		08A5FB972740B4B5008A5D28 /* TripView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A5FB962740B4B5008A5D28 /* TripView.swift */; };
-		08A5FB992740B81B008A5D28 /* AddGearlistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A5FB982740B81B008A5D28 /* AddGearlistView.swift */; };
+		08A5FB992740B81B008A5D28 /* AddAdventureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A5FB982740B81B008A5D28 /* AddAdventureView.swift */; };
 		08A5FB9B2740DD62008A5D28 /* CustomDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A5FB9A2740DD62008A5D28 /* CustomDatePicker.swift */; };
 		08A5FBA42740DDDB008A5D28 /* MDPDayOfMonth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A5FB9D2740DDDA008A5D28 /* MDPDayOfMonth.swift */; };
 		08A5FBA52740DDDB008A5D28 /* MDPDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A5FB9E2740DDDA008A5D28 /* MDPDayView.swift */; };
@@ -87,7 +90,7 @@
 		08A7CFFD2728D25D006FA3F7 /* CustomAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A7CFFC2728D25D006FA3F7 /* CustomAlert.swift */; };
 		08A7D0002729F597006FA3F7 /* ItemRowViewInBrand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A7CFFF2729F597006FA3F7 /* ItemRowViewInBrand.swift */; };
 		08A7D0022729F5C6006FA3F7 /* ItemRowViewInShed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A7D0012729F5C6006FA3F7 /* ItemRowViewInShed.swift */; };
-		08A7D0042729F604006FA3F7 /* ItemRowViewForList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A7D0032729F604006FA3F7 /* ItemRowViewForList.swift */; };
+		08A7D0042729F604006FA3F7 /* SelectableItemRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A7D0032729F604006FA3F7 /* SelectableItemRowView.swift */; };
 		08A7D0062729F62F006FA3F7 /* ItemRowViewInWishlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A7D0052729F62F006FA3F7 /* ItemRowViewInWishlist.swift */; };
 		08A7D00C2729FBCF006FA3F7 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08A7D00B2729FBCF006FA3F7 /* CloudKit.framework */; };
 		08B6FD31272E1DF300B8A9AE /* PDFExportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B6FD30272E1DF300B8A9AE /* PDFExportView.swift */; };
@@ -249,10 +252,13 @@
 		088B155327335BDF00ECBC11 /* DevData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevData.swift; sourceTree = "<group>"; };
 		088B15552734964200ECBC11 /* ListGroupRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListGroupRowView.swift; sourceTree = "<group>"; };
 		088FBF9C2746ABEE00F1BFF7 /* ActivityType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ActivityType+Extensions.swift"; sourceTree = "<group>"; };
+		088FBF9E274714CB00F1BFF7 /* EditableActivityTypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableActivityTypeView.swift; sourceTree = "<group>"; };
+		088FBFA02747183D00F1BFF7 /* AddActivityTypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddActivityTypeView.swift; sourceTree = "<group>"; };
+		088FBFA22747408A00F1BFF7 /* ModifyActivityTypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyActivityTypeView.swift; sourceTree = "<group>"; };
 		08A5FB90274054DF008A5D28 /* ImageHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHelper.swift; sourceTree = "<group>"; };
 		08A5FB942740AD92008A5D28 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		08A5FB962740B4B5008A5D28 /* TripView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripView.swift; sourceTree = "<group>"; };
-		08A5FB982740B81B008A5D28 /* AddGearlistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGearlistView.swift; sourceTree = "<group>"; };
+		08A5FB982740B81B008A5D28 /* AddAdventureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAdventureView.swift; sourceTree = "<group>"; };
 		08A5FB9A2740DD62008A5D28 /* CustomDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDatePicker.swift; sourceTree = "<group>"; };
 		08A5FB9D2740DDDA008A5D28 /* MDPDayOfMonth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDPDayOfMonth.swift; sourceTree = "<group>"; };
 		08A5FB9E2740DDDA008A5D28 /* MDPDayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDPDayView.swift; sourceTree = "<group>"; };
@@ -267,7 +273,7 @@
 		08A7CFFC2728D25D006FA3F7 /* CustomAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlert.swift; sourceTree = "<group>"; };
 		08A7CFFF2729F597006FA3F7 /* ItemRowViewInBrand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemRowViewInBrand.swift; sourceTree = "<group>"; };
 		08A7D0012729F5C6006FA3F7 /* ItemRowViewInShed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemRowViewInShed.swift; sourceTree = "<group>"; };
-		08A7D0032729F604006FA3F7 /* ItemRowViewForList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemRowViewForList.swift; sourceTree = "<group>"; };
+		08A7D0032729F604006FA3F7 /* SelectableItemRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableItemRowView.swift; sourceTree = "<group>"; };
 		08A7D0052729F62F006FA3F7 /* ItemRowViewInWishlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemRowViewInWishlist.swift; sourceTree = "<group>"; };
 		08A7D00B2729FBCF006FA3F7 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		08B6FD30272E1DF300B8A9AE /* PDFExportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFExportView.swift; sourceTree = "<group>"; };
@@ -458,7 +464,6 @@
 			children = (
 				08877EE52735AB80000D7FF4 /* ShedtemsViewModel.swift */,
 				08371B5C271DFEA20072AD94 /* ShedItemsView.swift */,
-				0862EA6F2743657700330FBB /* ShedItemsRowView.swift */,
 			);
 			path = ShedItems;
 			sourceTree = "<group>";
@@ -468,7 +473,6 @@
 			children = (
 				0862EA73274365C200330FBB /* BrandItemsViewModel.swift */,
 				0862EA752743660A00330FBB /* BrandItemsView.swift */,
-				0862EA712743659600330FBB /* BrandItemsRowView.swift */,
 			);
 			path = BrandItems;
 			sourceTree = "<group>";
@@ -512,7 +516,6 @@
 			children = (
 				0862EA6427435D5600330FBB /* GearShedViewModel.swift */,
 				08C7D8B7270F41CC00EC3984 /* GearShedView.swift */,
-				0862EA6D2743642400330FBB /* ExpandableButton.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -564,6 +567,7 @@
 				08877EF627363818000D7FF4 /* EditableContainerData.swift */,
 				0863DC37273701CB00A9A3B2 /* EditableClusterData.swift */,
 				0863DC392737054E00A9A3B2 /* EditableItemData-InList.swift */,
+				088FBF9E274714CB00F1BFF7 /* EditableActivityTypeView.swift */,
 			);
 			path = EditableListData;
 			sourceTree = "<group>";
@@ -580,19 +584,22 @@
 			isa = PBXGroup;
 			children = (
 				08C7D926270F7DC200EC3984 /* GearlistRowView.swift */,
-				08C7D92D270F844C00EC3984 /* AddActivityView.swift */,
 				08A5FB942740AD92008A5D28 /* ActivityView.swift */,
+				08C7D92D270F844C00EC3984 /* AddActivityView.swift */,
+				088FBFA02747183D00F1BFF7 /* AddActivityTypeView.swift */,
+				088FBFA22747408A00F1BFF7 /* ModifyActivityTypeView.swift */,
 			);
 			path = Activity;
 			sourceTree = "<group>";
 		};
-		08A5FB932740AD53008A5D28 /* Trip */ = {
+		08A5FB932740AD53008A5D28 /* Adventure */ = {
 			isa = PBXGroup;
 			children = (
 				08A5FB962740B4B5008A5D28 /* TripView.swift */,
 				08A5FBAF2741BAF5008A5D28 /* TripRowView.swift */,
+				08A5FB982740B81B008A5D28 /* AddAdventureView.swift */,
 			);
-			path = Trip;
+			path = Adventure;
 			sourceTree = "<group>";
 		};
 		08A5FB9C2740DDB9008A5D28 /* CustomDatePicker */ = {
@@ -674,7 +681,7 @@
 				08B8251D273CAFBB00326CE9 /* GearlistItemListView.swift */,
 				08B82524273CBFD900326CE9 /* ItemRowView-InGearlist.swift */,
 				08877EE92735BD34000D7FF4 /* AddItemToList.swift */,
-				08A7D0032729F604006FA3F7 /* ItemRowViewForList.swift */,
+				08A7D0032729F604006FA3F7 /* SelectableItemRowView.swift */,
 				08A7CFFA2728A088006FA3F7 /* AddMoreItemView.swift */,
 			);
 			path = List;
@@ -684,7 +691,6 @@
 			isa = PBXGroup;
 			children = (
 				08B8251F273CB14F00326CE9 /* GearlistClusterView.swift */,
-				08B82528273CD23800326CE9 /* ClusterRowView.swift */,
 				08B8252A273CD39A00326CE9 /* ItemRowView-InCluster.swift */,
 				08B8251A273C737E00326CE9 /* AddClusterView.swift */,
 				08B82534273D9D6000326CE9 /* EditClusterView.swift */,
@@ -696,7 +702,6 @@
 			isa = PBXGroup;
 			children = (
 				08B82521273CB2E300326CE9 /* GearlistContainerView.swift */,
-				08B8252C273CD48400326CE9 /* ContainerRowView.swift */,
 				08B8252F273D920D00326CE9 /* ItemRowView-InContainer.swift */,
 				08877EF227363779000D7FF4 /* AddContainerView.swift */,
 				08B82532273D983800326CE9 /* EditContainerView.swift */,
@@ -760,8 +765,7 @@
 			children = (
 				08C7D8B9270F41F300EC3984 /* GearlistView.swift */,
 				081E8A5B2739D54A0096CBE8 /* ModifyListView.swift */,
-				08A5FB982740B81B008A5D28 /* AddGearlistView.swift */,
-				08A5FB932740AD53008A5D28 /* Trip */,
+				08A5FB932740AD53008A5D28 /* Adventure */,
 				08A5FB922740AD49008A5D28 /* Activity */,
 				08B8251C273CAF9600326CE9 /* DetailViews */,
 			);
@@ -1021,6 +1025,10 @@
 		08ED0FE32719ECEA0072CB90 /* Unused  */ = {
 			isa = PBXGroup;
 			children = (
+				08B82528273CD23800326CE9 /* ClusterRowView.swift */,
+				08B8252C273CD48400326CE9 /* ContainerRowView.swift */,
+				0862EA712743659600330FBB /* BrandItemsRowView.swift */,
+				0862EA6F2743657700330FBB /* ShedItemsRowView.swift */,
 				08C7D8D5270F480E00EC3984 /* BrandRowView.swift */,
 				0853ABFB271F8E3300123497 /* BrandDetailView.swift */,
 				08C7D8D2270F480D00EC3984 /* ShedRowView.swift */,
@@ -1047,6 +1055,7 @@
 		08FE365D272CC2A3000035A9 /* CustomViews  */ = {
 			isa = PBXGroup;
 			children = (
+				0862EA6D2743642400330FBB /* ExpandableButton.swift */,
 				08FE365E272CC2B9000035A9 /* CustomTextFeild.swift */,
 				08A5FB9C2740DDB9008A5D28 /* CustomDatePicker */,
 			);
@@ -1185,7 +1194,7 @@
 				08371B3B271B72BF0072AD94 /* Date.swift in Sources */,
 				08C9C4E9272DFEB4007DBCF9 /* TabBarManager.swift in Sources */,
 				08C7D8D8270F480E00EC3984 /* CategorysTabView.swift in Sources */,
-				08A7D0042729F604006FA3F7 /* ItemRowViewForList.swift in Sources */,
+				08A7D0042729F604006FA3F7 /* SelectableItemRowView.swift in Sources */,
 				080015A3272730F400E1BE4C /* Gearlist+Extension.swift in Sources */,
 				08FE365F272CC2B9000035A9 /* CustomTextFeild.swift in Sources */,
 				081E8A5C2739D54A0096CBE8 /* ModifyListView.swift in Sources */,
@@ -1211,6 +1220,7 @@
 				0863DC3A2737054E00A9A3B2 /* EditableItemData-InList.swift in Sources */,
 				080015AC27277C2B00E1BE4C /* PagerHelper.swift in Sources */,
 				088B154E2732EBBC00ECBC11 /* EditableShedData.swift in Sources */,
+				088FBFA32747408A00F1BFF7 /* ModifyActivityTypeView.swift in Sources */,
 				08C7D912270F6DFC00EC3984 /* CategoryCodableProxy.swift in Sources */,
 				08C7D8D9270F480E00EC3984 /* LocationsListViewModel.swift in Sources */,
 				08C7D8F1270F65E100EC3984 /* EmptyViewText.swift in Sources */,
@@ -1233,12 +1243,13 @@
 				08C7D921270F72F700EC3984 /* SectionData.swift in Sources */,
 				08C7D910270F6DFC00EC3984 /* BrandCodableProxy.swift in Sources */,
 				08371B40271B72BF0072AD94 /* String.swift in Sources */,
+				088FBFA12747183D00F1BFF7 /* AddActivityTypeView.swift in Sources */,
 				088B154C2732EB7500ECBC11 /* EditableBrandData.swift in Sources */,
 				08C7D904270F68EE00EC3984 /* ItemListDisplay.swift in Sources */,
 				08A7CFFB2728A088006FA3F7 /* AddMoreItemView.swift in Sources */,
 				08C7D8DD270F480E00EC3984 /* BrandsTabView.swift in Sources */,
 				08877EEA2735BD34000D7FF4 /* AddItemToList.swift in Sources */,
-				08A5FB992740B81B008A5D28 /* AddGearlistView.swift in Sources */,
+				08A5FB992740B81B008A5D28 /* AddAdventureView.swift in Sources */,
 				08C7D8F9270F65E100EC3984 /* SelectionIndicatorView.swift in Sources */,
 				08C7D8B8270F41CC00EC3984 /* GearShedView.swift in Sources */,
 				08ED0FDF2719EAE10072CB90 /* CustomTabBarView.swift in Sources */,
@@ -1260,6 +1271,7 @@
 				08C7D8C8270F475A00EC3984 /* String+Extensions.swift in Sources */,
 				08C7D8CD270F475A00EC3984 /* Date+Extensions.swift in Sources */,
 				08ED0FE02719EAE10072CB90 /* CustomTabView.swift in Sources */,
+				088FBF9F274714CB00F1BFF7 /* EditableActivityTypeView.swift in Sources */,
 				08C7D911270F6DFC00EC3984 /* ItemCodableProxy.swift in Sources */,
 				08C7D8E5270F485300EC3984 /* EditableItemData.swift in Sources */,
 				08B6FD38272E643900B8A9AE /* PDFCreator.swift in Sources */,

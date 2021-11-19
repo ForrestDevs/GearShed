@@ -8,13 +8,19 @@
 import SwiftUI
 
 struct ExpandableButton: View {
-    
+    @EnvironmentObject private var detailManager: DetailViewManager
+
     @State private var showMenuItem1 = false
     @State private var showMenuItem2 = false
     @State private var showMenuItem3 = false
-    @State private var showMenuItem4 = false
     @State private var isExpanded = false
     @State private var isClose = false
+    
+    enum ButtonType {
+        case item, shed, brand
+    }
+
+    var type: ButtonType
     
     var body: some View {
         VStack {
@@ -24,14 +30,21 @@ struct ExpandableButton: View {
                 VStack (alignment: .center, spacing: 2) {
                     
                     VStack (alignment: .center, spacing: 1) {
-                        if showMenuItem1 {
-                            MenuButtons(type: .item, buttonText: "Item")
+                        if type == .shed {
+                            if showMenuItem1 {
+                                menuButton(type: .item, buttonText: "Item")
+                            }
+                            if showMenuItem2 {
+                                menuButton(type: .shed, buttonText: "Shed")
+                            }
                         }
-                        if showMenuItem2 {
-                            MenuButtons(type: .shed, buttonText: "Shed")
-                        }
-                        if showMenuItem3 {
-                            MenuButtons(type: .brand, buttonText: "Brand")
+                        if type == .brand {
+                            if showMenuItem1 {
+                                menuButton(type: .item, buttonText: "Item")
+                            }
+                            if showMenuItem3 {
+                                menuButton(type: .brand, buttonText: "Brand")
+                            }
                         }
                     }
                     
@@ -52,70 +65,74 @@ struct ExpandableButton: View {
                     .shadow(color: Color.theme.accent.opacity(0.3), radius: 3,x: 3,y: 3)
                     
                 }
+                .padding(.bottom, 20)
             }
         }
         
     }
     
     func showMenu() {
-        if isClose {
-            withAnimation {
-                showMenuItem3 = false
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05, execute: {
+        if type == .shed {
+            if isClose {
                 withAnimation {
                     showMenuItem2 = false
                 }
-            })
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.03, execute: {
+                    withAnimation {
+                        showMenuItem1 = false
+                    }
+                })
+            } else {
                 withAnimation {
-                    showMenuItem1 = false
+                    showMenuItem1 = true
                 }
-            })
-        } else {
-            withAnimation {
-                showMenuItem1 = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.03, execute: {
+                    withAnimation {
+                        showMenuItem2 = true
+                    }
+                })
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05, execute: {
-                withAnimation {
-                    showMenuItem2 = true
-                }
-            })
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
-                withAnimation {
-                    showMenuItem3 = true
-                }
-            })
         }
+        if type == .brand {
+            if isClose {
+                withAnimation {
+                    showMenuItem3 = false
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.03, execute: {
+                    withAnimation {
+                        showMenuItem1 = false
+                    }
+                })
+            } else {
+                withAnimation {
+                    showMenuItem1 = true
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.03, execute: {
+                    withAnimation {
+                        showMenuItem3 = true
+                    }
+                })
+            }
+        }
+        
         isClose.toggle()
         isExpanded.toggle()
     }
     
-}
-
-struct MenuButtons: View {
-    
-    @EnvironmentObject private var detailManager: DetailViewManager
-    
-    enum ButtonType: String {
-        case item, shed, brand, wish
-    }
-    
-    var type: ButtonType
-    
-    var buttonText: String
-    
-    var body: some View {
+    func menuButton(type: ButtonType, buttonText: String) -> some View {
         Button {
             if type == .item {
+                showMenu()
                 withAnimation {
                     detailManager.showAddItem = true
                 }
             } else if type == .shed {
+                showMenu()
                 withAnimation {
                     detailManager.showAddShed = true
                 }
             } else if type == .brand {
+                showMenu()
                 withAnimation {
                     detailManager.showAddBrand = true
                 }
@@ -137,3 +154,4 @@ struct MenuButtons: View {
         .transition(.move(edge: .bottom))
     }
 }
+

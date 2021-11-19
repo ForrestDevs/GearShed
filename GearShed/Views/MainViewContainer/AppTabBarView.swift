@@ -8,6 +8,30 @@
 
 import SwiftUI
 
+
+struct AppTabBarView: View {
+    
+    @EnvironmentObject var persistentStore: PersistentStore
+    
+    @State private var selection: String = "gearshed"
+    
+    @State private var tabSelection: TabBarItem = .gearshed
+    
+    var body: some View {
+        CustomTabView(selection: $tabSelection) {
+            
+            GearShedView(persistentStore: persistentStore)
+                .tabBarItem(tab: .gearshed, selection: $tabSelection)
+            
+            GearlistView(persistentStore: persistentStore)
+                .tabBarItem(tab: .gearlist, selection: $tabSelection)
+        }
+        .ignoresSafeArea(.keyboard, edges: .bottom)
+    }
+}
+
+
+/*
 struct AppTabBarView: View {
     
     @EnvironmentObject var persistentStore: PersistentStore
@@ -143,3 +167,4 @@ public func preciseRound(
         return round(value * 100) / 100.0
     }
 }
+*/

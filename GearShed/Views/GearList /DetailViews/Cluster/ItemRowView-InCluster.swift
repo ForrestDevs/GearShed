@@ -11,7 +11,8 @@ struct ItemRowView_InCluster: View {
     
     @EnvironmentObject private var viewModel: GearlistData
     
-    @ObservedObject var cluster: Cluster
+    private var gearlist: Gearlist?
+    private var cluster: Cluster?
     
     @ObservedObject var item: Item
     
@@ -21,13 +22,27 @@ struct ItemRowView_InCluster: View {
             itemBody
         }
         .contextMenu {
-            deleteContextButton
+            if cluster == nil {
+                moveToCluster
+            } else {
+                deleteContextButton
+            }
         }
     }
 
 }
 
 extension ItemRowView_InCluster {
+    
+    init(gearlist: Gearlist, item: Item) {
+        self.gearlist = gearlist
+        self.item = item
+    }
+    
+    init(cluster: Cluster, item: Item) {
+        self.cluster = cluster
+        self.item = item
+    }
     
     private var itemBody: some View {
         HStack {
@@ -56,10 +71,20 @@ extension ItemRowView_InCluster {
         .padding(.bottom, 5)
     }
     
+    private var moveToCluster: some View {
+        ForEach(gearlist!.clusters) { cluster in
+            Button {
+                viewModel.updateItemCluster(newCluster: cluster, oldCluster: nil, item: item)
+            } label: {
+                Text(cluster.name)
+            }
+        }
+    }
+    
     private var deleteContextButton: some View {
         Button {
             withAnimation {
-                viewModel.removeItemFromCluster(item: item, cluster: cluster)
+                viewModel.removeItemFromCluster(item: item, cluster: cluster!)
             }
         } label: {
             HStack {

@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct ActivityView: View {
+    @Environment(\.presentationMode) private var presentationMode
+    
+    @State private var confirmDeleteActivityTypeAlert: ConfirmDeleteActivityTypeAlert?
     
     @EnvironmentObject private var persistentStore: PersistentStore
 
@@ -16,49 +19,75 @@ struct ActivityView: View {
     @EnvironmentObject private var detailManager: DetailViewManager
     
     var body: some View {
-        VStack (spacing: 0) {
-            statBar
-            Spacer()
-            ZStack {
+        ZStack {
+            VStack (spacing: 0) {
+                StatBar(statType: .activity)
                 activitiesList
-                addListButtonOverlay
             }
+            addListButtonOverlay
         }
+        .alert(item: $confirmDeleteActivityTypeAlert) { type in type.alert() }
     }
 }
 
 extension ActivityView {
-    
-    private var statBar: some View {
-        HStack (spacing: 20){
-            HStack {
-                Text("Items:")
-                //Text("\(gsData.items.count)")
-            }
-            HStack {
-                Text("Weight:")
-                //Text("\(gsData.totalWeight(array: gsData.items))g")
-            }
-            HStack {
-                Text("Invested:")
-                //Text("$\(gsData.totalCost(array: gsData.items))")
-            }
-            Spacer()
-        }
-        .font(.subheadline)
-        .foregroundColor(Color.white)
-        .padding(.horizontal)
-        .padding(.vertical, 5)
-        .background(Color.theme.green)
-        .padding(.top, 10)
-    }
 
     private var activitiesList: some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            LazyVStack (alignment: .leading, spacing: 5) {
-                ForEach(viewModel.activities) { activity in
-                    GearlistRowView(gearlist: activity)
-                        .padding(.top, 15)
+        List {
+            ForEach(viewModel.activityTypes) { type in
+                Section {
+                    ForEach(type.gearlists) { activity in
+                        GearlistRowView(gearlist: activity)
+                    }
+                } header: {
+                    HStack {
+                        Text(type.name)
+                        Menu {
+                            Button {
+                                detailManager.selectedActivityType = type
+                                withAnimation {
+                                    detailManager.showAddActivityFromActivityType = true
+                                }
+                            } label: {
+                                HStack {
+                                    Text("Add to " + "\(type.name)").textCase(.none)
+                                    Image(systemName: "plus")
+                                }
+                                
+                            }
+                            Button {
+                                detailManager.selectedActivityType = type
+                                withAnimation {
+                                    detailManager.showModifyActivityType = true
+                                }
+                            } label: {
+                                HStack {
+                                    Text("Edit \(type.name) Name").textCase(.none)
+                                    Image(systemName: "square.and.pencil")
+                                }
+                            }
+                            Button {
+                                confirmDeleteActivityTypeAlert = ConfirmDeleteActivityTypeAlert (
+                                    persistentStore: persistentStore,
+                                    type: type,
+                                    destructiveCompletion: {
+                                        presentationMode.wrappedValue.dismiss()
+                                    }
+                                )
+                            } label: {
+                                HStack {
+                                    Text("Delete \(type.name)").textCase(.none)
+                                    Image(systemName: "trash")
+                                }
+                            }
+                        } label: {
+                            HStack {
+                                Spacer()
+                                Image(systemName: "square.and.pencil")
+                            }
+                            
+                        }
+                    }
                 }
             }
         }
@@ -71,17 +100,12 @@ extension ActivityView {
                 Spacer()
                 Button {
                     withAnimation {
-                        detailManager.content = AnyView (
-                            AddActivityView(persistentStore: persistentStore)
-                            .environmentObject(detailManager)
-                            .environmentObject(viewModel)
-                        )
-                        detailManager.showContent = true
+                        detailManager.showAddActivity = true
                     }
                 }
                 label: {
                     VStack{
-                        Text("Add")
+                        Text("Create")
                             .font(.system(size: 12, weight: .regular))
                             .foregroundColor(Color.theme.background)
                             
@@ -93,7 +117,7 @@ extension ActivityView {
                 .frame(width: 55, height: 55)
                 .background(Color.theme.accent)
                 .cornerRadius(38.5)
-                .padding(.bottom, 20)
+                .padding(.bottom, 40)
                 .padding(.trailing, 15)
                 .shadow(color: Color.theme.accent.opacity(0.3), radius: 3,x: 3,y: 3)
             }

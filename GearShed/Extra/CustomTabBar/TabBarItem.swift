@@ -9,37 +9,28 @@
 import Foundation
 import SwiftUI
 
-//struct TabBarItem: Hashable {
-//    let iconName: String
-//    let title: String
-//    let color: Color
-//}
-
 enum TabBarItem: Hashable {
     
-    case shed, trips, home
+    case gearshed, gearlist
     
     var iconName: String {
         switch self {
-        case .shed: return "house"
-        case .trips: return "figure.walk"
-        case .home: return "list.bullet"
+        case .gearshed: return "house"
+        case .gearlist: return "figure.walk"
         }
     }
     
     var title: String {
         switch self {
-        case .shed: return "Gear Shed"
-        case .trips: return "Gear List"
-        case .home: return "Home"
+        case .gearshed: return "Gear Shed"
+        case .gearlist: return "Gear List"
         }
     }
     
     var color: Color {
         switch self {
-        case .shed: return Color.white
-        case .trips: return Color.white
-        case .home: return Color.white
+        case .gearshed: return Color.white
+        case .gearlist: return Color.white
         }
     }
     

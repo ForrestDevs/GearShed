@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import SwiftUI
 
 final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  ObservableObject {
     
@@ -18,6 +19,9 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     
     private let activityController: NSFetchedResultsController<Gearlist>
     @Published var activities = [Gearlist]()
+    
+    private let activityTypeController: NSFetchedResultsController<ActivityType>
+    @Published var activityTypes = [ActivityType]()
     
     private let listGroupController: NSFetchedResultsController<Cluster>
     @Published var listgroups = [Cluster]()
@@ -43,6 +47,11 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
 
         activityController = NSFetchedResultsController(fetchRequest: activityRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
         
+        let activityTypeRequest: NSFetchRequest<ActivityType> = ActivityType.fetchRequest()
+        activityTypeRequest.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
+
+        activityTypeController = NSFetchedResultsController(fetchRequest: activityTypeRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
+        
         let listGroupRequest: NSFetchRequest<Cluster> = Cluster.fetchRequest()
         listGroupRequest.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
         
@@ -62,6 +71,7 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         super.init()
         tripController.delegate = self
         activityController.delegate = self
+        activityTypeController.delegate = self
         listGroupController.delegate = self
         packingGroupController.delegate = self
         trueContainerBoolController.delegate = self
@@ -78,6 +88,13 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
             activities = activityController.fetchedObjects ?? []
         } catch {
             print("Failed to fetch Activities")
+        }
+        
+        do {
+            try activityTypeController.performFetch()
+            activityTypes = activityTypeController.fetchedObjects ?? []
+        } catch {
+            print("Failed to fetch Activity Types")
         }
         
         do {
@@ -105,6 +122,7 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         trips = tripController.fetchedObjects ?? []
         activities = activityController.fetchedObjects ?? []
+        activityTypes = activityTypeController.fetchedObjects ?? []
         listgroups = listGroupController.fetchedObjects ?? []
         packingGroups = packingGroupController.fetchedObjects ?? []
         trueContainerBools = trueContainerBoolController.fetchedObjects ?? []
@@ -137,6 +155,11 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         newGearlist.name = editableData.name
         newGearlist.details = editableData.details
         newGearlist.isTrip = editableData.isTrip
+        
+        if let activityType = editableData.activityType {
+            newGearlist.activityType = activityType
+        }
+        
         if let location = editableData.location {
             newGearlist.location = location
         }
@@ -179,6 +202,35 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         persistentStore.saveContext()
     }
     
+    func addNewActivityType(using editableData: EditableActivityTypeData) {
+        let newType = ActivityType(context: persistentStore.context)
+        newType.id = UUID()
+        newType.name = editableData.name
+        persistentStore.saveContext()
+    }
+    
+    func updateActivityType(using editableData: EditableActivityTypeData) {
+        let type = editableData.associated
+        type.name = editableData.name
+        persistentStore.saveContext()
+    }
+    
+    func deleteActivityType(type: ActivityType) {
+        for gearlist in type.gearlists {
+            deleteGearlist(gearlist: gearlist)
+        }
+        persistentStore.context.delete(type)
+        persistentStore.saveContext()
+    }
+    
+    func addNewActivityType(using editableData: EditableActivityTypeData, typeOut: ((ActivityType) -> ())) {
+        let newType = ActivityType(context: persistentStore.context)
+        newType.id = UUID()
+        newType.name = editableData.name
+        persistentStore.saveContext()
+        typeOut(newType)
+    }
+    
     // MARK: Gearlist Item Methods
     /// Function to add Items to a Gearlist and create an associated packingBool upon entry.
     func addItemsToGearlist(gearlist: Gearlist, itemArray: [Item]) {
@@ -191,8 +243,6 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     
     /// Function to update a Gearlists Items and create an associated packingBool upon entry.
     func updateGearlistItems(gearlist: Gearlist, addingItems: [Item], removingItems: [Item]) {
-        
-        
         for item in addingItems {
             gearlist.addToItems_(item)
             createNewContainerBool(gearlist: gearlist, item: item)
@@ -258,6 +308,18 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         // Save the newly created cluster. 
         persistentStore.saveContext()
     }
+    
+    /// Function to update a Piles items
+    func updateClusterItems(addingItems: [Item], removingItems: [Item], pile: Cluster) {
+        for item in addingItems {
+            pile.addToItems_(item)
+        }
+        for item in removingItems {
+            pile.removeFromItems_(item)
+        }
+        persistentStore.saveContext()
+    }
+    
     /// Function to keep an Items associated cluster updated and remove the reference to the old one.
     func updateItemCluster(newCluster: Cluster?, oldCluster: Cluster?, item: Item) {
         if let oldCluster = oldCluster {
@@ -267,6 +329,7 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         
         persistentStore.saveContext()
     }
+    
     /// Function to edit Cluster values.
     func updateCluster(using editableData: EditableClusterData) {
         let cluster = editableData.associatedCluster
@@ -300,6 +363,19 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         // Save the newly created Container
         persistentStore.saveContext()
     }
+    
+    func updateContainerItems(addingItems: [Item], removingItems: [Item], pack: Container) {
+        for item in addingItems {
+            pack.addToItems_(item)
+            item.containerContainerBool(container: pack)?.container = pack
+        }
+        for item in removingItems {
+            pack.removeFromItems_(item)
+            item.containerContainerBool(container: pack)?.container = nil
+        }
+        persistentStore.saveContext()
+    }
+    
     /// Function to keep an Items associated Container updated and remove the reference to the old one.
     func updateItemContainer(newContainer: Container?, oldContainer: Container?, item: Item, gearlist: Gearlist) {
 
@@ -357,6 +433,31 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         // then reassemble the sections by sorted keys of this dictionary
         for key in dictionaryByShed.keys.sorted() {
             completedSectionData.append(SectionShedData(title: key.name,shed: key,items: dictionaryByShed[key]!))
+        }
+        return completedSectionData
+    }
+    
+    func sectionByType(array: [Gearlist]) -> [SectionTypeData] {
+        var completedSectionData = [SectionTypeData]()
+        // otherwise, one section for each shed, please.  break the data out by shed first
+        let dictionaryByType = Dictionary(grouping: array, by: { $0.activityType })
+        
+        // then reassemble the sections by sorted keys of this dictionary
+        for key in dictionaryByType.keys.sorted() {
+            completedSectionData.append(SectionTypeData(title: key.name,type: key,activites: dictionaryByType[key]!))
+        }
+        return completedSectionData
+    }
+    
+    func sectionByYear(array: [Gearlist]) -> [SectionYearData] {
+        var completedSectionData = [SectionYearData]()
+        
+        // otherwise, one section for each shed, please.  break the data out by shed first
+        let dictionaryByYear = Dictionary(grouping: array, by: { $0.startDate.startDateYear() })
+        
+        // then reassemble the sections by sorted keys of this dictionary
+        for key in dictionaryByYear.keys.sorted() {
+            completedSectionData.append(SectionYearData(title: String(key), year: key,adventures: dictionaryByYear[key]!))
         }
         return completedSectionData
     }

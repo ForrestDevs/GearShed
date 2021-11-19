@@ -25,6 +25,20 @@ struct SectionBrandData: Identifiable, Hashable {
     let items: [Item]
 }
 
+struct SectionTypeData: Identifiable, Hashable {
+    var id: Int { hashValue }
+    let title: String
+    let type: ActivityType
+    let activites: [Gearlist]
+}
+
+struct SectionYearData: Identifiable, Hashable {
+    var id: Int { hashValue }
+    let title: String
+    let year: Int
+    let adventures: [Gearlist]
+}
+
 // in a sectioned data display, one consisting of sections and with each section being
 // itself a list, you usually work with a structure that looks like this:
 //

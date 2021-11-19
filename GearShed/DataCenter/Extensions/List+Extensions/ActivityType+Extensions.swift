@@ -7,8 +7,12 @@
 
 import Foundation
 
-extension ActivityType {
+extension ActivityType: Comparable {
     
+    // add Comparable conformance: sort by name
+    public static func < (lhs: ActivityType, rhs: ActivityType) -> Bool {
+        lhs.name < rhs.name
+    }
     
     var name: String {
         get { name_ ?? "Unknown Name" }

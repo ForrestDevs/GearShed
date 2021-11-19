@@ -10,22 +10,19 @@ import SwiftUI
 
 struct AddActivityView: View {
     
+    @EnvironmentObject private var persistentStore: PersistentStore
+    
     @EnvironmentObject private var detailManager: DetailViewManager
-    
-    @EnvironmentObject private var viewModel: GearlistData
-    
-    let persistentStore: PersistentStore
+        
+    @StateObject private var glData: GearlistData
     
     @State private var editableData: EditableGearlistData
     
-    @State private var isTrip: Bool = false
+    @State private var dateRange: ClosedRange<Date>? = nil
+
+    @State private var showOverlay = false
     
-    init(persistentStore: PersistentStore) {
-        self.persistentStore = persistentStore
-        
-        let initialValue = EditableGearlistData(persistentStore: persistentStore, isTrip: false)
-        _editableData = State(initialValue: initialValue)
-    }
+    private let isAddFromType: Bool
     
     var body: some View {
         NavigationView {
@@ -33,15 +30,16 @@ struct AddActivityView: View {
                 backgroundLayer
                 contentLayer
             }
-            .navigationBarTitle("Add Activity", displayMode: .inline)
-            .navigationBarBackButtonHidden(true)
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 cancelButtonToolBarItem
+                viewTitle
                 saveButtonToolBarItem
             }
         }
         .transition(.move(edge: .trailing))
     }
+    
 }
 
 extension AddActivityView {
@@ -49,27 +47,46 @@ extension AddActivityView {
     private var cancelButtonToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
-                withAnimation {
-                    detailManager.showContent = false
+                if isAddFromType {
+                    withAnimation {
+                        detailManager.showAddActivityFromActivityType = false
+                    }
+                } else {
+                    withAnimation {
+                        detailManager.showAddActivity = false
+                    }
                 }
+                
             } label:  {
                 Text("Cancel")
             }
         }
     }
     
+    private var viewTitle: some ToolbarContent {
+        ToolbarItem (placement: .principal) {
+            Text("Add Activity")
+                .formatGreen()
+        }
+    }
+    
     private var saveButtonToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
-                let newGearList = viewModel.addNewGearlist(using: editableData)
-                withAnimation {
-                    detailManager.showContent = false
-                    detailManager.content = AnyView (
-                        AddItemsToGearListView(persistentStore: persistentStore, gearlist: newGearList)
-                            .environmentObject(detailManager)
-                            .environmentObject(viewModel)
-                    )
-                    detailManager.showContent = true
+                if isAddFromType {
+                    let newGearList = glData.addNewGearlist(using: editableData)
+                    detailManager.selectedGearlist = newGearList
+                    withAnimation {
+                        detailManager.showAddActivityFromActivityType = false
+                        detailManager.showAddItemsToGearlist = true
+                    }
+                } else {
+                    let newGearList = glData.addNewGearlist(using: editableData)
+                    detailManager.selectedGearlist = newGearList
+                    withAnimation {
+                        detailManager.showAddActivity = false
+                        detailManager.showAddItemsToGearlist = true
+                    }
                 }
             } label: {
                 Text("Save")
@@ -86,14 +103,15 @@ extension AddActivityView {
     private var contentLayer: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .leading, spacing: 10) {
-                listNameSection
-                listDescriptionSection
+                activityNameSection
+                activityTypeSection
+                activityDescriptionSection
             }
             .padding()
         }
     }
     
-    private var listNameSection: some View {
+    private var activityNameSection: some View {
         Section {
             VStack(alignment: .leading, spacing: 3) {
                 Text("Name")
@@ -102,11 +120,67 @@ extension AddActivityView {
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .disableAutocorrection(true)
                     .font(.subheadline)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 5)
+                            .stroke(Color.theme.green, lineWidth: 1)
+                    )
+                
             }
         }
     }
     
-    private var listDescriptionSection: some View {
+    private var activityTypeSection: some View {
+        Section {
+            VStack (alignment: .leading, spacing: 3)  {
+                Text ("Type")
+                    .formatEntryTitle()
+                
+                Menu {
+                    // Add New Type Button
+                    Button {
+                        detailManager.content = AnyView (
+                            AddActivityTypeView(persistentStore: persistentStore, typeOut: { type in
+                                editableData.activityType = type
+                            }).environmentObject(detailManager)
+                        )
+                        withAnimation {
+                            detailManager.showContent = true
+                        }
+                    } label: {
+                        Text("Add New Type")
+                        .font(.subheadline)
+                    }
+                    
+                    // List Of Current Types
+                    ForEach(glData.activityTypes) { type in
+                        Button {
+                            editableData.activityType = type
+                        } label: {
+                            Text(type.name)
+                                .tag(type)
+                                .font(.subheadline)
+                        }
+                    }
+                    
+                } label: {
+                    HStack {
+                        Text(editableData.activityType?.name ?? "Select Activity Type")
+                            .font(.subheadline)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                    }
+                    .padding(8)
+                    .background(Color.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 5))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 5)
+                            .stroke(Color.theme.green, lineWidth: 1)
+                    )
+                }
+            }
+        }
+    }
+    
+    private var activityDescriptionSection: some View {
         Section {
             VStack (alignment: .leading, spacing: 3) {
                 Text("Description")
@@ -115,104 +189,37 @@ extension AddActivityView {
                 TextField("", text: $editableData.details)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .font(.subheadline)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 5)
+                            .stroke(Color.theme.green, lineWidth: 1)
+                    )
+
             }
         }
     }
+}
 
-    private var tripSection: some View {
-        Section {
-            VStack (alignment: .leading, spacing: 3) {
-                Toggle(isOn: $isTrip) {
-                    Text("Is Trip List?")
-                }
-                if isTrip {
-                    Text("Trip Length")
-                    Text("Trip Location")
-                    Text("")
-                }
-            }
-        }
+extension AddActivityView {
+    
+    init(persistentStore: PersistentStore) {
+        let glData = GearlistData(persistentStore: persistentStore)
+        _glData = StateObject(wrappedValue: glData)
         
+        let initialValue = EditableGearlistData(persistentStore: persistentStore, isTrip: false)
+        _editableData = State(initialValue: initialValue)
+        
+        self.isAddFromType = false
+
     }
     
+    init(persistentStore: PersistentStore, activityTypeIn: ActivityType) {
+        let glData = GearlistData(persistentStore: persistentStore)
+        _glData = StateObject(wrappedValue: glData)
+        
+        let initialValue = EditableGearlistData(persistentStore: persistentStore, activityType: activityTypeIn)
+        _editableData = State(initialValue: initialValue)
+        
+        self.isAddFromType = true
+    }
 }
-
-/*VStack {
-    listNameFeild
-    addItemGroupButton
-    listGroupItemsList
-    //itemList
-}*/
-
-/*private var listNameFeild: some View {
-    HStack {
-        Text("List Name: ")
-        TextField("List Name", text: $editableData.name)
-    }
-    .padding(.horizontal, 20)
-    .padding(.top, 10)
-}
-
-
-
-private var listGroupItemsList: some View {
-    ScrollView (.vertical, showsIndicators: false) {
-        ForEach(gearlist.listGroups) { listGroup in
-            ClusterRowView(persistentStore: persistentStore, listGroup: listGroup, gearlist: gearlist)
-        }
-    }
-}*/
-
-/*private var itemList: some View {
-    ScrollView(.vertical, showsIndicators: false) {
-        ForEach(itemVM.sectionByShed(itemArray: itemVM.items)) { section in
-            Section {
-                ForEach(section.items) { item in
-                    ItemRowViewForList(item: item, respondToTapOnSelector: {
-                        handleItemSelected(item)
-                    }, respondToTapOffSelector: {
-                        handleItemUnSelected(item)
-                    })
-                    .padding(.horizontal, 15)
-                    .padding(.bottom, 5)
-                }
-            } header: {
-                VStack (spacing: 0) {
-                    HStack {
-                        Text(section.title)
-                            .font(.headline)
-                        Spacer()
-                    }
-                    Rectangle()
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 1)
-                }
-                .padding(.horizontal)
-            }
-        }
-        .padding(.top,10)
-    }
-}*/
-
-// The purpose of this function is to add the selected
-// item to our temporary array itemsChecked
-/*private func handleItemSelected(_ item: Item) {
-    if !itemsChecked.contains(item) {
-        itemsChecked.append(item)
-    }
-}*/
-
-// The purpose of this function is to remove the selected item
-// from our temporary array itemsChecked, if the user unselects an item
-/*private func handleItemUnSelected(_ item: Item) {
-    self.itemsChecked.removeAll{$0.id == item.id}
-}*/
-
-
-
-
-
-
-
-
 

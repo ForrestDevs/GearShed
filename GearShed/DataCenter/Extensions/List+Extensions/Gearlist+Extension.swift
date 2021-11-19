@@ -8,6 +8,17 @@
 import SwiftUI
 import CoreData
 
+extension Date {
+    
+    func startDateYear() -> Int {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.year], from: self)
+        let year = components.year!
+        return year
+    }
+    
+}
+
 extension Gearlist {
     
     // MARK: - Computed properties
@@ -34,6 +45,10 @@ extension Gearlist {
         get { startDate_ ?? Date() }
         set { startDate_ = newValue }
     }
+    
+    
+    
+    
     
     var endDate: Date {
         get { endDate_ ?? Date() }

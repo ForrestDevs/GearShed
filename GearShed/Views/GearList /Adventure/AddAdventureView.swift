@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AddGearlistView: View {
+struct AddAdventureView: View {
     
     @EnvironmentObject private var detailManager: DetailViewManager
         
@@ -45,13 +45,13 @@ struct AddGearlistView: View {
     
 }
 
-extension AddGearlistView {
+extension AddAdventureView {
     
     private var cancelButtonToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
                 withAnimation {
-                    detailManager.showAddGearlist = false
+                    detailManager.showAddAdventure = false
                 }
             } label:  {
                 Text("Cancel")
@@ -61,7 +61,7 @@ extension AddGearlistView {
     
     private var viewTitle: some ToolbarContent {
         ToolbarItem (placement: .principal) {
-            Text("Add Gearlist")
+            Text("Add Adventure")
                 .formatGreen()
         }
     }
@@ -72,7 +72,7 @@ extension AddGearlistView {
                 let newGearList = viewModel.addNewGearlist(using: editableData)
                 detailManager.selectedGearlist = newGearList
                 withAnimation {
-                    detailManager.showAddGearlist = false
+                    detailManager.showAddAdventure = false
                     detailManager.showAddItemsToGearlist = true
                 }
             } label: {
@@ -90,16 +90,19 @@ extension AddGearlistView {
     private var contentLayer: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .leading, spacing: 10) {
-                listNameSection
-                listDescriptionSection
-                listLocationSection
-                listDurationSection
+                adventureNameSection
+                adventureDateSection
+                adventureLocationSection
+                adventureCountrySection
+                adventureDescriptionSection
+                
+                
             }
             .padding()
         }
     }
     
-    private var listNameSection: some View {
+    private var adventureNameSection: some View {
         Section {
             VStack(alignment: .leading, spacing: 3) {
                 Text("Name")
@@ -117,46 +120,10 @@ extension AddGearlistView {
         }
     }
     
-    private var listDescriptionSection: some View {
-        Section {
-            VStack (alignment: .leading, spacing: 3) {
-                Text("Description")
-                    .formatEntryTitle()
-
-                TextField("", text: $editableData.details)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .font(.subheadline)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 5)
-                            .stroke(Color.theme.green, lineWidth: 1)
-                    )
-
-            }
-        }
-    }
-    
-    private var listLocationSection: some View {
-        Section {
-            VStack(alignment: .leading, spacing: 3) {
-                Text("Location")
-                    .formatEntryTitle()
-                TextField("", text: $editableData.location ?? "")
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .disableAutocorrection(true)
-                    .font(.subheadline)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 5)
-                            .stroke(Color.theme.green, lineWidth: 1)
-                    )
-
-            }
-        }
-    }
-    
-    private var listDurationSection: some View {
+    private var adventureDateSection: some View {
         Section {
             VStack (alignment: .leading, spacing: 2) {
-                Text("Duration")
+                Text("Date")
                     .formatEntryTitle()
                 ZStack (alignment: .leading) {
                     RoundedRectangle(cornerRadius: 5)
@@ -191,6 +158,60 @@ extension AddGearlistView {
                         editableData.endDate = newValue?.upperBound
                     }
                 }
+            }
+        }
+    }
+    
+    private var adventureLocationSection: some View {
+        Section {
+            VStack(alignment: .leading, spacing: 3) {
+                Text("Location")
+                    .formatEntryTitle()
+                TextField("", text: $editableData.location ?? "")
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .disableAutocorrection(true)
+                    .font(.subheadline)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 5)
+                            .stroke(Color.theme.green, lineWidth: 1)
+                    )
+
+            }
+        }
+    }
+    
+    private var adventureCountrySection: some View {
+        Section {
+            VStack(alignment: .leading, spacing: 3) {
+                Text("Country")
+                    .formatEntryTitle()
+                TextField("", text: $editableData.location ?? "")
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .disableAutocorrection(true)
+                    .font(.subheadline)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 5)
+                            .stroke(Color.theme.green, lineWidth: 1)
+                    )
+
+            }
+        }
+    }
+    
+    private var adventureDescriptionSection: some View {
+        Section {
+            VStack (alignment: .leading, spacing: 3) {
+                Text("Description")
+                    .formatEntryTitle()
+
+                TextField("", text: $editableData.details)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .font(.subheadline)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 5)
+                            .stroke(Color.theme.green, lineWidth: 1)
+                    )
+
             }
         }
     }

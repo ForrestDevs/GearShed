@@ -21,7 +21,7 @@ struct GearlistItemListView: View {
     
     var body: some View {
         VStack (spacing: 0) {
-            statBar
+            StatBar(statType: .list, gearlist: gearlist)
             ZStack {
                 if gearlist.items.count == 0 {
                     EmptyViewText(emptyText: "Items in this List", buttonName: "Select Item")

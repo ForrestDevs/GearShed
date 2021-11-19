@@ -59,8 +59,10 @@ extension ItemRowView_InGearlist {
                         .font(.system(size: 13))
                         .foregroundColor(Color.theme.accent)
                     HStack {
-                        clusterMenu
-                        containerMenu
+                        pileStatusLabel
+                        packStatusLabel
+                        //clusterMenu
+                        //containerMenu
                     }
                 }
                 .padding(.horizontal, 10)
@@ -86,7 +88,7 @@ extension ItemRowView_InGearlist {
     }
     
     // MARK: ContainerMenu
-    private var containerMenu: some View {
+    /*private var containerMenu: some View {
         Menu {
             containerList
         } label: {
@@ -102,18 +104,18 @@ extension ItemRowView_InGearlist {
                 previousItemContainer = itemContainer
             } label: {
                 HStack {
-                    Text(container.name)
-                        .font(.subheadline)
                     if item.containers.contains(container) {
                         Image(systemName: "checkmark")
                             .foregroundColor(Color.theme.green)
                     }
+                    Text(container.name)
+                        .font(.subheadline)
                 }
             }
         }
-    }
+    }*/
     
-    private var containerMenuLabel: some View {
+    private var packStatusLabel: some View {
         if ((item.gearlistContainer(gearlist: gearlist)?.name) != nil) {
             return AnyView (
                 Text ("Pack: " + (item.gearlistContainer(gearlist: gearlist)!.name))
@@ -135,7 +137,7 @@ extension ItemRowView_InGearlist {
     }
     
     // MARK: ClusterMenu
-    private var clusterMenu: some View {
+    /*private var clusterMenu: some View {
         Menu {
             clusterList
         } label: {
@@ -160,9 +162,9 @@ extension ItemRowView_InGearlist {
                 }
             }
         }
-    }
+    }*/
     
-    private var clusterMenuLabel: some View {
+    private var pileStatusLabel: some View {
         if ((item.gearlistCluster(gearlist: gearlist)?.name) != nil) {
             return AnyView (
                 Text ("Pile: " + (item.gearlistCluster(gearlist: gearlist)!.name))

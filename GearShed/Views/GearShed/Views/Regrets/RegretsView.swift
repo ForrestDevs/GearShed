@@ -12,7 +12,8 @@ struct RegretsView: View {
     @EnvironmentObject private var gsData: GearShedData
 
     var body: some View {
-        VStack {
+        VStack (spacing: 0) {
+            StatBar(statType: .regret)
             if gsData.regretItems.count == 0 {
                 EmptyViewTextNonButton(emptyText: "regret Items", buttonName: "regret")
             } else {

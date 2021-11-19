@@ -9,56 +9,38 @@
 import SwiftUI
 
 struct GearlistView: View {
-    static let tag: String? = "GearList"
     
-    let persistentStore: PersistentStore
-        
-    @StateObject private var viewModel: GearlistData
-    
-    @EnvironmentObject private var detailManager: DetailViewManager
-     
-    @State private var viewFilter: ViewFilter = .multiDay
+    @StateObject private var glData: GearlistData
     
     @State private var currentSelection: Int = 0
     
-    private enum ViewFilter {
-        case all, singleDay, multiDay, noDay
-    }
-    
-    init(persistentStore: PersistentStore) {
-        self.persistentStore = persistentStore
-        
-        let viewModel = GearlistData(persistentStore: persistentStore)
-        _viewModel = StateObject(wrappedValue: viewModel)
+    init(persistentStore: PersistentStore) {        
+        let glData = GearlistData(persistentStore: persistentStore)
+        _glData = StateObject(wrappedValue: glData)
     }
 
     var body: some View {
-        TabView (selection: $currentSelection) {
-            TripView()
-                .tag(1)
-            ActivityView()
-                .tag(2)
-        }
-        .tabViewStyle(.page(indexDisplayMode: .never))
-        //.tabViewStyle(PageTabViewStyle(indexDisplayMode: .none))
-        
-        
-        /*VStack (spacing: 0) {
-            statBar
-            ZStack {
-                content
-                addButtonOverlay
+        NavigationView {
+            PagerTabView(tint: Color.theme.accent, selection: $currentSelection) {
+                Text("Adventure")
+                    .pageLabel()
+                Text("Activity")
+                    .pageLabel()
+            } content: {
+                TripView()
+                    .environmentObject(glData)
+                    .pageView()
+                ActivityView()
+                    .environmentObject(glData)
+                    .pageView()
             }
-        }*/
-        .environmentObject(viewModel)
-        .navigationBarTitle("Gear List", displayMode: .inline)
-        .toolbar {
-            filterButton
-            shareList
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                viewTitle
+                shareList
+            }
         }
-        .onDisappear() {
-            persistentStore.saveContext()
-        }
+        .navigationViewStyle(.stack)
     }
 }
 
@@ -72,114 +54,115 @@ extension GearlistView {
         }
     }
     
-    private var filterButton: some ToolbarContent {
-        ToolbarItem (placement: .navigationBarLeading) {
-            Menu {
-                Button {
-                    viewFilter = .all
-                } label: {
-                    Text("All")
-                }
-                
-                Button {
-                    viewFilter = .singleDay
-                } label: {
-                    Text("Single-Day")
-                }
-                
-                Button {
-                    viewFilter = .multiDay
-                } label: {
-                    Text("Multi-Day")
-                }
-                
-                Button {
-                    viewFilter = .noDay
-                } label: {
-                    Text("No-Date")
-                }
-            } label: {
-                Image(systemName: "text.magnifyingglass")
-            }
-        }
-        
-    }
-    
-    private var searchBar: some View {
-        VStack {
-            
-        }
-    }
-    
-    private var statBar: some View {
-        HStack (spacing: 20){
-            HStack {
-                Text("Items:")
-                //Text("\(gsData.items.count)")
-            }
-            HStack {
-                Text("Weight:")
-                //Text("\(gsData.totalWeight(array: gsData.items))g")
-            }
-            HStack {
-                Text("Invested:")
-                //Text("$\(gsData.totalCost(array: gsData.items))")
-            }
-            Spacer()
-        }
-        .font(.custom("HelveticaNeue", size: 14))
-        .foregroundColor(Color.white)
-        .padding(.horizontal)
-        .padding(.vertical, 5)
-        .background(Color.theme.green)
-    }
-    
-    private var content: some View {
-        VStack {
-            if viewFilter == .all {
-                TripView()
-            } else if viewFilter == .singleDay {
-                TripView()
-            } else if viewFilter == .multiDay {
-                TripView()
-            } else if viewFilter == .noDay {
-                ActivityView()
-            }
-        }
-    }
-    
-    private var addButtonOverlay: some View {
-        VStack {
-            Spacer()
-            HStack {
-                Spacer()
-                Button {
-                    withAnimation {
-                        detailManager.showAddGearlist = true
-                    }
-                }
-                label: {
-                    VStack{
-                        Text("Add")
-                            .font(.system(size: 12, weight: .regular))
-                            .foregroundColor(Color.theme.background)
-                            
-                        Text("List")
-                            .font(.system(size: 12, weight: .regular))
-                            .foregroundColor(Color.theme.background)
-                    }
-                }
-                .frame(width: 55, height: 55)
-                .background(Color.theme.accent)
-                .cornerRadius(38.5)
-                .padding(.bottom, 20)
-                .padding(.trailing, 15)
-                .shadow(color: Color.theme.accent.opacity(0.3), radius: 3,x: 3,y: 3)
-            }
+    private var viewTitle: some ToolbarContent {
+        ToolbarItem(placement: .principal) {
+            Text("Gear List")
+                .formatGreen()
         }
     }
     
 }
+
+/*private var filterButton: some ToolbarContent {
+    ToolbarItem (placement: .navigationBarLeading) {
+        Menu {
+            Button {
+                viewFilter = .all
+            } label: {
+                Text("All")
+            }
+            
+            Button {
+                viewFilter = .singleDay
+            } label: {
+                Text("Single-Day")
+            }
+            
+            Button {
+                viewFilter = .multiDay
+            } label: {
+                Text("Multi-Day")
+            }
+            
+            Button {
+                viewFilter = .noDay
+            } label: {
+                Text("No-Date")
+            }
+        } label: {
+            Image(systemName: "text.magnifyingglass")
+        }
+    }
+    
+}
+
+private var statBar: some View {
+    HStack (spacing: 20){
+        HStack {
+            Text("Items:")
+            //Text("\(gsData.items.count)")
+        }
+        HStack {
+            Text("Weight:")
+            //Text("\(gsData.totalWeight(array: gsData.items))g")
+        }
+        HStack {
+            Text("Invested:")
+            //Text("$\(gsData.totalCost(array: gsData.items))")
+        }
+        Spacer()
+    }
+    .font(.custom("HelveticaNeue", size: 14))
+    .foregroundColor(Color.white)
+    .padding(.horizontal)
+    .padding(.vertical, 5)
+    .background(Color.theme.green)
+}
+
+private var content: some View {
+    VStack {
+        if viewFilter == .all {
+            TripView()
+        } else if viewFilter == .singleDay {
+            TripView()
+        } else if viewFilter == .multiDay {
+            TripView()
+        } else if viewFilter == .noDay {
+            ActivityView()
+        }
+    }
+}
+
+private var addButtonOverlay: some View {
+    VStack {
+        Spacer()
+        HStack {
+            Spacer()
+            Button {
+                withAnimation {
+                    detailManager.showAddGearlist = true
+                }
+            }
+            label: {
+                VStack{
+                    Text("Create")
+                        .font(.system(size: 12, weight: .regular))
+                        .foregroundColor(Color.theme.background)
+                        
+                    Text("List")
+                        .font(.system(size: 12, weight: .regular))
+                        .foregroundColor(Color.theme.background)
+                }
+            }
+            .frame(width: 55, height: 55)
+            .background(Color.theme.accent)
+            .cornerRadius(38.5)
+            .padding(.bottom, 20)
+            .padding(.trailing, 15)
+            .shadow(color: Color.theme.accent.opacity(0.3), radius: 3,x: 3,y: 3)
+        }
+    }
+}*/
 
 
 //@State private var currentScreen: Int = 0

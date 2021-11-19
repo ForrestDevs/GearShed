@@ -22,7 +22,7 @@ struct GearlistClusterView: View {
     
     var body: some View {
         VStack (spacing: 0) {
-            statBar
+            StatBar(statType: .pile, gearlist: gearlist)
             ZStack {
                 if gearlist.clusters.count == 0 {
                     EmptyViewText(emptyText: "Piles", buttonName: "Add Pile")
@@ -55,6 +55,17 @@ extension GearlistClusterView {
                             Text("\(viewModel.clusterTotalWeight(cluster: cluster))g")
                             Spacer()
                             Menu {
+                                Button {
+                                    detailManager.selectedCluster = cluster
+                                    withAnimation {
+                                        detailManager.showAddItemsToCluster = true
+                                    }
+                                } label: {
+                                    HStack {
+                                        Text("Add to Pile").textCase(.none)
+                                        Image(systemName: "plus")
+                                    }
+                                }
                                 Button {
                                     detailManager.selectedCluster = cluster
                                     withAnimation {
@@ -127,7 +138,7 @@ extension GearlistClusterView {
     }
     
     private var statBar: some View {
-        HStack (spacing: 20){
+        HStack (spacing: 20) {
             Text (
                 "Items: " +
                 "\(viewModel.gearlistClusterTotalItems(gearlist: gearlist))"

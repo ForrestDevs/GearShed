@@ -10,8 +10,10 @@ import SwiftUI
 
 struct CustomTabView <Content:View>: View {
     
-    @Binding var selection: TabBarItem
     let content: Content
+    
+    @Binding var selection: TabBarItem
+    
     @State private var tabs: [TabBarItem] = []
     
     init(selection: Binding<TabBarItem>, @ViewBuilder content: () -> Content) {
@@ -33,7 +35,7 @@ struct CustomTabView <Content:View>: View {
     }
 }
 
-struct CustomTabBarContainerView_Previews: PreviewProvider {
+/*struct CustomTabBarContainerView_Previews: PreviewProvider {
     
     static let tabs: [TabBarItem] = [
         .shed, .trips, .home
@@ -44,4 +46,4 @@ struct CustomTabBarContainerView_Previews: PreviewProvider {
             Color.red
         }
     }
-}
+}*/

@@ -93,7 +93,8 @@ struct PagerTabView<Content: View,Label: View>: View {
         }
     }
 }
-
+/*
+// No label paged tab view 
 struct PagerTabView1<Content: View>: View {
     
     var content: Content
@@ -226,7 +227,7 @@ struct OffsetPageTabView1<Content: View>: UIViewRepresentable {
         }
     }
 }
-
+*/
 
 // Geometry Preference...
 struct TabPreferenceKey: PreferenceKey {

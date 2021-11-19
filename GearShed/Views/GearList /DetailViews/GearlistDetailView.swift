@@ -51,7 +51,6 @@ struct GearlistDetailView: View {
                     .environmentObject(viewModel)
                     .pageView()
             }
-            .padding(.top, 10)
             .edgesIgnoringSafeArea(.bottom)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

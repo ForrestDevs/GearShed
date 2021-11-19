@@ -8,6 +8,7 @@
 import Foundation
 
 final class BrandItemsViewModel: ObservableObject {
+    @Published var confirmDeleteBrandAlert: ConfirmDeleteBrandAlert?
     @Published var selectedBrand: Brand? = nil
     @Published var showingUnlockView: Bool = false
     @Published var isAddItemShowing: Bool = false

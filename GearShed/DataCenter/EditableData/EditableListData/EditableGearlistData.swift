@@ -14,6 +14,7 @@ struct EditableGearlistData {
     var id: UUID?
     var name: String
     var details: String
+    var activityType: ActivityType? 
     var isTrip: Bool
     var location: String?
     var startDate: Date?
@@ -50,6 +51,17 @@ extension EditableGearlistData {
         self.name = ""
         self.details = ""
         self.isTrip = isTrip
+        self.location = ""
+        self.startDate = nil
+        self.endDate = nil
+    }
+    
+    init(persistentStore: PersistentStore, activityType: ActivityType) {
+        self.persistentStore = persistentStore
+        self.name = ""
+        self.details = ""
+        self.activityType = activityType
+        self.isTrip = false
         self.location = ""
         self.startDate = nil
         self.endDate = nil

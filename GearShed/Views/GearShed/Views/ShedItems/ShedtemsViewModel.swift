@@ -8,6 +8,7 @@
 import Foundation
 
 final class ShedItemsViewModel: ObservableObject {
+    @Published var confirmDeleteShedAlert: ConfirmDeleteShedAlert?
     @Published var selectedShed: Shed? = nil
     @Published var showingUnlockView: Bool = false
     @Published var isAddItemShowing: Bool = false

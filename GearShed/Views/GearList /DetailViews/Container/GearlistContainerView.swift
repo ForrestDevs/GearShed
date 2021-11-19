@@ -23,14 +23,13 @@ struct GearlistContainerView: View {
     
     var body: some View {
         VStack (spacing: 0) {
-            statBar
+            StatBar(statType: .pack, gearlist: gearlist)
             ZStack {
                 if gearlist.containers.count == 0 {
                     EmptyViewText(emptyText: "Packs", buttonName: "Add Pack")
                 } else {
                     packingContainerList
                 }
-                
                 addContainerButtonOverlay
             }
         }
@@ -57,6 +56,17 @@ extension GearlistContainerView {
                                 Text("\(viewModel.containerTotalWeight(container: container))g")
                                 Spacer()
                                 Menu {
+                                    Button {
+                                        detailManager.selectedContainer = container
+                                        withAnimation {
+                                            detailManager.showAddItemsToContainer = true
+                                        }
+                                    } label: {
+                                        HStack {
+                                            Text("Add to Pack").textCase(.none)
+                                            Image(systemName: "plus")
+                                        }
+                                    }
                                     Button {
                                         detailManager.selectedContainer = container
                                         withAnimation {
@@ -128,35 +138,4 @@ extension GearlistContainerView {
         }
     }
     
-    private var statBar: some View {
-        HStack (spacing: 20){
-            
-            Text (
-                "Packed: " +
-                "\(viewModel.gearlistContainerBoolTotals(gearlist: gearlist))" +
-                " of " +
-                "\(viewModel.gearlistContainerTotalItems(gearlist: gearlist))"
-            )
-            
-            Text (
-                "Weight: " +
-                "\(viewModel.gearlistContainerTotalWeight(gearlist: gearlist))" +
-                "g"
-            )
-            
-            Spacer()
-        }
-        .font(.subheadline)
-        .foregroundColor(Color.white)
-        .padding(.horizontal)
-        .padding(.vertical, 5)
-        .background(Color.theme.green)
-        .padding(.top, 10)
-    }
 }
-
-/* Text("Packed:")
- Text("\(viewModel.gearlistContainerBoolTotals(gearlist: gearlist))")
- Text("of")
- Text("\(gearlist.gearlistContainerTotals(gearlist: gearlist))")*/
-

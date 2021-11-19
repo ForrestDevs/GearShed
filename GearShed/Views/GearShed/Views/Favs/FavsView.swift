@@ -13,7 +13,8 @@ struct FavsView: View {
     @EnvironmentObject private var gsData: GearShedData
 
     var body: some View {
-        VStack {
+        VStack (spacing: 0) {
+            StatBar(statType: .fav)
             if gsData.favItems.count == 0 {
                 EmptyViewTextNonButton(emptyText: "favourite Items", buttonName: "favourite")
             } else {

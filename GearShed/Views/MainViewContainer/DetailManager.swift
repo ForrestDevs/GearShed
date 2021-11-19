@@ -37,19 +37,31 @@ class DetailViewManager: ObservableObject {
     @Published var showModifyBrand: Bool = false
     
     // MARK: Gearlist Stuff
-    
     @Published var selectedGearlist: Gearlist? = nil
     @Published var showAddGearlist: Bool = false
     @Published var showAddItemsToGearlist: Bool = false
     @Published var showModifyGearlist: Bool = false
     @Published var showGearlistDetail: Bool = false
     
+    @Published var showAddAdventure: Bool = false
+    
+    @Published var showAddActivity: Bool = false
+    
+    @Published var selectedActivityType: ActivityType? 
+    @Published var showAddActivityType: Bool = false
+    @Published var showModifyActivityType: Bool = false
+    @Published var showAddActivityFromActivityType: Bool = false
+    
     @Published var selectedCluster: Cluster? = nil
     @Published var showAddCluster: Bool = false
+    
+    @Published var showAddItemsToCluster: Bool = false
     @Published var showModifyCluster: Bool = false
     
     @Published var selectedContainer: Container? = nil
     @Published var showAddContainer: Bool = false
+    
+    @Published var showAddItemsToContainer: Bool = false
     @Published var showModifyContainer: Bool = false
     
     init() {}

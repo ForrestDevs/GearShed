@@ -13,7 +13,8 @@ struct WishesView: View {
     @EnvironmentObject private var gsData: GearShedData
 
     var body: some View {
-        VStack {
+        VStack (spacing: 0) {
+            StatBar(statType: .wish)
             if gsData.wishListItems.count == 0 {
                 EmptyViewTextNonButton(emptyText: "Wishes", buttonName: "wish")
             } else {

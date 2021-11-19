@@ -1,49 +1,49 @@
 //
-//  ClusterRowView.swift
+//  ContainerRowView.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-11-10.
 //
-
+/*
 import SwiftUI
 
-struct ClusterRowView: View {
-    @Environment (\.presentationMode) var presentationMode
+struct ContainerRowView: View {
+    @Environment(\.presentationMode) var presentationMode
     
     @EnvironmentObject private var persistentStore: PersistentStore
     
     @EnvironmentObject private var viewModel: GearlistData
     
-    @ObservedObject var cluster: Cluster
+    @ObservedObject var container: Container
+    
+    @ObservedObject var gearlist: Gearlist
     
     @State private var showEdit: Bool = false
     
-    @State private var confirmDeleteClusterAlert: ConfirmDeleteClusterAlert?
+    @State private var confirmDeleteContainerAlert: ConfirmDeleteContainerAlert?
     
     var body: some View {
         VStack (alignment: .leading, spacing: 0) {
-            clusterHeader
+            containerHeader
                 .padding(.horizontal)
-            clusterItems
-                .padding(.horizontal)
+            containerItems
         }
         .fullScreenCover(isPresented: $showEdit) {
-            EditClusterView(persistentStore: persistentStore, cluster: cluster)
+            EditContainerView(persistentStore: persistentStore, container: container)
         }
-        .alert(item: $confirmDeleteClusterAlert) { cluster in cluster.alert() }
+        .alert(item: $confirmDeleteContainerAlert) { container in container.alert() }
     }
-    
 }
 
-extension ClusterRowView {
+extension ContainerRowView {
     
-    private var clusterHeader: some View {
+    private var containerHeader: some View {
         VStack (alignment: .leading, spacing: 0) {
             HStack {
-                Text(cluster.name)
+                Text(container.name)
                     .font(.headline)
                 Spacer()
-                Text("\(viewModel.clusterTotalWeight(cluster: cluster))g")
+                Text("\(viewModel.containerTotalWeight(container: container))g")
             }
             Rectangle()
                 .frame(maxWidth: .infinity)
@@ -55,10 +55,11 @@ extension ClusterRowView {
         }
     }
     
-    private var clusterItems: some View {
-        ForEach(cluster.items) { item in
-            ItemRowView_InCluster(cluster: cluster, item: item)
+    private var containerItems: some View {
+        ForEach(container.items) { item in
+            ItemRowView_InContainer(item: item, gearlist: gearlist, container: container)
         }
+        .padding(.horizontal)
         .padding(.top, 7)
     }
     
@@ -66,23 +67,22 @@ extension ClusterRowView {
         Button {
             showEdit.toggle()
         } label: {
-            Text("Edit Cluster")
+            Text("Edit Container")
         }
     }
     
     private var deleteContextButton: some View {
         Button {
-            confirmDeleteClusterAlert = ConfirmDeleteClusterAlert (
+            confirmDeleteContainerAlert = ConfirmDeleteContainerAlert (
                 persistentStore: persistentStore,
-                cluster: cluster,
+                container: container,
                 destructiveCompletion: {
                     presentationMode.wrappedValue.dismiss()
                 }
             )
         } label: {
-            Text("Delete Cluster")
+            Text("Delete Container")
         }
     }
-    
 }
-
+*/

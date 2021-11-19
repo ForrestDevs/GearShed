@@ -73,13 +73,35 @@ struct ContentView: View {
         
             // MARK: Gearlist
         
-            .overlay(detailManager.showAddGearlist ?
-                     (AddGearlistView(persistentStore: persistentStore)
+            .overlay(detailManager.showAddAdventure ?
+                     (AddAdventureView(persistentStore: persistentStore)
                         .environmentObject(detailManager)
                      ) : nil
             )
         
-            
+            .overlay(detailManager.showAddActivity ?
+                     (AddActivityView(persistentStore: persistentStore)
+                        .environmentObject(detailManager)
+                     ) : nil
+            )
+        
+            .overlay(detailManager.showAddActivityType ?
+                     (AddActivityTypeView(persistentStore: persistentStore)
+                        .environmentObject(detailManager)
+                     ) : nil
+            )
+        
+            .overlay(detailManager.showModifyActivityType ?
+                     (ModifyActivityTypeView(persistentStore: persistentStore, activityType: detailManager.selectedActivityType!)
+                        .environmentObject(detailManager)
+                     ) : nil
+            )
+        
+            .overlay(detailManager.showAddActivityFromActivityType ?
+                     (AddActivityView(persistentStore: persistentStore, activityTypeIn: detailManager.selectedActivityType!)
+                        .environmentObject(detailManager)
+                     ) : nil
+            )
         
             .overlay(detailManager.showGearlistDetail ?
                      (GearlistDetailView (persistentStore: persistentStore, gearlist: detailManager.selectedGearlist!)
@@ -89,7 +111,7 @@ struct ContentView: View {
             )
         
             .overlay(detailManager.showAddItemsToGearlist ?
-                     (AddItemsToGearListView(persistentStore: persistentStore, gearlist: detailManager.selectedGearlist!)
+                     (AddItemsToGearListView(persistentStore: persistentStore, type: .gearlistItem, gearlist: detailManager.selectedGearlist!)
                         .environmentObject(detailManager)
                      ) : nil
             )
@@ -105,6 +127,11 @@ struct ContentView: View {
                         .environmentObject(detailManager)
                      ) : nil
             )
+            .overlay(detailManager.showAddItemsToCluster ?
+                     (AddItemsToGearListView(persistentStore: persistentStore, type: .pileItem, gearlist: detailManager.selectedGearlist!, pile: detailManager.selectedCluster!)
+                        .environmentObject(detailManager)
+                     ) : nil
+            )
             .overlay(detailManager.showModifyCluster ?
                      (EditClusterView(persistentStore: persistentStore, cluster: detailManager.selectedCluster!)
                         .environmentObject(detailManager)
@@ -113,6 +140,11 @@ struct ContentView: View {
         
             .overlay(detailManager.showAddContainer ?
                      (AddContainerView(persistentStore: persistentStore, gearlist: detailManager.selectedGearlist!)
+                        .environmentObject(detailManager)
+                     ) : nil
+            )
+            .overlay(detailManager.showAddItemsToContainer ?
+                     (AddItemsToGearListView(persistentStore: persistentStore, type: .packItem, gearlist: detailManager.selectedGearlist!, pack: detailManager.selectedContainer!)
                         .environmentObject(detailManager)
                      ) : nil
             )

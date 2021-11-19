@@ -68,7 +68,7 @@
  //}
  //End of Section 2+3.
  
- /*HStack(alignment: .firstTextBaseline) {
+ HStack(alignment: .firstTextBaseline) {
      Toggle(isOn: $editableItemData.onList) {
          SLFormLabelText(labelText: "On Shopping List: ")
      }
@@ -85,9 +85,9 @@
          SLFormLabelText(labelText: "Last Purchased: ")
          Text("\(editableItemData.dateText)")
      }
- }*/
+ }
  
- /*func handleItemTapped(_ item: Item) {
+func handleItemTapped(_ item: Item) {
      if !itemsChecked.contains(item) {
          // put the item into our list of what's about to be removed, and because
          // itemsChecked is a @State variable, we will see a momentary
@@ -99,7 +99,7 @@
              itemsChecked.removeAll(where: { $0 == item })
          }
      }
- }*/
+ }
  
  Brand Visitation order Section
  //if editableData.order != kUnknownBrandVisitationOrder {
@@ -123,7 +123,7 @@
  //}
  
  //@ViewBuilder
- /*func CardView(story: Story) -> some View {
+ func CardView(story: Story) -> some View
      VStack(alignment: .leading, spacing: 12) {
          
          // to get screen width
@@ -157,7 +157,7 @@
                  )
          })
      }
- }*/
+ }
  
  // Nav bar
  HStack {
@@ -165,21 +165,21 @@
      
      Spacer()
      
-     /*Button(action: {}, label: {
+     Button(action: {}, label: {
              Image(systemName: "plus")
                  .resizable()
                  .renderingMode(.template)
                  .aspectRatio(contentMode: .fit)
                  .frame(width: 25, height: 25)
                  .shadow(radius: 1)
-     })*/
+     })
  }
  .overlay(Text("Stories").font(.title2.bold()))
  .foregroundColor(Color.white.opacity(0.8))
  .padding([.horizontal, .top])
  .padding(.bottom,5)
  
- /*ScrollView(.vertical, showsIndicators: false) {
+ ScrollView(.vertical, showsIndicators: false) {
      
      VStack(spacing: 20) {
          // Sample Cards...
@@ -190,7 +190,7 @@
      .padding()
      .padding(.top, 10)
      
- }*/
+ }
  
  struct Blur: UIViewRepresentable {
      
@@ -464,19 +464,19 @@
      }
  }
 
- /*struct SlideTabView_Previews: PreviewProvider {
+ struct SlideTabView_Previews: PreviewProvider {
      
      static var previews: some View {
          
          SlideTabView()
          
      }
- }*/
+ }
 
 
  /// ----------------------------------------------------
 
- /*ForEach(data,id: \.self){ i in
+ ForEach(data,id: \.self){ i in
      
      Button(action: {
          
@@ -501,9 +501,9 @@
              
          }
      }
- }*/
+ }
  
- /*HStack {
+ HStack {
      
      // Color Bar
      //Color(item.uiColor)
@@ -528,7 +528,7 @@
          .font(.headline)
          .foregroundColor(Color.blue)
      
- } */// end of HStack
+ }
 
  // this is the @FetchRequest that ties this view to Core Data Items
  //@FetchRequest(fetchRequest: Item.allItemsFR(onList: true))
@@ -544,7 +544,7 @@
  // cleanly without any highlighting
 //    @Binding var listDisplayID: UUID
  
- /*ScrollView(.horizontal, showsIndicators: false) {
+ ScrollView(.horizontal, showsIndicators: false) {
      
      HStack (spacing: 30){
          Text("CATEGORIES")
@@ -561,9 +561,9 @@
              .bold()
      }
      .padding(.horizontal, 30)
- }*/
+ }
  
- /*HStack {
+ HStack {
      
      Button {viewModel.isAddNewItemSheetShowing.toggle()} label: {
          Image(systemName: "plus")
@@ -585,13 +585,13 @@
      }
  }
  //.padding(.horizontal, 20)
- //.padding(.top, 10)*/
+ //.padding(.top, 10)
  
  //.navigationBarTitle("All Items", displayMode: .inline)
  //.navigationBarColor(UIColor.blue)
- /*.toolbar {
+ .toolbar {
      ToolbarItem(placement: .navigationBarTrailing, content: viewModel.trailingButtons)
- }*/
+ }
  
  func handleOnAppear() {
      // what follows here is a kludge for a very special case:
@@ -832,7 +832,7 @@
      
  }
  
- x// MARK: CustomPopOverz
+ // MARK: CustomPopOverz
  
  struct PopOverView: View {
      
@@ -973,7 +973,7 @@
  //var addItemToShoppingList: Bool = true
  
  // OLD ADD OR MODIFY ITEM VIEW
- /*var bodyOld: some View {
+ var bodyOld: some View {
      NavigationView {
          Form {
              
@@ -1014,7 +1014,7 @@
                      }
                  }
              }
-             /*Section(header: Text("Tag").sectionHeader()) {
+             Section(header: Text("Tag").sectionHeader()) {
 
                  DisclosureGroup("Tag", isExpanded: $viewModel.expandedTag) {
                      NavigationLink(destination: AddOrModifyTagView()) {
@@ -1028,7 +1028,7 @@
                              }
                      }
                  }
-             }*/
+             }
 
              // Item Stats
              Section (header: Text("Item Stats").sectionHeader()) {
@@ -1079,7 +1079,7 @@
          .alert(item: $viewModel.confirmDeleteItemAlert) { item in item.alert() }
      }
      
- }*/
+ }
  
  // we only keep one "UnknownShed" in the data store.  you can find it because its
  // visitationOrder is the largest 32-bit integer. to make the app work, however, we need this
@@ -1103,7 +1103,7 @@
  //}
  
  
- /*class func unknownShedFR(unknShedName: String = kUnknownShedName) -> NSFetchRequest<Shed> {
+ class func unknownShedFR(unknShedName: String = kUnknownShedName) -> NSFetchRequest<Shed> {
 
      let request = NSFetchRequest<Shed>(entityName: "Shed")
      
@@ -1112,7 +1112,7 @@
      
      return request
 
- }*/
+ }
  
  class func unknownBrandFR(unknBrandName: String = kUnknownBrandName) -> NSFetchRequest<Brand> {
 
@@ -1126,12 +1126,12 @@
  }
  
  
- /*
+ 
  The persistent container for the application. This implementation
  creates and returns a container, having loaded the store for the
  application to it. This property is optional since there are legitimate
  error conditions that could cause the creation of the store to fail.
- */
+ 
  
  // choose here whether you want the cloud or not
  // -- when i install this on a device, i may want the cloud (you will need an Apple Developer
@@ -1162,7 +1162,7 @@
  // also, once you use NSPersistentCloudKitContainer and turn these on, then you should leave
  // these on, even if you just now want to use what's on-disk with NSPersistentContainer and
  // without cloud access.
- /*struct Temp: View {
+ struct Temp: View {
      
      var body: some View {
          //SearchBarView1(searchText: $viewModel.searchText)
@@ -1191,7 +1191,7 @@
      }
      
      
- }*/
+ }
  
  struct TestView70: View {
 
@@ -1220,16 +1220,16 @@
      }
  }
  
- /*.font(.largeTitle)
+ .font(.largeTitle)
  .frame(width: 57, height: 50)
  .foregroundColor(Color.white)
- .padding(.bottom, 7)*/
+ .padding(.bottom, 7)
 
 // FetchRequest To Keep List of sheds Updated
-/*@FetchRequest(fetchRequest: MainCatelogVM.allShedsFR())
-private var allSheds: FetchedResults<Shed>*/
+@FetchRequest(fetchRequest: MainCatelogVM.allShedsFR())
+private var allSheds: FetchedResults<Shed>
 
-/*HStack {
+HStack {
  Button {viewModel.isAddNewItemShowing.toggle()} label: {
      Image(systemName: "plus")
  }
@@ -1245,14 +1245,14 @@ private var allSheds: FetchedResults<Shed>*/
  }
 }
 .padding(.horizontal)
-.padding(.top, 15)*/
+.padding(.top, 15)
  
- /*ScrollView(.vertical, showsIndicators: false) {
+ ScrollView(.vertical, showsIndicators: false) {
      ForEach(allFavItems) { item in
          ItemRowView(item: item)
              .padding(.top, 10)
      }
- }*/
+ }
  struct SimpleItemsListForBrand: View {
      
      @FetchRequest    private var items: FetchedResults<Item>
@@ -1299,12 +1299,12 @@ private var allSheds: FetchedResults<Shed>*/
  //                                    isAddNewItemSheetShowing: $isAddNewItemSheetShowing*/)
  //}
  
- /*ScrollView(.vertical, showsIndicators: false) {
+ ScrollView(.vertical, showsIndicators: false) {
      ForEach(allWishListItems) { item in
          ItemRowView(item: item)
      }
  }
- .padding(.top, 20)*/
+ .padding(.top, 20)
  
  
  // MARK: OLD MAINCATELOG VM STUFF
@@ -1552,7 +1552,7 @@ private var allSheds: FetchedResults<Shed>*/
  //private init() { }
 
  /// The lone CloudKit container used to store all our data.
- /*lazy var container: NSPersistentCloudKitContainer = {
+ lazy var container: NSPersistentCloudKitContainer = {
      
      let defaults = UserDefaults.standard
      let container = NSPersistentCloudKitContainer(name: "GearShed")
@@ -1581,9 +1581,9 @@ private var allSheds: FetchedResults<Shed>*/
      
      return container
      
- }()*/
+ }()
 
- /*var body: some View {
+ var body: some View {
      VStack (spacing: 0) {
          
          StatBar()
@@ -1601,7 +1601,7 @@ private var allSheds: FetchedResults<Shed>*/
              .opacity(0)
          Spacer(minLength: 60)
      }
- }*/
+ }
  //private var selectedBrandName: String
  
  //@State private var altShedSelected: Bool = false
@@ -1611,13 +1611,13 @@ private var allSheds: FetchedResults<Shed>*/
  //@State private var altShedName: String = ""
  
  //@State private var altBrandName: String = ""
- /*if selectedShed != Shed.theUnknownShed() {
+ if selectedShed != Shed.theUnknownShed() {
      
  }
      
      editableItemData.shed = selectedShed! //?? Shed.theUnknownShed()
      print("loaded selected shed")
- }*/
+ }
  //if (selectedShed != nil) {
  //    editableItemData.shed = selectedShed! //?? Shed.theUnknownShed()
  //    print("loaded selected shed")
@@ -1626,32 +1626,32 @@ private var allSheds: FetchedResults<Shed>*/
  //print("STock", editableItemData.shed.name)
  // initialize the editableData struct for the incoming item, if any; and
  // also carry in whatever might be a suggested Item name for a new Item
- /*if let item = editableItem {
+ if let item = editableItem {
      _editableItemData = State(initialValue: EditableItemData(item: item))
  } else {
   // here's we'll see if a suggested name for adding a new item was supplied
   let initialValue = EditableItemData(initialItemName: initialItemName, initialItemDetails: initialItemDetails, shed: shed,  brand: brand)
   _editableItemData = State(initialValue: initialValue)
- }*/
+ }
  //selectedShedName = shed?.name ?? "Choose a shed"
  //selectedBrandName = brand?.name ?? "Choose a brand"
  /@State private var selectedShed: Shed? = Shed.theUnknownShed()
- /*func discolsureShedTitle() -> String {
+ func discolsureShedTitle() -> String {
      if !altShedSelected {
          return viewModel.selectedShed!.name
      } else {
          return altShedName
      }
- }*/
+ }
  
- /*func discolsureBrandTitle() -> String {
+ func discolsureBrandTitle() -> String {
      if !altBrandSelected {
          return selectedBrandName
      } else {
          return altBrandName
      }
- }*/
- /*VStack (alignment: .leading, spacing: 10) {
+ }
+ VStack (alignment: .leading, spacing: 10) {
      Text("Quantity")
          .font(.subheadline)
          .bold()
@@ -1664,7 +1664,7 @@ private var allSheds: FetchedResults<Shed>*/
              Spacer()
          }
      }
- }*/
+ }
 
  HStack {
      VStack (alignment: .leading, spacing: 5) {
@@ -1687,7 +1687,7 @@ private var allSheds: FetchedResults<Shed>*/
      }
  }
  
- /*SPForShedView(selected: $selected)
+ SPForShedView(selected: $selected)
  if self.selected == 0 {
      AllItemsView(persistentStore: persistentStore)
          .transition(.moveAndFade)
@@ -1706,12 +1706,12 @@ private var allSheds: FetchedResults<Shed>*/
          .transition(.moveAndFade)
  } else {
      EmptyView()
- }*/
+ }
 
  //Spacer()
 
  
- /*DisclosureGroup(editableItemData.shed.name, isExpanded: $expandedShed) {
+ DisclosureGroup(editableItemData.shed.name, isExpanded: $expandedShed) {
      VStack(alignment: .leading) {
          NavigationLink(destination: AddShedView()) {
              Text("Add New Shed")
@@ -1731,9 +1731,9 @@ private var allSheds: FetchedResults<Shed>*/
                  }
          }
      }
- }*/
+ }
  
- /*DisclosureGroup(editableItemData.brand.name, isExpanded: $expandedBrand) {
+ DisclosureGroup(editableItemData.brand.name, isExpanded: $expandedBrand) {
      VStack(alignment: .leading) {
          NavigationLink(destination: AddBrandView()) {
              Text("Add New Brand")
@@ -1755,16 +1755,16 @@ private var allSheds: FetchedResults<Shed>*/
                  }
          }
      }
- }*/
+ }
  
- /*struct AppTabBarView_Previews: PreviewProvider {
+ struct AppTabBarView_Previews: PreviewProvider {
      static var previews: some View {
          AppTabBarView()
      }
- }*/
+ }
 
 
- /*CustomTabView(selection: $tabSelection) {
+ CustomTabView(selection: $tabSelection) {
 
      NavigationView { HomeView() }
          .tabBarItem(tab: .home, selection: $tabSelection)
@@ -1775,9 +1775,9 @@ private var allSheds: FetchedResults<Shed>*/
      NavigationView { GearlistView(persistentStore: persistentStore) }
          .tabBarItem(tab: .trips, selection: $tabSelection)
      
- }*/
+ }
 
- /*struct AppTabBarView1: View {
+ struct AppTabBarView1: View {
 
      @State private var tabSelection: TabBarItem = .home
      
@@ -1838,15 +1838,15 @@ private var allSheds: FetchedResults<Shed>*/
 
          }
      }
- }*/
- /*AutoSizingTF(hint: "Item Details", text: $editableItemData.details, containerHeight: $containerHeight) {
+ }
+ AutoSizingTF(hint: "Item Details", text: $editableItemData.details, containerHeight: $containerHeight) {
      UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
  }
  .frame(height: containerHeight <= 120 ? containerHeight : 120)
  //.background(Color.theme.green)
- //.cornerRadius(10)*/
+ //.cornerRadius(10)
 
- /*VStack(alignment: .leading, spacing: 10) {
+ VStack(alignment: .leading, spacing: 10) {
      HStack {
          Text ("Shed")
              .font(.subheadline)
@@ -1923,9 +1923,9 @@ private var allSheds: FetchedResults<Shed>*/
          
          Spacer()
      } // Menu Pickers
- }*/
+ }
  // custom init here to set up editableData state
- /*init(persistentStore: PersistentStore, editableItem: Item? = nil, initialItemName: String? = nil, initialItemDetails: String? = nil, shed: Shed? = nil, brand: Brand? = nil) {
+ init(persistentStore: PersistentStore, editableItem: Item? = nil, initialItemName: String? = nil, initialItemDetails: String? = nil, shed: Shed? = nil, brand: Brand? = nil) {
      let viewModel = GearShedData(persistentStore: persistentStore)
      _viewModel = StateObject(wrappedValue: viewModel)
      
@@ -1939,9 +1939,9 @@ private var allSheds: FetchedResults<Shed>*/
          let initialValue = EditableItemData(initialItemName: initialItemName, initialItemDetails: initialItemDetails, shed: shed,  brand: brand)
          _editableItemData = State(initialValue: initialValue)
      }
- }*/
+ }
 
- /*NavigationView {
+ NavigationView {
      ScrollView(.vertical, showsIndicators: false) {
          VStack (alignment: .leading, spacing: 20) {
              
@@ -2042,7 +2042,7 @@ private var allSheds: FetchedResults<Shed>*/
                  }
              }
              
-             /*VStack (alignment: .leading, spacing: 10) {
+             VStack (alignment: .leading, spacing: 10) {
                  Text("Quantity")
                      .font(.subheadline)
                      .bold()
@@ -2055,7 +2055,7 @@ private var allSheds: FetchedResults<Shed>*/
                          Spacer()
                      }
                  }
-             }*/
+             }
              
              Toggle(isOn: $editableItemData.wishlist) {
                  Text("Wishlist Item")
@@ -2110,7 +2110,7 @@ private var allSheds: FetchedResults<Shed>*/
          }
          .alert(item: $confirmDeleteItemAlert) { item in item.alert() }
      }
- }*/
+ }
  
  
  // MARK: Swipe to dismiss tab bar scroll View
@@ -2135,7 +2135,7 @@ private var allSheds: FetchedResults<Shed>*/
          }
      }
      // Geometry Reader for calculating Offset...
-     /*.overlay( GeometryReader { proxy -> Color in
+     .overlay( GeometryReader { proxy -> Color in
              let minY = proxy.frame(in: .named("SCROLL")).minY
              let durationOffset: CGFloat = 35
              DispatchQueue.main.async {
@@ -2159,7 +2159,7 @@ private var allSheds: FetchedResults<Shed>*/
                  self.offset = minY
              }
              return Color.clear
-         } )*/
+         } )
      // Same as Bottom Tab Calcu...
      .padding(.bottom, 75)
  }
@@ -2180,7 +2180,7 @@ private var allSheds: FetchedResults<Shed>*/
  }
  
  
- /*SPForDetailView(selected: $selected)
+ SPForDetailView(selected: $selected)
 
  if self.selected == 1 {
      Color.black
@@ -2197,29 +2197,29 @@ private var allSheds: FetchedResults<Shed>*/
          .transition(.moveAndFade)
  }
 
- Spacer()*/
+ Spacer()
  
- /*ToolbarItem(placement: .navigationBarTrailing) {
+ToolbarItem(placement: .navigationBarTrailing) {
      Button {
          hideTab.toggle()
      } label: {
          Text("Hide Tab")
      }
- }*/
+ }
  
  
  // all editableData is packaged here. its initial values are set using
  // a custom init.
  //@State private var editableGearlistData: EditableGearlistData
  // custom init to set up editable data
- /*init(gearlist: Gearlist) {
+ init(gearlist: Gearlist) {
      _editableGearlistData = State(initialValue: EditableGearlistData(gearlist: gearlist))
      self.gearlist = gearlist
- }*/
+ }
 
  
  
- /*struct TabButton: View {
+ struct TabButton: View {
      
      var image: String
      @Binding var currentTab: String
@@ -2244,10 +2244,10 @@ private var allSheds: FetchedResults<Shed>*/
          }
 
      }
- }*/
+ }
 
 
- /*struct CustomTabBar: View {
+struct CustomTabBar: View {
      
      @Binding var currentTab: String
      
@@ -2279,20 +2279,9 @@ private var allSheds: FetchedResults<Shed>*/
              Color.theme.green
          )
          .clipShape(RoundedRectangle(cornerRadius: 20))
-     }*/
+     }
 
- /*ZStack {
-     Color.theme.background
-         .opacity(0.8)
-     Color.white
-         .opacity(0.3)
- }
-
- )*/
- 
- 
- 
- /* private  var pageRect : CGRect
+ private  var pageRect : CGRect
 
  private var renderer : UIGraphicsPDFRenderer?
 
@@ -2389,32 +2378,33 @@ private var allSheds: FetchedResults<Shed>*/
          logo.draw(in: logoAt)
        
      }
- } */
- /*var tableDataItems = [TableDataItem]()
+ }
+ var tableDataItems = [TableDataItem]()
  for itemIndex in 0..<names.count {
      tableDataItems.append(TableDataItem(name: names[itemIndex], address: addresses[itemIndex], money: money[itemIndex]))
  }
  let sumItem = money.reduce(0, +)
- tableDataItems.append(TableDataItem(name: "", address: "sum:", money: sumItem))*/
+ tableDataItems.append(TableDataItem(name: "", address: "sum:", money: sumItem))
  
  // Table Header Titles
  
  
- //let pdfCreator = PDFCreator(tableDataItems: tableDataItems, tableDataHeaderTitles: tableDataHeaderTitles)
+ let pdfCreator = PDFCreator(tableDataItems: tableDataItems, tableDataHeaderTitles: tableDataHeaderTitles)
+ 
  // MARK: OLD
 
- //@State var isTabShowing: Bool = true
- //@EnvironmentObject var tabManager: TabBarManager
+ @State var isTabShowing: Bool = true
+ @EnvironmentObject var tabManager: TabBarManager
 
- //var bottomEdge: CGFloat
+ var bottomEdge: CGFloat
 
- // Hiding Native TabBar...
- /*init(bottomEdge: CGFloat){
+Hiding Native TabBar...
+ init(bottomEdge: CGFloat){
      UITabBar.appearance().isHidden = true
      self.bottomEdge = bottomEdge
- }*/
+ }
 
- /*var body1: some View {
+ var body1: some View {
      TabView(selection: $currentTab) {
          
          NavigationView { HomeView() }
@@ -2433,13 +2423,13 @@ private var allSheds: FetchedResults<Shed>*/
              //.navigationViewStyle(StackNavigationViewStyle())
      }
      //.tabViewStyle(.page(indexDisplayMode: .never))
-     /*.overlay(
+     .overlay(
          CustomTabBar(currentTab: $currentTab)
              .offset(y: tabManager.hideTab ? (50 + bottomEdge) : 0) ,alignment: .bottom
-     )*/
- }*/
+     )
+ }
 
- /*PagerTabView3(tint: Color.blue, selection: $tabInt) {
+ PagerTabView3(tint: Color.blue, selection: $tabInt) {
      HStack {
          Image(systemName: "house")
              .pageLabel()
@@ -2467,26 +2457,7 @@ private var allSheds: FetchedResults<Shed>*/
          //.frame(maxWidth: .infinity ,maxHeight: .infinity)
          .tag(2)
          //.navigationViewStyle(StackNavigationViewStyle())
- }*/
-
- /* ZStack {
-     
-     VStack {
-         
-         
-         
-         
-         
-         
-         
-         /*if tabInt == 0 {
-             
-         }*/
-         
-     }
  }
-
-
 
  TabView(selection: $currentTab) {
      
@@ -2520,20 +2491,18 @@ private var allSheds: FetchedResults<Shed>*/
  .overlay(
      CustomTabBar(currentTab: $currentTab)
          .offset(y: tabManager.hideTab ? (50 + bottomEdge) : 0) ,alignment: .bottom
- ) */
+ )
  
- // Singleton TabBarManager Instantiated Here
- @StateObject var tabManager = TabBarManager()
-
- /*var body1: some View {
+ var body1: some View {
      GeometryReader { proxy in
          let bottomEdge = proxy.safeAreaInsets.bottom
          AppTabBarView(bottomEdge: (bottomEdge == 0 ? 15 : bottomEdge))
              .ignoresSafeArea(.all, edges: .bottom)
              .environmentObject(tabManager)
      }
- }*/
- /*private var addListAlertOverlay: some View {
+ }
+  
+private var addListAlertOverlay: some View {
      AZAlert(title: "Add New List", isShown: $isAddListShowing, text: $newListName) { text in
          let gearlist = Gearlist.newGearlist(name: text)
          activateAddItems = true
@@ -2545,14 +2514,9 @@ private var allSheds: FetchedResults<Shed>*/
          }
 
      }
- }*/
+ }
  
- 
- /*VStack (spacing: 0) {
-     itemsList
- }*/
-
- /*private var itemsList: some View {
+ private var itemsList: some View {
      ScrollView(.vertical, showsIndicators: false) {
          LazyVStack {
              ForEach(gsData.sectionByShed(itemArray: gsData.favItems)) { section in
@@ -2581,9 +2545,9 @@ private var allSheds: FetchedResults<Shed>*/
          .padding(.top, 10)
          .padding(.bottom, 75)
      }
- }*/
+ }
 
- /*private var itemsList: some View {
+ private var itemsList: some View {
      ScrollView(.vertical, showsIndicators: false) {
          LazyVStack {
              ForEach(gsData.sectionByShed(itemArray: gsData.regretItems)) { section in
@@ -2611,8 +2575,9 @@ private var allSheds: FetchedResults<Shed>*/
          .padding(.top, 10)
          .padding(.bottom, 75)
      }
- }*/
- /* private var itemsList: some View {
+ }
+  
+private var itemsList: some View {
   ScrollView(.vertical, showsIndicators: false) {
       LazyVStack {
           ForEach(gsData.sectionByShed(itemArray: gsData.wishListItems)) { section in
@@ -2640,9 +2605,119 @@ private var allSheds: FetchedResults<Shed>*/
       .padding(.bottom, 75)
   }
  }
- */
+ 
+ struct CustomHeader: View {
+     let name: String
+     let color: Color
+
+     var body: some View {
+         VStack {
+             Text(name)
+         }
+         .padding(0).background(FillAll(color: color))
+     }
+ }
+
+ struct FillAll: View {
+     let color: Color
+     
+     var body: some View {
+         GeometryReader { proxy in
+             self.color.frame(width: proxy.size.width * 1.3).fixedSize()
+         }
+     }
+ }
 
 
- 
- 
+ struct PopOverButton: View {
+     
+     let shed: Shed
+     let detailManager: DetailViewManager
+     
+     @State private var showPopover: Bool = false
+     
+     var body: some View {
+         
+         Button {
+             detailManager.selectedShed = shed
+             showPopover.toggle()
+         } label: {
+             Image(systemName: "square.and.pencil")
+                 .resizable()
+                 .frame(width: 17, height: 17)
+                 .padding(.horizontal, 2)
+         }
+         .overlay ( showPopover ?
+             ( PopOverMenu()
+                 .background(Color.white)
+                 .cornerRadius(15)
+                 .clipShape(ArrowShape())
+                 .offset(y: -120)
+                 
+             ) : nil
+         )
+         
+     }
+ }
+ struct PopOverMenu: View {
+     
+     var body: some View {
+         VStack(alignment: .leading, spacing: 18) {
+             
+             Button {
+                 
+             } label: {
+                 HStack (spacing: 15){
+                     Image(systemName: "house")
+                         .renderingMode(.original)
+                     Text("Home")
+                 }
+             }
+             Divider()
+             
+             Button {
+                 
+             } label: {
+                 HStack (spacing: 15){
+                     Image(systemName: "house")
+                         .renderingMode(.original)
+                     Text("Home")
+                 }
+             }
+             Divider()
+             
+             Button {
+                 
+             } label: {
+                 HStack (spacing: 15){
+                     Image(systemName: "house")
+                         .renderingMode(.original)
+                     Text("Home")
+                 }
+             }
+         }
+         .foregroundColor(Color.black)
+         .frame(width: 140)
+         .padding()
+         .padding(.bottom, 20)
+         .background(Color.white)
+     }
+     
+ }
+
+ struct ArrowShape: Shape {
+     func path(in rect: CGRect) -> Path {
+         let center = rect.width / 2
+         return Path { path in
+             path.move(to: CGPoint(x: 0.0, y: 0.0))
+             path.addLine(to: CGPoint(x: rect.width, y: 0))
+             path.addLine(to: CGPoint(x: rect.width, y: rect.height - 20))
+             path.addLine(to: CGPoint(x: center - 15, y: rect.height - 20))
+             path.addLine(to: CGPoint(x: center, y: rect.height - 5))
+             path.addLine(to: CGPoint(x: center + 15, y: rect.height - 20))
+             path.addLine(to: CGPoint(x: 0, y: rect.height - 20))
+         }
+     }
+ }
+
  */

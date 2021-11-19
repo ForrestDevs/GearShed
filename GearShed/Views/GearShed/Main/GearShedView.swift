@@ -9,8 +9,7 @@
 import SwiftUI
 
 struct GearShedView: View {
-    static let tag: String? = "GearShed"
-    
+
     @EnvironmentObject private var detailManager: DetailViewManager
         
     @EnvironmentObject var persistentStore: PersistentStore
@@ -22,30 +21,58 @@ struct GearShedView: View {
     @State private var showSearch: Bool = false
     @State private var showFilterOptions: Bool = false
     
+    @State private var currentSelection: Int = 0
+    
     init(persistentStore: PersistentStore) {
         let viewModel = GearShedData(persistentStore: persistentStore)
         _gsData = StateObject(wrappedValue: viewModel)
     }
     
     var body: some View {
-        VStack (spacing: 0) {
-            statBar
-            content
-        }
-        .navigationBarTitle(navTitle(), displayMode: .inline)
-        .toolbar {
-            filterButton
-            searchButton
-            shareButton
-        }
-        .fullScreenCover(isPresented: $viewModel.showPDFScreen) {
-            NavigationView {
-                PDFExportView(persistentStore: persistentStore)
+        NavigationView {
+            PagerTabView(tint: Color.theme.accent, selection: $currentSelection) {
+                Text("Shed")
+                    .pageLabel()
+                Text("Brand")
+                    .pageLabel()
+                Text("Wish")
+                    .pageLabel()
+                Text("Fav")
+                    .pageLabel()
+                Text("Regret")
+                    .pageLabel()
+            } content: {
+                ShedItemsView()
+                    .environmentObject(gsData)
+                    .pageView(ignoresSafeArea: true, edges: .bottom)
+                BrandItemsView()
+                    .environmentObject(gsData)
+                    .pageView(ignoresSafeArea: true, edges: .bottom)
+                WishesView()
+                    .environmentObject(gsData)
+                    .pageView(ignoresSafeArea: true, edges: .bottom)
+                FavsView()
+                    .environmentObject(gsData)
+                    .pageView(ignoresSafeArea: true, edges: .bottom)
+                RegretsView()
+                    .environmentObject(gsData)
+                    .pageView(ignoresSafeArea: true, edges: .bottom)
+            }
+            .navigationBarTitle(navTitle(), displayMode: .inline)
+            .toolbar {
+                searchButton
+                shareButton
+            }
+            .fullScreenCover(isPresented: $viewModel.showPDFScreen) {
+                NavigationView {
+                    PDFExportView(persistentStore: persistentStore)
+                }
+            }
+            .onDisappear {
+                persistentStore.saveContext()
             }
         }
-        .onDisappear {
-            persistentStore.saveContext()
-        }
+        .navigationViewStyle(.stack)
     }
 }
 
@@ -77,29 +104,20 @@ extension GearShedView {
     
     private var searchButton: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            HStack {
-                if #available(iOS 15.0, *) {
-                    Button {
-                        showSearch = true
-                    } label: {
-                        Image(systemName: "magnifyingglass")
-                            .resizable()
-                            .frame(width: 20, height: 20)
-                            .padding(.horizontal, 5)
+            Button {
+                withAnimation {
+                    gsData.showAll.toggle()
+                }
+            } label: {
+                if gsData.showAll {
+                    withAnimation(.easeInOut) {
+                        Image(systemName: "minus.magnifyingglass")
                     }
                 } else {
-                    // Fallback on earlier versions
-                }
-                if showSearch {
-                    HStack {
-                        TextField("Search Item, Shed, Brand", text: $searchText)
-                            .textFieldStyle(.roundedBorder)
-                        Image(systemName: "x.circle.fill")
-                        
+                    withAnimation(.easeInOut) {
+                        Image(systemName: "plus.magnifyingglass")
                     }
-                    
                 }
-                
             }
         }
     }

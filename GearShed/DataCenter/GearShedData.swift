@@ -11,6 +11,7 @@ import CoreData
 
 final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  ObservableObject {
     
+    @Published var showAll: Bool = true
     // MARK: Data Publishing Operations
     
     let persistentStore: PersistentStore
