@@ -26,3 +26,9 @@ extension View {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
+
+extension CGSize {
+static func * (size: CGSize, value: CGFloat) -> CGSize {
+    return CGSize(width: size.width * value, height: size.height * value)
+   }
+}

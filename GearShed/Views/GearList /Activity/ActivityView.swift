@@ -24,6 +24,7 @@ struct ActivityView: View {
                 StatBar(statType: .activity)
                 activitiesList
             }
+            //.padding(.top, 5)
             addListButtonOverlay
         }
         .alert(item: $confirmDeleteActivityTypeAlert) { type in type.alert() }
@@ -37,7 +38,7 @@ extension ActivityView {
             ForEach(viewModel.activityTypes) { type in
                 Section {
                     ForEach(type.gearlists) { activity in
-                        GearlistRowView(gearlist: activity)
+                        ActivityRowView(activity: activity)
                     }
                 } header: {
                     HStack {
@@ -91,6 +92,7 @@ extension ActivityView {
                 }
             }
         }
+        .listStyle(.plain)
     }
     
     private var addListButtonOverlay: some View {
@@ -104,15 +106,8 @@ extension ActivityView {
                     }
                 }
                 label: {
-                    VStack{
-                        Text("Create")
-                            .font(.system(size: 12, weight: .regular))
-                            .foregroundColor(Color.theme.background)
-                            
-                        Text("List")
-                            .font(.system(size: 12, weight: .regular))
-                            .foregroundColor(Color.theme.background)
-                    }
+                    Image(systemName: "plus")
+                        .foregroundColor(Color.theme.background)
                 }
                 .frame(width: 55, height: 55)
                 .background(Color.theme.accent)
@@ -122,6 +117,8 @@ extension ActivityView {
                 .shadow(color: Color.theme.accent.opacity(0.3), radius: 3,x: 3,y: 3)
             }
         }
+        .padding(.bottom, 50)
+
     }
 }
 

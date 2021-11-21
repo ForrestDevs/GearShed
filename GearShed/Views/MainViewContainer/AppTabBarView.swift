@@ -25,6 +25,9 @@ struct AppTabBarView: View {
             
             GearlistView(persistentStore: persistentStore)
                 .tabBarItem(tab: .gearlist, selection: $tabSelection)
+            
+            SettingsView(persistentStore: persistentStore)
+                .tabBarItem(tab: .settings, selection: $tabSelection) 
         }
         .ignoresSafeArea(.keyboard, edges: .bottom)
     }

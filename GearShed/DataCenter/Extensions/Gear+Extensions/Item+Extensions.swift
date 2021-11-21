@@ -25,13 +25,16 @@ extension Item {
         set { detail_ = newValue }
     }
     
-    var image: ItemImage {
-        get { image_! }
-        set {
-            image_?.objectWillChange.send()
-            image_ = newValue
-            image_?.objectWillChange.send()
+    var image: ItemImage? {
+        get { image_ ?? nil }
+        set { image_ = newValue }
+    }
+    
+    var diaries: [ItemDiary] {
+        if let diaries = diaries_ as? Set<ItemDiary> {
+            return diaries.sorted(by: { $0.name < $1.name })
         }
+        return []
     }
     
 	// whether the item is a favourtie or not.  this fronts a Core Data boolean
@@ -100,6 +103,22 @@ extension Item {
     var gearlists: [Gearlist] {
         if let gearlists = gearlists_ as? Set<Gearlist> {
             return gearlists.sorted(by: { $0.name < $1.name })
+        }
+        return []
+    }
+    
+    var adventures: [Gearlist] {
+        if let adventures = gearlists_ as? Set<Gearlist> {
+            let array = adventures.sorted(by: { $0.name < $1.name })
+            return array.filter({ $0.isAdventure == true })
+        }
+        return []
+    }
+    
+    var activities: [Gearlist] {
+        if let activities = gearlists_ as? Set<Gearlist> {
+            let array = activities.sorted(by: { $0.name < $1.name })
+            return array.filter({ $0.isAdventure == false })
         }
         return []
     }

@@ -19,12 +19,12 @@ struct ShedItemsView: View {
 
     var body: some View {
         ZStack {
-            VStack (spacing: 0){
+            VStack (spacing: 0) {
                 StatBar(statType: .shed)
                 if gsData.sheds.count == 0 {
                     EmptyViewText(emptyText: "Shed", buttonName: "Add Shed")
                 } else {
-                    listContent
+                    listView
                 }
             }
             ExpandableButton(type: .shed)
@@ -40,7 +40,7 @@ struct ShedItemsView: View {
 
 extension ShedItemsView {
     
-    private var listContent: some View {
+    /*private var listContent: some View {
         List {
             ForEach(gsData.sheds) { shed in
                 Section {
@@ -72,7 +72,7 @@ extension ShedItemsView {
                                 }
                             } label: {
                                 HStack {
-                                    Text("Add to Shed").textCase(.none)
+                                    Text("Add Gear to Shed").textCase(.none)
                                     Image(systemName: "plus")
                                 }
                                 
@@ -112,8 +112,101 @@ extension ShedItemsView {
                 }
             }
         }
-        .listStyle(.plain)
+        //.listStyle()
+    }*/
+    
+    private var listView: some View {
+        ScrollView {
+            LazyVStack (spacing: 0, pinnedViews: .sectionHeaders) {
+                ForEach (gsData.sheds) { shed in
+                    Section {
+                        sectionContent(shed: shed)
+                    } header: {
+                        sectionHeader(shed: shed)
+                    }
+                }
+            }
+            .padding(.bottom, 150)
+        }
+    }
+    
+    private func sectionContent(shed: Shed) -> some View {
+        ForEach (shed.items) { item in
+            if gsData.showAll {
+                ItemRowView(item: item)
+                    .padding(.leading, 15)
+                    .animation(.linear, value: gsData.showAll)
+            }
+        }
+    }
+    
+    private func sectionHeader(shed: Shed) -> some View {
+        ZStack {
+            Color.theme.headerBG
+                .frame(maxWidth: .infinity)
+                .frame(height: 25)
+            
+            HStack {
+                Text(shed.name).textCase(.none)
+                    .font(.custom("HelveticaNeue", size: 16.5).bold())
+                
+                Spacer()
+                
+                Menu {
+                    Button {
+                        let canCreate = self.persistentStore.fullVersionUnlocked ||
+                        self.persistentStore.count(for: Item.fetchRequest()) < 3
+                        if canCreate {
+                            detailManager.selectedShed = shed
+                            withAnimation {
+                                detailManager.showAddItemFromShed = true
+                            }
+                        } else {
+                            vm.showingUnlockView.toggle()
+                        }
+                    } label: {
+                        HStack {
+                            Text("Add Gear to Shed").textCase(.none)
+                            Image(systemName: "plus")
+                        }
+                        
+                    }
+                    Button {
+                        detailManager.selectedShed = shed
+                        withAnimation {
+                            detailManager.showModifyShed = true
+                        }
+                    } label: {
+                        HStack {
+                            Text("Edit Shed Name").textCase(.none)
+                            Image(systemName: "square.and.pencil")
+                        }
+                    }
+                    Button {
+                        vm.confirmDeleteShedAlert = ConfirmDeleteShedAlert (
+                            persistentStore: persistentStore,
+                            shed: shed,
+                            destructiveCompletion: {
+                                presentationMode.wrappedValue.dismiss()
+                            }
+                        )
+                    } label: {
+                        HStack {
+                            Text("Delete Shed").textCase(.none)
+                            Image(systemName: "trash")
+                        }
+                    }
+                } label: {
+                    Image(systemName: "square.and.pencil")
+                        .resizable()
+                        .frame(width: 17, height: 17)
+                        .padding(.horizontal, 2)
+                }
+            }
+            .padding(.horizontal, 15)
+        }
     }
     
 }
+
 

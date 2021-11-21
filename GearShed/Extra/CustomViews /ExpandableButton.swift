@@ -32,7 +32,7 @@ struct ExpandableButton: View {
                     VStack (alignment: .center, spacing: 1) {
                         if type == .shed {
                             if showMenuItem1 {
-                                menuButton(type: .item, buttonText: "Item")
+                                menuButton(type: .item, buttonText: "Gear")
                             }
                             if showMenuItem2 {
                                 menuButton(type: .shed, buttonText: "Shed")
@@ -40,7 +40,7 @@ struct ExpandableButton: View {
                         }
                         if type == .brand {
                             if showMenuItem1 {
-                                menuButton(type: .item, buttonText: "Item")
+                                menuButton(type: .item, buttonText: "Gear")
                             }
                             if showMenuItem3 {
                                 menuButton(type: .brand, buttonText: "Brand")
@@ -65,7 +65,7 @@ struct ExpandableButton: View {
                     .shadow(color: Color.theme.accent.opacity(0.3), radius: 3,x: 3,y: 3)
                     
                 }
-                .padding(.bottom, 20)
+                .padding(.bottom, 50)
             }
         }
         

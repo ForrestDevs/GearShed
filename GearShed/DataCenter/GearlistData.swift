@@ -14,6 +14,9 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     
     let persistentStore: PersistentStore
     
+    private let gearlistController: NSFetchedResultsController<Gearlist>
+    @Published var gearlists = [Gearlist]()
+    
     private let tripController: NSFetchedResultsController<Gearlist>
     @Published var trips = [Gearlist]()
     
@@ -32,18 +35,26 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     private let trueContainerBoolController: NSFetchedResultsController<ContainerBool>
     @Published var trueContainerBools = [ContainerBool]()
     
+    private let packingBoolsController: NSFetchedResultsController<ContainerBool>
+    @Published var packingBools = [ContainerBool]()
+    
     init(persistentStore: PersistentStore) {
         self.persistentStore = persistentStore
         
+        let gearlistRequest: NSFetchRequest<Gearlist> = Gearlist.fetchRequest()
+        gearlistRequest.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
+        gearlistController = NSFetchedResultsController(fetchRequest: gearlistRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
+        
+        
         let tripRequest: NSFetchRequest<Gearlist> = Gearlist.fetchRequest()
         tripRequest.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
-        tripRequest.predicate = NSPredicate(format: "isTrip_ == %d", true)
+        tripRequest.predicate = NSPredicate(format: "isAdventure_ == %d", true)
         
         tripController = NSFetchedResultsController(fetchRequest: tripRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
         
         let activityRequest: NSFetchRequest<Gearlist> = Gearlist.fetchRequest()
         activityRequest.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
-        activityRequest.predicate = NSPredicate(format: "isTrip_ == %d", false)
+        activityRequest.predicate = NSPredicate(format: "isAdventure_ == %d", false)
 
         activityController = NSFetchedResultsController(fetchRequest: activityRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
         
@@ -63,18 +74,32 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         packingGroupController = NSFetchedResultsController(fetchRequest: packingGroupRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
         
         let trueContainerBoolRequest: NSFetchRequest<ContainerBool> = ContainerBool.fetchRequest()
-        trueContainerBoolRequest.sortDescriptors = []
+        trueContainerBoolRequest.sortDescriptors = [NSSortDescriptor(key: "isPacked_", ascending: true)]
         trueContainerBoolRequest.predicate = NSPredicate(format: "isPacked_ == %d", true)
         
         trueContainerBoolController = NSFetchedResultsController(fetchRequest: trueContainerBoolRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
         
+        let packingBoolRequest: NSFetchRequest<ContainerBool> = ContainerBool.fetchRequest()
+        packingBoolRequest.sortDescriptors = [NSSortDescriptor(key: "isPacked_", ascending: true)]
+        packingBoolsController = NSFetchedResultsController(fetchRequest: packingBoolRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
+        
         super.init()
+        gearlistController.delegate = self
         tripController.delegate = self
         activityController.delegate = self
         activityTypeController.delegate = self
         listGroupController.delegate = self
         packingGroupController.delegate = self
         trueContainerBoolController.delegate = self
+        packingBoolsController.delegate = self
+        
+        
+        do {
+            try gearlistController.performFetch()
+            gearlists = gearlistController.fetchedObjects ?? []
+        } catch {
+            print("Failed to fetch Gearlists")
+        }
         
         do {
             try tripController.performFetch()
@@ -117,15 +142,24 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         } catch {
             print("Failed to fetch true Bools")
         }
+        
+        do {
+            try packingBoolsController.performFetch()
+            packingBools = packingBoolsController.fetchedObjects ?? []
+        } catch {
+            print("Failed to fetch true Bools")
+        }
     }
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        gearlists = gearlistController.fetchedObjects ?? []
         trips = tripController.fetchedObjects ?? []
         activities = activityController.fetchedObjects ?? []
         activityTypes = activityTypeController.fetchedObjects ?? []
         listgroups = listGroupController.fetchedObjects ?? []
         packingGroups = packingGroupController.fetchedObjects ?? []
         trueContainerBools = trueContainerBoolController.fetchedObjects ?? []
+        packingBools = packingBoolsController.fetchedObjects ?? []
     }
     
     func gearlistContainers(gearlist: Gearlist) -> [Container] {
@@ -154,33 +188,43 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         newGearlist.id = UUID()
         newGearlist.name = editableData.name
         newGearlist.details = editableData.details
-        newGearlist.isTrip = editableData.isTrip
+        newGearlist.isAdventure = editableData.isAdventure
         
-        if let activityType = editableData.activityType {
-            newGearlist.activityType = activityType
+        if editableData.isAdventure {
+            newGearlist.location = editableData.location ?? ""
+            newGearlist.country = editableData.country ?? ""
+            if let startDate = editableData.startDate {
+                newGearlist.startDate = startDate
+            }
+            if let endDate = editableData.endDate {
+                newGearlist.endDate = endDate
+            }
+        } else {
+            newGearlist.activityType = editableData.activityType!
         }
-        
-        if let location = editableData.location {
-            newGearlist.location = location
-        }
-        
-        if let startDate = editableData.startDate {
-            newGearlist.startDate = startDate
-        }
-        
-        if let endDate = editableData.endDate {
-            newGearlist.endDate = endDate
-        }
-        
+    
         persistentStore.saveContext()
         return newGearlist
     }
     /// Function to update a Gearlists values using the temp stored data.
     func updateGearlist(using editableData: EditableGearlistData) {
         let gearlist = editableData.associatedGearlist
+        
         gearlist.name = editableData.name
         gearlist.details = editableData.details
+        
+        if editableData.isAdventure {
+            gearlist.location = editableData.location!
+            gearlist.country = editableData.country!
+            gearlist.startDate = editableData.startDate!
+            gearlist.endDate = editableData.endDate!
+        }
+        
+        if !editableData.isAdventure {
+            gearlist.activityType = editableData.activityType!
+        }
         gearlist.clusters.forEach({ $0.objectWillChange.send() })
+        gearlist.containers.forEach({ $0.objectWillChange.send() })
         persistentStore.saveContext()
     }
     /// Function to delete a Gearlist
@@ -199,6 +243,11 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         }
         
         persistentStore.context.delete(gearlist)
+        persistentStore.saveContext()
+    }
+    
+    func toggleBucketlist(gearlist: Gearlist) {
+        gearlist.isBucketlist = !gearlist.isBucketlist
         persistentStore.saveContext()
     }
     
@@ -440,7 +489,7 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     func sectionByType(array: [Gearlist]) -> [SectionTypeData] {
         var completedSectionData = [SectionTypeData]()
         // otherwise, one section for each shed, please.  break the data out by shed first
-        let dictionaryByType = Dictionary(grouping: array, by: { $0.activityType })
+        let dictionaryByType = Dictionary(grouping: array, by: { $0.activityType! })
         
         // then reassemble the sections by sorted keys of this dictionary
         for key in dictionaryByType.keys.sorted() {
@@ -449,17 +498,19 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         return completedSectionData
     }
     
-    func sectionByYear(array: [Gearlist]) -> [SectionYearData] {
+    func sectionByYear(array: [Gearlist]) -> ReversedCollection<[SectionYearData]> {
         var completedSectionData = [SectionYearData]()
         
         // otherwise, one section for each shed, please.  break the data out by shed first
-        let dictionaryByYear = Dictionary(grouping: array, by: { $0.startDate.startDateYear() })
+        let dictionaryByYear = Dictionary(grouping: array, by: { $0.startDate!.startDateYear() })
         
         // then reassemble the sections by sorted keys of this dictionary
         for key in dictionaryByYear.keys.sorted() {
             completedSectionData.append(SectionYearData(title: String(key), year: key,adventures: dictionaryByYear[key]!))
         }
-        return completedSectionData
+        let returnArray = completedSectionData.reversed()
+        
+        return returnArray
     }
     
     /// Function for returning only items that arent already in the list

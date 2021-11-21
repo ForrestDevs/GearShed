@@ -185,7 +185,7 @@ extension AddAdventureView {
             VStack(alignment: .leading, spacing: 3) {
                 Text("Country")
                     .formatEntryTitle()
-                TextField("", text: $editableData.location ?? "")
+                TextField("", text: $editableData.country ?? "")
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .disableAutocorrection(true)
                     .font(.subheadline)

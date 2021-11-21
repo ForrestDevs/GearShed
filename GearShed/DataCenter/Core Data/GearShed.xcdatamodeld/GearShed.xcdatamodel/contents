@@ -32,10 +32,12 @@
         <relationship name="item_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Item" inverseName="containerBools_" inverseEntity="Item"/>
     </entity>
     <entity name="Gearlist" representedClassName="Gearlist" syncable="YES" codeGenerationType="class">
+        <attribute name="country_" optional="YES" attributeType="String"/>
         <attribute name="details_" optional="YES" attributeType="String"/>
         <attribute name="endDate_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="isTrip_" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isAdventure_" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isBucketlist_" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="location_" optional="YES" attributeType="String"/>
         <attribute name="name_" optional="YES" attributeType="String"/>
         <attribute name="startDate_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -43,6 +45,7 @@
         <relationship name="clusters_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Cluster" inverseName="gearlist_" inverseEntity="Cluster"/>
         <relationship name="containerBools_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ContainerBool" inverseName="gearlist_" inverseEntity="ContainerBool"/>
         <relationship name="containers_" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Container" inverseName="gearlist_" inverseEntity="Container"/>
+        <relationship name="diaries_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ItemDiary" inverseName="gearlist_" inverseEntity="ItemDiary"/>
         <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="gearlists_" inverseEntity="Item"/>
     </entity>
     <entity name="GearPlan" representedClassName="GearPlan" syncable="YES" codeGenerationType="class">
@@ -65,13 +68,21 @@
         <relationship name="clusters_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Cluster" inverseName="items_" inverseEntity="Cluster"/>
         <relationship name="containerBools_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ContainerBool" inverseName="item_" inverseEntity="ContainerBool"/>
         <relationship name="containers_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Container" inverseName="items_" inverseEntity="Container"/>
+        <relationship name="diaries_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ItemDiary" inverseName="item_" inverseEntity="ItemDiary"/>
         <relationship name="gearlists_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Gearlist" inverseName="items_" inverseEntity="Gearlist"/>
         <relationship name="image_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ItemImage" inverseName="item_" inverseEntity="ItemImage"/>
         <relationship name="shed_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Shed" inverseName="items_" inverseEntity="Shed"/>
     </entity>
+    <entity name="ItemDiary" representedClassName="ItemDiary" syncable="YES" codeGenerationType="class">
+        <attribute name="details_" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name_" optional="YES" attributeType="String"/>
+        <relationship name="gearlist_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gearlist" inverseName="diaries_" inverseEntity="Gearlist"/>
+        <relationship name="item_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Item" inverseName="diaries_" inverseEntity="Item"/>
+    </entity>
     <entity name="ItemImage" representedClassName="ItemImage" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="img" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
+        <attribute name="img_" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
         <relationship name="item_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Item" inverseName="image_" inverseEntity="Item"/>
     </entity>
     <entity name="PlanGroup" representedClassName="PlanGroup" syncable="YES" codeGenerationType="class">
@@ -93,18 +104,19 @@
         <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="shed_" inverseEntity="Item"/>
     </entity>
     <elements>
-        <element name="Brand" positionX="-72.79943847656261" positionY="-461.1977691650391" width="128" height="103"/>
-        <element name="Cluster" positionX="486.2406005859377" positionY="-268.9909973144532" width="128" height="103"/>
-        <element name="Container" positionX="514.5755004882812" positionY="-482.6740417480468" width="128" height="118"/>
-        <element name="ContainerBool" positionX="288.0172729492187" positionY="-346.3129272460938" width="128" height="118"/>
-        <element name="Gearlist" positionX="286.2225341796874" positionY="-603.1289825439453" width="128" height="223"/>
+        <element name="ActivityType" positionX="261.8139038085938" positionY="-485.4621734619141" width="128" height="88"/>
+        <element name="Brand" positionX="-111.4660644531251" positionY="-432.619857788086" width="128" height="103"/>
+        <element name="Cluster" positionX="473.9715576171877" positionY="-288.3204650878907" width="128" height="103"/>
+        <element name="Container" positionX="474.3728637695312" positionY="-420.3750610351562" width="128" height="118"/>
+        <element name="ContainerBool" positionX="479.8986206054688" positionY="-569.0198669433594" width="128" height="118"/>
+        <element name="Gearlist" positionX="259.2347412109374" positionY="-348.9603424072266" width="128" height="268"/>
         <element name="GearPlan" positionX="-50.50823974609375" positionY="-730.9864654541016" width="128" height="88"/>
-        <element name="Item" positionX="91.51422119140625" positionY="-416.1770935058593" width="128" height="298"/>
-        <element name="ItemImage" positionX="-88.090576171875" positionY="-326.7626647949219" width="128" height="88"/>
+        <element name="Item" positionX="91.51422119140625" positionY="-416.1770935058593" width="128" height="313"/>
+        <element name="ItemImage" positionX="-113.405029296875" positionY="-308.0182189941406" width="128" height="88"/>
         <element name="PlanGroup" positionX="131.9351806640625" positionY="-727.3628387451172" width="128" height="103"/>
         <element name="PlanItem" positionX="286.516845703125" positionY="-725.1248168945312" width="128" height="88"/>
         <element name="PlanItemLabel" positionX="135.4661865234375" positionY="-809.1134033203125" width="128" height="43"/>
-        <element name="Shed" positionX="-83.93133544921875" positionY="-228.1786499023439" width="128" height="103"/>
-        <element name="ActivityType" positionX="104.6557006835938" positionY="-573.5013580322266" width="128" height="88"/>
+        <element name="Shed" positionX="-114.8550415039062" positionY="-207.3555908203126" width="128" height="103"/>
+        <element name="ItemDiary" positionX="461.3603515625" positionY="-171.1017456054688" width="128" height="118"/>
     </elements>
 </model>

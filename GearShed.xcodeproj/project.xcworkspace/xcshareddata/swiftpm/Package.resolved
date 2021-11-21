@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "PDFCreator",
+        "repositoryURL": "https://github.com/Lukester45/PDFCreator.git",
+        "state": {
+          "branch": "main",
+          "revision": "f08aed901afa950db4daead734f6450137d57d0c",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}

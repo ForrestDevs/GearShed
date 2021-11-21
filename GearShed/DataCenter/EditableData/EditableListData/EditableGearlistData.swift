@@ -15,13 +15,26 @@ struct EditableGearlistData {
     var name: String
     var details: String
     var activityType: ActivityType? 
-    var isTrip: Bool
+    var isAdventure: Bool
     var location: String?
+    var country: String?
     var startDate: Date?
     var endDate: Date?
         
     // to do a save/commit of an Item, it must have a non-empty name
-    var canGearlistBeSaved: Bool { name.count > 0 }
+    var canGearlistBeSaved: Bool {
+        var state: Bool = false
+        if isAdventure {
+            if name.count > 0 {
+                state = true
+            }
+        } else {
+            if name.count > 0 && activityType != nil {
+                state = true
+            }
+        }
+        return state
+    }
 
     // useful to know if this is associated with an existing Brand
     var representsExistingGearlist: Bool { id != nil }
@@ -40,8 +53,9 @@ extension EditableGearlistData {
         self.id = gearlist.id
         self.name = gearlist.name
         self.details = gearlist.details
-        self.isTrip = gearlist.isTrip
+        self.isAdventure = gearlist.isAdventure
         self.location = gearlist.location
+        self.country = gearlist.country
         self.startDate = gearlist.startDate
         self.endDate = gearlist.endDate
     }
@@ -50,8 +64,9 @@ extension EditableGearlistData {
         self.persistentStore = persistentStore
         self.name = ""
         self.details = ""
-        self.isTrip = isTrip
+        self.isAdventure = isTrip
         self.location = ""
+        self.country = ""
         self.startDate = nil
         self.endDate = nil
     }
@@ -61,8 +76,9 @@ extension EditableGearlistData {
         self.name = ""
         self.details = ""
         self.activityType = activityType
-        self.isTrip = false
+        self.isAdventure = false
         self.location = ""
+        self.country = ""
         self.startDate = nil
         self.endDate = nil
     }

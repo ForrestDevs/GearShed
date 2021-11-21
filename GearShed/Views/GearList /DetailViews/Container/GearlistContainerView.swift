@@ -41,73 +41,70 @@ struct GearlistContainerView: View {
 extension GearlistContainerView {
     
     private var packingContainerList: some View {
-        VStack {
-            List {
-                ForEach(gearlist.containers) { container in
-                    Section {
-                        ForEach(container.items) { item in
-                            ItemRowView_InContainer(item: item, gearlist: gearlist, container: container)
-                        }
-                    } header: {
+        List {
+            ForEach(gearlist.containers) { container in
+                Section {
+                    ForEach(container.items) { item in
+                        ItemRowView_InContainer(item: item, gearlist: gearlist, container: container)
+                    }
+                } header: {
+                    HStack {
                         HStack {
-                            HStack {
-                                Text(container.name)
-                                    .font(.headline)
-                                Text("\(viewModel.containerTotalWeight(container: container))g")
-                                Spacer()
-                                Menu {
-                                    Button {
-                                        detailManager.selectedContainer = container
-                                        withAnimation {
-                                            detailManager.showAddItemsToContainer = true
-                                        }
-                                    } label: {
-                                        HStack {
-                                            Text("Add to Pack").textCase(.none)
-                                            Image(systemName: "plus")
-                                        }
-                                    }
-                                    Button {
-                                        detailManager.selectedContainer = container
-                                        withAnimation {
-                                            detailManager.showModifyContainer = true
-                                        }
-                                    } label: {
-                                        HStack {
-                                            Text("Edit Pack Name").textCase(.none)
-                                            Image(systemName: "square.and.pencil")
-                                        }
-                                    }
-                                    
-                                    Button {
-                                        confirmDeleteContainerAlert = ConfirmDeleteContainerAlert (
-                                            persistentStore: persistentStore,
-                                            container: container,
-                                            destructiveCompletion: {
-                                                presentationMode.wrappedValue.dismiss()
-                                            }
-                                        )
-                                    } label: {
-                                        HStack {
-                                            Text("Delete Pack").textCase(.none)
-                                            Image(systemName: "trash")
-                                        }
-                                        
+                            Text(container.name)
+                                .font(.headline)
+                            Text("\(viewModel.containerTotalWeight(container: container))g")
+                            Spacer()
+                            Menu {
+                                Button {
+                                    detailManager.selectedContainer = container
+                                    withAnimation {
+                                        detailManager.showAddItemsToContainer = true
                                     }
                                 } label: {
-                                    Image(systemName: "square.and.pencil")
-                                        .resizable()
-                                        .frame(width: 17, height: 17)
-                                        .padding(.horizontal, 2)
+                                    HStack {
+                                        Text("Add to Pack").textCase(.none)
+                                        Image(systemName: "plus")
+                                    }
                                 }
+                                Button {
+                                    detailManager.selectedContainer = container
+                                    withAnimation {
+                                        detailManager.showModifyContainer = true
+                                    }
+                                } label: {
+                                    HStack {
+                                        Text("Edit Pack Name").textCase(.none)
+                                        Image(systemName: "square.and.pencil")
+                                    }
+                                }
+                                
+                                Button {
+                                    confirmDeleteContainerAlert = ConfirmDeleteContainerAlert (
+                                        persistentStore: persistentStore,
+                                        container: container,
+                                        destructiveCompletion: {
+                                            presentationMode.wrappedValue.dismiss()
+                                        }
+                                    )
+                                } label: {
+                                    HStack {
+                                        Text("Delete Pack").textCase(.none)
+                                        Image(systemName: "trash")
+                                    }
+                                    
+                                }
+                            } label: {
+                                Image(systemName: "square.and.pencil")
+                                    .resizable()
+                                    .frame(width: 17, height: 17)
+                                    .padding(.horizontal, 2)
                             }
                         }
                     }
                 }
             }
-            .listStyle(.insetGrouped)
         }
-        
+        .listStyle(.plain)
     }
     
     private var addContainerButtonOverlay: some View {

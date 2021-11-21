@@ -32,6 +32,7 @@ struct AddShedView: View {
             }
         }
         .transition(.move(edge: .trailing))
+        //.navigationViewStyle(.stack)
 	}
     
 }

@@ -13,7 +13,7 @@ struct GearlistView: View {
     @StateObject private var glData: GearlistData
     
     @State private var currentSelection: Int = 0
-    
+        
     init(persistentStore: PersistentStore) {        
         let glData = GearlistData(persistentStore: persistentStore)
         _glData = StateObject(wrappedValue: glData)
@@ -22,9 +22,9 @@ struct GearlistView: View {
     var body: some View {
         NavigationView {
             PagerTabView(tint: Color.theme.accent, selection: $currentSelection) {
-                Text("Adventure")
+                Text("Adventures")
                     .pageLabel()
-                Text("Activity")
+                Text("Activities")
                     .pageLabel()
             } content: {
                 TripView()
@@ -36,6 +36,7 @@ struct GearlistView: View {
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                sortByButton
                 viewTitle
                 shareList
             }
@@ -45,6 +46,40 @@ struct GearlistView: View {
 }
 
 extension GearlistView {
+    
+    private var sortByButton: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Menu {
+                Button {
+                    withAnimation {
+                        
+                    }
+                } label: {
+                    Text("Name")
+                }
+                
+                Button {
+                    withAnimation {
+                        
+                    }
+                } label: {
+                    Text("Country")
+
+                }
+                
+                Button {
+                    withAnimation {
+                        
+                    }
+                } label: {
+                    Text("Year")
+                }
+                
+            } label: {
+                Image(systemName: "plus")
+            }
+        }
+    }
     
     private var shareList: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {

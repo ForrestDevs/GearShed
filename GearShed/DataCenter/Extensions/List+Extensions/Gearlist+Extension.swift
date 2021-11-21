@@ -36,28 +36,41 @@ extension Gearlist {
         }
     }
     
-    var isTrip: Bool {
-        get { isTrip_ }
-        set { isTrip_ = newValue }
+    var isAdventure: Bool {
+        get { isAdventure_ }
+        set { isAdventure_ = newValue }
     }
     
-    var startDate: Date {
-        get { startDate_ ?? Date() }
+    var isBucketlist: Bool {
+        get { isBucketlist_ }
+        set { isBucketlist_ = newValue }
+    }
+    
+    var startDate: Date? {
+        get { startDate_ ?? nil }
         set { startDate_ = newValue }
     }
     
+    var diaries: [ItemDiary] {
+        if let diaries = diaries_ as? Set<ItemDiary> {
+            return diaries.sorted(by: { $0.name < $1.name } )
+        }
+        return []
+    }
     
-    
-    
-    
-    var endDate: Date {
-        get { endDate_ ?? Date() }
+    var endDate: Date? {
+        get { endDate_ ?? nil }
         set { endDate_ = newValue }
     }
     
-    var location: String {
-        get { location_ ?? "" }
+    var location: String? {
+        get { location_ ?? nil }
         set { location_ = newValue}
+    }
+    
+    var country: String? {
+        get { country_ ?? nil }
+        set { country_ = newValue}
     }
     
     var details: String {
@@ -75,8 +88,8 @@ extension Gearlist {
         return []
     }
     
-    var activityType: ActivityType {
-        get { activityType_! }
+    var activityType: ActivityType? {
+        get { activityType_ ?? nil }
         set { activityType_ = newValue } 
     }
     
@@ -93,6 +106,15 @@ extension Gearlist {
         }
         return [] 
     }
+    
+    var containerBools: [ContainerBool] {
+        if let containerBools = containerBools_ as? Set<ContainerBool> {
+            return containerBools.sorted(by: { $0.id < $1.id })
+        }
+        return []
+    }
+    
+    
     
     // trips: fronts Core Data attribute trips_ that is an NSSet, and turns it into
     // a Swift array

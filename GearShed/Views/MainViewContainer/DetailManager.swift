@@ -19,12 +19,17 @@ class DetailViewManager: ObservableObject {
     
     // MARK: Gearshed Stuff
     
-    @Published var selectedItem: Item? = nil 
+    @Published var selectedItem: Item? = nil
     @Published var showAddItem: Bool = false
+    @Published var showModifyItem: Bool = false
     @Published var showItemDetail: Bool = false
     @Published var showAddItemFromShed: Bool = false
     @Published var showAddItemFromBrand: Bool = false
-    @Published var showModifyItem: Bool = false
+
+    @Published var selectedItemDiary: ItemDiary? = nil
+    @Published var showAddItemDiary: Bool = false
+    @Published var showModifyItemDiary: Bool = false
+    @Published var showItemDiaryDetail: Bool = false
     
     @Published var selectedShed: Shed? = nil
     @Published var showAddShed: Bool = false
@@ -37,6 +42,7 @@ class DetailViewManager: ObservableObject {
     @Published var showModifyBrand: Bool = false
     
     // MARK: Gearlist Stuff
+    
     @Published var selectedGearlist: Gearlist? = nil
     @Published var showAddGearlist: Bool = false
     @Published var showAddItemsToGearlist: Bool = false
@@ -44,8 +50,10 @@ class DetailViewManager: ObservableObject {
     @Published var showGearlistDetail: Bool = false
     
     @Published var showAddAdventure: Bool = false
-    
+    @Published var showModifyAdventure: Bool = false
+
     @Published var showAddActivity: Bool = false
+    @Published var showModifyActivity: Bool = false
     
     @Published var selectedActivityType: ActivityType? 
     @Published var showAddActivityType: Bool = false

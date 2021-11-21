@@ -46,6 +46,33 @@ extension ItemRowView_InCluster {
     
     private var itemBody: some View {
         HStack {
+            VStack (alignment: .leading, spacing: 3) {
+                HStack {
+                    HStack (spacing: 5) {
+                        Text(item.name)
+                            .formatItemNameGreen()
+                            .fixedSize()
+                        statusIcon
+                    }
+                    Text("|")
+                        .formatItemNameBlack()
+                    Text(item.brandName)
+                        .formatItemNameBlack()
+                }
+                .lineLimit(1)
+                
+                HStack {
+                    Text(item.weight + "g")
+                        .formatItemWeightBlack()
+                    Text(item.detail)
+                        .formatItemDetailsGrey()
+                }
+                .lineLimit(1)
+            }
+            Spacer()
+        }
+        
+        /*HStack {
             VStack (alignment: .leading, spacing: 0) {
                 HStack {
                     Text(item.name)
@@ -55,7 +82,7 @@ extension ItemRowView_InCluster {
                         .foregroundColor(Color.theme.accent)
                 }
                 HStack {
-                    Text(item.weight + "g")
+                    
                     .font(.caption)
                     .foregroundColor(Color.theme.accent)
                     
@@ -68,7 +95,33 @@ extension ItemRowView_InCluster {
             Spacer()
         }
         .padding(.horizontal)
-        .padding(.bottom, 5)
+        .padding(.bottom, 5)*/
+    }
+
+    private var statusIcon: some View {
+        VStack {
+            if item.isFavourite {
+                Image(systemName: "heart.fill")
+                    .resizable()
+                    .frame(width: 12, height: 11)
+                    .foregroundColor(Color.theme.green)
+                    .padding(.horizontal, 2)
+            } else
+            if item.isRegret {
+                Image(systemName: "hand.thumbsdown.fill")
+                    .resizable()
+                    .frame(width: 14, height: 14)
+                    .foregroundColor(Color.theme.green)
+                    .padding(.horizontal, 2)
+            } else
+            if item.isWishlist {
+                Image(systemName: "star.fill")
+                    .resizable()
+                    .frame(width: 14, height: 14)
+                    .foregroundColor(Color.theme.green)
+                    .padding(.horizontal, 2)
+            }
+        }
     }
     
     private var moveToCluster: some View {

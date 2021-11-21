@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import UIKit
 
 final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  ObservableObject {
     
@@ -18,6 +19,12 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         
     private let itemsController: NSFetchedResultsController<Item>
     @Published var items = [Item]()
+    
+    private let itemImagesController: NSFetchedResultsController<ItemImage>
+    @Published var itemImages = [ItemImage]()
+    
+    private let itemDiariesController: NSFetchedResultsController<ItemDiary>
+    @Published var itemDiaries = [ItemDiary]()
     
     private let favItemsController: NSFetchedResultsController<Item>
     @Published var favItems = [Item]()
@@ -43,6 +50,15 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         //itemRequest.predicate = NSPredicate(format: "isWishlist_ == %d", false)
         
         itemsController = NSFetchedResultsController(fetchRequest: itemRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
+        
+        let itemImagesRequest: NSFetchRequest<ItemImage> = ItemImage.fetchRequest()
+        itemImagesRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
+        itemImagesController = NSFetchedResultsController(fetchRequest: itemImagesRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
+        
+        let itemDiaryRequest: NSFetchRequest<ItemDiary> = ItemDiary.fetchRequest()
+        itemDiaryRequest.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
+        itemDiariesController = NSFetchedResultsController(fetchRequest: itemDiaryRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
+            
         
         let favItemRequest: NSFetchRequest<Item> = Item.fetchRequest()
         favItemRequest.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
@@ -77,6 +93,9 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         // MARK: Assign Entities to corosponding arrays
         super.init()
         itemsController.delegate = self
+        itemImagesController.delegate = self
+        itemDiariesController.delegate = self
+        
         favItemsController.delegate = self
         regretItemsController.delegate = self
         wishlistItemsController.delegate = self
@@ -88,6 +107,20 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
             items = itemsController.fetchedObjects ?? []
         } catch {
             print("Failed to fetch Items")
+        }
+        
+        do {
+            try itemImagesController.performFetch()
+            itemImages = itemImagesController.fetchedObjects ?? []
+        } catch {
+            print("Failed to fetch ItemsImages")
+        }
+        
+        do {
+            try itemDiariesController.performFetch()
+            itemDiaries = itemDiariesController.fetchedObjects ?? []
+        } catch {
+            print("Failed to fetch ItemsDiaries")
         }
         
         do {
@@ -128,6 +161,8 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         items = itemsController.fetchedObjects ?? []
+        itemImages = itemImagesController.fetchedObjects ?? []
+        itemDiaries = itemDiariesController.fetchedObjects ?? []
         favItems = favItemsController.fetchedObjects ?? []
         regretItems = regretItemsController.fetchedObjects ?? []
         wishListItems = wishlistItemsController.fetchedObjects ?? []
@@ -153,6 +188,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         newItem.datePurchased = editableData.datePurchased
         persistentStore.saveContext()
     }
+    
     /// Function to update an Item's values using the temp stored data.
     func updateItem(using editableData: EditableItemData) {
         let item = editableData.associatedItem
@@ -167,7 +203,6 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         item.shed = editableData.shed!
         item.brand = editableData.brand!
         item.datePurchased = editableData.datePurchased
-        
         item.gearlists.forEach({ $0.objectWillChange.send() })
         item.clusters.forEach({ $0.objectWillChange.send() })
         item.containers.forEach({ $0.objectWillChange.send() })
@@ -180,8 +215,60 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         // by resetting its (real, Core Data) shed & brand to nil
         item.shed_ = nil
         item.brand_ = nil
-        
         persistentStore.context.delete(item)
+        persistentStore.saveContext()
+    }
+    
+    func updateItemImg(img: UIImage, item: Item) {
+        
+        guard let imgData: Data = img.jpegData(compressionQuality: 0.5) else { return }
+        
+        if item.image == nil {
+            let newImage = ItemImage(context: persistentStore.context)
+            newImage.id = UUID()
+            newImage.img = imgData
+            item.image = newImage
+        } else {
+            let oldImg = item.image!
+            persistentStore.context.delete(oldImg)
+            
+            let newImg = ItemImage(context: persistentStore.context)
+            newImg.id = UUID()
+            newImg.img = imgData
+            item.image = newImg
+        }
+        persistentStore.saveContext()
+    }
+    
+    func deleteItemImg(img: Data, item: Item) {
+        let img = item.image!
+        item.image = nil
+        persistentStore.context.delete(img)
+        persistentStore.saveContext()
+    }
+    
+    // MARK: Item Diary Stuff ---------------------------------------------------------------------------------
+    /// Function to add a new ItemDiary using editableData.
+    func addNewItemDiary(using editableData: EditableDiaryData) {
+        let newDiary = ItemDiary(context: persistentStore.context)
+        newDiary.id = UUID()
+        newDiary.name = editableData.name
+        newDiary.details = editableData.details
+        newDiary.item = editableData.item
+        newDiary.gearlist = editableData.gearlist
+        persistentStore.saveContext()
+    }
+    
+    /// Function to update an existing ItemDiary using editableData.
+    func updateItemDiary(using editableData: EditableDiaryData) {
+        let diary = editableData.associatedDiary
+        diary.name = editableData.name
+        diary.details = editableData.details
+    }
+    
+    /// Function to delete an ItemDiary
+    func deleteItemDiary(diary: ItemDiary) {
+        persistentStore.context.delete(diary)
         persistentStore.saveContext()
     }
     
@@ -190,21 +277,21 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     func addNewBrand(using editableData: EditableBrandData) {
         let newBrand = Brand(context: persistentStore.context)
         newBrand.id = UUID()
-        newBrand.name_ = editableData.name
+        newBrand.name = editableData.name
         persistentStore.saveContext()
     }
     /// Function to create a new Brand from the Item entry form then pass It back so it can populate as the selected Brand.
     func addNewBrandFromItem(using editableData: EditableBrandData, brandOut: ((Brand) -> ())) {
         let newBrand = Brand(context: persistentStore.context)
         newBrand.id = UUID()
-        newBrand.name_ = editableData.name
+        newBrand.name = editableData.name
         persistentStore.saveContext()
         brandOut(newBrand)
     }
     /// Function to update a Brand's values using the temp stored data.
     func updateBrand(using editableData: EditableBrandData) {
         let brand = editableData.associatedBrand
-        brand.name_ = editableData.name
+        brand.name = editableData.name
         brand.items.forEach({ $0.objectWillChange.send() })
         persistentStore.saveContext()
     }
@@ -238,14 +325,15 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     func addNewShed(using editableData: EditableShedData) {
         let newShed = Shed(context: persistentStore.context)
         newShed.id = UUID()
-        newShed.name_ = editableData.name
+        newShed.name = editableData.name
         persistentStore.saveContext()
     }
+    
     /// Function to create a new Shed from the Item entry form, then pass it back so it can populate as the selected Shed.
     func addNewShedFromItem(using editableData: EditableShedData, shedOut: ((Shed) -> ())) {
         let newShed = Shed(context: persistentStore.context)
         newShed.id = UUID()
-        newShed.name_ = editableData.name
+        newShed.name = editableData.name
         persistentStore.saveContext()
         shedOut(newShed)
     }
@@ -253,7 +341,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     func updateShed(using editableData: EditableShedData) {
         let shed = editableData.associatedShed
         //editableData.associatedShed.name_ = editableData.shedName
-        shed.name_ = editableData.name
+        shed.name = editableData.name
         shed.items.forEach({ $0.objectWillChange.send() })
         persistentStore.saveContext()
     }

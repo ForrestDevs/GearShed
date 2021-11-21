@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ItemRowView_InGearlist: View {
+    @EnvironmentObject private var detailManager: DetailViewManager
     @EnvironmentObject private var viewModel: GearlistData
     @ObservedObject private var gearlist: Gearlist
     @ObservedObject private var item: Item
@@ -33,6 +34,7 @@ struct ItemRowView_InGearlist: View {
     var body: some View {
         itemBody
         .contextMenu {
+            addItemDiaryButton
             deleteContextButton
         }
         
@@ -43,34 +45,90 @@ extension ItemRowView_InGearlist {
     
     private var itemBody: some View {
         HStack {
-            Rectangle()
-                .opacity(0)
-                .frame(width: 5, height: 10)
-            VStack (alignment: .leading, spacing: 2) {
+            VStack (alignment: .leading, spacing: 3) {
                 HStack {
-                    Text(item.name)
-                        .foregroundColor(Color.theme.green)
+                    HStack (spacing: 5) {
+                        Text(item.name)
+                            .formatItemNameGreen()
+                            .fixedSize()
+                        statusIcon
+                    }
                     Text("|")
+                        .formatItemNameBlack()
                     Text(item.brandName)
-                        .foregroundColor(Color.theme.accent)
+                        .formatItemNameBlack()
                 }
-                HStack (spacing: 20){
+                .lineLimit(1)
+                HStack (spacing: 20) {
                     Text(item.weight + "g")
-                        .font(.system(size: 13))
-                        .foregroundColor(Color.theme.accent)
+                        .formatItemWeightBlack()
                     HStack {
                         pileStatusLabel
                         packStatusLabel
-                        //clusterMenu
-                        //containerMenu
                     }
                 }
-                .padding(.horizontal, 10)
             }
             Spacer()
         }
-        .padding(.horizontal)
-        .padding(.bottom, 5)
+        
+    }
+    
+    private var statusIcon: some View {
+        VStack {
+            if item.isFavourite {
+                Image(systemName: "heart.fill")
+                    .resizable()
+                    .frame(width: 12, height: 11)
+                    .foregroundColor(Color.theme.green)
+                    .padding(.horizontal, 2)
+            } else
+            if item.isRegret {
+                Image(systemName: "hand.thumbsdown.fill")
+                    .resizable()
+                    .frame(width: 14, height: 14)
+                    .foregroundColor(Color.theme.green)
+                    .padding(.horizontal, 2)
+            } else
+            if item.isWishlist {
+                Image(systemName: "star.fill")
+                    .resizable()
+                    .frame(width: 14, height: 14)
+                    .foregroundColor(Color.theme.green)
+                    .padding(.horizontal, 2)
+            }
+        }
+    }
+    
+    private var packStatusLabel: some View {
+        if ((item.gearlistContainer(gearlist: gearlist)?.name) != nil) {
+            return AnyView (
+                Text ("Pack: " + (item.gearlistContainer(gearlist: gearlist)!.name))
+                    .formatItemWeightBlack()
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            )
+        } else {
+            return AnyView (
+                Text ("Pack: ")
+                    .formatItemWeightBlack()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            )
+        }
+    }
+    
+    private var pileStatusLabel: some View {
+        if ((item.gearlistCluster(gearlist: gearlist)?.name) != nil) {
+            return AnyView (
+                Text ("Pile: " + (item.gearlistCluster(gearlist: gearlist)!.name))
+                    .formatItemWeightBlack()
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            )
+        } else {
+            return AnyView (
+                Text("Pile: ")
+                    .formatItemWeightBlack()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            )
+        }
     }
     
     // MARK: Context Menus
@@ -87,176 +145,20 @@ extension ItemRowView_InGearlist {
         }
     }
     
-    // MARK: ContainerMenu
-    /*private var containerMenu: some View {
-        Menu {
-            containerList
+    private var addItemDiaryButton: some View {
+        Button {
+            detailManager.selectedGearlist = gearlist
+            detailManager.selectedItem = item
+            withAnimation {
+                detailManager.showAddItemDiary = true
+            }
         } label: {
-            containerMenuLabel
-        }
-    }
-    
-    private var containerList: some View {
-        ForEach(viewModel.gearlistContainers(gearlist: gearlist)) { container in
-            Button {
-                itemContainer = container
-                viewModel.updateItemContainer(newContainer: itemContainer, oldContainer: previousItemContainer, item: item, gearlist: gearlist)
-                previousItemContainer = itemContainer
-            } label: {
-                HStack {
-                    if item.containers.contains(container) {
-                        Image(systemName: "checkmark")
-                            .foregroundColor(Color.theme.green)
-                    }
-                    Text(container.name)
-                        .font(.subheadline)
-                }
+            HStack {
+                Text("Add Gear Diary")
+                Image(systemName: "plus")
             }
         }
-    }*/
-    
-    private var packStatusLabel: some View {
-        if ((item.gearlistContainer(gearlist: gearlist)?.name) != nil) {
-            return AnyView (
-                Text ("Pack: " + (item.gearlistContainer(gearlist: gearlist)!.name))
-                    .font(.system(size: 13))
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-            )
-        } else {
-            return AnyView (
-                HStack (spacing: 0){
-                    Text ("Pack: ")
-                        .font(.system(size: 13))
-                    Text("Select")
-                        .foregroundColor(Color.red)
-                        .font(.system(size: 13))
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-            )
-        }
-    }
-    
-    // MARK: ClusterMenu
-    /*private var clusterMenu: some View {
-        Menu {
-            clusterList
-        } label: {
-            clusterMenuLabel
-        }
-    }
-    
-    private var clusterList: some View {
-        ForEach(viewModel.gearlistClusters(gearlist: gearlist)) { cluster in
-            Button {
-                itemCluster = cluster
-                viewModel.updateItemCluster(newCluster: itemCluster, oldCluster: previousItemCluster, item: item)
-                previousItemCluster = itemCluster
-            } label: {
-                HStack {
-                    Text(cluster.name)
-                        .font(.subheadline)
-                    if item.clusters.contains(cluster) {
-                        Image(systemName: "checkmark")
-                            .foregroundColor(Color.theme.green)
-                    }
-                }
-            }
-        }
-    }*/
-    
-    private var pileStatusLabel: some View {
-        if ((item.gearlistCluster(gearlist: gearlist)?.name) != nil) {
-            return AnyView (
-                Text ("Pile: " + (item.gearlistCluster(gearlist: gearlist)!.name))
-                    .font(.system(size: 13))
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-            )
-        } else {
-            return AnyView (
-                HStack (spacing: 0) {
-                    Text("Pile: ")
-                        .font(.system(size: 13))
-                    Text ("Select")
-                        .foregroundColor(Color.red)
-                        .font(.system(size: 13))
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-            )
-        }
-    }
-    
-}
-
-//@Environment (\.presentationMode) private var presentationMode
-//@EnvironmentObject private var detailManager: DetailViewManager
-//@EnvironmentObject private var persistentStore: PersistentStore
-//@State private var confirmRemoveItemAlert: ConfirmRemoveItemFromListAlert?
-//@State private var showAddNewCluster: Bool = false
-//@State private var showAddNewContainer: Bool = false
-/*.fullScreenCover(isPresented: $showAddNewCluster) {
-    AddClusterView(persistentStore: persistentStore, gearlist: gearlist) { cluster in
-        itemCluster = cluster
-        viewModel.updateItemCluster(newCluster: itemCluster, oldCluster: previousItemCluster, item: item)
-        previousItemCluster = itemCluster
-    }
-}
-.fullScreenCover(isPresented: $showAddNewContainer) {
-    AddContainerView(persistentStore: persistentStore, gearlist: gearlist) { container in
-        itemContainer = container
-        viewModel.updateItemContainer(newContainer: itemContainer, oldContainer: previousItemContainer, item: item, gearlist: gearlist)
-        previousItemContainer = itemContainer
-    }
-}*/
-//.alert(item: $confirmRemoveItemAlert) { item in item.alert() }
-/*private var addNewContainer: some View {
-    Button {
-        detailManager.content = AnyView (
-            AddContainerView(persistentStore: persistentStore, gearlist: gearlist) { container in
-                itemContainer = container
-                viewModel.updateItemContainer(newContainer: itemContainer, oldContainer: previousItemContainer, item: item, gearlist: gearlist)
-                previousItemContainer = itemContainer
-            }.environmentObject(detailManager)
-        )
-        withAnimation {
-            detailManager.showContent = true
-        }
-    } label: {
-        Text("Add")
-        .font(.subheadline)
-    }
-}
-
-private var containerMenuEdit: some View {
-    Button {
         
-    } label: {
-        Text("Edit")
     }
+    
 }
-
-private var containerMenuDelete: some View {
-    Button {
-        
-    } label: {
-        Text("Delete")
-    }
-}*/
-
-/*private var addNewCluster: some View {
-    Button {
-        detailManager.content = AnyView (
-            AddClusterView(persistentStore: persistentStore, gearlist: gearlist) { cluster in
-                itemCluster = cluster
-                viewModel.updateItemCluster(newCluster: itemCluster, oldCluster: previousItemCluster, item: item)
-                previousItemCluster = itemCluster
-            }.environmentObject(detailManager)
-        )
-        withAnimation {
-            detailManager.showContent = true
-        }
-    } label: {
-        Text("Add New Pile")
-        .font(.subheadline)
-    }
-}*/
-

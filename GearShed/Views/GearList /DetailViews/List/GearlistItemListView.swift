@@ -24,7 +24,7 @@ struct GearlistItemListView: View {
             StatBar(statType: .list, gearlist: gearlist)
             ZStack {
                 if gearlist.items.count == 0 {
-                    EmptyViewText(emptyText: "Items in this List", buttonName: "Select Item")
+                    EmptyViewText(emptyText: "Items in this List", buttonName: "Revise List")
                 } else {
                     itemList
                 }
@@ -38,25 +38,23 @@ struct GearlistItemListView: View {
 extension GearlistItemListView {
     
     private var itemList: some View {
-        VStack {
-            List {
-                ForEach(viewModel.sectionByShed(itemArray: gearlist.items)) { section in
-                    Section {
-                        ForEach(section.items) { item in
-                            ItemRowView_InGearlist(persistentStore: persistentStore, item: item, gearlist: gearlist)
-                        }
-                    } header: {
-                        HStack {
-                            Text(section.title)
-                                .font(.headline)
-                            Spacer()
-                            Text("\(viewModel.totalWeight(array: section.items))" + "g" )
-                        }
+        List {
+            ForEach(viewModel.sectionByShed(itemArray: gearlist.items)) { section in
+                Section {
+                    ForEach(section.items) { item in
+                        ItemRowView_InGearlist(persistentStore: persistentStore, item: item, gearlist: gearlist)
+                    }
+                } header: {
+                    HStack {
+                        Text(section.title)
+                            .font(.headline)
+                        Spacer()
+                        Text("\(viewModel.totalWeight(array: section.items))" + "g" )
                     }
                 }
             }
-            .listStyle(.insetGrouped)
         }
+        .listStyle(.plain)
     }
     
     private func sectionItems(section: SectionShedData) -> some View {
@@ -92,8 +90,8 @@ extension GearlistItemListView {
                 }
                 label: {
                     VStack{
-                        Text("Select")
-                        Text("Item")
+                        Text("Revise")
+                        Text("List")
                     }
                     .font(.system(size: 12, weight: .regular))
                     .foregroundColor(Color.theme.background)

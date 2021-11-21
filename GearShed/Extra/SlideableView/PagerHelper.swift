@@ -18,7 +18,7 @@ struct PagerTabView<Content: View,Label: View>: View {
     // Selection...
     @Binding var selection: Int
     
-    init(tint: Color,selection: Binding<Int>,@ViewBuilder labels: @escaping ()->Label,@ViewBuilder content: @escaping ()->Content){
+    init(tint: Color, selection: Binding<Int>, @ViewBuilder labels: @escaping ()->Label,@ViewBuilder content: @escaping ()->Content){
         self.content = content()
         self.label = labels()
         self.tint = tint
@@ -33,39 +33,38 @@ struct PagerTabView<Content: View,Label: View>: View {
     @State var tabOffset: CGFloat = 0
     
     var body: some View {
-        VStack(spacing: 0){            
-            HStack(spacing: 0) {
-                label
-            }
-                // For Tap to change tab...
-            .overlay(
-                HStack(spacing: 0){
-                        ForEach(0..<Int(maxTabs),id: \.self){index in
-                            Rectangle()
-                                .fill(Color.black.opacity(0.01))
-                                .onTapGesture {
-                                    // Changing Offset...
-                                    // Based on Index...
-                                    let newOffset = CGFloat(index) * getScreenBounds().width
-                                    self.offset = newOffset
-                                }
-                        }
-                    }
-                )
-                .foregroundColor(tint)
-                
+        VStack(spacing: 3) {
+            ZStack (alignment: .center) {
                 // Indicator...
-                Capsule()
-                    .fill(tint)
-                    .frame(width: maxTabs == 0 ? 0 : (getScreenBounds().width / maxTabs), height: 3)
-                    .padding(.top,5)
+                
+                RoundedRectangle(cornerRadius: 5)
+                    .stroke(Color.theme.green, lineWidth: 2)
+                    .frame(width: maxTabs == 0 ? 0 : (getScreenBounds().width / maxTabs), height: 25)
                     .frame(maxWidth: .infinity,alignment: .leading)
                     .offset(x: tabOffset)
+                
+                HStack(spacing: 0) {
+                    label
+                }
+                // For Tap to change tab...
+                .overlay(
+                    HStack(spacing: 0){
+                            ForEach(0..<Int(maxTabs),id: \.self){index in
+                                Rectangle()
+                                    .fill(Color.black.opacity(0.01))
+                                    .onTapGesture {
+                                        // Changing Offset...
+                                        // Based on Index...
+                                        let newOffset = CGFloat(index) * getScreenBounds().width
+                                        self.offset = newOffset
+                                    }
+                            }
+                        }
+                    )
+                .foregroundColor(tint)
+            }
             
-            
-            
-            
-            OffsetPageTabView(selection: $selection,offset: $offset) {
+            OffsetPageTabView(selection: $selection, offset: $offset) {
                 
                 HStack(spacing: 0){
                     content
@@ -91,6 +90,7 @@ struct PagerTabView<Content: View,Label: View>: View {
                 }
             }
         }
+        .padding(.top, 3)
     }
 }
 /*

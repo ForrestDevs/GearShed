@@ -6,8 +6,10 @@
 //
 
 import SwiftUI
+import PDFCreator
 
 struct PDFExportView: View {
+    
     @Environment(\.presentationMode) var presentationMode
     
     @EnvironmentObject var persistentStore: PersistentStore
@@ -23,7 +25,7 @@ struct PDFExportView: View {
     
     var body: some View {
         VStack {
-            PDFPreviews(data: pdfData())
+            PDFPreviews(data: createPDF())
         }
         .navigationBarTitle("Your PDF", displayMode: .inline)
         .toolbar {
@@ -37,10 +39,18 @@ struct PDFExportView: View {
             ToolbarItem(placement: .navigationBarLeading) { cancelButton() }
         }
         .sheet(isPresented: $showShareSheet) {
-            if let data = pdfData() {
+            if let data = createPDF() {
                 ShareView(activityItems: [data])
             }
         }
+    }
+    
+    func createPDF() -> Data {
+        let document = PDFDocument(format: .a4)
+        document.add(.contentCenter, text: "Create PDF documents easily.")
+        let generator = PDFGenerator(document: document)
+        let pdf = try! generator.generateData()
+        return pdf
     }
     
     func pdfData() -> Data? {
@@ -63,4 +73,9 @@ struct PDFExportView: View {
         Button("Cancel",action: {presentationMode.wrappedValue.dismiss()})
     }
 }
+
+
+
+
+
 

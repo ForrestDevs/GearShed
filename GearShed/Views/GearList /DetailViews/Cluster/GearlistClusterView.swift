@@ -41,71 +41,69 @@ struct GearlistClusterView: View {
 extension GearlistClusterView {
     
     private var gearlistClusterList: some View {
-        VStack {
-            List {
-                ForEach(gearlist.clusters) { cluster in
-                    Section {
-                        ForEach(cluster.items) { item in
-                            ItemRowView_InCluster(cluster: cluster, item: item)
-                        }
-                    } header: {
-                        HStack {
-                            Text(cluster.name)
-                                .font(.headline)
-                            Text("\(viewModel.clusterTotalWeight(cluster: cluster))g")
-                            Spacer()
-                            Menu {
-                                Button {
-                                    detailManager.selectedCluster = cluster
-                                    withAnimation {
-                                        detailManager.showAddItemsToCluster = true
-                                    }
-                                } label: {
-                                    HStack {
-                                        Text("Add to Pile").textCase(.none)
-                                        Image(systemName: "plus")
-                                    }
-                                }
-                                Button {
-                                    detailManager.selectedCluster = cluster
-                                    withAnimation {
-                                        detailManager.showModifyCluster = true
-                                    }
-                                } label: {
-                                    HStack {
-                                        Text("Edit Pile Name").textCase(.none)
-                                        Image(systemName: "square.and.pencil")
-                                    }
-                                }
-                                
-                                Button {
-                                    confirmDeleteClusterAlert = ConfirmDeleteClusterAlert (
-                                        persistentStore: persistentStore,
-                                        cluster: cluster,
-                                        destructiveCompletion: {
-                                            presentationMode.wrappedValue.dismiss()
-                                        }
-                                    )
-                                } label: {
-                                    HStack {
-                                        Text("Delete Pile").textCase(.none)
-                                        Image(systemName: "trash") 
-                                    }
-                                    
+        List {
+            ForEach(gearlist.clusters) { cluster in
+                Section {
+                    ForEach(cluster.items) { item in
+                        ItemRowView_InCluster(cluster: cluster, item: item)
+                    }
+                } header: {
+                    HStack {
+                        Text(cluster.name)
+                            .font(.headline)
+                        Text("\(viewModel.clusterTotalWeight(cluster: cluster))g")
+                        Spacer()
+                        Menu {
+                            Button {
+                                detailManager.selectedCluster = cluster
+                                withAnimation {
+                                    detailManager.showAddItemsToCluster = true
                                 }
                             } label: {
-                                Image(systemName: "square.and.pencil")
-                                    .resizable()
-                                    .frame(width: 17, height: 17)
-                                    .padding(.horizontal, 2)
+                                HStack {
+                                    Text("Add to Pile").textCase(.none)
+                                    Image(systemName: "plus")
+                                }
                             }
+                            Button {
+                                detailManager.selectedCluster = cluster
+                                withAnimation {
+                                    detailManager.showModifyCluster = true
+                                }
+                            } label: {
+                                HStack {
+                                    Text("Edit Pile Name").textCase(.none)
+                                    Image(systemName: "square.and.pencil")
+                                }
+                            }
+                            
+                            Button {
+                                confirmDeleteClusterAlert = ConfirmDeleteClusterAlert (
+                                    persistentStore: persistentStore,
+                                    cluster: cluster,
+                                    destructiveCompletion: {
+                                        presentationMode.wrappedValue.dismiss()
+                                    }
+                                )
+                            } label: {
+                                HStack {
+                                    Text("Delete Pile").textCase(.none)
+                                    Image(systemName: "trash")
+                                }
+                                
+                            }
+                        } label: {
+                            Image(systemName: "square.and.pencil")
+                                .resizable()
+                                .frame(width: 17, height: 17)
+                                .padding(.horizontal, 2)
                         }
                     }
-                    
                 }
+                
             }
-            .listStyle(.insetGrouped)
         }
+        .listStyle(.plain)
     }
     
     private var addClusterButtonOverlay: some View {

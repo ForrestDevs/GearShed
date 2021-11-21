@@ -14,10 +14,6 @@ import SwiftUI
 // in the list.  so we use the power of generics:  we introduce
 // (1) a protocol that demands that something be able to produce a simple
 // Codable (struct) representation of itself -- a proxy as it were.
-protocol CodableStructRepresentable {
-    associatedtype DataType: Codable
-    var codableProxy: DataType { get }
-}
 
 
 /*final class DevData {

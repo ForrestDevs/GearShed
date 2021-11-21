@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ItemRowView_InContainer: View {
     
+    @EnvironmentObject private var detailManager: DetailViewManager
+    
     @EnvironmentObject private var persistentStore: PersistentStore
     
     @EnvironmentObject private var viewModel: GearlistData
@@ -20,9 +22,7 @@ struct ItemRowView_InContainer: View {
     @ObservedObject private var container: Container
     
     @State private var isPacked: Bool
-    
-    @State private var showDetail: Bool = false 
-    
+        
     init(item: Item, gearlist: Gearlist, container: Container) {
         self.item = item
         self.gearlist = gearlist
@@ -38,23 +38,63 @@ struct ItemRowView_InContainer: View {
             isPacked.toggle()
             viewModel.toggleContainerBoolState(containerBool: item.gearlistContainerBool(gearlist: gearlist)!)
         } label: {
-            HStack {
-                itemPackStatus
-                itemBody
-            }
+            itemBody
         }
         .contextMenu {
             deleteContextButton
             itemDetailContextButton
-        }
-        .sheet(isPresented: $showDetail) {
-            ItemDetailView(item: item)
         }
     }
 }
 
 extension ItemRowView_InContainer {
     
+    private var itemBody: some View {
+        HStack {
+            HStack {
+                itemPackStatus
+                HStack (spacing: 5) {
+                    Text(item.name)
+                        .formatItemNameGreen()
+                        .fixedSize()
+                    statusIcon
+                }
+                Text("|")
+                    .formatItemNameBlack()
+                Text(item.brandName)
+                    .formatItemNameBlack()
+            }
+            .lineLimit(1)
+            Spacer()
+        }
+    }
+    
+    private var statusIcon: some View {
+        VStack {
+            if item.isFavourite {
+                Image(systemName: "heart.fill")
+                    .resizable()
+                    .frame(width: 12, height: 11)
+                    .foregroundColor(Color.theme.green)
+                    .padding(.horizontal, 2)
+            } else
+            if item.isRegret {
+                Image(systemName: "hand.thumbsdown.fill")
+                    .resizable()
+                    .frame(width: 14, height: 14)
+                    .foregroundColor(Color.theme.green)
+                    .padding(.horizontal, 2)
+            } else
+            if item.isWishlist {
+                Image(systemName: "star.fill")
+                    .resizable()
+                    .frame(width: 14, height: 14)
+                    .foregroundColor(Color.theme.green)
+                    .padding(.horizontal, 2)
+            }
+        }
+    }
+
     private var itemPackStatus: some View {
         ZStack {
             Image(systemName: "circle")
@@ -66,26 +106,11 @@ extension ItemRowView_InContainer {
         }
     }
     
-    private var itemBody: some View {
-        HStack {
-            VStack (alignment: .leading, spacing: 0) {
-                HStack {
-                    Text(item.name)
-                        .foregroundColor(Color.theme.green)
-                    Text("|")
-                    Text(item.brandName)
-                        .foregroundColor(Color.theme.accent)
-                }
-                .font(.system(size: 16.2))
-            }
-            Spacer()
-        }
-        .padding(.horizontal, 2)
-    }
-    
     private var itemDetailContextButton: some View {
         Button {
-            showDetail.toggle()
+            withAnimation {
+                detailManager.showItemDetail = true
+            }
         } label: {
             Text("Item Detail")
         }
@@ -99,7 +124,7 @@ extension ItemRowView_InContainer {
             }
         } label: {
             HStack {
-                Text("Remove From Pack")
+                Text("Remove from Pack")
                 Image(systemName: "trash")
             }
         }
