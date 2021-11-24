@@ -67,14 +67,30 @@ struct SettingsView: View {
             .toolbar {
                 viewTitle
             }
-            .fileImporter(isPresented: $showImportSheet, allowedContentTypes: [UTType.data, UTType.json], allowsMultipleSelection: true) { result in
+            .fileImporter(isPresented: $showImportSheet, allowedContentTypes: [UTType.json], allowsMultipleSelection: false) { result in
+                do {
+                    guard let selectedFile: URL = try result.get().first else { return }
+                    if selectedFile.startAccessingSecurityScopedResource() {
+                        backupManager.insertISBFromBackUp(url: selectedFile)
+                        //backupManager.insertFromBackup(url: selectedFile)
+                        do { selectedFile.stopAccessingSecurityScopedResource() }
+                    } else {
+                        // Handle denied access
+                    }
+                } catch {
+                    // Handle failure.
+                    print("Unable to read file contents")
+                    print(error.localizedDescription)
+                }
+            }
+            /*.fileImporter(isPresented: $showImportSheet, allowedContentTypes: [UTType.data, UTType.json], allowsMultipleSelection: false) { result in
                 switch result {
                 case .success(let urls):
                     loadURL(urls: urls)
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
-            }
+            }*/
             /*.fileExporter(isPresented: $showExportSheet, documents: backUpData(), contentType: .text) { result in
                 switch result {
                     case .success(let url):
@@ -83,7 +99,6 @@ struct SettingsView: View {
                         
                     }
             }*/
-            
             .sheet(isPresented: $showExportSheet) {
                 if let data = backUpData() {
                     DocumentPicker(URLs: data)
@@ -94,9 +109,9 @@ struct SettingsView: View {
     }
     
     private func loadURL(urls: [URL]) {
-        for url in urls {
-            print(String(describing: url))
-        }
+        guard let url = urls.first else { return }
+        backupManager.insertISBFromBackUp(url: url)
+        //backupManager.insertFromBackup(url: url)
     }
     
     private func loadData() {

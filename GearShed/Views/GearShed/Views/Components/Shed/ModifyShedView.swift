@@ -28,10 +28,7 @@ struct ModifyShedView: View {
 
     var body: some View {
         NavigationView {
-            ZStack {
-                backgroundLayer
-                scrollViewLayer
-            }
+            viewContent
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 cancelToolBarItem
@@ -45,7 +42,30 @@ struct ModifyShedView: View {
 }
 
 extension ModifyShedView {
-    
+    // MARK: View Content
+    private var viewContent: some View {
+        ZStack {
+            Color.theme.silver
+                .ignoresSafeArea()
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(alignment: .leading, spacing: 10) {
+                    Section {
+                        VStack(alignment: .leading, spacing: 3) {
+                            Text("Name")
+                                .formatEntryTitle()
+                            TextField("Shed Name (Required)", text: $editableData.name)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .disableAutocorrection(true)
+                                .font(.subheadline)
+                        }
+                    }
+                }
+                .padding()
+            }
+            
+        }
+    }
+    // MARK: Toolbar Content
     private var cancelToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
@@ -78,31 +98,6 @@ extension ModifyShedView {
             .disabled(!editableData.canShedBeSaved)
         }
     }
-    
-    private var backgroundLayer: some View {
-        Color.theme.silver
-            .ignoresSafeArea()
-    }
-    
-    private var scrollViewLayer: some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            VStack(alignment: .leading, spacing: 10) {
-                Section {
-                    VStack(alignment: .leading, spacing: 3) {
-                        Text("Name")
-                            .formatEntryTitle()
-                        TextField("Shed name", text: $editableData.name)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .disableAutocorrection(true)
-                            .font(.subheadline)
-                    }
-                }
-                
-            }
-            .padding()
-        }
-    }
-    
 }
 
 /*Section {

@@ -14,11 +14,11 @@ struct EditableDiaryData {
     var id: UUID?
     var name: String
     var details: String
-    
-    var item: Item
+
+    var item: Item?
     var gearlist: Gearlist
     
-    var canBeSaved: Bool { name.count > 0 && details.count > 0 }
+    var canBeSaved: Bool { item != nil && details.count > 0 }
     
     var representsExisting: Bool { id != nil }
     
@@ -27,7 +27,6 @@ struct EditableDiaryData {
 }
 
 extension EditableDiaryData {
-    
     /// Initializer for loading current ItemDiary details for Modify ItemDiary View.
     init(persistentStore: PersistentStore, diary: ItemDiary) {
         self.persistentStore = persistentStore
@@ -39,10 +38,10 @@ extension EditableDiaryData {
     }
     
     /// Initializer for standard add Diary
-    init(persistentStore: PersistentStore, gearlist: Gearlist, item: Item) {
+    init(persistentStore: PersistentStore, gearlist: Gearlist) {
         self.persistentStore = persistentStore
         self.gearlist = gearlist
-        self.item = item
+        self.item = nil
         self.name = ""
         self.details = ""
     }

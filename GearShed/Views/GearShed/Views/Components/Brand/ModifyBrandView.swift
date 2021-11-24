@@ -29,10 +29,7 @@ struct ModifyBrandView: View {
     
     var body: some View {
         NavigationView {
-            ZStack {
-                backgroundLayer
-                scrollViewLayer
-            }
+            viewContent
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 cancelToolBarItem
@@ -46,6 +43,32 @@ struct ModifyBrandView: View {
 }
 
 extension ModifyBrandView {
+    
+    // MARK: View Content
+    private var viewContent: some View {
+        ZStack {
+            Color.theme.silver
+                .ignoresSafeArea()
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(alignment: .leading, spacing: 10) {
+                    Section {
+                        VStack(alignment: .leading, spacing: 3) {
+                            Text("Name")
+                                .formatEntryTitle()
+                            TextField("Brand Name (Required)", text: $editableData.name)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .disableAutocorrection(true)
+                                .font(.subheadline)
+                        }
+                    }
+                }
+                .padding()
+            }
+            
+        }
+    }
+    
+    // MARK: Toolbar Content
     
     private var cancelToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
@@ -77,29 +100,6 @@ extension ModifyBrandView {
                 Text("Save")
             }
             .disabled(!editableData.canBrandBeSaved)
-        }
-    }
-    
-    private var backgroundLayer: some View {
-        Color.theme.silver
-            .ignoresSafeArea()
-    }
-    
-    private var scrollViewLayer: some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            VStack(alignment: .leading, spacing: 10) {
-                Section {
-                    VStack(alignment: .leading, spacing: 3) {
-                        Text("Name")
-                            .formatEntryTitle()
-                        TextField("", text: $editableData.name)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .disableAutocorrection(true)
-                            .font(.subheadline)
-                    }
-                }
-            }
-            .padding()
         }
     }
 }

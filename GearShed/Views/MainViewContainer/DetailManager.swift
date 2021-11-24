@@ -28,6 +28,7 @@ class DetailViewManager: ObservableObject {
 
     @Published var selectedItemDiary: ItemDiary? = nil
     @Published var showAddItemDiary: Bool = false
+    @Published var showSelectDiaryItem: Bool = false
     @Published var showModifyItemDiary: Bool = false
     @Published var showItemDiaryDetail: Bool = false
     

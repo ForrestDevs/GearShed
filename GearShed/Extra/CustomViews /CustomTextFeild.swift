@@ -8,18 +8,16 @@
 import SwiftUI
 
 struct AutoSizingTF: UIViewRepresentable {
-    
     var hint: String
     @Binding var text: String
-    @Binding var containerHeight: CGFloat
-    var onEnd : ()->()
+    @State var containerHeight: CGFloat = 0 
+    var onEnd: (()->())?
     
     func makeCoordinator() -> Coordinator {
         return AutoSizingTF.Coordinator(parent: self)
     }
     
     func makeUIView(context: Context) -> UITextView{
-        
         let textView = UITextView()
         // Displaying text as hint...
         textView.text = hint
@@ -51,12 +49,9 @@ struct AutoSizingTF: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: UITextView, context: Context) {
-        
         // Starting Text Field Height...
         DispatchQueue.main.async {
-            if containerHeight == 0{
-                containerHeight = uiView.contentSize.height
-            }
+            containerHeight = uiView.contentSize.height
         }
     }
     
@@ -72,7 +67,7 @@ struct AutoSizingTF: UIViewRepresentable {
         // keyBoard Close @objc Function...
         @objc func closeKeyBoard(){
          
-            parent.onEnd()
+            (parent.onEnd!)()
         }
         
         func textViewDidBeginEditing(_ textView: UITextView) {
@@ -94,7 +89,7 @@ struct AutoSizingTF: UIViewRepresentable {
         // On End checking if textbox is empty
         // if so then put hint..
         func textViewDidEndEditing(_ textView: UITextView) {
-            if textView.text == ""{
+            if textView.text == "" {
                 textView.text = parent.hint
                 textView.textColor = .gray
             }

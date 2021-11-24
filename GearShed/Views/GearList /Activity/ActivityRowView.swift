@@ -41,17 +41,15 @@ struct ActivityRowView: View {
 extension ActivityRowView {
     
     private var rowBody: some View {
-        HStack {
-            VStack (alignment: .leading, spacing: 3) {
-                Text(activity.name)
-                    .formatItemNameGreen()
-                    .fixedSize()
-                    .lineLimit(1)
-                Text(activity.details)
-                    .formatItemDetailsGrey()
-                    .lineLimit(1)
-            }
-            Spacer()
+        VStack (alignment: .leading, spacing: 3) {
+            Text(activity.name)
+                .formatItemNameGreen()
+                .fixedSize()
+                .lineLimit(1)
+            Text(activity.details)
+                .formatItemDetailsGrey()
+                .lineLimit(1)
+            Divider()
         }
         .padding(.leading, 15)
     }

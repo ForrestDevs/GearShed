@@ -27,7 +27,7 @@ struct GearlistView: View {
                 Text("Activities")
                     .pageLabel()
             } content: {
-                TripView()
+                AdventureView()
                     .environmentObject(glData)
                     .pageView()
                 ActivityView()

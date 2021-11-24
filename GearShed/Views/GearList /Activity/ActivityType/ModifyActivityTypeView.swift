@@ -4,11 +4,9 @@
 //
 //  Created by Luke Forrest Gannon on 2021-11-18.
 //
-
 import SwiftUI
 
 struct ModifyActivityTypeView: View {
-    
     @EnvironmentObject private var detailManager: DetailViewManager
     @State private var editableData: EditableActivityTypeData
     @StateObject private var glData: GearlistData
@@ -23,10 +21,7 @@ struct ModifyActivityTypeView: View {
     
     var body: some View {
         NavigationView {
-            ZStack {
-                backgroundLayer
-                scrollViewLayer
-            }
+            contentView
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 cancelToolBarItem
@@ -37,10 +32,30 @@ struct ModifyActivityTypeView: View {
         .transition(.move(edge: .trailing))
     }
     
-}
-
-extension ModifyActivityTypeView {
+    // MARK: Main Content
+    private var contentView: some View {
+        ZStack {
+            Color.theme.silver
+                .ignoresSafeArea()
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(alignment: .leading, spacing: 10) {
+                    Section {
+                        VStack(alignment: .leading, spacing: 3) {
+                            Text("Name")
+                                .formatEntryTitle()
+                            TextField("Activity Type Name", text: $editableData.name)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .disableAutocorrection(true)
+                                .font(.subheadline)
+                        }
+                    }
+                }
+                .padding()
+            }
+        }
+    }
     
+    // MARK: Toolbar Content
     private var cancelToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
@@ -73,30 +88,4 @@ extension ModifyActivityTypeView {
             .disabled(!editableData.canBeSaved)
         }
     }
-    
-    private var backgroundLayer: some View {
-        Color.theme.silver
-            .ignoresSafeArea()
-    }
-    
-    private var scrollViewLayer: some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            VStack(alignment: .leading, spacing: 10) {
-                Section {
-                    VStack(alignment: .leading, spacing: 3) {
-                        Text("Name")
-                            .formatEntryTitle()
-                        TextField("Activity Type Name", text: $editableData.name)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .disableAutocorrection(true)
-                            .font(.subheadline)
-                    }
-                }
-            }
-            .padding()
-        }
-    }
-    
 }
-
-

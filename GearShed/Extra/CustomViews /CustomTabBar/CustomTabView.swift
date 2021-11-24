@@ -22,7 +22,16 @@ struct CustomTabView <Content:View>: View {
     }
     
     var body: some View {
-        ZStack (alignment: .bottom){
+        /*VStack (spacing: 0) {
+            content
+                .frame(maxHeight: .infinity)
+            CustomTabBarView(tabs: tabs, selection: $selection, localSelection: selection)
+        }
+        .onPreferenceChange(TabBarItemsPreferenceKey.self) { value in
+            self.tabs = value
+        }*/
+        
+        ZStack (alignment: .bottom) {
             content
                 .ignoresSafeArea()
             

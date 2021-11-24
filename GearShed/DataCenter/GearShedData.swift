@@ -219,30 +219,33 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         persistentStore.saveContext()
     }
     
-    func updateItemImg(img: UIImage, item: Item) {
+    func updateItemImg(img: UIImage?, item: Item, imgURL: URL?) {
         
-        guard let imgData: Data = img.jpegData(compressionQuality: 0.5) else { return }
-        
-        if item.image == nil {
-            let newImage = ItemImage(context: persistentStore.context)
-            newImage.id = UUID()
-            newImage.img = imgData
-            item.image = newImage
-        } else {
-            let oldImg = item.image!
-            persistentStore.context.delete(oldImg)
-            
-            let newImg = ItemImage(context: persistentStore.context)
-            newImg.id = UUID()
-            newImg.img = imgData
-            item.image = newImg
+        if let img = img {
+            guard let imgData: Data = img.jpegData(compressionQuality: 0.5) else { return }
+            if item.image == nil {
+                let newImage = ItemImage(context: persistentStore.context)
+                newImage.id = UUID()
+                newImage.img = imgData
+                newImage.imgURL = String(describing: imgURL)
+                item.image = newImage
+            } else {
+                let oldImg = item.image!
+                persistentStore.context.delete(oldImg)
+                
+                let newImg = ItemImage(context: persistentStore.context)
+                newImg.id = UUID()
+                newImg.img = imgData
+                newImg.imgURL = String(describing: imgURL)
+                item.image = newImg
+            }
         }
+        
         persistentStore.saveContext()
     }
     
-    func deleteItemImg(img: Data, item: Item) {
+    func deleteItemImg(item: Item) {
         let img = item.image!
-        item.image = nil
         persistentStore.context.delete(img)
         persistentStore.saveContext()
     }
@@ -252,9 +255,9 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     func addNewItemDiary(using editableData: EditableDiaryData) {
         let newDiary = ItemDiary(context: persistentStore.context)
         newDiary.id = UUID()
-        newDiary.name = editableData.name
+        newDiary.name = editableData.gearlist.name
         newDiary.details = editableData.details
-        newDiary.item = editableData.item
+        newDiary.item = editableData.item!
         newDiary.gearlist = editableData.gearlist
         persistentStore.saveContext()
     }
@@ -262,7 +265,6 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     /// Function to update an existing ItemDiary using editableData.
     func updateItemDiary(using editableData: EditableDiaryData) {
         let diary = editableData.associatedDiary
-        diary.name = editableData.name
         diary.details = editableData.details
     }
     

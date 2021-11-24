@@ -38,7 +38,7 @@ struct PagerTabView<Content: View,Label: View>: View {
                 // Indicator...
                 
                 RoundedRectangle(cornerRadius: 5)
-                    .stroke(Color.theme.green, lineWidth: 2)
+                    .stroke(Color.theme.green, lineWidth: 1)
                     .frame(width: maxTabs == 0 ? 0 : (getScreenBounds().width / maxTabs), height: 25)
                     .frame(maxWidth: .infinity,alignment: .leading)
                     .offset(x: tabOffset)

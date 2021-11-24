@@ -16,7 +16,7 @@ struct EmptyViewText: View {
     
     var body: some View {
         ZStack {
-            Color.theme.offWhite
+            Color.theme.silver
                 .edgesIgnoringSafeArea(.bottom)
             VStack {
                 Text ("""
@@ -39,7 +39,7 @@ struct EmptyViewTextNonButton: View {
     
     var body: some View {
         ZStack {
-            Color.theme.offWhite
+            Color.theme.silver
                 .edgesIgnoringSafeArea(.bottom)
             VStack {
                 Text ("""

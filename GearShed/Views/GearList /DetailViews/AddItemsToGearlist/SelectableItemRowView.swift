@@ -45,6 +45,8 @@ struct SelectableItemRowView: View {
         case .packItem:
             let initialValue = pack!.items.contains(item)
             _isChecked = State(initialValue: initialValue)
+        case .diaryItem:
+            _isChecked = State(initialValue: false)
         }
       
         self.respondToTapOnSelector = respondToTapOnSelector

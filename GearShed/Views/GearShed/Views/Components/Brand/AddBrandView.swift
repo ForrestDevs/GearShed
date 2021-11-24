@@ -23,10 +23,7 @@ struct AddBrandView: View {
     
     var body: some View {
         NavigationView {
-            ZStack {
-                backgroundLayer
-                scrollViewLayer
-            }
+            viewContent
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 cancelToolBarItem
@@ -40,6 +37,31 @@ struct AddBrandView: View {
 
 extension AddBrandView {
     
+    // MARK: View Content
+    private var viewContent: some View {
+        ZStack {
+            Color.theme.silver
+                .ignoresSafeArea()
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(alignment: .leading, spacing: 10) {
+                    Section {
+                        VStack(alignment: .leading, spacing: 3) {
+                            Text("Name")
+                                .formatEntryTitle()
+                            TextField("Brand Name (Required)", text: $editableData.name)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .disableAutocorrection(true)
+                                .font(.subheadline)
+                        }
+                    }
+                }
+                .padding()
+            }
+            
+        }
+    }
+    
+    // MARK: Toolbar Content
     private var cancelToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
@@ -86,29 +108,6 @@ extension AddBrandView {
         }
     }
     
-    private var backgroundLayer: some View {
-        Color.theme.silver
-            .ignoresSafeArea()
-    }
-    
-    private var scrollViewLayer: some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            VStack(alignment: .leading, spacing: 10) {
-                Section {
-                    VStack(alignment: .leading, spacing: 3) {
-                        Text("Name")
-                            .formatEntryTitle()
-                        TextField("", text: $editableData.name)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .disableAutocorrection(true)
-                            .font(.subheadline)
-                    }
-                }
-            }
-            .padding()
-        }
-    }
-    
 }
 
 extension AddBrandView {
@@ -123,7 +122,7 @@ extension AddBrandView {
     }
     
     /// Initializer for loading Add Brand from Add Item. 
-    init(persistentStore: PersistentStore, brandOut: @escaping ((Brand) -> ())) {
+    init(persistentStore: PersistentStore, brandOut: @escaping ( (Brand) -> () ) ) {
         let viewModel = GearShedData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
         

@@ -34,7 +34,6 @@ struct ItemRowView_InGearlist: View {
     var body: some View {
         itemBody
         .contextMenu {
-            addItemDiaryButton
             deleteContextButton
         }
         
@@ -44,33 +43,31 @@ struct ItemRowView_InGearlist: View {
 extension ItemRowView_InGearlist {
     
     private var itemBody: some View {
-        HStack {
-            VStack (alignment: .leading, spacing: 3) {
-                HStack {
-                    HStack (spacing: 5) {
-                        Text(item.name)
-                            .formatItemNameGreen()
-                            .fixedSize()
-                        statusIcon
-                    }
-                    Text("|")
-                        .formatItemNameBlack()
-                    Text(item.brandName)
-                        .formatItemNameBlack()
+        VStack (alignment: .leading, spacing: 3) {
+            HStack {
+                HStack (spacing: 5) {
+                    Text(item.name)
+                        .formatItemNameGreen()
+                        .fixedSize()
+                    statusIcon
                 }
-                .lineLimit(1)
-                HStack (spacing: 20) {
-                    Text(item.weight + "g")
-                        .formatItemWeightBlack()
-                    HStack {
-                        pileStatusLabel
-                        packStatusLabel
-                    }
+                Text("|")
+                    .formatItemNameBlack()
+                Text(item.brandName)
+                    .formatItemNameBlack()
+            }
+            .lineLimit(1)
+            HStack (spacing: 20) {
+                Text(item.weight + "g")
+                    .formatItemWeightBlack()
+                HStack {
+                    pileStatusLabel
+                    packStatusLabel
                 }
             }
-            Spacer()
+            Divider()
         }
-        
+        .padding(.leading, 15)
     }
     
     private var statusIcon: some View {

@@ -32,7 +32,10 @@ struct ItemDetailView: View {
     var body: some View {
         NavigationView {
             VStack (alignment: .leading) {
-                HStack {
+                viewContent
+                ItemDiaryList(item: item)
+                //pageView
+                /*HStack {
                     titleBar
                     AddImageButton(item: item)
                         .environmentObject(gsData)
@@ -42,9 +45,10 @@ struct ItemDetailView: View {
                     itemDetails
                 }
                 .padding(.horizontal)
-                ItemDetailPageView(item: item)
+                pageView*/
+                /*ItemDetailPageView(item: item)
                     .environmentObject(glData)
-                    .environmentObject(gsData)
+                    .environmentObject(gsData)*/
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -59,67 +63,103 @@ struct ItemDetailView: View {
 
 extension ItemDetailView {
     
+    private var viewContent: some View {
+        VStack(alignment: .leading, spacing: 5) {
+            titleBar
+            itemDetails
+        }
+        .padding(.leading, 25)
+    }
+    
     // MARK: Main
     private var titleBar: some View {
-        // Fav, Brand, Name
         HStack {
-            if item.isFavourite_ {
-                favouriteButton
-            } else if item.isRegret_ {
-                regretButton
-            } else {
-                spaceFiller
+            HStack (spacing: 5) {
+                Text(item.name)
+                    .formatGreenTitle()
+                    .fixedSize()
+                statusIcon
             }
-            
-            Text(item.brandName)
-                .formatBlackTitle()
-            
             Text("|")
                 .formatBlackTitle()
-            
-            Text(item.name)
-                .formatGreenTitle()
-            
+            Text(item.brandName)
+                .formatBlackTitle()
             Spacer()
-
         }
-        .padding(.top, 10)
-        .padding(.horizontal)
+        .lineLimit(1)
+        .padding(.top, 20)
+    }
+    
+    private var statusIcon: some View {
+        VStack {
+            if item.isFavourite {
+                Image(systemName: "heart.fill")
+                    .resizable()
+                    .frame(width: 12, height: 11)
+                    .foregroundColor(Color.theme.green)
+                    .padding(.horizontal, 2)
+            } else
+            if item.isRegret {
+                Image(systemName: "hand.thumbsdown.fill")
+                    .resizable()
+                    .frame(width: 14, height: 14)
+                    .foregroundColor(Color.theme.green)
+                    .padding(.horizontal, 2)
+            } else
+            if item.isWishlist {
+                Image(systemName: "star.fill")
+                    .resizable()
+                    .frame(width: 14, height: 14)
+                    .foregroundColor(Color.theme.green)
+                    .padding(.horizontal, 2)
+            }
+        }
     }
     
     private var itemDetails: some View {
-        HStack {
+        HStack (alignment: .top) {
+            VStack (alignment: .leading, spacing: 2) {
+                HStack {
+                    if let weight = item.weight {
+                        Text("\(weight)g")
+                            .formatDetailsWPPBlack()
+                    }
+                    if let price = item.price {
+                        Text("$\(price)")
+                            .formatDetailsWPPBlack()
+                    }
+                }
+                
+                HStack {
+                    if let date = item.datePurchased {
+                        Text("Purchased:")
+                            .formatDetailsWPPBlack()
+                        Text(date.dateText(style: .medium))
+                            .formatDetailsWPPBlack()
+                    }
+                }
+                Text(item.detail)
+                        .formatDetailDescriptionBlack()
+            }
+            Spacer()
+            ItemImageView(item: item)
+                .environmentObject(gsData)
+        }
+        .padding(.trailing)
+
+        
+        /*HStack {
             VStack (alignment: .leading, spacing: 5) {
                 // Weight - Price
                 HStack {
                     spaceFiller
-                    HStack {
-                        Text("Weight:")
-                            .formatBlackSmall()
-                        
-                        Text("\(item.weight)g")
-                            .formatGreenSmall()
-                    }
-                    HStack {
-                        Text("Price:")
-                            .formatBlackSmall()
-                        
-                        Text("$\(item.price)")
-                            .formatGreenSmall()
-                    }
+                    
                 }
                 
                 // Purchased - Regret
                 HStack {
                     spaceFiller
-                    HStack {
-                        Text("Purchased:")
-                            .formatBlackSmall()
-                        
-                        //Text()
-                        Text(item.datePurchased?.asShortDateString() ?? "" )
-                            .formatGreenSmall()
-                    }
+                    
                     HStack {
                         Text("Regret")
                             .formatBlackSmall()
@@ -130,41 +170,34 @@ extension ItemDetailView {
                 // Details
                 HStack {
                     spaceFiller
-                    Text(item.detail)
-                        .formatGreenSmall()
+                    
                         .frame(alignment: .leading)
                 }
             }
             Spacer()
-        }
+        }*/
     }
     
     private var pageView: some View {
         PagerTabView(tint: Color.theme.accent, selection: $currentSelection) {
-            Text("Adventures")
-                .pageLabel()
-                .font(.system(size: 12).bold())
-            Text("Activities")
-                .pageLabel()
-                .font(.system(size: 12).bold())
-            Text("Diaries")
-                .pageLabel()
-                .font(.system(size: 12).bold())
             Text("Photo")
                 .pageLabel()
                 .font(.system(size: 12).bold())
+            Text("Diary")
+                .pageLabel()
+                .font(.system(size: 12).bold())
         } content: {
-            ItemAdventureList(item: item)
+            ItemImageView(item: item)
+                .environmentObject(gsData)
+                .pageView()
+            ItemDiaryList(item: item)
+                .pageView()
+            /*ItemAdventureList(item: item)
                 .environmentObject(glData)
                 .pageView()
             ItemActivityList(item: item)
                 .environmentObject(glData)
-                .pageView()
-            ItemDiaryList(item: item)
-                .pageView()
-            ItemImageView(item: item)
-                .environmentObject(gsData)
-                .pageView()
+                .pageView()*/
         }
     }
     
@@ -201,7 +234,7 @@ extension ItemDetailView {
         }
     }
     
-    private var favouriteButton: some View {
+    /*private var favouriteButton: some View {
         Image(systemName: "heart.fill")
             .resizable()
             .frame(width: 13, height: 12)
@@ -223,11 +256,11 @@ extension ItemDetailView {
             .frame(width: 13, height: 12)
             .padding(.vertical, -1)
             .opacity(0)
-    }
+    }*/
 }
 
 
-struct ItemDetailPageView: View {
+/*struct ItemDetailPageView: View {
     
     @EnvironmentObject private var glData: GearlistData
     @EnvironmentObject private var gsData: GearShedData
@@ -265,7 +298,7 @@ struct ItemDetailPageView: View {
         }
     }
     
-}
+}*/
 
 
 

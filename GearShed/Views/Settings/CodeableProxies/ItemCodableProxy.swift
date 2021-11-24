@@ -26,9 +26,6 @@ extension ItemImage: CodableStructRepresentable {
     }
 }
 
-
-
-
 struct ItemCodableProxy: Codable {
     var id: String
     var name: String
@@ -116,12 +113,12 @@ struct ItemDiaryCodableProxy: Codable {
 
 struct ItemImageCodableProxy: Codable {
     var id: String
-    var imgData: String
+    var imgURL: String
     var item: String
     
     init(from itemImg: ItemImage) {
         self.id = itemImg.id!.uuidString
-        self.imgData = itemImg.img.base64EncodedString(options: )
+        self.imgURL = String(describing: itemImg.imgURL)
         self.item = itemImg.item.id!.uuidString
     }
 }

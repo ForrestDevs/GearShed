@@ -18,12 +18,24 @@ struct ItemImageView: View {
             if item.image == nil {
                 Image("NulImg")
                     .resizable()
-                    .frame(width: 300, height: 300)
+                    .frame(width: 120, height: 120)
             } else {
                 Image(uiImage: UIImage(data: item.image!.img)!)
                     .resizable()
-                    .frame(width: 300, height: 300)
+                    .frame(width: 120, height: 120)
             }
+            HStack {
+                AddImageButton(item: item)
+                    .environmentObject(gsData)
+                if item.image != nil {
+                    Button {
+                        gsData.deleteItemImg(item: item)
+                    } label: {
+                        Image(systemName: "trash")
+                    }
+                }
+            }
+            
         }
     }
 

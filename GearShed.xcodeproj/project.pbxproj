@@ -12,6 +12,7 @@
 		080015AA27277C2B00E1BE4C /* OffsetTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080015A727277C2B00E1BE4C /* OffsetTabView.swift */; };
 		080015AC27277C2B00E1BE4C /* PagerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080015A927277C2B00E1BE4C /* PagerHelper.swift */; };
 		080015AF272787E700E1BE4C /* RegretsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080015AE272787E700E1BE4C /* RegretsView.swift */; };
+		080D1F83274B4776007D6C5A /* GearlistDiaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080D1F82274B4776007D6C5A /* GearlistDiaryView.swift */; };
 		081E8A5C2739D54A0096CBE8 /* ModifyAdventureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E8A5B2739D54A0096CBE8 /* ModifyAdventureView.swift */; };
 		08371B25271A42890072AD94 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B24271A42890072AD94 /* TestView.swift */; };
 		08371B2A271AA4DB0072AD94 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B29271AA4DB0072AD94 /* HomeView.swift */; };
@@ -187,6 +188,8 @@
 		08ED0FE22719EAE10072CB90 /* AppTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ED0FDD2719EAE10072CB90 /* AppTabBarView.swift */; };
 		08ED0FE5271A2C8A0072CB90 /* UnusedCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ED0FE4271A2C8A0072CB90 /* UnusedCode.swift */; };
 		08ED0FE7271A34EE0072CB90 /* NewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ED0FE6271A34EE0072CB90 /* NewTest.swift */; };
+		08F99576274DD7DA00211988 /* Binding+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F99575274DD7DA00211988 /* Binding+Extension.swift */; };
+		08F99578274DF3DD00211988 /* backup.json in Resources */ = {isa = PBXBuildFile; fileRef = 08F99577274DF3DD00211988 /* backup.json */; };
 		08FE365F272CC2B9000035A9 /* CustomTextFeild.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FE365E272CC2B9000035A9 /* CustomTextFeild.swift */; };
 		08FE3661272CDC61000035A9 /* Text+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FE3660272CDC60000035A9 /* Text+Extension.swift */; };
 		08FFCFA82749826900E27C93 /* ItemDiary+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FFCFA72749826900E27C93 /* ItemDiary+Extension.swift */; };
@@ -212,6 +215,7 @@
 		080015A727277C2B00E1BE4C /* OffsetTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OffsetTabView.swift; sourceTree = "<group>"; };
 		080015A927277C2B00E1BE4C /* PagerHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PagerHelper.swift; sourceTree = "<group>"; };
 		080015AE272787E700E1BE4C /* RegretsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegretsView.swift; sourceTree = "<group>"; };
+		080D1F82274B4776007D6C5A /* GearlistDiaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GearlistDiaryView.swift; sourceTree = "<group>"; };
 		081E8A5B2739D54A0096CBE8 /* ModifyAdventureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyAdventureView.swift; sourceTree = "<group>"; };
 		08371B24271A42890072AD94 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		08371B29271AA4DB0072AD94 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -388,6 +392,8 @@
 		08ED0FDD2719EAE10072CB90 /* AppTabBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppTabBarView.swift; sourceTree = "<group>"; };
 		08ED0FE4271A2C8A0072CB90 /* UnusedCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnusedCode.swift; sourceTree = "<group>"; };
 		08ED0FE6271A34EE0072CB90 /* NewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTest.swift; sourceTree = "<group>"; };
+		08F99575274DD7DA00211988 /* Binding+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+Extension.swift"; sourceTree = "<group>"; };
+		08F99577274DF3DD00211988 /* backup.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = backup.json; sourceTree = "<group>"; };
 		08FE365E272CC2B9000035A9 /* CustomTextFeild.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFeild.swift; sourceTree = "<group>"; };
 		08FE3660272CDC60000035A9 /* Text+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Text+Extension.swift"; sourceTree = "<group>"; };
 		08FFCFA72749826900E27C93 /* ItemDiary+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemDiary+Extension.swift"; sourceTree = "<group>"; };
@@ -427,6 +433,16 @@
 				080015A927277C2B00E1BE4C /* PagerHelper.swift */,
 			);
 			path = SlideableView;
+			sourceTree = "<group>";
+		};
+		080D1F81274B4065007D6C5A /* Diary */ = {
+			isa = PBXGroup;
+			children = (
+				080D1F82274B4776007D6C5A /* GearlistDiaryView.swift */,
+				08FFCFB22749861800E27C93 /* ItemDiaryRowView.swift */,
+				08F99572274DC69600211988 /* Add+Edit */,
+			);
+			path = Diary;
 			sourceTree = "<group>";
 		};
 		08371B27271AA4B40072AD94 /* View */ = {
@@ -534,7 +550,6 @@
 		0862EA6B274363C400330FBB /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				08FFCFAB274985D100E27C93 /* ItemDiary */,
 				08D67E1627260AA30064F639 /* Item */,
 				08C7D8CF270F480D00EC3984 /* Shed */,
 				08C7D8D4270F480E00EC3984 /* Brand */,
@@ -654,8 +669,7 @@
 			children = (
 				08A5FB942740AD92008A5D28 /* ActivityView.swift */,
 				08C7D926270F7DC200EC3984 /* ActivityRowView.swift */,
-				08C7D92D270F844C00EC3984 /* AddActivityView.swift */,
-				088FBFB32748376500F1BFF7 /* ModifyActivityView.swift */,
+				08F99574274DD13500211988 /* Add+Edit */,
 				088FBFB52748407D00F1BFF7 /* ActivityType */,
 			);
 			path = Activity;
@@ -666,8 +680,7 @@
 			children = (
 				08A5FB962740B4B5008A5D28 /* AdventureView.swift */,
 				08A5FBAF2741BAF5008A5D28 /* AdventureRowView.swift */,
-				08A5FB982740B81B008A5D28 /* AddAdventureView.swift */,
-				081E8A5B2739D54A0096CBE8 /* ModifyAdventureView.swift */,
+				08F99573274DD12400211988 /* Add+Edit */,
 			);
 			path = Adventure;
 			sourceTree = "<group>";
@@ -741,8 +754,9 @@
 				08C7D928270F7F7500EC3984 /* GearlistDetailView.swift */,
 				088FBFB6274840AE00F1BFF7 /* AddItemsToGearlist */,
 				08B82523273CBFB700326CE9 /* List */,
-				08B82526273CCFC100326CE9 /* Cluster */,
-				08B82527273CCFC800326CE9 /* Container */,
+				08B82526273CCFC100326CE9 /* Pile */,
+				08B82527273CCFC800326CE9 /* Pack */,
+				080D1F81274B4065007D6C5A /* Diary */,
 			);
 			path = DetailViews;
 			sourceTree = "<group>";
@@ -756,24 +770,24 @@
 			path = List;
 			sourceTree = "<group>";
 		};
-		08B82526273CCFC100326CE9 /* Cluster */ = {
+		08B82526273CCFC100326CE9 /* Pile */ = {
 			isa = PBXGroup;
 			children = (
 				08B8251F273CB14F00326CE9 /* GearlistClusterView.swift */,
 				08B8252A273CD39A00326CE9 /* ItemRowView-InCluster.swift */,
 				088FBFB7274840E700F1BFF7 /* Add+Edit */,
 			);
-			path = Cluster;
+			path = Pile;
 			sourceTree = "<group>";
 		};
-		08B82527273CCFC800326CE9 /* Container */ = {
+		08B82527273CCFC800326CE9 /* Pack */ = {
 			isa = PBXGroup;
 			children = (
 				08B82521273CB2E300326CE9 /* GearlistContainerView.swift */,
 				08B8252F273D920D00326CE9 /* ItemRowView-InContainer.swift */,
 				088FBFB8274840F700F1BFF7 /* Add+Edit */,
 			);
-			path = Container;
+			path = Pack;
 			sourceTree = "<group>";
 		};
 		08B8252E273CD52900326CE9 /* OLD */ = {
@@ -892,6 +906,7 @@
 				08B6FD32272E636E00B8A9AE /* Array+Extensions.swift */,
 				088B1538272F983400ECBC11 /* LazyNavLink.swift */,
 				088B153A273041DC00ECBC11 /* CustomCornerRadius.swift */,
+				08F99575274DD7DA00211988 /* Binding+Extension.swift */,
 			);
 			path = "Convenience Extensions";
 			sourceTree = "<group>";
@@ -1066,6 +1081,7 @@
 				08C7D8A3270F3D1D00EC3984 /* Assets.xcassets */,
 				08C7D8AD270F3D1D00EC3984 /* Info.plist */,
 				08C7D914270F6E1600EC3984 /* brands.json */,
+				08F99577274DF3DD00211988 /* backup.json */,
 				08371B6D271E08A20072AD94 /* tags.json */,
 				08C7D913270F6E1600EC3984 /* sheds.json */,
 				08C7D915270F6E1600EC3984 /* items.json */,
@@ -1087,6 +1103,7 @@
 		08ED0FE32719ECEA0072CB90 /* Unused  */ = {
 			isa = PBXGroup;
 			children = (
+				08FFCFBE2749BFFC00E27C93 /* Lists */,
 				08A7CFFA2728A088006FA3F7 /* AddMoreItemView.swift */,
 				08B82528273CD23800326CE9 /* ClusterRowView.swift */,
 				08B8252C273CD48400326CE9 /* ContainerRowView.swift */,
@@ -1115,6 +1132,33 @@
 			path = "Unused ";
 			sourceTree = "<group>";
 		};
+		08F99572274DC69600211988 /* Add+Edit */ = {
+			isa = PBXGroup;
+			children = (
+				08FFCFAC274985E500E27C93 /* AddItemDiaryView.swift */,
+				08FFCFAE274985F300E27C93 /* ModifyItemDiaryView.swift */,
+			);
+			path = "Add+Edit";
+			sourceTree = "<group>";
+		};
+		08F99573274DD12400211988 /* Add+Edit */ = {
+			isa = PBXGroup;
+			children = (
+				08A5FB982740B81B008A5D28 /* AddAdventureView.swift */,
+				081E8A5B2739D54A0096CBE8 /* ModifyAdventureView.swift */,
+			);
+			path = "Add+Edit";
+			sourceTree = "<group>";
+		};
+		08F99574274DD13500211988 /* Add+Edit */ = {
+			isa = PBXGroup;
+			children = (
+				08C7D92D270F844C00EC3984 /* AddActivityView.swift */,
+				088FBFB32748376500F1BFF7 /* ModifyActivityView.swift */,
+			);
+			path = "Add+Edit";
+			sourceTree = "<group>";
+		};
 		08FE365D272CC2A3000035A9 /* CustomViews  */ = {
 			isa = PBXGroup;
 			children = (
@@ -1124,17 +1168,6 @@
 				08FE365E272CC2B9000035A9 /* CustomTextFeild.swift */,
 			);
 			path = "CustomViews ";
-			sourceTree = "<group>";
-		};
-		08FFCFAB274985D100E27C93 /* ItemDiary */ = {
-			isa = PBXGroup;
-			children = (
-				08FFCFAC274985E500E27C93 /* AddItemDiaryView.swift */,
-				08FFCFAE274985F300E27C93 /* ModifyItemDiaryView.swift */,
-				08FFCFB02749860600E27C93 /* ItemDiaryDetailView.swift */,
-				08FFCFB22749861800E27C93 /* ItemDiaryRowView.swift */,
-			);
-			path = ItemDiary;
 			sourceTree = "<group>";
 		};
 		08FFCFB42749897700E27C93 /* Item */ = {
@@ -1150,7 +1183,8 @@
 			isa = PBXGroup;
 			children = (
 				08371B71271E5B6D0072AD94 /* ItemDetailView.swift */,
-				08FFCFBE2749BFFC00E27C93 /* Lists */,
+				08FFCFBC2749BFCC00E27C93 /* ItemDiaryList.swift */,
+				08FFCFB02749860600E27C93 /* ItemDiaryDetailView.swift */,
 				08FFCFBF2749C02E00E27C93 /* Image */,
 			);
 			path = ItemDetail;
@@ -1161,7 +1195,6 @@
 			children = (
 				08FFCFB82749BF7200E27C93 /* ItemAdventureList.swift */,
 				08FFCFBA2749BFAB00E27C93 /* ItemActivityList.swift */,
-				08FFCFBC2749BFCC00E27C93 /* ItemDiaryList.swift */,
 			);
 			path = Lists;
 			sourceTree = "<group>";
@@ -1252,6 +1285,7 @@
 				08C7D917270F6E1600EC3984 /* brands.json in Resources */,
 				08371B6E271E08A20072AD94 /* tags.json in Resources */,
 				084EDA11272B5C9900475891 /* HelveticaNeue.ttc in Resources */,
+				08F99578274DF3DD00211988 /* backup.json in Resources */,
 				08C7D918270F6E1600EC3984 /* items.json in Resources */,
 				08C7D8A4270F3D1D00EC3984 /* Assets.xcassets in Resources */,
 				08C7D916270F6E1600EC3984 /* sheds.json in Resources */,
@@ -1404,6 +1438,7 @@
 				088B1539272F983400ECBC11 /* LazyNavLink.swift in Sources */,
 				08FFCFC32749C07B00E27C93 /* AddImageButton.swift in Sources */,
 				08B6FD36272E63CE00B8A9AE /* TableData.swift in Sources */,
+				08F99576274DD7DA00211988 /* Binding+Extension.swift in Sources */,
 				08C7D90A270F6D1D00EC3984 /* Shed+Extensions.swift in Sources */,
 				08B82520273CB14F00326CE9 /* GearlistClusterView.swift in Sources */,
 				08C7D8C8270F475A00EC3984 /* String+Extensions.swift in Sources */,
@@ -1414,6 +1449,7 @@
 				08C7D8E5270F485300EC3984 /* EditableItemData.swift in Sources */,
 				08B6FD38272E643900B8A9AE /* PDFCreator.swift in Sources */,
 				08D67E13272529730064F639 /* PersistantStore+StoreKit.swift in Sources */,
+				080D1F83274B4776007D6C5A /* GearlistDiaryView.swift in Sources */,
 				08ED0FE12719EAE10072CB90 /* TabBarItemsPreferenceKey.swift in Sources */,
 				08C7D929270F7F7500EC3984 /* GearlistDetailView.swift in Sources */,
 				08C7D8BA270F41F300EC3984 /* GearlistView.swift in Sources */,

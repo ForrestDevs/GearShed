@@ -8,7 +8,7 @@
 import SwiftUI
 
 enum SelectType {
-    case gearlistItem, pileItem, packItem
+    case gearlistItem, pileItem, packItem, diaryItem
 }
 
 struct AddItemsToGearListView: View {
@@ -23,8 +23,8 @@ struct AddItemsToGearListView: View {
     private let gearlist: Gearlist
     private var pile: Cluster?
     private var pack: Container?
-    
     private var type: SelectType
+    private var itemOut: ((Item) -> ())?
     
     func availablePileItems() -> [Item] {
         var array = [Item]()
@@ -54,6 +54,7 @@ struct AddItemsToGearListView: View {
                 cancelButtonToolBarItem
                 viewTitle
                 saveButtonToolBarItem
+                
             }
         }
         .transition(.move(edge: .trailing))
@@ -89,6 +90,18 @@ extension AddItemsToGearListView {
         self.type = type
         self.gearlist = gearlist
         self.pack = pack
+        
+        let viewModel = GearlistData(persistentStore: persistentStore)
+        _viewModel = StateObject(wrappedValue: viewModel)
+        
+        let itemVM = GearShedData(persistentStore: persistentStore)
+        _itemVM = StateObject(wrappedValue: itemVM)
+    }
+    
+    init(persistentStore: PersistentStore, type: SelectType, gearlist: Gearlist, itemOut: @escaping ((Item) -> ())) {
+        self.type = type
+        self.itemOut = itemOut
+        self.gearlist = gearlist
         
         let viewModel = GearlistData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -175,6 +188,26 @@ extension AddItemsToGearListView {
                             }
                         }
                     }
+                case .diaryItem:
+                    ForEach(itemVM.sectionByShed(itemArray: gearlist.items)) { section in
+                        Section {
+                            ForEach(section.items) { item in
+                                SelectableItemRowView (
+                                    type: .diaryItem,
+                                    item: item) {
+                                        handleItemSelected(item)
+                                    } respondToTapOffSelector: {
+                                        handleItemUnSelected(item)
+                                    }
+                            }
+                        } header: {
+                            HStack {
+                                Text(section.title)
+                                    .font(.headline)
+                                Spacer()
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -183,14 +216,21 @@ extension AddItemsToGearListView {
     // MARK: Methods
     /// Function to add selected Item to temp array.
     private func handleItemSelected(_ item: Item) {
-        canSave = true
-        
-        if !itemsChecked.contains(item) {
-            itemsChecked.append(item)
-        }
-        
-        if itemsUnChecked.contains(item) {
-            itemsUnChecked.removeAll{$0.id == item.id}
+        if type == .diaryItem {
+            self.itemOut!(item)
+            withAnimation {
+                detailManager.showContent = false
+            }
+        } else {
+            canSave = true
+            
+            if !itemsChecked.contains(item) {
+                itemsChecked.append(item)
+            }
+            
+            if itemsUnChecked.contains(item) {
+                itemsUnChecked.removeAll{$0.id == item.id}
+            }
         }
     }
     /// Function to remove selected Item from temp array.
@@ -223,6 +263,10 @@ extension AddItemsToGearListView {
                     withAnimation {
                         detailManager.showAddItemsToContainer = false
                     }
+                case .diaryItem:
+                    withAnimation {
+                        detailManager.showContent = false
+                    }
                 }
             } label:  {
                 Text("Cancel")
@@ -232,37 +276,48 @@ extension AddItemsToGearListView {
     
     private var viewTitle: some ToolbarContent {
         ToolbarItem (placement: .principal) {
-            Text("Select Items")
-                .formatGreen()
+            if type == .diaryItem {
+                Text("Select An Item")
+                    .formatGreen()
+            } else {
+                Text("Select Items")
+                    .formatGreen()
+            }
         }
     }
     
     private var saveButtonToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
-            Button {
-                switch type {
-                case .gearlistItem:
-                    viewModel.updateGearlistItems(gearlist: gearlist, addingItems: itemsChecked, removingItems: itemsUnChecked)
-                    detailManager.selectedGearlist = gearlist
-                    withAnimation {
-                        detailManager.showAddItemsToGearlist = false
-                        detailManager.showGearlistDetail = true
+            if type != .diaryItem {
+                Button {
+                    switch type {
+                    case .gearlistItem:
+                        viewModel.updateGearlistItems(gearlist: gearlist, addingItems: itemsChecked, removingItems: itemsUnChecked)
+                        detailManager.selectedGearlist = gearlist
+                        withAnimation {
+                            detailManager.showAddItemsToGearlist = false
+                            detailManager.showGearlistDetail = true
+                        }
+                    case .pileItem:
+                        viewModel.updateClusterItems(addingItems: itemsChecked, removingItems: itemsUnChecked, pile: pile!)
+                        withAnimation {
+                            detailManager.showAddItemsToCluster = false
+                        }
+                    case .packItem:
+                        viewModel.updateContainerItems(addingItems: itemsChecked, removingItems: itemsUnChecked, pack: pack!)
+                        withAnimation {
+                            detailManager.showAddItemsToContainer = false
+                        }
+                    case .diaryItem:
+                        withAnimation {
+                            detailManager.showContent = false
+                        }
                     }
-                case .pileItem:
-                    viewModel.updateClusterItems(addingItems: itemsChecked, removingItems: itemsUnChecked, pile: pile!)
-                    withAnimation {
-                        detailManager.showAddItemsToCluster = false
-                    }
-                case .packItem:
-                    viewModel.updateContainerItems(addingItems: itemsChecked, removingItems: itemsUnChecked, pack: pack!)
-                    withAnimation {
-                        detailManager.showAddItemsToContainer = false
-                    }
+                } label: {
+                    Text("Save")
                 }
-            } label: {
-                Text("Save")
+                .disabled(!canSave)
             }
-            .disabled(!canSave)
         }
     }
 }

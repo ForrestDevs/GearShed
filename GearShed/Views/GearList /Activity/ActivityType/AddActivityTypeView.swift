@@ -4,15 +4,11 @@
 //
 //  Created by Luke Forrest Gannon on 2021-11-18.
 //
-
 import SwiftUI
 
 struct AddActivityTypeView: View {
-    
     @EnvironmentObject private var detailManager: DetailViewManager
-    
     @State private var editableData: EditableActivityTypeData
-    
     @StateObject private var glData: GearlistData
     
     private var isAddFromList: Bool = false
@@ -20,10 +16,7 @@ struct AddActivityTypeView: View {
     
     var body: some View {
         NavigationView {
-            ZStack {
-                backgroundLayer
-                scrollViewLayer
-            }
+            contentView
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 cancelToolBarItem
@@ -34,10 +27,30 @@ struct AddActivityTypeView: View {
         .transition(.move(edge: .trailing))
     }
     
-}
-
-extension AddActivityTypeView {
+    // MARK: Main Content
+    private var contentView: some View {
+        ZStack {
+            Color.theme.silver
+                .ignoresSafeArea()
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(alignment: .leading, spacing: 10) {
+                    Section {
+                        VStack(alignment: .leading, spacing: 3) {
+                            Text("Name")
+                                .formatEntryTitle()
+                            TextField("Activity Type Name", text: $editableData.name)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .disableAutocorrection(true)
+                                .font(.subheadline)
+                        }
+                    }
+                }
+                .padding()
+            }
+        }
+    }
     
+    // MARK: Toolbar Content
     private var cancelToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
@@ -85,36 +98,12 @@ extension AddActivityTypeView {
         }
     }
     
-    private var backgroundLayer: some View {
-        Color.theme.silver
-            .ignoresSafeArea()
-    }
-    
-    private var scrollViewLayer: some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            VStack(alignment: .leading, spacing: 10) {
-                Section {
-                    VStack(alignment: .leading, spacing: 3) {
-                        Text("Name")
-                            .formatEntryTitle()
-                        TextField("Activity Type Name", text: $editableData.name)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .disableAutocorrection(true)
-                            .font(.subheadline)
-                    }
-                }
-            }
-            .padding()
-        }
-    }
-    
 }
 
 extension AddActivityTypeView {
     
-    /// Initializer for loading standard Add Shed.
+    /// Initializer for loading standard Add ActivityType.
     init(persistentStore: PersistentStore) {
-        
         let glData = GearlistData(persistentStore: persistentStore)
         _glData = StateObject(wrappedValue: glData)
         
@@ -122,9 +111,8 @@ extension AddActivityTypeView {
         _editableData = State(initialValue: initialData)
     }
     
-    /// Initializer for loading Add Shed from an Add Item View.
+    /// Initializer for loading Add Type from an Add Activity View.
     init(persistentStore: PersistentStore, typeOut: @escaping ((ActivityType) -> ()) ) {
-        
         let glData = GearlistData(persistentStore: persistentStore)
         _glData = StateObject(wrappedValue: glData)
         

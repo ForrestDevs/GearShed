@@ -10,7 +10,47 @@ import SwiftUI
 
 extension Text {
     
+    // MARK: Stat Bar Fonts
+    func formatStatBarTitle() -> some View {
+        self.font(.custom("HelveticaNeue", size: 15))
+    }
     
+    func formatStatBarContent() -> some View {
+        self.font(.custom("HelveticaNeue", size: 14))
+    }
+    
+    // MARK: List Header Fonts
+    
+    func listHeaderTitle() -> some View {
+        self.foregroundColor(Color.theme.accent)
+            .font(.custom("HelveticaNeue", size: 16.5).bold())
+    }
+    
+    
+    // MARK: Item Detail
+    
+    func formatDetailTitleGreen() -> some View {
+        self.foregroundColor(Color.theme.green)
+            .font(.custom("HelveticaNeue", size: 22).bold())
+    }
+    
+    func formatDetailTitleBlack() -> some View {
+        self.foregroundColor(Color.theme.green)
+            .font(.custom("HelveticaNeue", size: 22).bold())
+    }
+    
+    func formatDetailsWPPBlack() -> some View {
+        self.foregroundColor(Color.theme.accent)
+            .font(.custom("HelveticaNeue", size: 15))
+    }
+    
+    func formatDetailDescriptionBlack() -> some View {
+        self.foregroundColor(Color.theme.secondaryText)
+            .font(.custom("HelveticaNeue", size: 15))
+    }
+    
+    // MARK: Item Row View
+
     func formatEmptyTitle() -> some View {
         self.foregroundColor(Color.theme.green)
             .font(.custom("HelveticaNeue", size: 20))
@@ -34,7 +74,7 @@ extension Text {
     
     func formatBlackSmall() -> some View {
         self.foregroundColor(Color.theme.accent)
-            .font(.custom("HelveticaNeue", size: 12).bold())
+            .font(.custom("HelveticaNeue", size: 15))
     }
     
     func formatBlackSub() -> some View {

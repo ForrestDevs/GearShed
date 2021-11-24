@@ -205,7 +205,6 @@ struct ConfirmDeleteActivityTypeAlert: ConfirmationAlertProtocol {
     var nonDestructiveCompletion: (() -> Void)?
 }
 
-
 struct ConfirmDeleteClusterAlert: ConfirmationAlertProtocol {
     @EnvironmentObject var persistentStore: PersistentStore
     
@@ -265,6 +264,37 @@ struct ConfirmDeleteContainerAlert: ConfirmationAlertProtocol {
     
     func destructiveAction() {
         viewModel.deleteContainer(container: container)
+    }
+    
+    var destructiveCompletion: (() -> Void)?
+    var nonDestructiveCompletion: (() -> Void)?
+}
+
+struct ConfirmDeleteDiaryAlert: ConfirmationAlertProtocol {
+        
+    @State private var viewModel: GearShedData
+    
+    init(persistentStore: PersistentStore, diary: ItemDiary, destructiveCompletion: (() -> Void)? = nil) {
+        
+        let viewModel = GearShedData(persistentStore: persistentStore)
+        _viewModel = State(wrappedValue: viewModel)
+        
+        self.diary = diary
+        self.destructiveCompletion = destructiveCompletion
+    }
+    
+    var id = UUID()
+    
+    var diary: ItemDiary
+    
+    var title: String { "Delete Diary?" }
+    
+    var message: String {
+        "Are you sure you want to delete this Diary? This action cannot be undone."
+    }
+    
+    func destructiveAction() {
+        viewModel.deleteItemDiary(diary: diary)
     }
     
     var destructiveCompletion: (() -> Void)?

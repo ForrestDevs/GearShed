@@ -28,14 +28,5 @@ enum TabBarItem: Hashable {
         case .settings: return "Settings"
         }
     }
-    
-    var color: Color {
-        switch self {
-        case .gearshed: return Color.white
-        case .gearlist: return Color.white
-        case .settings: return Color.white
-        }
-    }
-    
 }
 

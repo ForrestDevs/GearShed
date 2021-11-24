@@ -135,7 +135,6 @@ extension ShedItemsView {
             if gsData.showAll {
                 ItemRowView(item: item)
                     .padding(.leading, 15)
-                    .animation(.linear, value: gsData.showAll)
             }
         }
     }

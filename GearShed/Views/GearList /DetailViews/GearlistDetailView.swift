@@ -40,6 +40,8 @@ struct GearlistDetailView: View {
                     .pageLabel()
                 Text("Pack")
                     .pageLabel()
+                Text("Diary")
+                    .pageLabel()
             } content: {
                 GearlistItemListView(gearlist: gearlist)
                     .environmentObject(viewModel)
@@ -48,6 +50,9 @@ struct GearlistDetailView: View {
                     .environmentObject(viewModel)
                     .pageView()
                 GearlistContainerView(gearlist: gearlist)
+                    .environmentObject(viewModel)
+                    .pageView()
+                GearlistDiaryView(gearlist: gearlist)
                     .environmentObject(viewModel)
                     .pageView()
             }

@@ -25,7 +25,9 @@ struct ColorTheme {
     let silver = Color("Silver")
     let offWhite = Color("OffWhite")
     let headerBG = Color("HeaderBG")
-    
+    let boarderGrey = Color("BoarderGrey")
+    let promptText = Color("PromptText")
+    let buttonColor = Color("ButtonColor") 
 }
 
 struct ColorTheme2 {

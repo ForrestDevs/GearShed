@@ -1,14 +1,12 @@
 //
-//  TripView.swift
+//  AdventureView.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-11-13.
 //
-
 import SwiftUI
 
-struct TripView: View {
-    
+struct AdventureView: View {
     @EnvironmentObject private var persistentStore: PersistentStore
 
     @EnvironmentObject private var viewModel: GearlistData
@@ -19,30 +17,24 @@ struct TripView: View {
         ZStack {
             VStack (spacing: 0){
                 StatBar(statType: .adventure)
-                tripsList
+                adventureList
             }
-            //.padding(.top, 5)
             addListButtonOverlay
         }
-        
     }
-}
-
-extension TripView {
     
-    private var tripsList: some View {
-        List {
-            ForEach(viewModel.sectionByYear(array: viewModel.trips)) { section in
-                Section {
-                    ForEach(section.adventures) { adventure in
-                        AdventureRowView(adventure: adventure)
+    private var adventureList: some View {
+        ScrollView {
+            LazyVStack (alignment: .leading, spacing: 0, pinnedViews: .sectionHeaders) {
+                ForEach(viewModel.sectionByYear(array: viewModel.adventures)) { section in
+                    Section {
+                        listContent(section: section)
+                    } header: {
+                        listHeader(section: section)
                     }
-                } header: {
-                    Text(section.title)
                 }
             }
         }
-        .listStyle(.plain)
     }
     
     private var addListButtonOverlay: some View {
@@ -67,8 +59,28 @@ extension TripView {
                 .shadow(color: Color.theme.accent.opacity(0.3), radius: 3,x: 3,y: 3)
             }
         }
-        .padding(.bottom, 50)
+        .padding(.bottom, 30)
 
         
     }
+    
+    private func listContent(section: SectionYearData) -> some View {
+        ForEach(section.adventures) { adventure in
+            AdventureRowView(adventure: adventure)
+        }
+    }
+    
+    private func listHeader(section: SectionYearData) -> some View {
+        ZStack {
+            Color.theme.headerBG
+                .frame(maxWidth: .infinity)
+                .frame(height: 25)
+            HStack {
+                Text(section.title)
+                Spacer()
+            }
+            .padding(.horizontal, 15)
+        }
+    }
 }
+

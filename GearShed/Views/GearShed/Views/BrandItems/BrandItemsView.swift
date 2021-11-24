@@ -63,9 +63,6 @@ extension BrandItemsView {
                 VStack {
                     ItemRowView(item: item)
                         .padding(.leading, 15)
-                    
-                    Rectangle()
-                        .frame(height: 0.2)
                 }
                 
             }

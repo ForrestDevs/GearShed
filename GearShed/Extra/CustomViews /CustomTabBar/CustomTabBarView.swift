@@ -28,17 +28,24 @@ struct CustomTabBarView: View {
     }
     
     private var tabBar: some View {
-        HStack {
-            ForEach(tabs, id: \.self) { tab in
-                tabView(tab: tab)
-                .onTapGesture {
-                    switchToTab(tab: tab)
+        VStack (spacing: 0) {
+            Rectangle()
+                .frame(maxWidth: .infinity)
+                .frame(height: 1)
+                .foregroundColor(Color.theme.green)
+            HStack {
+                ForEach(tabs, id: \.self) { tab in
+                    tabView(tab: tab)
+                    .onTapGesture {
+                        switchToTab(tab: tab)
+                    }
                 }
             }
+            .padding(.bottom, 13)
+            .padding(.top, 7)
+            .background(Color.black.ignoresSafeArea(edges: .bottom))
         }
-        .padding(.bottom, 13)
-        .padding(.top, 7)
-        .background(Color.theme.green.ignoresSafeArea(edges: .bottom))
+        
     }
     
     private func tabView(tab: TabBarItem) -> some View {
@@ -47,7 +54,7 @@ struct CustomTabBarView: View {
             Text(tab.title)
                 .formatNoColorSmall()
         }
-        .foregroundColor(localSelection == tab ? tab.color : Color.black)
+        .foregroundColor(localSelection == tab ? Color.white : Color.theme.green)
         .frame(maxWidth: .infinity)
     }
     

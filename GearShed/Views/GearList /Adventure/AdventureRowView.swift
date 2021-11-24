@@ -43,46 +43,48 @@ extension AdventureRowView {
     private var bucketlistStatus: some View {
         VStack {
             if adventure.isBucketlist {
-                Image(systemName: "mappin")
+                Image("Bucket.Fill")
+                    .resizable()
+                    .interpolation(.high)
+                    .frame(width: 14, height: 14)
                     .foregroundColor(Color.theme.green)
+                    .padding(.horizontal, 2)
             }
         }
     }
     
     private var rowBody: some View {
-        HStack {
-            VStack (alignment: .leading, spacing: 3) {
-                HStack {
-                    HStack (spacing: 2) {
-                        Text(adventure.name)
-                            .formatItemNameGreen()
-                            .fixedSize()
-                        bucketlistStatus
-                    }
-                    Text("|")
-                        .formatItemNameBlack()
-                    Text(adventure.startDate?.dateText(style: .medium) ?? "")
-                        .formatItemNameBlack()
+        VStack (alignment: .leading, spacing: 2) {
+            HStack {
+                HStack (spacing: 5) {
+                    Text(adventure.name)
+                        .formatItemNameGreen()
+                        .fixedSize()
+                    bucketlistStatus
                 }
-                .lineLimit(1)
-                
-                HStack {
-                    Text(adventure.location ?? "")
-                        .formatItemWeightBlack()
-                    Text("|")
-                        .formatItemWeightBlack()
-                    Text(adventure.country ?? "")
-                        .formatItemPriceGreen()
-                }
-                
-                Text(adventure.details)
-                    .formatItemDetailsGrey()
-                    .lineLimit(1)
+                Text("|")
+                    .formatItemNameBlack()
+                Text(adventure.startDate?.dateText(style: .medium) ?? "")
+                    .formatItemNameBlack()
             }
-            Spacer()
+            .lineLimit(1)
+            
+            HStack {
+                Text(adventure.location ?? "")
+                    .formatItemWeightBlack()
+                Text("|")
+                    .formatItemWeightBlack()
+                Text(adventure.country ?? "")
+                    .formatItemPriceGreen()
+            }
+            
+            Text(adventure.details)
+                .formatItemDetailsGrey()
+                .lineLimit(1)
+            Divider()
         }
         .padding(.leading, 15)
-
+    
     }
     
     private var editContextButton: some View {
@@ -126,7 +128,11 @@ extension AdventureRowView {
                 } else {
                     Text("Mark Bucketlist")
                 }
-                Image(systemName: "mappin")
+                Image("Bucket.Fill")
+                    .resizable()
+                    .interpolation(.high)
+                    .frame(width: 14, height: 14)
+                    .foregroundColor(Color.theme.green)
             }
         }
     }

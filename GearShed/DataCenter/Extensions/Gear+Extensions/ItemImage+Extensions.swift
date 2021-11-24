@@ -19,4 +19,9 @@ extension ItemImage {
         set { item_ = newValue } 
     }
     
+    var imgURL: String {
+        get { imgURL_ ?? "" }
+        set { imgURL_ = newValue } 
+    }
+    
 }

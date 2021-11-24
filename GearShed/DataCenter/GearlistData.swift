@@ -17,8 +17,11 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     private let gearlistController: NSFetchedResultsController<Gearlist>
     @Published var gearlists = [Gearlist]()
     
-    private let tripController: NSFetchedResultsController<Gearlist>
-    @Published var trips = [Gearlist]()
+    private let adventureController: NSFetchedResultsController<Gearlist>
+    @Published var adventures = [Gearlist]()
+    
+    private let bucketlistController: NSFetchedResultsController<Gearlist>
+    @Published var bucklists = [Gearlist]()
     
     private let activityController: NSFetchedResultsController<Gearlist>
     @Published var activities = [Gearlist]()
@@ -46,11 +49,17 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         gearlistController = NSFetchedResultsController(fetchRequest: gearlistRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
         
         
-        let tripRequest: NSFetchRequest<Gearlist> = Gearlist.fetchRequest()
-        tripRequest.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
-        tripRequest.predicate = NSPredicate(format: "isAdventure_ == %d", true)
+        let adventureRequest: NSFetchRequest<Gearlist> = Gearlist.fetchRequest()
+        adventureRequest.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
+        adventureRequest.predicate = NSPredicate(format: "isAdventure_ == %d", true)
         
-        tripController = NSFetchedResultsController(fetchRequest: tripRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
+        adventureController = NSFetchedResultsController(fetchRequest: adventureRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
+        
+        let bucketlistRequest: NSFetchRequest<Gearlist> = Gearlist.fetchRequest()
+        bucketlistRequest.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
+        bucketlistRequest.predicate = NSPredicate(format: "isBucketlist_ == %d", true)
+        
+        bucketlistController = NSFetchedResultsController(fetchRequest: bucketlistRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
         
         let activityRequest: NSFetchRequest<Gearlist> = Gearlist.fetchRequest()
         activityRequest.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
@@ -85,7 +94,8 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         
         super.init()
         gearlistController.delegate = self
-        tripController.delegate = self
+        adventureController.delegate = self
+        bucketlistController.delegate = self
         activityController.delegate = self
         activityTypeController.delegate = self
         listGroupController.delegate = self
@@ -102,10 +112,17 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         }
         
         do {
-            try tripController.performFetch()
-            trips = tripController.fetchedObjects ?? []
+            try adventureController.performFetch()
+            adventures = adventureController.fetchedObjects ?? []
         } catch {
             print("Failed to fetch Trips")
+        }
+        
+        do {
+            try bucketlistController.performFetch()
+            bucklists = bucketlistController.fetchedObjects ?? []
+        } catch {
+            print("Failed to fetch Bucketlists")
         }
         
         do {
@@ -153,7 +170,8 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         gearlists = gearlistController.fetchedObjects ?? []
-        trips = tripController.fetchedObjects ?? []
+        adventures = adventureController.fetchedObjects ?? []
+        bucklists = bucketlistController.fetchedObjects ?? [] 
         activities = activityController.fetchedObjects ?? []
         activityTypes = activityTypeController.fetchedObjects ?? []
         listgroups = listGroupController.fetchedObjects ?? []

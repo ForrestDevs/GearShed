@@ -38,23 +38,17 @@ struct GearlistItemListView: View {
 extension GearlistItemListView {
     
     private var itemList: some View {
-        List {
-            ForEach(viewModel.sectionByShed(itemArray: gearlist.items)) { section in
-                Section {
-                    ForEach(section.items) { item in
-                        ItemRowView_InGearlist(persistentStore: persistentStore, item: item, gearlist: gearlist)
-                    }
-                } header: {
-                    HStack {
-                        Text(section.title)
-                            .font(.headline)
-                        Spacer()
-                        Text("\(viewModel.totalWeight(array: section.items))" + "g" )
+        ScrollView {
+            LazyVStack (alignment: .leading, spacing: 0, pinnedViews: .sectionHeaders) {
+                ForEach(viewModel.sectionByShed(itemArray: gearlist.items)) { section in
+                    Section {
+                        sectionItems(section: section)
+                    } header: {
+                        sectionHeader(section: section)
                     }
                 }
             }
         }
-        .listStyle(.plain)
     }
     
     private func sectionItems(section: SectionShedData) -> some View {
@@ -64,16 +58,17 @@ extension GearlistItemListView {
     }
     
     private func sectionHeader(section: SectionShedData) -> some View {
-        VStack (alignment: .leading, spacing: 0) {
+        ZStack {
+            Color.theme.headerBG
+                .frame(maxWidth: .infinity)
+                .frame(height: 25)
             HStack {
                 Text(section.title)
                     .font(.headline)
                 Spacer()
-                Text("\(viewModel.totalWeight(array: section.items))" + "g" ) 
+                Text("\(viewModel.totalWeight(array: section.items))" + "g" )
             }
-            Rectangle()
-                .frame(maxWidth: .infinity)
-                .frame(height: 1)
+            .padding(.horizontal, 15)
         }
     }
     
@@ -105,27 +100,6 @@ extension GearlistItemListView {
             }
         }
     }
-    
-    private var statBar: some View {
-        HStack (spacing: 20) {
-            HStack {
-                Text("Items:")
-                Text("\(gearlist.items.count)")
-            }
-            HStack {
-                Text("Weight:")
-                Text("\(viewModel.gearlistTotalWeight(gearlist: gearlist))g")
-            }
-            Spacer()
-        }
-        .font(.subheadline)
-        .foregroundColor(Color.white)
-        .padding(.horizontal)
-        .padding(.vertical, 5)
-        .background(Color.theme.green)
-        .padding(.top, 10)
-    }
-
 }
 
 

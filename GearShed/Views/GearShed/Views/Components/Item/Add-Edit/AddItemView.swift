@@ -18,10 +18,7 @@ struct AddItemView: View {
         
     @StateObject private var viewModel: GearShedData
     
-    @State private var editableItemData: EditableItemData
-    
-    @State private var shedNavLinkActive: Bool = false
-    @State private var brandNavLinkActive: Bool = false
+    @State private var editableData: EditableItemData
     
     @State private var date: Date? = nil
 
@@ -31,10 +28,7 @@ struct AddItemView: View {
     
     var body: some View {
         NavigationView {
-            ZStack {
-                backgroundLayer
-                contentLayer
-            }
+            contentLayer
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 cancelButtonToolbarItem
@@ -49,25 +43,24 @@ struct AddItemView: View {
 extension AddItemView {
     
     // MARK: Main Content
-    private var backgroundLayer: some View {
-        Color.theme.silver
-            .ignoresSafeArea()
-    }
-    
     private var contentLayer: some View {
-        ScrollView (.vertical, showsIndicators: false) {
-            VStack (alignment: .leading, spacing: 10) {
-                itemNameSection
-                itemBrandSection
-                itemShedSection
-                itemWeightSection
-                itemPriceSection
-                itemWishlistSection
-                itemPurchaseDateSection
-                itemDescriptionSection
+        ZStack {
+            Color.theme.silver
+                .ignoresSafeArea()
+            ScrollView (.vertical, showsIndicators: false) {
+                VStack (alignment: .leading, spacing: 10) {
+                    itemNameSection
+                    itemBrandSection
+                    itemShedSection
+                    itemWeightSection
+                    itemPriceSection
+                    itemPurchaseDateSection
+                    itemDescriptionSection
+                    itemWishlistSection
+                }
+                .padding(.horizontal)
+                .padding(.top)
             }
-            .padding(.horizontal)
-            .padding(.top)
         }
     }
     
@@ -77,7 +70,7 @@ extension AddItemView {
             VStack (alignment: .leading, spacing: 3) {
                 Text("Name")
                     .formatEntryTitle()
-                TextField("", text: $editableItemData.name)
+                TextField("Gear Name (Required)", text: $editableData.name)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .disableAutocorrection(true)
                     .font(.subheadline)
@@ -85,67 +78,18 @@ extension AddItemView {
         }
     }
     
-    private var itemShedSection: some View {
-        Section {
-            VStack (alignment: .leading, spacing: 3)  {
-                Text ("Shed")
-                    .formatEntryTitle()
-
-
-                Menu {
-                    // Add New Shed Button
-                    Button {
-                        detailManager.content = AnyView (
-                            AddShedView (
-                                persistentStore: persistentStore,
-                                shedOut: { shed in editableItemData.shed = shed })
-                                .environmentObject(detailManager)
-                        )
-                        withAnimation {
-                            detailManager.showContent = true
-                        }
-                    } label: {
-                        Text("Add New Shed")
-                        .font(.subheadline)
-                    }
-                    
-                    // List Of Current Sheds
-                    ForEach(viewModel.sheds) { shed in
-                        Button {
-                            editableItemData.shed = shed
-                        } label: {
-                            Text(shed.name)
-                                .tag(shed)
-                                .font(.subheadline)
-                        }
-                    }
-                    
-                } label: {
-                    HStack {
-                        Text(editableItemData.shed?.name ?? "Select Shed")
-                            .font(.subheadline)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-                    }
-                    .padding(8)
-                    .background(Color.white)
-                    .clipShape(RoundedRectangle(cornerRadius: 5))
-                }
-            }
-        }
-
-    }
-    
     private var itemBrandSection: some View {
         Section {
             VStack (alignment: .leading, spacing: 3) {
                 Text("Brand")
                     .formatEntryTitle()
+                
                 Menu {
                     Button {
                         detailManager.content = AnyView (
                             AddBrandView (
                                 persistentStore: persistentStore,
-                                brandOut: { brand in editableItemData.brand = brand })
+                                brandOut: { brand in editableData.brand = brand })
                                 .environmentObject(detailManager)
                         )
                         withAnimation {
@@ -157,28 +101,85 @@ extension AddItemView {
                     }
                     ForEach(viewModel.brands) { brand in
                         Button {
-                            editableItemData.brand = brand
+                            editableData.brand = brand
                         } label: {
-                            Text(brand.name)
-                                .tag(brand)
-                                .font(.subheadline)
+                            HStack {
+                                Text(brand.name)
+                                    .tag(brand)
+                                    .font(.subheadline)
+                                if editableData.brand == brand {
+                                    Image(systemName: "checkmark")
+                                }
+                            }
                         }
                     }
                 } label: {
-                    HStack {
-                        Text(editableItemData.brand?.name ?? "Select Brand")
-                            .font(.subheadline)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-                    }
-                    .padding(8)
-                    .background(Color.white)
-                    .clipShape(RoundedRectangle(cornerRadius: 5))
+                    Text(editableData.brand?.name ?? "Select Brand (Required)")
+                        .font(.subheadline)
+                        .foregroundColor(brandTextColor())
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                        .padding(8)
                 }
-                /*.background(
-                    NavigationLink(destination: AddBrandView(persistentStore: persistentStore, brandOut: { brand in editableItemData.brand = brand }), isActive: $brandNavLinkActive) {
-                        EmptyView()
+                .background(Color.theme.background)
+                .clipShape(RoundedRectangle(cornerRadius: 5))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 5)
+                        .stroke(Color.theme.boarderGrey, lineWidth: 0.5)
+                )
+            }
+            
+        }
+
+    }
+    
+    private var itemShedSection: some View {
+        Section {
+            VStack (alignment: .leading, spacing: 3)  {
+                Text ("Shed")
+                    .formatEntryTitle()
+                Menu {
+                    Button {
+                        detailManager.content = AnyView (
+                            AddShedView (
+                                persistentStore: persistentStore,
+                                shedOut: { shed in editableData.shed = shed })
+                                .environmentObject(detailManager)
+                        )
+                        withAnimation {
+                            detailManager.showContent = true
+                        }
+                    } label: {
+                        Text("Add New Shed")
+                        .font(.subheadline)
                     }
-                )*/
+                    ForEach(viewModel.sheds) { shed in
+                        Button {
+                            editableData.shed = shed
+                        } label: {
+                            HStack {
+                                Text(shed.name)
+                                    .tag(shed)
+                                    .font(.subheadline)
+                                if editableData.shed == shed {
+                                    Image(systemName: "checkmark")
+                                }
+                            }
+                            
+                        }
+                    }
+                } label: {
+                    Text(editableData.shed?.name ?? "Select Shed (Required)")
+                        .font(.subheadline)
+                        .foregroundColor (shedTextColor())
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                        .padding(8)
+                }
+                .background(Color.theme.background)
+                .clipShape(RoundedRectangle(cornerRadius: 5))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 5)
+                        .stroke(Color.theme.boarderGrey, lineWidth: 0.5)
+                )
             }
         }
 
@@ -189,15 +190,12 @@ extension AddItemView {
             VStack (alignment: .leading, spacing: 3)  {
                 Text ("Weight")
                     .formatEntryTitle()
-
-
-                TextField("", text: $editableItemData.weight)
+                TextField("Weight in g", text: $editableData.weight)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .disableAutocorrection(true)
                     .font(.subheadline)
             }
         }
-
     }
     
     private var itemPriceSection: some View {
@@ -206,32 +204,19 @@ extension AddItemView {
                 Text ("Price")
                     .formatEntryTitle()
 
-                TextField("", text: $editableItemData.price)
+                TextField("Price in $", text: $editableData.price)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .disableAutocorrection(true)
                     .font(.subheadline)
-                
             }
         }
-
     }
     
-    private var itemWishlistSection: some View {
-        Section {
-            VStack (alignment: .leading, spacing: 10) {
-                Text("Wishlist?")
-                    .formatEntryTitle()
-                Toggle(isOn: $editableItemData.isWishlist) {EmptyView()}.labelsHidden()
-            }
-        }
-    }
-
     private var itemPurchaseDateSection: some View {
         Section {
             VStack (alignment: .leading, spacing: 3) {
                 Text("Purchase Date")
                     .formatEntryTitle()
-
                 Button {
                     withAnimation {
                         detailManager.showSecondaryContent = true
@@ -242,33 +227,82 @@ extension AddItemView {
                         )
                     }
                 } label: {
-                    if let date = date {
-                        Text(date.dateText(style: .short))
-                        .padding(.horizontal, 5)
-                    } else {
-                        Text("Select Purchase Date").padding(.horizontal, 5)
-                    }
+                    Text("\(date?.dateText(style: .short) ?? "Select Purchase Date")")
+                        .font(.subheadline)
+                        .foregroundColor(purchaseDateTitleColor())
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                        .padding(8)
+                        .onChange(of: date) { newValue in
+                            editableData.datePurchased = newValue
+                        }
+                        
                 }
-                .onChange(of: date) { newValue in
-                    editableItemData.datePurchased = newValue
-                }
+                .background(Color.theme.background)
+                .clipShape(RoundedRectangle(cornerRadius: 5))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 5)
+                        .stroke(Color.theme.boarderGrey, lineWidth: 0.5)
+                )
+                
+                
             }
         }
     }
-
+    
     private var itemDescriptionSection: some View {
         Section {
             VStack (alignment: .leading, spacing: 3) {
                 Text("Description")
                     .formatEntryTitle()
-
-                TextField("", text: $editableItemData.details)
+                TextField("Gear Description", text: $editableData.details)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .disableAutocorrection(true)
                     .font(.subheadline)
             }
         }
     }
     
+    private var itemWishlistSection: some View {
+        Section {
+            VStack (alignment: .leading, spacing: 10) {
+                Text("Wish?")
+                    .formatEntryTitle()
+                Toggle(isOn: $editableData.isWishlist) {EmptyView()}.labelsHidden()
+            }
+        }
+    }
+    
+    // MARK: Private Methods
+    private func brandTextColor() -> Color {
+        var color: Color
+        if editableData.brand == nil {
+            color = Color.theme.promptText
+        } else {
+            color = Color.theme.accent
+        }
+        return color
+    }
+    
+    private func shedTextColor() -> Color {
+        var color: Color
+        if editableData.shed == nil {
+            color = Color.theme.promptText
+        } else {
+            color = Color.theme.accent
+        }
+        return color
+    }
+    
+    private func purchaseDateTitleColor() -> Color {
+        var color: Color
+        if editableData.datePurchased == nil {
+            color = Color.theme.promptText
+        } else {
+            color = Color.theme.accent
+        }
+        return color
+    }
+
     // MARK: ToolbarItems
     private var cancelButtonToolbarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
@@ -299,11 +333,11 @@ extension AddItemView {
                     detailManager.showAddItemFromBrand = false
                     detailManager.showAddItem = false
                 }
-                viewModel.addNewItem(using: editableItemData)
+                viewModel.addNewItem(using: editableData)
             } label: {
                 Text("Save")
             }
-            .disabled(!editableItemData.canBeSaved)
+            .disabled(!editableData.canBeSaved)
         }
     }
 }
@@ -317,7 +351,7 @@ extension AddItemView {
         _viewModel = StateObject(wrappedValue: viewModel)
         
         let initialValue = EditableItemData(persistentStore: persistentStore, shedInEdit: shedIn)
-        _editableItemData = State(initialValue: initialValue)
+        _editableData = State(initialValue: initialValue)
                 
     }
     
@@ -329,7 +363,7 @@ extension AddItemView {
         _viewModel = StateObject(wrappedValue: viewModel)
         
         let initialValue = EditableItemData(persistentStore: persistentStore, brandInEdit: brandIn)
-        _editableItemData = State(initialValue: initialValue)
+        _editableData = State(initialValue: initialValue)
                 
     }
 
@@ -342,7 +376,7 @@ extension AddItemView {
         
         let initialValue = EditableItemData(persistentStore: persistentStore, wishlistInEdit: true)
         
-        _editableItemData = State(initialValue: initialValue)
+        _editableData = State(initialValue: initialValue)
     }
     
     /// Intializer for standard add Item View
@@ -354,11 +388,15 @@ extension AddItemView {
         
         let initialValue = EditableItemData(persistentStore: persistentStore)
         
-        _editableItemData = State(initialValue: initialValue)
+        _editableData = State(initialValue: initialValue)
     }
 }
 
-
+/*.background(
+    NavigationLink(destination: AddBrandView(persistentStore: persistentStore, brandOut: { brand in editableItemData.brand = brand }), isActive: $brandNavLinkActive) {
+        EmptyView()
+    }
+)*/
 /*ZStack {
     if editableItemData.details.isEmpty == true {
         Text("placeholder")

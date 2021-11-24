@@ -28,5 +28,4 @@ extension ItemDiary {
         get { gearlist_! }
         set { gearlist_ = newValue }
     }
-    
 }

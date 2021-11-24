@@ -8,14 +8,19 @@
 import SwiftUI
 
 struct GearShedView: View {
+    
     @EnvironmentObject var persistentStore: PersistentStore
     @StateObject private var gsData: GearShedData
     @StateObject private var viewModel = GearShedViewModel()
+    @StateObject private var backupManager: BackupManager
     @State private var currentSelection: Int = 0
     
     init(persistentStore: PersistentStore) {
         let viewModel = GearShedData(persistentStore: persistentStore)
         _gsData = StateObject(wrappedValue: viewModel)
+        
+        let data = BackupManager(persistentStore: persistentStore)
+        _backupManager = StateObject(wrappedValue: data)
     }
     
     var body: some View {
@@ -25,12 +30,36 @@ struct GearShedView: View {
                     .pageLabel()
                 Text("Brand")
                     .pageLabel()
-                Text("Wish")
-                    .pageLabel()
-                Text("Fav")
-                    .pageLabel()
-                Text("Regret")
-                    .pageLabel()
+                
+                HStack(spacing: 1) {
+                    Text("Wish")
+                    Image(systemName: "star.fill")
+                        .resizable()
+                        .frame(width: 10, height: 10)
+                        .foregroundColor(Color.theme.green)
+                        .offset(y: -6)
+                }
+                .pageLabel()
+                
+                HStack(spacing: 1) {
+                    Text("Fav")
+                    Image(systemName: "heart.fill")
+                        .resizable()
+                        .frame(width: 10, height: 10)
+                        .foregroundColor(Color.theme.green)
+                        .offset(y: -6)
+                }
+                .pageLabel()
+                HStack(spacing: 1) {
+                    Text("Regret")
+                    Image(systemName: "hand.thumbsdown.fill")
+                        .resizable()
+                        .frame(width: 10, height: 10)
+                        .foregroundColor(Color.theme.green)
+                        .offset(y: -6)
+                }
+                .pageLabel()
+                
             } content: {
                 ShedItemsView()
                     .environmentObject(gsData)
@@ -64,6 +93,7 @@ struct GearShedView: View {
     }
 }
 extension GearShedView {
+    
     private var listExpandingButton: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
@@ -71,12 +101,8 @@ extension GearShedView {
                     gsData.showAll.toggle()
                 }
             } label: {
-                VStack (alignment: .center, spacing: 0.5)  {
-                    Image(systemName: "chevron.up")
-                        .foregroundColor(gsData.showAll ? Color.theme.green : Color.theme.accent)
-                    Image(systemName: "chevron.down")
-                        .foregroundColor(gsData.showAll ? Color.theme.accent : Color.theme.green)
-                }
+                Image(systemName: "chevron.down")
+                    .rotationEffect(.degrees(gsData.showAll ? 180 : 0))
             }
         }
     }
@@ -97,8 +123,50 @@ extension GearShedView {
             }
         }
     }
+    
+    private var loadData: some ToolbarContent {
+        ToolbarItem (placement: .navigationBarLeading) {
+            Button {
+                backupManager.insertISBFromBackUp(url: Bundle.main.url(forResource: "backup", withExtension: "json")!)
+            } label: {
+                Image(systemName: "plus")
+            }
+        }
+    }
+
+    private func makeData() {
+        for x in 1...20 {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                let newShed = Shed(context: persistentStore.context)
+                newShed.id = UUID()
+                newShed.name = "Shed \(x)"
+                
+                let newBrand = Brand(context: persistentStore.context)
+                newBrand.id = UUID()
+                newBrand.name = "Brand \(x)"
+                
+                for i in 1...5 {
+                    let newItem = Item(context: persistentStore.context)
+                    newItem.id = UUID()
+                    newItem.name = "Item \(i) in \(x)"
+                    newItem.detail = "Test \(i) in \(x)"
+                    newItem.price = "\(i)"
+                    newItem.weight = "\(i)"
+                    newItem.shed = newShed
+                    newItem.brand = newBrand
+                }
+            })
+        }
+        persistentStore.saveContext()
+    }
 }
 
+/*VStack (alignment: .center, spacing: 0.5)  {
+    Image(systemName: "chevron.up")
+        .foregroundColor(gsData.showAll ? Color.theme.green : Color.theme.accent)
+    Image(systemName: "chevron.down")
+        .foregroundColor(gsData.showAll ? Color.theme.accent : Color.theme.green)
+}*/
 /*private var filterButton: some ToolbarContent {
     ToolbarItem(placement: .navigationBarLeading) {
         Menu {
@@ -278,41 +346,7 @@ private var content: some View {
 }
 
 // Stress Test
-private var loadData: some ToolbarContent {
-    ToolbarItem (placement: .navigationBarLeading) {
-        Button {
-            makeData()
-        } label: {
-            Image(systemName: "plus")
-        }
-    }
-}
 
-private func makeData() {
-    for x in 1...1000 {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-            let newShed = Shed(context: persistentStore.context)
-            newShed.id = UUID()
-            newShed.name = "Shed\(x)"
-            
-            let newBrand = Brand(context: persistentStore.context)
-            newBrand.id = UUID()
-            newBrand.name = "Brand \(x)"
-            
-            for i in 1...5 {
-                let newItem = Item(context: persistentStore.context)
-                newItem.id = UUID()
-                newItem.name = "Item \(i) in \(x)"
-                newItem.detail = "Test \(i) in \(x)"
-                newItem.price = "\(i)"
-                newItem.weight = "\(i)"
-                newItem.shed = newShed
-                newItem.brand = newBrand
-            }
-        })
-    }
-    persistentStore.saveContext()
-}
  
  private func navTitle() -> String {
      var title: String = ""

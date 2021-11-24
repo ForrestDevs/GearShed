@@ -56,13 +56,6 @@ struct ContentView: View {
                      ) : nil
             )
         
-            // Modify Item Diary View
-            .overlay(detailManager.showModifyItemDiary ?
-                     (ModifyItemDiaryView(persistentStore: persistentStore, diary: detailManager.selectedItemDiary!)
-                        .environmentObject(detailManager)
-                     ) : nil
-            )
-        
             // Item Diary DetailView
             .overlay(detailManager.showItemDiaryDetail ?
                      (ItemDiaryDetailView(diary: detailManager.selectedItemDiary!)
@@ -151,11 +144,17 @@ struct ContentView: View {
             )
             // Add Item Diary View
             .overlay(detailManager.showAddItemDiary ?
-                     (AddItemDiaryView(persistentStore: persistentStore, gearlist: detailManager.selectedGearlist!, item: detailManager.selectedItem!)
+                     (AddItemDiaryView(persistentStore: persistentStore, gearlist: detailManager.selectedGearlist!)
                         .environmentObject(detailManager)
                      ) : nil
             )
         
+            // Modify Item Diary View
+            .overlay(detailManager.showModifyItemDiary ?
+                     (ModifyItemDiaryView(persistentStore: persistentStore, diary: detailManager.selectedItemDiary!)
+                        .environmentObject(detailManager)
+                     ) : nil
+            )
             // Select items to add/ remove from gearlist view
             .overlay(detailManager.showAddItemsToGearlist ?
                      (AddItemsToGearListView(persistentStore: persistentStore, type: .gearlistItem, gearlist: detailManager.selectedGearlist!)
@@ -191,6 +190,7 @@ struct ContentView: View {
             // Edit pack name view
             .overlay(detailManager.showModifyContainer ?
                      (EditContainerView(persistentStore: persistentStore, container: detailManager.selectedContainer!)
+                        .environmentObject()
                         .environmentObject(detailManager)
                      ) : nil
             )

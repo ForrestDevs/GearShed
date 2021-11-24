@@ -25,7 +25,7 @@ struct EditableGearlistData {
     var canGearlistBeSaved: Bool {
         var state: Bool = false
         if isAdventure {
-            if name.count > 0 {
+            if name.count > 0 && startDate != nil && endDate != nil {
                 state = true
             }
         } else {
@@ -65,8 +65,8 @@ extension EditableGearlistData {
         self.name = ""
         self.details = ""
         self.isAdventure = isTrip
-        self.location = ""
-        self.country = ""
+        self.location = nil
+        self.country = nil
         self.startDate = nil
         self.endDate = nil
     }
@@ -77,10 +77,6 @@ extension EditableGearlistData {
         self.details = ""
         self.activityType = activityType
         self.isAdventure = false
-        self.location = ""
-        self.country = ""
-        self.startDate = nil
-        self.endDate = nil
     }
     
 }

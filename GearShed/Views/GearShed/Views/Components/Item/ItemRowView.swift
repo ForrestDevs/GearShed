@@ -20,16 +20,13 @@ struct ItemRowView: View {
     @State private var confirmDeleteItemAlert: ConfirmDeleteItemAlert?
     
 	var body: some View {
-        ZStack {
-            Color.clear
-            Button {
-                detailManager.selectedItem = item
-                withAnimation {
-                    detailManager.showItemDetail = true
-                }
-            } label: {
-                itemBody
+        Button {
+            detailManager.selectedItem = item
+            withAnimation {
+                detailManager.showItemDetail = true
             }
+        } label: {
+            itemBody
         }
         .contextMenu {
             favContextButton
@@ -71,39 +68,36 @@ extension ItemRowView {
     }
     
     private var itemBody: some View {
-        HStack {
-            VStack (alignment: .leading, spacing: 2) {
-                
-                HStack {
-                    HStack (spacing: 5) {
-                        Text(item.name)
-                            .formatItemNameGreen()
-                            .fixedSize()
-                        statusIcon
-                    }
-                    Text("|")
-                        .formatItemNameBlack()
-                    Text(item.brandName)
-                        .formatItemNameBlack()
+        VStack (alignment: .leading, spacing: 2) {
+            HStack {
+                HStack (spacing: 5) {
+                    Text(item.name)
+                        .formatItemNameGreen()
+                        .fixedSize()
+                    statusIcon
                 }
-                .lineLimit(1)
-                
-                VStack (alignment: .leading, spacing: 2) {
-                    HStack {
-                        Text("\(item.weight) g")
-                            .formatItemWeightBlack()
-                        Text("|")
-                            .formatItemWeightBlack()
-                        Text("$ \(item.price)")
-                            .formatItemPriceGreen()
-                    }
-                    
-                    Text(item.detail)
-                        .formatItemDetailsGrey()
-                        .lineLimit(1)
-                }
+                Text("|")
+                    .formatItemNameBlack()
+                Text(item.brandName)
+                    .formatItemNameBlack()
             }
-            Spacer()
+            .lineLimit(1)
+            
+            VStack (alignment: .leading, spacing: 2) {
+                HStack {
+                    Text("\(item.weight) g")
+                        .formatItemWeightBlack()
+                    Text("|")
+                        .formatItemWeightBlack()
+                    Text("$ \(item.price)")
+                        .formatItemWeightBlack()
+                }
+                
+                Text(item.detail)
+                    .formatItemDetailsGrey()
+                    .lineLimit(1)
+            }
+            Divider()
         }
     }
     

@@ -14,6 +14,7 @@ struct AddImageButton: View {
     @ObservedObject var item: Item
 
     @State private var image: UIImage?
+    @State private var imageURL: URL?
 
     @State private var showSheet: Bool = false
     @State private var showImagePicker: Bool = false
@@ -25,7 +26,14 @@ struct AddImageButton: View {
                 Button {
                     self.showSheet.toggle()
                 } label: {
-                    Image(systemName: "plus")
+                    VStack {
+                        if item.image == nil {
+                            Text("Add Image")
+                        } else {
+                            Text("Edit Image")
+                        }
+                    }
+                    .font(.body)
                 }
                 .confirmationDialog("Select Photo", isPresented: $showSheet, actions: {
                     Button {
@@ -50,7 +58,14 @@ struct AddImageButton: View {
                 Button {
                     self.showSheet.toggle()
                 } label: {
-                    Image(systemName: "plus")
+                    VStack {
+                        if item.image == nil {
+                            Text("Add Image")
+                        } else {
+                            Text("Edit Image")
+                        }
+                    }
+                    .font(.body)
                 }
                 .actionSheet(isPresented: $showSheet) {
                     ActionSheet(title: Text("Select Photo"),
@@ -72,11 +87,11 @@ struct AddImageButton: View {
         .sheet(isPresented: $showImagePicker) {
             saveImg()
         } content: {
-            ImagePicker(image: self.$image, isShown: self.$showImagePicker, sourceType: self.sourceType)
+            ImagePicker(image: self.$image, isShown: self.$showImagePicker, imageURL: self.$imageURL,sourceType: self.sourceType)
         }
     }
     
     private func saveImg() {
-        viewModel.updateItemImg(img: image!, item: item)
+        viewModel.updateItemImg(img: image ?? nil, item: item, imgURL: imageURL ?? nil)
     }
 }

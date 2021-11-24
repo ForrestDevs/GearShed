@@ -15,12 +15,9 @@ struct ModifyItemView: View {
     
     @StateObject private var viewModel: GearShedData
     
-    @State private var editableItemData: EditableItemData
+    @State private var editableData: EditableItemData
     @State private var confirmDeleteItemAlert: ConfirmDeleteItemAlert?
     
-    @State private var shedNavLinkActive: Bool = false
-    @State private var brandNavLinkActive: Bool = false
-        
     @State private var date: Date? = nil
     
     init(persistentStore: PersistentStore, editableItem: Item) {
@@ -28,7 +25,7 @@ struct ModifyItemView: View {
         _viewModel = StateObject(wrappedValue: viewModel)
         
         let initialData = EditableItemData(persistentStore: persistentStore, item: editableItem)
-        _editableItemData = State(initialValue: initialData)
+        _editableData = State(initialValue: initialData)
         
         if let dateIn = editableItem.datePurchased {
             _date = State(initialValue: dateIn)
@@ -38,10 +35,7 @@ struct ModifyItemView: View {
     
     var body: some View {
         NavigationView {
-            ZStack {
-                backgroundLayer
-                contentLayer
-            }
+            contentLayer
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 cancelButtonToolbarItem
@@ -54,26 +48,26 @@ struct ModifyItemView: View {
 }
 
 extension ModifyItemView {
-    // MARK: Main Content
-    private var backgroundLayer: some View {
-        Color.theme.silver
-            .ignoresSafeArea()
-    }
     
+    // MARK: Main Content
     private var contentLayer: some View {
-        ScrollView (.vertical, showsIndicators: false) {
-            VStack (alignment: .leading, spacing: 10) {
-                itemNameSection
-                itemBrandSection
-                itemShedSection
-                itemWeightSection
-                itemPriceSection
-                itemWishlistSection
-                itemPurchaseDateSection
-                itemDescriptionSection
+        ZStack {
+            Color.theme.silver
+                .ignoresSafeArea()
+            ScrollView (.vertical, showsIndicators: false) {
+                VStack (alignment: .leading, spacing: 10) {
+                    itemNameSection
+                    itemBrandSection
+                    itemShedSection
+                    itemWeightSection
+                    itemPriceSection
+                    itemPurchaseDateSection
+                    itemDescriptionSection
+                    itemWishlistSection
+                }
+                .padding(.horizontal)
+                .padding(.top)
             }
-            .padding(.horizontal)
-            .padding(.top)
         }
     }
     
@@ -83,7 +77,7 @@ extension ModifyItemView {
             VStack (alignment: .leading, spacing: 3) {
                 Text("Name")
                     .formatEntryTitle()
-                TextField("", text: $editableItemData.name)
+                TextField("Gear Name (Required)", text: $editableData.name)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .disableAutocorrection(true)
                     .font(.subheadline)
@@ -91,90 +85,107 @@ extension ModifyItemView {
         }
     }
     
-    private var itemShedSection: some View {
-        Section {
-            VStack (alignment: .leading, spacing: 3)  {
-                Text ("Shed")
-                    .formatEntryTitle()
-
-
-                Menu {
-                    Button {
-                        shedNavLinkActive.toggle()
-                    } label: {
-                        Text("Add New Shed")
-                        .font(.subheadline)
-                    }
-                    ForEach(viewModel.sheds) { shed in
-                        Button {
-                            editableItemData.shed = shed
-                        } label: {
-                            Text(shed.name)
-                                .tag(shed)
-                                .font(.subheadline)
-                        }
-                    }
-                } label: {
-                    HStack {
-                        Text(editableItemData.shed?.name ?? "Select Shed")
-                            .font(.subheadline)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-                    }
-                    .padding(8)
-                    .background(Color.white)
-                    .clipShape(RoundedRectangle(cornerRadius: 5))
-                }
-                .background(
-                    NavigationLink(destination:
-                        AddShedView(
-                            persistentStore: persistentStore,
-                            shedOut: { shed in editableItemData.shed = shed }),
-                                   isActive: $shedNavLinkActive) {
-                        EmptyView()
-                    }
-                )
-            }
-        }
-
-    }
-    
     private var itemBrandSection: some View {
         Section {
             VStack (alignment: .leading, spacing: 3) {
                 Text("Brand")
                     .formatEntryTitle()
-
-
+                
                 Menu {
                     Button {
-                        brandNavLinkActive.toggle()
+                        detailManager.content = AnyView (
+                            AddBrandView (
+                                persistentStore: persistentStore,
+                                brandOut: { brand in editableData.brand = brand })
+                                .environmentObject(detailManager)
+                        )
+                        withAnimation {
+                            detailManager.showContent = true
+                        }
                     } label: {
                         Text("Add New Brand")
                             .font(.subheadline)
                     }
                     ForEach(viewModel.brands) { brand in
                         Button {
-                            editableItemData.brand = brand
+                            editableData.brand = brand
                         } label: {
-                            Text(brand.name)
-                                .tag(brand)
-                                .font(.subheadline)
+                            HStack {
+                                Text(brand.name)
+                                    .tag(brand)
+                                    .font(.subheadline)
+                                if editableData.brand == brand {
+                                    Image(systemName: "checkmark")
+                                }
+                            }
                         }
                     }
                 } label: {
-                    HStack {
-                        Text(editableItemData.brand?.name ?? "Select Brand")
-                            .font(.subheadline)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-                    }
-                    .padding(8)
-                    .background(Color.white)
-                    .clipShape(RoundedRectangle(cornerRadius: 5))
+                    Text(editableData.brand?.name ?? "Select Brand (Required)")
+                        .font(.subheadline)
+                        .foregroundColor(brandTextColor())
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                        .padding(8)
                 }
-                .background(
-                    NavigationLink(destination: AddBrandView(persistentStore: persistentStore ,brandOut: { brand in editableItemData.brand = brand }), isActive: $brandNavLinkActive) {
-                        EmptyView()
+                .background(Color.theme.background)
+                .clipShape(RoundedRectangle(cornerRadius: 5))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 5)
+                        .stroke(Color.theme.boarderGrey, lineWidth: 0.5)
+                )
+            }
+            
+        }
+
+    }
+    
+    private var itemShedSection: some View {
+        Section {
+            VStack (alignment: .leading, spacing: 3)  {
+                Text ("Shed")
+                    .formatEntryTitle()
+                Menu {
+                    Button {
+                        detailManager.content = AnyView (
+                            AddShedView (
+                                persistentStore: persistentStore,
+                                shedOut: { shed in editableData.shed = shed })
+                                .environmentObject(detailManager)
+                        )
+                        withAnimation {
+                            detailManager.showContent = true
+                        }
+                    } label: {
+                        Text("Add New Shed")
+                        .font(.subheadline)
                     }
+                    ForEach(viewModel.sheds) { shed in
+                        Button {
+                            editableData.shed = shed
+                        } label: {
+                            HStack {
+                                Text(shed.name)
+                                    .tag(shed)
+                                    .font(.subheadline)
+                                if editableData.shed == shed {
+                                    Image(systemName: "checkmark")
+                                }
+                            }
+                            
+                        }
+                    }
+                } label: {
+                    Text(editableData.shed?.name ?? "Select Shed (Required)")
+                        .font(.subheadline)
+                        .foregroundColor (shedTextColor())
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                        .padding(8)
+                }
+                .background(Color.theme.background)
+                .clipShape(RoundedRectangle(cornerRadius: 5))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 5)
+                        .stroke(Color.theme.boarderGrey, lineWidth: 0.5)
                 )
             }
         }
@@ -186,15 +197,12 @@ extension ModifyItemView {
             VStack (alignment: .leading, spacing: 3)  {
                 Text ("Weight")
                     .formatEntryTitle()
-
-
-                TextField("", text: $editableItemData.weight)
+                TextField("Weight in g", text: $editableData.weight)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .disableAutocorrection(true)
                     .font(.subheadline)
             }
         }
-
     }
     
     private var itemPriceSection: some View {
@@ -203,56 +211,19 @@ extension ModifyItemView {
                 Text ("Price")
                     .formatEntryTitle()
 
-
-                TextField("", text: $editableItemData.price)
+                TextField("Price in $", text: $editableData.price)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .disableAutocorrection(true)
                     .font(.subheadline)
-                
-            }
-        }
-
-    }
-    
-    private var itemWishlistSection: some View {
-        Section {
-            VStack (alignment: .leading, spacing: 10) {
-                Text("Wishlist?")
-                    .formatEntryTitle()
-                Toggle(isOn: $editableItemData.isWishlist) {EmptyView()}.labelsHidden()
             }
         }
     }
-    
-    /*private var regretButtonSection: some View {
-        Section {
-            HStack {
-                Text("Regret?")
-                    .formatEntryTitle()
-                Image(systemName: editableItemData.associatedItem.isRegret ? "hand.thumbsdown.fill" : "hand.thumbsdown")
-                    .resizable()
-                    .frame(width: 17, height: 17)
-                    .foregroundColor(Color.theme.green)
-                    //.padding(.vertical, -1)
-                    .onTapGesture {
-                        if editableItemData.associatedItem.isRegret {
-                            editableItemData.associatedItem.unmarkRegret()
-                        } else {
-                            editableItemData.associatedItem.markRegret()
-                            editableItemData.associatedItem.unmarkFavourite()
-                        }
-                    }
-            }
-        }
-        
-    }*/
     
     private var itemPurchaseDateSection: some View {
         Section {
             VStack (alignment: .leading, spacing: 3) {
                 Text("Purchase Date")
                     .formatEntryTitle()
-
                 Button {
                     withAnimation {
                         detailManager.showSecondaryContent = true
@@ -263,74 +234,81 @@ extension ModifyItemView {
                         )
                     }
                 } label: {
-                    if let date = date {
-                        Text(date.dateText(style: .short))
-                        .padding(.horizontal, 5)
-                    } else {
-                        Text("Select Purchase Date").padding(.horizontal, 5)
-                    }
+                    Text("\(date?.dateText(style: .short) ?? "Select Purchase Date")")
+                        .font(.subheadline)
+                        .foregroundColor(purchaseDateTitleColor())
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                        .padding(8)
+                        .onChange(of: date) { newValue in
+                            editableData.datePurchased = newValue
+                        }
+                        
                 }
-                .onChange(of: date) { newValue in
-                    editableItemData.datePurchased = newValue
-                }
+                .background(Color.theme.background)
+                .clipShape(RoundedRectangle(cornerRadius: 5))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 5)
+                        .stroke(Color.theme.boarderGrey, lineWidth: 0.5)
+                )
+                
+                
             }
         }
     }
     
-
-    /*private var itemPurchaseDateSection: some View {
-        Section {
-            VStack (alignment: .leading, spacing: 3) {
-                Text("Purchase Date")
-                    .formatEntryTitle()
-
-                DatePicker("Purchase Date", selection: Binding<Date> (
-                    get: { editableItemData.datePurchased ?? Date() },
-                    set: { editableItemData.datePurchased = $0 }),
-                    displayedComponents: .date)
-                    .disabled(editableItemData.isWishlist == true)
-                    .labelsHidden()
-                    .pickerStyle(.wheel)
-            }
-        }
-    }*/
-
     private var itemDescriptionSection: some View {
         Section {
             VStack (alignment: .leading, spacing: 3) {
                 Text("Description")
                     .formatEntryTitle()
-
-
-                TextField("", text: $editableItemData.details)
+                TextField("Gear Description", text: $editableData.details)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .disableAutocorrection(true)
                     .font(.subheadline)
-        
-        /*ZStack {
-            if editableItemData.details.isEmpty == true {
-                Text("placeholder")
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-                    .foregroundColor(Color.theme.secondaryText)
-            }
-            TextEditor(text: $editableItemData.details)
-                .frame(maxHeight: .infinity)
-                .padding(.horizontal, -5)
-        }
-        //.foregroundColor(Color.theme.green)
-        .font(.custom("HelveticaNeue", size: 17).bold())*/
             }
         }
     }
     
-    /*private var itemDeleteButton: some View {
+    private var itemWishlistSection: some View {
         Section {
-            Button {} label: {
-                Text("Delete Item")
-                    .foregroundColor(Color.red)
+            VStack (alignment: .leading, spacing: 10) {
+                Text("Wish?")
+                    .formatEntryTitle()
+                Toggle(isOn: $editableData.isWishlist) {EmptyView()}.labelsHidden()
             }
-            .clipShape(RoundedRectangle(cornerRadius: 15))
         }
-    }*/
+    }
+    
+    // MARK: Private Methods
+    private func brandTextColor() -> Color {
+        var color: Color
+        if editableData.brand == nil {
+            color = Color.theme.promptText
+        } else {
+            color = Color.theme.accent
+        }
+        return color
+    }
+    
+    private func shedTextColor() -> Color {
+        var color: Color
+        if editableData.shed == nil {
+            color = Color.theme.promptText
+        } else {
+            color = Color.theme.accent
+        }
+        return color
+    }
+    
+    private func purchaseDateTitleColor() -> Color {
+        var color: Color
+        if editableData.datePurchased == nil {
+            color = Color.theme.promptText
+        } else {
+            color = Color.theme.accent
+        }
+        return color
+    }
     
     // MARK: ToolbarItems
     private var cancelButtonToolbarItem: some ToolbarContent {
@@ -358,11 +336,11 @@ extension ModifyItemView {
                 withAnimation {
                     detailManager.showModifyItem = false
                 }
-                viewModel.updateItem(using: editableItemData)
+                viewModel.updateItem(using: editableData)
             } label: {
                 Text("Save")
             }
-            .disabled(!editableItemData.canBeSaved)
+            .disabled(!editableData.canBeSaved)
         }
     }
     
