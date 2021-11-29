@@ -49,7 +49,7 @@ struct ActivityView: View {
                 Spacer()
                 Button {
                     withAnimation {
-                        detailManager.showAddActivity = true
+                        detailManager.target = .showAddActivity
                     }
                 }
                 label: {
@@ -87,7 +87,7 @@ struct ActivityView: View {
                     Button {
                         detailManager.selectedActivityType = type
                         withAnimation {
-                            detailManager.showAddActivityFromActivityType = true
+                            detailManager.target = .showAddActivityFromActivityType
                         }
                     } label: {
                         HStack {
@@ -99,7 +99,7 @@ struct ActivityView: View {
                     Button {
                         detailManager.selectedActivityType = type
                         withAnimation {
-                            detailManager.showModifyActivityType = true
+                            detailManager.target = .showModifyActivityType
                         }
                     } label: {
                         HStack {

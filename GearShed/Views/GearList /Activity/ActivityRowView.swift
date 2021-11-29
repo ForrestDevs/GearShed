@@ -5,13 +5,10 @@
 //  Created by Luke Forrest Gannon on 18/10/21
 //  Copyright © 2021 All rights reserved.
 //
-
 import SwiftUI
 
 struct ActivityRowView: View {
     @Environment(\.presentationMode) private var presentationMode
-
-    @EnvironmentObject var viewModel: GearlistData
     
     @EnvironmentObject var detailManager: DetailViewManager
     
@@ -25,7 +22,7 @@ struct ActivityRowView: View {
         Button {
             detailManager.selectedGearlist = activity
             withAnimation {
-                detailManager.showGearlistDetail = true
+                detailManager.target = .showGearlistDetail
             }
         } label: {
             rowBody
@@ -36,9 +33,6 @@ struct ActivityRowView: View {
         }
         .alert(item: $confirmDeleteGearlistAlert) { activity in activity.alert() }
     }
-}
-
-extension ActivityRowView {
     
     private var rowBody: some View {
         VStack (alignment: .leading, spacing: 3) {
@@ -54,10 +48,12 @@ extension ActivityRowView {
         .padding(.leading, 15)
     }
     
+    // MARK: Context Menus
+    
     private var editContextButton: some View {
         Button {
             withAnimation {
-                detailManager.showModifyActivity = true
+                detailManager.target = .showModifyActivity
             }
         } label: {
             HStack {
@@ -84,8 +80,6 @@ extension ActivityRowView {
         }
     }
 }
-
-
 
 
 

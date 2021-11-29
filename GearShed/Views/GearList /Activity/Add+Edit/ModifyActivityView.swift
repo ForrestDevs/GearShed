@@ -81,7 +81,7 @@ struct ModifyActivityView: View {
                             }).environmentObject(detailManager)
                         )
                         withAnimation {
-                            detailManager.showContent = true
+                            detailManager.secondaryTarget = .showContent
                         }
                     } label: {
                         Text("Add New Type")
@@ -150,7 +150,7 @@ struct ModifyActivityView: View {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
                 withAnimation {
-                    detailManager.showModifyActivity = false
+                    detailManager.target = .noView
                 }
             } label:  {
                 Text("Cancel")
@@ -169,7 +169,7 @@ struct ModifyActivityView: View {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
                 withAnimation {
-                    detailManager.showModifyActivity = false
+                    detailManager.target = .noView
                 }
                 glData.updateGearlist(using: editableData)
             } label: {

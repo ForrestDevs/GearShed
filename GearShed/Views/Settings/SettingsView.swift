@@ -128,7 +128,6 @@ struct SettingsView: View {
     private func backUpData() -> [URL] {
         var urls = [URL]()
         urls.append(backupManager.writeAsJSON(items: gsData.items, itemImages: gsData.itemImages, itemDiaries: gsData.itemDiaries, sheds: gsData.sheds, brands: gsData.brands, gearlists: glData.activities, piles: glData.listgroups, packs: glData.packingGroups, packingBools: glData.packingBools, activityTypes: glData.activityTypes))
-        
         return urls
     }
     

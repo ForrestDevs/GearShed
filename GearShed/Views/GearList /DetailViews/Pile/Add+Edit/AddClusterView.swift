@@ -4,7 +4,6 @@
 //
 //  Created by Luke Forrest Gannon on 2021-11-10.
 //
-
 import SwiftUI
 
 struct AddClusterView: View {
@@ -62,8 +61,7 @@ struct AddClusterView: View {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
                 withAnimation {
-                    detailManager.showContent = false
-                    detailManager.showAddCluster = false
+                    detailManager.secondaryTarget = .noView
                 }
             } label: {
                 Text("Cancel")
@@ -82,8 +80,7 @@ struct AddClusterView: View {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
                 withAnimation {
-                    detailManager.showContent = false
-                    detailManager.showAddCluster = false
+                    detailManager.secondaryTarget = .noView
                 }
                 if isAddFromItem {
                     viewModel.addNewClusterFromItem(using: editableData, gearlist: gearlist) { cluster in
@@ -127,8 +124,6 @@ extension AddClusterView {
         let viewModel = GearlistData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
     }
-    
-    
 }
 
 

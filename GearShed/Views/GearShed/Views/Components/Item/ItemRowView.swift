@@ -5,7 +5,6 @@
 //  Created by Luke Forrest Gannon on 18/10/21
 //  Copyright © 2021 All rights reserved.
 //
-
 import SwiftUI
 
 struct ItemRowView: View {
@@ -23,7 +22,7 @@ struct ItemRowView: View {
         Button {
             detailManager.selectedItem = item
             withAnimation {
-                detailManager.showItemDetail = true
+                detailManager.target = .showItemDetail
             }
         } label: {
             itemBody
@@ -37,9 +36,6 @@ struct ItemRowView: View {
         }
         .alert(item: $confirmDeleteItemAlert) { item in item.alert() }
     }
-}
-
-extension ItemRowView {
     
     private var statusIcon: some View {
         VStack {
@@ -47,21 +43,21 @@ extension ItemRowView {
                 Image(systemName: "heart.fill")
                     .resizable()
                     .frame(width: 12, height: 11)
-                    .foregroundColor(Color.theme.green)
+                    .foregroundColor(Color.red)
                     .padding(.horizontal, 2)
             } else
             if item.isRegret {
                 Image(systemName: "hand.thumbsdown.fill")
                     .resizable()
                     .frame(width: 14, height: 14)
-                    .foregroundColor(Color.theme.green)
+                    .foregroundColor(Color.theme.regretColor)
                     .padding(.horizontal, 2)
             } else
             if item.isWishlist {
                 Image(systemName: "star.fill")
                     .resizable()
                     .frame(width: 14, height: 14)
-                    .foregroundColor(Color.theme.green)
+                    .foregroundColor(Color.yellow)
                     .padding(.horizontal, 2)
             }
         }
@@ -99,6 +95,7 @@ extension ItemRowView {
             }
             Divider()
         }
+        .padding(.top, 2)
     }
     
     // MARK: Context Menus
@@ -180,7 +177,7 @@ extension ItemRowView {
         Button {
             detailManager.selectedItem = item
             withAnimation {
-                detailManager.showModifyItem = true
+                detailManager.secondaryTarget = .showModifyItem
             }
         } label: {
             HStack {
@@ -207,41 +204,4 @@ extension ItemRowView {
             }
         }
     }
-    
-    
-    
 }
-
-/*private var favouriteButton: some View {
-    Image(systemName: item.isFavourite ? "heart.fill" : "heart")
-        .resizable()
-        .frame(width: 13, height: 12)
-        .foregroundColor(Color.theme.green)
-        .padding(.vertical, -1)
-        .onTapGesture {
-            if item.isFavourite {
-                item.unmarkFavourite()
-            } else {
-                item.markFavourite()
-                item.unmarkRegret()
-            }
-        }
-}*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

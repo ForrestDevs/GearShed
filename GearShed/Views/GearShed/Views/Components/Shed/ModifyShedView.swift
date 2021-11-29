@@ -4,17 +4,11 @@
 //
 //  Created by Luke Forrest Gannon on 2021-10-19.
 //
-
 import SwiftUI
 
 struct ModifyShedView: View {
-
     @EnvironmentObject private var detailManager: DetailViewManager
-    
-    @EnvironmentObject var persistentStore: PersistentStore
-
     @StateObject private var viewModel: GearShedData
-
     @State private var confirmDeleteShedAlert: ConfirmDeleteShedAlert?
     @State private var editableData: EditableShedData
         
@@ -39,9 +33,7 @@ struct ModifyShedView: View {
         }
         .transition(.move(edge: .trailing))
     }
-}
-
-extension ModifyShedView {
+    
     // MARK: View Content
     private var viewContent: some View {
         ZStack {
@@ -70,7 +62,7 @@ extension ModifyShedView {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
                 withAnimation {
-                    detailManager.showModifyShed = false
+                    detailManager.target = .noView
                 }
             } label: {
                 Text("Cancel")
@@ -89,7 +81,7 @@ extension ModifyShedView {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
                 withAnimation {
-                    detailManager.showModifyShed = false
+                    detailManager.target = .noView
                 }
                 viewModel.updateShed(using: editableData)
             } label: {
@@ -99,42 +91,3 @@ extension ModifyShedView {
         }
     }
 }
-
-/*Section {
-    if editableData.representsExistingShed && !editableData.associatedShed.isUnknownShed {
-        SLCenteredButton(title: "Delete This Shed",
-                        action: { confirmDeleteShedAlert = ConfirmDeleteShedAlert (
-                            persistentStore: persistentStore,
-                            shed: editableData.associatedShed,
-                            destructiveCompletion: {
-                                presentationMode.wrappedValue.dismiss()
-                            }) }
-        )
-        .foregroundColor(Color.red)
-    }
-}*/
-
-/*
- private func deleteAndDismiss(_ shed: Shed) {
-     Shed.delete(shed)
-     presentationMode.wrappedValue.dismiss()
- }
-
- private func cancelButton() -> some View {
-     Button(action: { presentationMode.wrappedValue.dismiss() }) {
-         Text("Cancel")
-     }
- }
- 
- private func saveButton() -> some View {
-     Button(action: commitData) {
-         Text("Save")
-     }
- }
-
- private func commitData() {
-     presentationMode.wrappedValue.dismiss()
-     Shed.updateData(using: editableData)
- }
- 
- */

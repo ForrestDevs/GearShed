@@ -104,7 +104,7 @@ struct ModifyItemDiaryView: View {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
                 withAnimation {
-                    detailManager.showModifyItemDiary = false
+                    detailManager.secondaryTarget = .noView
                 }
             } label: {
                 Text("Cancel")
@@ -123,7 +123,7 @@ struct ModifyItemDiaryView: View {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
                 withAnimation {
-                    detailManager.showModifyItemDiary = false
+                    detailManager.secondaryTarget = .noView
                 }
                 viewModel.updateItemDiary(using: editableData)
             } label: {

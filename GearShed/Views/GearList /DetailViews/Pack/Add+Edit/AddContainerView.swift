@@ -4,7 +4,6 @@
 //
 //  Created by Luke Forrest Gannon on 2021-11-06.
 //
-
 import SwiftUI
 
 struct AddContainerView: View {
@@ -61,8 +60,7 @@ struct AddContainerView: View {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
                 withAnimation {
-                    detailManager.showContent = false
-                    detailManager.showAddContainer = false
+                    detailManager.secondaryTarget = .noView
                 }
             } label: {
                 Text("Cancel")
@@ -81,10 +79,8 @@ struct AddContainerView: View {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
                 withAnimation {
-                    detailManager.showContent = false
-                    detailManager.showAddContainer = false
+                    detailManager.secondaryTarget = .noView
                 }
-                
                 if isAddFromItem {
                     viewModel.addNewContainerFromItem(using: editableData, gearlist: gearlist) { container in
                         containerOut!(container)
@@ -105,7 +101,6 @@ extension AddContainerView {
     init(persistentStore: PersistentStore, gearlist: Gearlist, containerOut: ((Container) -> ())? = nil) {
         self.gearlist = gearlist
         self.containerOut = containerOut
-        
         _isAddFromItem = State(initialValue: true)
         
         let viewModel = GearlistData(persistentStore: persistentStore)
@@ -117,7 +112,6 @@ extension AddContainerView {
     
     init(persistentStore: PersistentStore, gearlist: Gearlist) {
         self.gearlist = gearlist
-        
         _isAddFromItem = State(initialValue: false)
         
         let viewModel = GearlistData(persistentStore: persistentStore)

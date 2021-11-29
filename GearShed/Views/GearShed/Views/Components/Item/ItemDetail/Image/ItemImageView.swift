@@ -24,18 +24,6 @@ struct ItemImageView: View {
                     .resizable()
                     .frame(width: 120, height: 120)
             }
-            HStack {
-                AddImageButton(item: item)
-                    .environmentObject(gsData)
-                if item.image != nil {
-                    Button {
-                        gsData.deleteItemImg(item: item)
-                    } label: {
-                        Image(systemName: "trash")
-                    }
-                }
-            }
-            
         }
     }
 

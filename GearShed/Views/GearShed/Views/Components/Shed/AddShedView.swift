@@ -5,7 +5,6 @@
 //  Created by Luke Forrest Gannon on 18/10/21
 //  Copyright © 2021 All rights reserved.
 //
-
 import SwiftUI
 
 struct AddShedView: View {
@@ -30,10 +29,6 @@ struct AddShedView: View {
         }
         .transition(.move(edge: .trailing))
 	}
-    
-}
-
-extension AddShedView {
     
     // MARK: View Content
     private var viewContent: some View {
@@ -63,14 +58,8 @@ extension AddShedView {
     private var cancelToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
-                if isAddFromItem {
-                    withAnimation {
-                        detailManager.showContent = false
-                    }
-                } else {
-                    withAnimation {
-                        detailManager.showAddShed = false
-                    }
+                withAnimation {
+                    detailManager.tertiaryTarget = .noView
                 }
             } label: {
                 Text("Cancel")
@@ -88,15 +77,12 @@ extension AddShedView {
     private var saveToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
+                withAnimation {
+                    detailManager.tertiaryTarget = .noView
+                }
                 if isAddFromItem {
-                    withAnimation {
-                        detailManager.showContent = false
-                    }
                     viewModel.addNewShedFromItem(using: editableData, shedOut: { shed in shedOut!(shed) })
                 } else {
-                    withAnimation {
-                        detailManager.showAddShed = false
-                    }
                     viewModel.addNewShed(using: editableData)
                 }
             } label: {
@@ -109,7 +95,6 @@ extension AddShedView {
 }
 
 extension AddShedView {
-    
     /// Initializer for loading standard Add Shed.
     init(persistentStore: PersistentStore) {
         
@@ -132,5 +117,4 @@ extension AddShedView {
         self.shedOut = shedOut
         self.isAddFromItem = true
     }
-    
 }

@@ -4,7 +4,6 @@
 //
 //  Created by Luke Forrest Gannon on 2021-11-10.
 //
-
 import SwiftUI
 
 struct GearlistClusterView: View {
@@ -29,16 +28,11 @@ struct GearlistClusterView: View {
                 } else {
                     gearlistClusterList
                 }
-                
                 addClusterButtonOverlay
             }
         }
         .alert(item: $confirmDeleteClusterAlert) { cluster in cluster.alert() }
     }
-    
-}
-
-extension GearlistClusterView {
     
     private var gearlistClusterList: some View {
         ScrollView {
@@ -51,6 +45,7 @@ extension GearlistClusterView {
                     }
                 }
             }
+            .padding(.bottom, 100)
         }
     }
     
@@ -74,7 +69,7 @@ extension GearlistClusterView {
                     Button {
                         detailManager.selectedCluster = cluster
                         withAnimation {
-                            detailManager.showAddItemsToCluster = true
+                            detailManager.secondaryTarget = .showAddItemsToCluster
                         }
                     } label: {
                         HStack {
@@ -85,7 +80,7 @@ extension GearlistClusterView {
                     Button {
                         detailManager.selectedCluster = cluster
                         withAnimation {
-                            detailManager.showModifyCluster = true
+                            detailManager.secondaryTarget = .showModifyCluster
                         }
                     } label: {
                         HStack {
@@ -128,7 +123,7 @@ extension GearlistClusterView {
                 Button {
                     detailManager.selectedGearlist = gearlist
                     withAnimation {
-                        detailManager.showAddCluster = true
+                        detailManager.secondaryTarget = .showAddCluster
                     }
                 }
                 label: {
@@ -149,3 +144,5 @@ extension GearlistClusterView {
         }
     }
 }
+
+

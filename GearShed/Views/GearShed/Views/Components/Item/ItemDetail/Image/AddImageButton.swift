@@ -28,9 +28,15 @@ struct AddImageButton: View {
                 } label: {
                     VStack {
                         if item.image == nil {
-                            Text("Add Image")
+                            HStack {
+                                Text("Add Image")
+                                Image(systemName: "plus")
+                            }
                         } else {
-                            Text("Edit Image")
+                            HStack {
+                                Text("Edit Image")
+                                Image(systemName: "square.and.pencil")
+                            }
                         }
                     }
                     .font(.body)

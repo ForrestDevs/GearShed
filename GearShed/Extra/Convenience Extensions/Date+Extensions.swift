@@ -19,6 +19,15 @@ extension Date {
 		dateFormatter.locale = Locale.autoupdatingCurrent  // Locale(identifier: "en_US")
 		return dateFormatter.string(from: self)
 	}
+    
+    func monthDayYearDateText() -> String {
+        let dateForm = DateFormatter()
+        dateForm.timeStyle = .none
+        dateForm.locale = Locale.autoupdatingCurrent
+        dateForm.setLocalizedDateFormatFromTemplate("MMMM d y")
+        return dateForm.string(from: self)
+    }
+    
 }
 
 

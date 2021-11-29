@@ -140,7 +140,7 @@ struct AddItemDiaryView: View {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
                 withAnimation {
-                    detailManager.showAddItemDiary = false
+                    detailManager.secondaryTarget = .noView
                 }
             } label: {
                 Text("Cancel")
@@ -150,7 +150,7 @@ struct AddItemDiaryView: View {
     
     private var viewTitle: some ToolbarContent {
         ToolbarItem(placement: .principal) {
-            Text("New Diary")
+            Text("New Entry")
                 .formatGreen()
         }
     }
@@ -159,7 +159,7 @@ struct AddItemDiaryView: View {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
                 withAnimation {
-                    detailManager.showAddItemDiary = false
+                    detailManager.secondaryTarget = .noView
                 }
                 viewModel.addNewItemDiary(using: editableData)
             } label: {

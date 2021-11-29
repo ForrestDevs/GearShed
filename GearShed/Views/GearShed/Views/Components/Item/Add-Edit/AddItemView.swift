@@ -5,7 +5,6 @@
 //  Created by Luke Forrest Gannon on 18/10/21
 //  Copyright © 2021 All rights reserved.
 //
-
 import SwiftUI
 
 struct AddItemView: View {
@@ -38,9 +37,6 @@ struct AddItemView: View {
         }
         .transition(.move(edge: .trailing))
     }
-}
-
-extension AddItemView {
     
     // MARK: Main Content
     private var contentLayer: some View {
@@ -86,14 +82,14 @@ extension AddItemView {
                 
                 Menu {
                     Button {
-                        detailManager.content = AnyView (
+                        detailManager.secondaryContent = AnyView (
                             AddBrandView (
                                 persistentStore: persistentStore,
                                 brandOut: { brand in editableData.brand = brand })
                                 .environmentObject(detailManager)
                         )
                         withAnimation {
-                            detailManager.showContent = true
+                            detailManager.tertiaryTarget = .showSecondaryContent
                         }
                     } label: {
                         Text("Add New Brand")
@@ -146,7 +142,7 @@ extension AddItemView {
                                 .environmentObject(detailManager)
                         )
                         withAnimation {
-                            detailManager.showContent = true
+                            detailManager.tertiaryTarget = .showContent
                         }
                     } label: {
                         Text("Add New Shed")
@@ -218,13 +214,13 @@ extension AddItemView {
                 Text("Purchase Date")
                     .formatEntryTitle()
                 Button {
+                    detailManager.secondaryContent = AnyView (
+                        CustomDatePicker(singleDay: self.$date)
+                            .zIndex(1)
+                            .environmentObject(detailManager)
+                    )
                     withAnimation {
-                        detailManager.showSecondaryContent = true
-                        detailManager.secondaryContent = AnyView (
-                            CustomDatePicker(singleDay: self.$date)
-                                .zIndex(1)
-                                .environmentObject(detailManager)
-                        )
+                        detailManager.secondaryTarget = .showSecondaryContent
                     }
                 } label: {
                     Text("\(date?.dateText(style: .short) ?? "Select Purchase Date")")
@@ -265,7 +261,7 @@ extension AddItemView {
     private var itemWishlistSection: some View {
         Section {
             VStack (alignment: .leading, spacing: 10) {
-                Text("Wish?")
+                Text("Add to Wishlist?")
                     .formatEntryTitle()
                 Toggle(isOn: $editableData.isWishlist) {EmptyView()}.labelsHidden()
             }
@@ -308,9 +304,7 @@ extension AddItemView {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
                 withAnimation {
-                    detailManager.showAddItemFromShed = false
-                    detailManager.showAddItemFromBrand = false
-                    detailManager.showAddItem = false
+                    detailManager.target = .noView
                 }
             } label: {
                 Text("Cancel")
@@ -320,7 +314,7 @@ extension AddItemView {
     
     private var viewTitle: some ToolbarContent {
         ToolbarItem(placement: .principal) {
-            Text("Add Item")
+            Text("Add Gear")
                 .formatGreen()
         }
     }
@@ -329,9 +323,7 @@ extension AddItemView {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
                 withAnimation {
-                    detailManager.showAddItemFromShed = false
-                    detailManager.showAddItemFromBrand = false
-                    detailManager.showAddItem = false
+                    detailManager.target = .noView
                 }
                 viewModel.addNewItem(using: editableData)
             } label: {
@@ -391,187 +383,4 @@ extension AddItemView {
         _editableData = State(initialValue: initialValue)
     }
 }
-
-/*.background(
-    NavigationLink(destination: AddBrandView(persistentStore: persistentStore, brandOut: { brand in editableItemData.brand = brand }), isActive: $brandNavLinkActive) {
-        EmptyView()
-    }
-)*/
-/*ZStack {
-    if editableItemData.details.isEmpty == true {
-        Text("placeholder")
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-            .foregroundColor(Color.theme.secondaryText)
-    }
-    TextEditor(text: $editableItemData.details)
-        .frame(maxHeight: .infinity)
-        .padding(.horizontal, -5)
-}
-//.foregroundColor(Color.theme.green)
-.font(.custom("HelveticaNeue", size: 17).bold())*/
-
-/*private var itemNameFeild: some View {
-    VStack (alignment: .leading, spacing: 10) {
-        Text("Item Name")
-            .font(.subheadline)
-            .foregroundColor(Color.theme.accent)
-            
-        TextField("Add Item Name", text: $editableItemData.name)
-            .foregroundColor(Color.theme.green)
-            .font(.custom("HelveticaNeue", size: 17).bold())
-            .disableAutocorrection(true)
-        
-        Rectangle()
-            .frame(maxWidth: .infinity)
-            .frame(height: editableItemData.name.isEmpty ? 1 : 2)
-            .foregroundColor(Color.theme.accent)
-    }
-}
-
-private var itemShedBrandFeild: some View {
-    HStack {
-        VStack(alignment: .leading, spacing: 10) {
-            Text("Shed")
-                .font(.subheadline)
-            
-            Menu {
-                Button {
-                    shedNavLinkActive.toggle()
-                } label: {
-                    Text("Add New Shed")
-                    .font(.subheadline)
-                }
-                ForEach(viewModel.sheds) { shed in
-                    Button {
-                        editableItemData.shed = shed
-                    } label: {
-                        Text(shed.name)
-                            .tag(shed)
-                            .font(.subheadline)
-                    }
-                }
-            } label: {
-                HStack {
-                    Text(editableItemData.shed.name)
-                        .formatGreen()
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-                    Image(systemName: "chevron.down")
-                        .foregroundColor(Color.theme.accent)
-                }
-            }
-            .background(
-                NavigationLink(destination: AddShedView(shedOut: { shed in editableItemData.shed = shed }, isAddFromItem: true), isActive: $shedNavLinkActive) {
-                    EmptyView()
-                }
-            )
-        }
-        
-        VStack(alignment: .leading, spacing: 10) {
-            Text("Brand")
-                .font(.subheadline)
-            
-            Menu {
-                Button {
-                    brandNavLinkActive.toggle()
-                } label: {
-                    Text("Add New Brand")
-                        .font(.subheadline)
-                }
-                ForEach(viewModel.brands) { brand in
-                    Button {
-                        editableItemData.brand = brand
-                    } label: {
-                        Text(brand.name)
-                            .tag(brand)
-                            .font(.subheadline)
-                    }
-                }
-            } label: {
-                HStack {
-                    Text(editableItemData.brand.name)
-                        .formatGreen()
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-                    Image(systemName: "chevron.down")
-                        .foregroundColor(Color.theme.accent)
-                }
-            }
-            .background(
-                NavigationLink(destination: AddBrandView(brandOut: { brand in editableItemData.brand = brand }, isAddFromItem: true), isActive: $brandNavLinkActive) {
-                    EmptyView()
-                }
-            )
-        }
-    }
-}
-
-private var itemWeightPriceFeild: some View {
-    VStack(alignment: .leading, spacing: 10) {
-        HStack {
-            Text ("Weight")
-                .font(.subheadline)
-            Spacer()
-            Text("Price")
-                .font(.subheadline)
-            Spacer()
-        } // Title
-        HStack {
-            VStack {
-                TextField("Add Item Weight", text: $editableItemData.weight)
-                    .foregroundColor(Color.theme.green)
-                    .font(.custom("HelveticaNeue", size: 17).bold())
-                    .disableAutocorrection(true)
-                Rectangle()
-                    .frame(maxWidth: .infinity)
-                    .frame(height: editableItemData.weight.isEmpty ? 1 : 2)
-                    .foregroundColor(Color.theme.accent)
-            }
-            Spacer()
-            VStack {
-                TextField("Add Item Price", text: $editableItemData.price)
-                    .foregroundColor(Color.theme.green)
-                    .font(.custom("HelveticaNeue", size: 17).bold())
-                    .disableAutocorrection(true)
-                Rectangle()
-                    .frame(maxWidth: .infinity)
-                    .frame(height: editableItemData.price.isEmpty ? 1 : 2)
-                    .foregroundColor(Color.theme.accent)
-            }
-        } // Text Feilds
-    }
-}
-
-private var itemWishlistToggle: some View {
-    Toggle(isOn: $editableItemData.wishlist) {
-        Text("Wishlist Item?")
-            .font(.subheadline)
-            .foregroundColor(Color.theme.accent)
-    }
-}
-
-private var itemPurchaseDateFeild: some View {
-    DatePicker(selection: $editableItemData.datePurchased, displayedComponents: .date) {
-        Text("Purchase Date")
-            .font(.subheadline)
-    }
-}
-
-private var itemDetailsFeild: some View {
-    VStack(alignment: .leading, spacing: 10) {
-        Text("Item Details:")
-            .font(.subheadline)
-            .foregroundColor(Color.theme.accent)
-        ZStack {
-            if editableItemData.details.isEmpty == true {
-                Text("placeholder")
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-                    .foregroundColor(Color.theme.secondaryText)
-            }
-            TextEditor(text: $editableItemData.details)
-                .frame(maxHeight: .infinity)
-                .padding(.horizontal, -5)
-        }
-        .foregroundColor(Color.theme.green)
-        .font(.custom("HelveticaNeue", size: 17).bold())
-    }
-}*/
 

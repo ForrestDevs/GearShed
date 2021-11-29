@@ -4,23 +4,24 @@
 //
 //  Created by Luke Forrest Gannon on 2021-11-10.
 //
-
 import SwiftUI
 
 struct ItemRowView_InGearlist: View {
-    @EnvironmentObject private var detailManager: DetailViewManager
     @EnvironmentObject private var viewModel: GearlistData
     @ObservedObject private var gearlist: Gearlist
     @ObservedObject private var item: Item
-    
+    private var persistentStore: PersistentStore
     @State var itemCluster: Cluster?
     @State var previousItemCluster: Cluster?
     @State var itemContainer: Container?
     @State var previousItemContainer: Container?
     
+    @State private var showDetailSheet: Bool = false
+    
     init(persistentStore: PersistentStore, item: Item, gearlist: Gearlist) {
         self.gearlist = gearlist
         self.item = item
+        self.persistentStore = persistentStore
         
         let initialCluster = item.gearlistCluster(gearlist: gearlist)
         _itemCluster = State(initialValue: initialCluster)
@@ -32,15 +33,19 @@ struct ItemRowView_InGearlist: View {
     }
     
     var body: some View {
-        itemBody
+        Button {
+            self.showDetailSheet.toggle()
+        } label: {
+            itemBody
+        }
         .contextMenu {
             deleteContextButton
         }
+        .sheet(isPresented: $showDetailSheet) {
+            ItemDetailView(persistentStore: persistentStore, item: item)
+        }
         
     }
-}
-
-extension ItemRowView_InGearlist {
     
     private var itemBody: some View {
         VStack (alignment: .leading, spacing: 3) {
@@ -76,21 +81,21 @@ extension ItemRowView_InGearlist {
                 Image(systemName: "heart.fill")
                     .resizable()
                     .frame(width: 12, height: 11)
-                    .foregroundColor(Color.theme.green)
+                    .foregroundColor(Color.red)
                     .padding(.horizontal, 2)
             } else
             if item.isRegret {
                 Image(systemName: "hand.thumbsdown.fill")
                     .resizable()
                     .frame(width: 14, height: 14)
-                    .foregroundColor(Color.theme.green)
+                    .foregroundColor(Color.theme.regretColor)
                     .padding(.horizontal, 2)
             } else
             if item.isWishlist {
                 Image(systemName: "star.fill")
                     .resizable()
                     .frame(width: 14, height: 14)
-                    .foregroundColor(Color.theme.green)
+                    .foregroundColor(Color.yellow)
                     .padding(.horizontal, 2)
             }
         }
@@ -141,21 +146,4 @@ extension ItemRowView_InGearlist {
             }
         }
     }
-    
-    private var addItemDiaryButton: some View {
-        Button {
-            detailManager.selectedGearlist = gearlist
-            detailManager.selectedItem = item
-            withAnimation {
-                detailManager.showAddItemDiary = true
-            }
-        } label: {
-            HStack {
-                Text("Add Gear Diary")
-                Image(systemName: "plus")
-            }
-        }
-        
-    }
-    
 }

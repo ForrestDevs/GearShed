@@ -10,7 +10,6 @@ struct AddActivityTypeView: View {
     @EnvironmentObject private var detailManager: DetailViewManager
     @State private var editableData: EditableActivityTypeData
     @StateObject private var glData: GearlistData
-    
     private var isAddFromList: Bool = false
     private var typeOut: ((ActivityType) -> ())?
     
@@ -54,14 +53,8 @@ struct AddActivityTypeView: View {
     private var cancelToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
-                if isAddFromList {
-                    withAnimation {
-                        detailManager.showContent = false
-                    }
-                } else {
-                    withAnimation {
-                        detailManager.showAddActivityType = false
-                    }
+                withAnimation {
+                    detailManager.secondaryTarget = .noView
                 }
             } label: {
                 Text("Cancel")
@@ -79,16 +72,13 @@ struct AddActivityTypeView: View {
     private var saveToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
+                withAnimation {
+                    detailManager.secondaryTarget = .noView
+                }
                 if isAddFromList {
-                    withAnimation {
-                        detailManager.showContent = false
-                    }
                     glData.addNewActivityType(using: editableData, typeOut: {
                         type in typeOut!(type) })
                 } else {
-                    withAnimation {
-                        detailManager.showAddActivityType = false
-                    }
                     glData.addNewActivityType(using: editableData)
                 }
             } label: {
@@ -97,11 +87,9 @@ struct AddActivityTypeView: View {
             .disabled(!editableData.canBeSaved)
         }
     }
-    
 }
 
 extension AddActivityTypeView {
-    
     /// Initializer for loading standard Add ActivityType.
     init(persistentStore: PersistentStore) {
         let glData = GearlistData(persistentStore: persistentStore)
@@ -122,7 +110,6 @@ extension AddActivityTypeView {
         self.typeOut = typeOut
         self.isAddFromList = true
     }
-    
 }
 
 

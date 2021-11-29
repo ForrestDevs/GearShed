@@ -4,11 +4,9 @@
 //
 //  Created by Luke Forrest Gannon on 2021-10-19.
 //
-
 import SwiftUI
 
 struct ModifyBrandView: View {
-
     @EnvironmentObject private var detailManager: DetailViewManager
     
     @EnvironmentObject var persistentStore: PersistentStore
@@ -40,9 +38,6 @@ struct ModifyBrandView: View {
         }
         .transition(.move(edge: .trailing))
     }
-}
-
-extension ModifyBrandView {
     
     // MARK: View Content
     private var viewContent: some View {
@@ -64,17 +59,15 @@ extension ModifyBrandView {
                 }
                 .padding()
             }
-            
         }
     }
     
     // MARK: Toolbar Content
-    
     private var cancelToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
                 withAnimation {
-                    detailManager.showModifyBrand = false
+                    detailManager.target = .noView
                 }
             } label: {
                 Text("Cancel")
@@ -93,7 +86,7 @@ extension ModifyBrandView {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
                 withAnimation {
-                    detailManager.showModifyBrand = false
+                    detailManager.target = .noView
                 }
                 viewModel.updateBrand(using: editableData)
             } label: {
@@ -103,46 +96,3 @@ extension ModifyBrandView {
         }
     }
 }
-
-
-
-
-/*Section {
-    if editableData.representsExistingBrand && !editableData.associatedBrand.isUnknownBrand {
-        SLCenteredButton(title: "Delete This Brand",
-                         action: { confirmDeleteBrandAlert = ConfirmDeleteBrandAlert(persistentStore: persistentStore
-                        ,brand: editableData.associatedBrand,
-                        destructiveCompletion: { presentationMode.wrappedValue.dismiss() }) }
-        )
-        .foregroundColor(Color.red)
-    }
-}*/
-
-
-/*
- 
- 
- private func deleteAndDismiss(_ brand: Brand) {
-     Brand.delete(brand)
-     presentationMode.wrappedValue.dismiss()
- }
-
- private func cancelButton() -> some View {
-     Button(action: { presentationMode.wrappedValue.dismiss() }) {
-         Text("Cancel")
-     }
- }
- 
- private func saveButton() -> some View {
-     Button(action: commitData) {
-         Text("Save")
-     }
- }
-
- private func commitData() {
-     presentationMode.wrappedValue.dismiss()
-     Brand.updateData(using: editableData)
- }
- */
-
-

@@ -77,28 +77,30 @@ struct StatBar: View {
     
     private var shedStats: some View {
         HStack (spacing: 20) {
-            VStack (spacing: 2) {
-                Text("Shed #")
+            
+            VStack (alignment: .leading, spacing: 2) {
+                Text("Shelves (#)")
                     .formatStatBarTitle()
                 Text("\(gsData.sheds.count)")
                     .formatStatBarContent()
             }
-            VStack (spacing: 2) {
-                Text("Gear #")
+            
+            VStack (alignment: .leading, spacing: 2) {
+                Text("Gear (#)")
                     .formatStatBarTitle()
                 Text("\(gsData.items.count)")
                     .formatStatBarContent()
             }
-            VStack (spacing: 2) {
-                Text("Weight")
+            VStack (alignment: .leading, spacing: 2) {
+                Text("Weight (g)")
                     .formatStatBarTitle()
-                Text("\(gsData.totalWeight(array: gsData.items)) g")
+                Text("\(gsData.totalWeight(array: gsData.items))")
                     .formatStatBarContent()
             }
-            VStack (spacing: 2) {
-                Text("Invested")
+            VStack (alignment: .leading, spacing: 2) {
+                Text("Invested ($)")
                     .formatStatBarTitle()
-                Text("$ \(gsData.totalCost(array: gsData.items))")
+                Text("\(gsData.totalCost(array: gsData.items))")
                     .formatStatBarContent()
             }
             Spacer()
@@ -107,8 +109,8 @@ struct StatBar: View {
     
     private var brandStats: some View {
         HStack (spacing: 20) {
-            VStack (spacing: 2) {
-                Text("Brand #")
+            VStack (alignment: .leading, spacing: 2) {
+                Text("Brands (#)")
                     .formatStatBarTitle()
                 Text("\(gsData.brands.count)")
                     .formatStatBarContent()
@@ -119,22 +121,22 @@ struct StatBar: View {
     
     private var favStats: some View {
         HStack (spacing: 20) {
-            VStack (spacing: 2) {
-                Text("Gear #")
+            VStack (alignment: .leading, spacing: 2) {
+                Text("Gear (#)")
                     .formatStatBarTitle()
                 Text("\(gsData.favItems.count)")
                     .formatStatBarContent()
             }
-            VStack (spacing: 2) {
-                Text("Weight")
+            VStack (alignment: .leading, spacing: 2) {
+                Text("Weight (g)")
                     .formatStatBarTitle()
-                Text("\(gsData.totalWeight(array: gsData.favItems)) g")
+                Text("\(gsData.totalWeight(array: gsData.favItems))")
                     .formatStatBarContent()
             }
-            VStack (spacing: 2) {
-                Text("Invested")
+            VStack (alignment: .leading, spacing: 2) {
+                Text("Invested ($)")
                     .formatStatBarTitle()
-                Text("$ \(gsData.totalCost(array: gsData.favItems))")
+                Text("\(gsData.totalCost(array: gsData.favItems))")
                     .formatStatBarContent()
             }
             Spacer()
@@ -143,16 +145,16 @@ struct StatBar: View {
     
     private var regretStats: some View {
         HStack (spacing: 20) {
-            VStack (spacing: 2) {
-                Text("Gear #")
+            VStack (alignment: .leading, spacing: 2) {
+                Text("Gear (#)")
                     .formatStatBarTitle()
                 Text("\(gsData.regretItems.count)")
                     .formatStatBarContent()
             }
-            VStack (spacing: 2) {
-                Text("Invested")
+            VStack (alignment: .leading, spacing: 2) {
+                Text("Invested ($)")
                     .formatStatBarTitle()
-                Text("$ \(gsData.totalCost(array: gsData.regretItems))")
+                Text("\(gsData.totalCost(array: gsData.regretItems))")
                     .formatStatBarContent()
             }
             Spacer()
@@ -161,16 +163,16 @@ struct StatBar: View {
     
     private var wishStats: some View {
         HStack (spacing: 20) {
-            VStack (spacing: 2) {
-                Text("Gear #")
+            VStack (alignment: .leading, spacing: 2) {
+                Text("Gear (#)")
                     .formatStatBarTitle()
                 Text("\(gsData.wishListItems.count)")
                     .formatStatBarContent()
             }
-            VStack (spacing: 2) {
-                Text("Cost")
+            VStack (alignment: .leading, spacing: 2) {
+                Text("Cost ($)")
                     .formatStatBarTitle()
-                Text("$ \(gsData.totalCost(array: gsData.wishListItems))")
+                Text("\(gsData.totalCost(array: gsData.wishListItems))")
                     .formatStatBarContent()
             }
             Spacer()
@@ -179,14 +181,14 @@ struct StatBar: View {
     
     private var adventureStats: some View {
         HStack (spacing: 20) {
-            VStack (spacing: 2) {
-                Text("Adventure #")
+            VStack (alignment: .leading, spacing: 2) {
+                Text("Adventures (#)")
                     .formatStatBarTitle()
                 Text("\(glData.adventures.count)")
                     .formatStatBarContent()
             }
-            VStack (spacing: 2) {
-                Text("Bucketlist #")
+            VStack (alignment: .leading, spacing: 2) {
+                Text("Bucketlist (#)")
                     .formatStatBarTitle()
                 Text("\(glData.bucklists.count)")
                     .formatStatBarContent()
@@ -197,14 +199,14 @@ struct StatBar: View {
     
     private var actvivtyStats: some View {
         HStack (spacing: 20) {
-            VStack (spacing: 2) {
-                Text("Activity #")
+            VStack (alignment: .leading, spacing: 2) {
+                Text("Activities (#)")
                     .formatStatBarTitle()
                 Text("\(glData.activities.count)")
                     .formatStatBarContent()
             }
-            VStack (spacing: 2) {
-                Text("Type #")
+            VStack (alignment: .leading, spacing: 2) {
+                Text("Types (#)")
                     .formatStatBarTitle()
                 Text("\(glData.activityTypes.count)")
                     .formatStatBarContent()
@@ -215,16 +217,16 @@ struct StatBar: View {
 
     private var listStats: some View {
         HStack (spacing: 20) {
-            VStack (spacing: 2) {
-                Text("Gear")
+            VStack (alignment: .leading, spacing: 2) {
+                Text("Gear (#)")
                     .formatStatBarTitle()
                 Text("\(gearlist!.items.count)")
                     .formatStatBarContent()
             }
-            VStack (spacing: 2) {
-                Text("Weight")
+            VStack (alignment: .leading, spacing: 2) {
+                Text("Weight (g)")
                     .formatStatBarTitle()
-                Text("\(glData.gearlistTotalWeight(gearlist: gearlist!))g")                    .formatStatBarContent()
+                Text("\(glData.gearlistTotalWeight(gearlist: gearlist!))")                    .formatStatBarContent()
             }
             Spacer()
         }
@@ -232,16 +234,16 @@ struct StatBar: View {
     
     private var pileStats: some View {
         HStack (spacing: 20) {
-            VStack (spacing: 2) {
-                Text("Gear")
+            VStack (alignment: .leading, spacing: 2) {
+                Text("Gear (#)")
                     .formatStatBarTitle()
                 Text("\(glData.gearlistClusterTotalItems(gearlist: gearlist!))")
                     .formatStatBarContent()
             }
-            VStack (spacing: 2) {
-                Text("Weight")
+            VStack (alignment: .leading, spacing: 2) {
+                Text("Weight (g)")
                     .formatStatBarTitle()
-                Text("\(glData.gearlistClusterTotalWeight(gearlist: gearlist!))g" )                    .formatStatBarContent()
+                Text("\(glData.gearlistClusterTotalWeight(gearlist: gearlist!))" )                    .formatStatBarContent()
             }
             Spacer()
         }
@@ -249,7 +251,7 @@ struct StatBar: View {
     
     private var packStats: some View {
         HStack (spacing: 20) {
-            VStack (spacing: 2) {
+            VStack (alignment: .leading, spacing: 2) {
                 Text("Gear Packed")
                     .formatStatBarTitle()
                 Text(
@@ -259,10 +261,11 @@ struct StatBar: View {
                 )
                     .formatStatBarContent()
             }
-            VStack (spacing: 2) {
-                Text("Weight")
+            VStack (alignment: .leading, spacing: 2) {
+                Text("Weight (g)")
                     .formatStatBarTitle()
-                Text("\(glData.gearlistContainerTotalWeight(gearlist: gearlist!))g")        .formatStatBarContent()
+                Text("\(glData.gearlistContainerTotalWeight(gearlist: gearlist!))")
+                    .formatStatBarContent()
             }
             Spacer()
         }
@@ -270,8 +273,8 @@ struct StatBar: View {
     
     private var diaryStats: some View {
         HStack (spacing: 20) {
-            VStack (spacing: 2) {
-                Text("Diary #")
+            VStack (alignment: .leading, spacing: 2) {
+                Text("Entry (#)")
                     .formatStatBarTitle()
                 Text("\(gearlist!.diaries.count)")
                     .formatStatBarContent()

@@ -4,11 +4,9 @@
 //
 //  Created by Luke Forrest Gannon on 2021-11-10.
 //
-
 import SwiftUI
 
 struct GearlistContainerView: View {
-    
     @Environment(\.presentationMode) private var presentationMode
     
     @EnvironmentObject private var detailManager: DetailViewManager
@@ -35,10 +33,6 @@ struct GearlistContainerView: View {
         }
         .alert(item: $confirmDeleteContainerAlert) { container in container.alert() }
     }
-
-}
-
-extension GearlistContainerView {
     
     private var packingContainerList: some View {
         ScrollView {
@@ -51,6 +45,7 @@ extension GearlistContainerView {
                     }
                 }
             }
+            .padding(.bottom, 100)
         }
     }
     
@@ -68,7 +63,7 @@ extension GearlistContainerView {
                     Button {
                         detailManager.selectedContainer = container
                         withAnimation {
-                            detailManager.showAddItemsToContainer = true
+                            detailManager.secondaryTarget = .showAddItemsToContainer
                         }
                     } label: {
                         HStack {
@@ -79,7 +74,7 @@ extension GearlistContainerView {
                     Button {
                         detailManager.selectedContainer = container
                         withAnimation {
-                            detailManager.showModifyContainer = true
+                            detailManager.secondaryTarget = .showModifyContainer
                         }
                     } label: {
                         HStack {
@@ -127,7 +122,7 @@ extension GearlistContainerView {
                 Spacer()
                 Button {
                     withAnimation {
-                        detailManager.showAddContainer = true
+                        detailManager.secondaryTarget = .showAddContainer
                     }
                 }
                 label: {
@@ -147,5 +142,5 @@ extension GearlistContainerView {
             }
         }
     }
-    
 }
+

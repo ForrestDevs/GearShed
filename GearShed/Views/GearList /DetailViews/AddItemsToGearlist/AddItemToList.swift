@@ -8,11 +8,10 @@
 import SwiftUI
 
 enum SelectType {
-    case gearlistItem, pileItem, packItem, diaryItem
+    case gearlistItem, pileItem, packItem
 }
 
 struct AddItemsToGearListView: View {
-    
     @EnvironmentObject private var detailManager: DetailViewManager
     @StateObject private var viewModel: GearlistData
     @StateObject private var itemVM: GearShedData
@@ -62,7 +61,7 @@ struct AddItemsToGearListView: View {
 }
 
 extension AddItemsToGearListView {
-    
+    /// Initializer for loading a Item Select view (All Shed Items) for addition/ subtraction from gearlist items.
     init(persistentStore: PersistentStore, type: SelectType, gearlist: Gearlist) {
         self.type = type
         self.gearlist = gearlist
@@ -73,7 +72,7 @@ extension AddItemsToGearListView {
         let itemVM = GearShedData(persistentStore: persistentStore)
         _itemVM = StateObject(wrappedValue: itemVM)
     }
-    
+    /// Initializer for loading a Item Select view (All Shed Items) for addition/ subtraction from pile items.
     init(persistentStore: PersistentStore, type: SelectType, gearlist: Gearlist, pile: Cluster) {
         self.type = type
         self.gearlist = gearlist
@@ -85,7 +84,7 @@ extension AddItemsToGearListView {
         let itemVM = GearShedData(persistentStore: persistentStore)
         _itemVM = StateObject(wrappedValue: itemVM)
     }
-    
+    /// Initializer for loading a Item Select view (All Shed Items) for addition/ subtraction from pack items.
     init(persistentStore: PersistentStore, type: SelectType, gearlist: Gearlist, pack: Container) {
         self.type = type
         self.gearlist = gearlist
@@ -97,7 +96,7 @@ extension AddItemsToGearListView {
         let itemVM = GearShedData(persistentStore: persistentStore)
         _itemVM = StateObject(wrappedValue: itemVM)
     }
-    
+    /// Initializer for loading a Item Select view (All Shed Items) for selecting a single Item that gets returned with an @escaping function.
     init(persistentStore: PersistentStore, type: SelectType, gearlist: Gearlist, itemOut: @escaping ((Item) -> ())) {
         self.type = type
         self.itemOut = itemOut
@@ -109,8 +108,6 @@ extension AddItemsToGearListView {
         let itemVM = GearShedData(persistentStore: persistentStore)
         _itemVM = StateObject(wrappedValue: itemVM)
     }
-    
-    
 }
 
 extension AddItemsToGearListView {
@@ -188,26 +185,6 @@ extension AddItemsToGearListView {
                             }
                         }
                     }
-                case .diaryItem:
-                    ForEach(itemVM.sectionByShed(itemArray: gearlist.items)) { section in
-                        Section {
-                            ForEach(section.items) { item in
-                                SelectableItemRowView (
-                                    type: .diaryItem,
-                                    item: item) {
-                                        handleItemSelected(item)
-                                    } respondToTapOffSelector: {
-                                        handleItemUnSelected(item)
-                                    }
-                            }
-                        } header: {
-                            HStack {
-                                Text(section.title)
-                                    .font(.headline)
-                                Spacer()
-                            }
-                        }
-                    }
                 }
             }
         }
@@ -216,21 +193,14 @@ extension AddItemsToGearListView {
     // MARK: Methods
     /// Function to add selected Item to temp array.
     private func handleItemSelected(_ item: Item) {
-        if type == .diaryItem {
-            self.itemOut!(item)
-            withAnimation {
-                detailManager.showContent = false
-            }
-        } else {
-            canSave = true
-            
-            if !itemsChecked.contains(item) {
-                itemsChecked.append(item)
-            }
-            
-            if itemsUnChecked.contains(item) {
-                itemsUnChecked.removeAll{$0.id == item.id}
-            }
+        canSave = true
+        
+        if !itemsChecked.contains(item) {
+            itemsChecked.append(item)
+        }
+        
+        if itemsUnChecked.contains(item) {
+            itemsUnChecked.removeAll{$0.id == item.id}
         }
     }
     /// Function to remove selected Item from temp array.
@@ -250,23 +220,8 @@ extension AddItemsToGearListView {
     private var cancelButtonToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
-                switch type {
-                case .gearlistItem:
-                    withAnimation {
-                        detailManager.showAddItemsToGearlist = false
-                    }
-                case .pileItem:
-                    withAnimation {
-                        detailManager.showAddItemsToCluster = false
-                    }
-                case .packItem:
-                    withAnimation {
-                        detailManager.showAddItemsToContainer = false
-                    }
-                case .diaryItem:
-                    withAnimation {
-                        detailManager.showContent = false
-                    }
+                withAnimation {
+                    detailManager.secondaryTarget = .noView
                 }
             } label:  {
                 Text("Cancel")
@@ -276,80 +231,36 @@ extension AddItemsToGearListView {
     
     private var viewTitle: some ToolbarContent {
         ToolbarItem (placement: .principal) {
-            if type == .diaryItem {
-                Text("Select An Item")
-                    .formatGreen()
-            } else {
-                Text("Select Items")
-                    .formatGreen()
-            }
+            Text("Select Gear")
+                .formatGreen()
         }
     }
     
     private var saveButtonToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
-            if type != .diaryItem {
-                Button {
-                    switch type {
-                    case .gearlistItem:
-                        viewModel.updateGearlistItems(gearlist: gearlist, addingItems: itemsChecked, removingItems: itemsUnChecked)
-                        detailManager.selectedGearlist = gearlist
-                        withAnimation {
-                            detailManager.showAddItemsToGearlist = false
-                            detailManager.showGearlistDetail = true
-                        }
-                    case .pileItem:
-                        viewModel.updateClusterItems(addingItems: itemsChecked, removingItems: itemsUnChecked, pile: pile!)
-                        withAnimation {
-                            detailManager.showAddItemsToCluster = false
-                        }
-                    case .packItem:
-                        viewModel.updateContainerItems(addingItems: itemsChecked, removingItems: itemsUnChecked, pack: pack!)
-                        withAnimation {
-                            detailManager.showAddItemsToContainer = false
-                        }
-                    case .diaryItem:
-                        withAnimation {
-                            detailManager.showContent = false
-                        }
+            Button {
+                switch type {
+                case .gearlistItem:
+                    viewModel.updateGearlistItems(gearlist: gearlist, addingItems: itemsChecked, removingItems: itemsUnChecked)
+                    detailManager.selectedGearlist = gearlist
+                    withAnimation {
+                        detailManager.secondaryTarget = .noView
                     }
-                } label: {
-                    Text("Save")
+                case .pileItem:
+                    viewModel.updateClusterItems(addingItems: itemsChecked, removingItems: itemsUnChecked, pile: pile!)
+                    withAnimation {
+                        detailManager.secondaryTarget = .noView
+                    }
+                case .packItem:
+                    viewModel.updateContainerItems(addingItems: itemsChecked, removingItems: itemsUnChecked, pack: pack!)
+                    withAnimation {
+                        detailManager.secondaryTarget = .noView
+                    }
                 }
-                .disabled(!canSave)
+            } label: {
+                Text("Save")
             }
+            .disabled(!canSave)
         }
     }
 }
-
-/*ScrollView(.vertical, showsIndicators: false) {
-    LazyVStack {
-        ForEach(itemVM.sectionByShed(itemArray: itemVM.items)) { section in
-            Section {
-                ForEach(section.items) { item in
-                    ItemRowViewForList(item: item, respondToTapOnSelector: {
-                        handleItemSelected(item)
-                    }, respondToTapOffSelector: {
-                        handleItemUnSelected(item)
-                    })
-                    
-                }
-            } header: {
-                VStack (spacing: 0) {
-                    HStack {
-                        Text(section.title)
-                            .font(.headline)
-                        Spacer()
-                    }
-                    Rectangle()
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 1)
-                }
-                .padding(.horizontal)
-            }
-        }
-    }
-}*/
-//.padding(.top, 5)
- 
-

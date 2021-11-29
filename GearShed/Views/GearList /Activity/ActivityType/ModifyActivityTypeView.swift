@@ -60,7 +60,7 @@ struct ModifyActivityTypeView: View {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
                 withAnimation {
-                    detailManager.showModifyActivityType = false
+                    detailManager.target = .noView
                 }
             } label: {
                 Text("Cancel")
@@ -79,7 +79,7 @@ struct ModifyActivityTypeView: View {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
                 withAnimation {
-                    detailManager.showModifyActivityType = false
+                    detailManager.target = .noView
                 }
                 glData.updateActivityType(using: editableData)
             } label: {

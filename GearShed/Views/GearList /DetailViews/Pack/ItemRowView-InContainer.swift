@@ -4,15 +4,12 @@
 //
 //  Created by Luke Forrest Gannon on 2021-11-11.
 //
-
 import SwiftUI
 
 struct ItemRowView_InContainer: View {
-    
-    @EnvironmentObject private var detailManager: DetailViewManager
-    
     @EnvironmentObject private var persistentStore: PersistentStore
-    
+    @EnvironmentObject private var detailManager: DetailViewManager
+        
     @EnvironmentObject private var viewModel: GearlistData
     
     @ObservedObject private var item: Item
@@ -22,6 +19,7 @@ struct ItemRowView_InContainer: View {
     @ObservedObject private var container: Container
     
     @State private var isPacked: Bool
+    @State private var showDetail: Bool = false
         
     init(item: Item, gearlist: Gearlist, container: Container) {
         self.item = item
@@ -44,20 +42,22 @@ struct ItemRowView_InContainer: View {
             deleteContextButton
             itemDetailContextButton
         }
+        .sheet(isPresented: $showDetail) {
+            ItemDetailView(persistentStore: persistentStore, item: item)
+        }
     }
-}
-
-extension ItemRowView_InContainer {
     
     private var itemBody: some View {
-        VStack (alignment: .leading, spacing: 2) {
+        VStack (alignment: .leading, spacing: 5) {
             HStack (alignment: .firstTextBaseline, spacing: 5) {
-                itemPackStatus
-                HStack (spacing: 5) {
-                    Text(item.name)
-                        .formatItemNameGreen()
-                        .fixedSize()
-                    statusIcon
+                HStack (spacing: 10){
+                    itemPackStatus
+                    HStack (spacing: 5) {
+                        Text(item.name)
+                            .formatItemNameGreen()
+                            .fixedSize()
+                        statusIcon
+                    }
                 }
                 Text("|")
                     .formatItemNameBlack()
@@ -67,6 +67,7 @@ extension ItemRowView_InContainer {
             .lineLimit(1)
             Divider()
         }
+        .padding(.top, 5)
         .padding(.leading, 15)
     }
     
@@ -76,33 +77,34 @@ extension ItemRowView_InContainer {
                 Image(systemName: "heart.fill")
                     .resizable()
                     .frame(width: 12, height: 11)
-                    .foregroundColor(Color.theme.green)
+                    .foregroundColor(Color.red)
                     .padding(.horizontal, 2)
             } else
             if item.isRegret {
                 Image(systemName: "hand.thumbsdown.fill")
                     .resizable()
                     .frame(width: 14, height: 14)
-                    .foregroundColor(Color.theme.green)
+                    .foregroundColor(Color.theme.regretColor)
                     .padding(.horizontal, 2)
             } else
             if item.isWishlist {
                 Image(systemName: "star.fill")
                     .resizable()
                     .frame(width: 14, height: 14)
-                    .foregroundColor(Color.theme.green)
+                    .foregroundColor(Color.yellow)
                     .padding(.horizontal, 2)
             }
         }
     }
 
     private var itemPackStatus: some View {
-        ZStack {
-            Image(systemName: "circle")
-                .foregroundColor(Color.theme.green)
-                .frame(width: 12, height: 12)
+        ZStack (alignment: .center){
             if isPacked == true {
-                Image(systemName: "bag.circle.fill")
+                Image(systemName: "checkmark.circle.fill")
+                    .foregroundColor(Color.theme.green)
+                    .frame(width: 12, height: 12)
+            } else {
+                Image(systemName: "circle")
                     .foregroundColor(Color.theme.green)
                     .frame(width: 12, height: 12)
             }
@@ -111,9 +113,7 @@ extension ItemRowView_InContainer {
     
     private var itemDetailContextButton: some View {
         Button {
-            withAnimation {
-                detailManager.showItemDetail = true
-            }
+            self.showDetail.toggle()
         } label: {
             Text("Item Detail")
         }
@@ -133,6 +133,6 @@ extension ItemRowView_InContainer {
         }
         
     }
-    
 }
+
 

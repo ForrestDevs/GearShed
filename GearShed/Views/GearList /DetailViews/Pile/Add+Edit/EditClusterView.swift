@@ -65,7 +65,7 @@ extension EditClusterView {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
                 withAnimation {
-                    detailManager.showModifyCluster = false
+                    detailManager.secondaryTarget = .noView
                 }
             } label: {
                 Text("Cancel")
@@ -84,7 +84,7 @@ extension EditClusterView {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
                 withAnimation {
-                    detailManager.showModifyCluster = false
+                    detailManager.secondaryTarget = .noView
                 }
                 viewModel.updateCluster(using: editableData)
             } label: {

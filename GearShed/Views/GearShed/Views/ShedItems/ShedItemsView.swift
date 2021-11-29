@@ -5,7 +5,6 @@
 //  Created by Luke Forrest Gannon on 18/10/21
 //  Copyright © 2021 All rights reserved.
 //
-
 import SwiftUI
 
 struct ShedItemsView: View {
@@ -35,85 +34,6 @@ struct ShedItemsView: View {
         }
         .alert(item: $vm.confirmDeleteShedAlert) { shed in shed.alert() }
     }
-    
-}
-
-extension ShedItemsView {
-    
-    /*private var listContent: some View {
-        List {
-            ForEach(gsData.sheds) { shed in
-                Section {
-                    if gsData.showAll {
-                        withAnimation(.easeOut) {
-                            ForEach(shed.items) { item in
-                                ItemRowView(item: item)
-                            }
-                        }
-                    }
-                } header: {
-                    HStack {
-                        Text(shed.name).textCase(.none)
-                            .font(.custom("HelveticaNeue", size: 16.5).bold())
-                        
-                        Spacer()
-                        
-                        Menu {
-                            Button {
-                                let canCreate = self.persistentStore.fullVersionUnlocked ||
-                                self.persistentStore.count(for: Item.fetchRequest()) < 3
-                                if canCreate {
-                                    detailManager.selectedShed = shed
-                                    withAnimation {
-                                        detailManager.showAddItemFromShed = true
-                                    }
-                                } else {
-                                    vm.showingUnlockView.toggle()
-                                }
-                            } label: {
-                                HStack {
-                                    Text("Add Gear to Shed").textCase(.none)
-                                    Image(systemName: "plus")
-                                }
-                                
-                            }
-                            Button {
-                                detailManager.selectedShed = shed
-                                withAnimation {
-                                    detailManager.showModifyShed = true
-                                }
-                            } label: {
-                                HStack {
-                                    Text("Edit Shed Name").textCase(.none)
-                                    Image(systemName: "square.and.pencil")
-                                }
-                            }
-                            Button {
-                                vm.confirmDeleteShedAlert = ConfirmDeleteShedAlert (
-                                    persistentStore: persistentStore,
-                                    shed: shed,
-                                    destructiveCompletion: {
-                                        presentationMode.wrappedValue.dismiss()
-                                    }
-                                )
-                            } label: {
-                                HStack {
-                                    Text("Delete Shed").textCase(.none)
-                                    Image(systemName: "trash")
-                                }
-                            }
-                        } label: {
-                            Image(systemName: "square.and.pencil")
-                                .resizable()
-                                .frame(width: 17, height: 17)
-                                .padding(.horizontal, 2)
-                        }
-                    }
-                }
-            }
-        }
-        //.listStyle()
-    }*/
     
     private var listView: some View {
         ScrollView {
@@ -158,7 +78,7 @@ extension ShedItemsView {
                         if canCreate {
                             detailManager.selectedShed = shed
                             withAnimation {
-                                detailManager.showAddItemFromShed = true
+                                detailManager.target = .showAddItemFromShed
                             }
                         } else {
                             vm.showingUnlockView.toggle()
@@ -168,12 +88,11 @@ extension ShedItemsView {
                             Text("Add Gear to Shed").textCase(.none)
                             Image(systemName: "plus")
                         }
-                        
                     }
                     Button {
                         detailManager.selectedShed = shed
                         withAnimation {
-                            detailManager.showModifyShed = true
+                            detailManager.target = .showModifyShed
                         }
                     } label: {
                         HStack {
@@ -205,7 +124,4 @@ extension ShedItemsView {
             .padding(.horizontal, 15)
         }
     }
-    
 }
-
-

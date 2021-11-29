@@ -19,8 +19,8 @@ extension ItemDiary {
         set { details_ = newValue }
     }
     
-    var item: Item {
-        get { item_! }
+    var item: Item? {
+        get { item_ ?? nil }
         set { item_ = newValue }
     }
     

@@ -23,8 +23,10 @@ struct GearlistView: View {
         NavigationView {
             PagerTabView(tint: Color.theme.accent, selection: $currentSelection) {
                 Text("Adventures")
+                    .formatPageHeaderTitle()
                     .pageLabel()
                 Text("Activities")
+                    .formatPageHeaderTitle()
                     .pageLabel()
             } content: {
                 AdventureView()
@@ -83,7 +85,9 @@ extension GearlistView {
     
     private var shareList: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
-            Button {} label: {
+            Button {
+                
+            } label: {
                 Image(systemName: "square.and.arrow.up")
             }
         }

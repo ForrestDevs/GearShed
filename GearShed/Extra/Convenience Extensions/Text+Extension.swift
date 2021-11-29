@@ -10,6 +10,12 @@ import SwiftUI
 
 extension Text {
     
+    // MARK: Page Header Titles
+    
+    func formatPageHeaderTitle() -> some View {
+        self.font(.custom("HelveticaNeue", size: 16.5).bold())
+    }
+    
     // MARK: Stat Bar Fonts
     func formatStatBarTitle() -> some View {
         self.font(.custom("HelveticaNeue", size: 15))
@@ -24,6 +30,14 @@ extension Text {
     func listHeaderTitle() -> some View {
         self.foregroundColor(Color.theme.accent)
             .font(.custom("HelveticaNeue", size: 16.5).bold())
+    }
+    
+    // MARK: Diary Row Views
+    
+    func formatDiaryDetails() -> some View {
+        self.foregroundColor(Color.theme.accent)
+            .font(.custom("HelveticaNeue", size: 16.5).italic())
+            .frame(alignment: .leading)
     }
     
     
@@ -69,7 +83,7 @@ extension Text {
     
     func formatBlackTitle() -> some View {
         self.foregroundColor(Color.theme.accent)
-            .font(.custom("HelveticaNeue", size: 22).bold())
+            .font(.custom("HelveticaNeue", size: 18).bold())
     }
     
     func formatBlackSmall() -> some View {
@@ -119,7 +133,7 @@ extension Text {
     
     func formatGreenTitle() -> some View {
         self.foregroundColor(Color.theme.green)
-            .font(.custom("HelveticaNeue", size: 22).bold())
+            .font(.custom("HelveticaNeue", size: 18).bold())
     }
     
     func formatGreenSmall() -> some View {
@@ -148,7 +162,7 @@ extension TextField {
     
     func formatBlackTitle() -> some View {
         self.foregroundColor(Color.theme.accent)
-            .font(.custom("HelveticaNeue", size: 22).bold())
+            .font(.custom("HelveticaNeue", size: 20).bold())
     }
     
     func formatBlackSmall() -> some View {
@@ -168,7 +182,7 @@ extension TextField {
     
     func formatGreenTitle() -> some View {
         self.foregroundColor(Color.theme.green)
-            .font(.custom("HelveticaNeue", size: 22).bold())
+            .font(.custom("HelveticaNeue", size: 20).bold())
     }
     
     func formatGreenSmall() -> some View {

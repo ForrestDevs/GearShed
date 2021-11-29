@@ -4,9 +4,7 @@
 //
 //  Created by Luke Forrest Gannon on 2021-11-14.
 //
-
 import SwiftUI
-
 /**
  * This component shows a date picker very similar to Apple's SwiftUI 2.0 DatePicker, but with a difference.
  * Instead of just allowing a single date to be picked, the CustomDatePicker also allows the user to select
@@ -34,6 +32,8 @@ import SwiftUI
  *      Days after maxDate are not selectable.
  */
 struct CustomDatePicker: View {
+    @EnvironmentObject var detailManager: DetailViewManager
+    @StateObject var monthModel: CustomDatePickerModel
     
     // the type of picker, based on which init() function is used.
     enum PickerType {
@@ -49,46 +49,13 @@ struct CustomDatePicker: View {
         case weekdaysOnly
     }
     
-    @StateObject var monthModel: CustomDatePickerModel
-       
-    @EnvironmentObject var detailManager: DetailViewManager
-    // selects only a single date
-    
-    init(singleDay: Binding<Date?>,
-         includeDays: DateSelectionChoices = .allDays,
-         minDate: Date? = nil,
-         maxDate: Date? = nil
-    ) {
-        _monthModel = StateObject(wrappedValue: CustomDatePickerModel(singleDay: singleDay, includeDays: includeDays, minDate: minDate, maxDate: maxDate))
-    }
-    
-    // selects any number of dates, non-contiguous
-    
-    init(anyDays: Binding<[Date]>,
-         includeDays: DateSelectionChoices = .allDays,
-         minDate: Date? = nil,
-         maxDate: Date? = nil
-    ) {
-        _monthModel = StateObject(wrappedValue: CustomDatePickerModel(anyDays: anyDays, includeDays: includeDays, minDate: minDate, maxDate: maxDate))
-    }
-    
-    // selects a closed date range
-    
-    init(dateRange: Binding<ClosedRange<Date>?>,
-         includeDays: DateSelectionChoices = .allDays,
-         minDate: Date? = nil,
-         maxDate: Date? = nil
-    ) {
-        _monthModel = StateObject(wrappedValue: CustomDatePickerModel(dateRange: dateRange, includeDays: includeDays, minDate: minDate, maxDate: maxDate))
-    }
-    
     var body: some View {
         ZStack {
             Color.black.opacity(0.0001)
                 .edgesIgnoringSafeArea(.all)
                 .onTapGesture {
                     withAnimation {
-                        detailManager.showSecondaryContent = false
+                        detailManager.tertiaryTarget = .noView
                     }
                 }
             MDPMonthView()
@@ -98,39 +65,23 @@ struct CustomDatePicker: View {
     }
 }
 
-extension AnyTransition {
-    static var fly: AnyTransition { get {
-        AnyTransition.modifier(active: FlyTransition(pct: 0), identity: FlyTransition(pct: 1))
-        }
+extension CustomDatePicker {
+    /// Initializer for loading a Single Date Picker
+    init(singleDay: Binding<Date?>, includeDays: DateSelectionChoices = .allDays, minDate: Date? = nil, maxDate: Date? = nil) {
+        let model = CustomDatePickerModel(singleDay: singleDay, includeDays: includeDays, minDate: minDate, maxDate: maxDate)
+        _monthModel = StateObject(wrappedValue: model)
+    }
+    
+    /// Initializer for loading an any number of Dates, non-contiguous, Picker.
+    init(anyDays: Binding<[Date]>, includeDays: DateSelectionChoices = .allDays, minDate: Date? = nil, maxDate: Date? = nil) {
+        let model = CustomDatePickerModel(anyDays: anyDays, includeDays: includeDays, minDate: minDate, maxDate: maxDate)
+        _monthModel = StateObject(wrappedValue: model)
+    }
+    
+    /// Initializer for loading a Closed Date Range Picker.
+    init(dateRange: Binding<ClosedRange<Date>?>, includeDays: DateSelectionChoices = .allDays, minDate: Date? = nil, maxDate: Date? = nil) {
+        let model = CustomDatePickerModel(dateRange: dateRange, includeDays: includeDays, minDate: minDate, maxDate: maxDate)
+        _monthModel = StateObject(wrappedValue: model)
     }
 }
 
-struct FlyTransition: GeometryEffect {
-    var pct: Double
-    
-    var animatableData: Double {
-        get { pct }
-        set { pct = newValue }
-    }
-    
-    func effectValue(size: CGSize) -> ProjectionTransform {
-
-        let rotationPercent = pct
-        let a = CGFloat(Angle(degrees: 90 * (1-rotationPercent)).radians)
-        
-        var transform3d = CATransform3DIdentity;
-        transform3d.m34 = -1/max(size.width, size.height)
-        
-        transform3d = CATransform3DRotate(transform3d, a, 1, 0, 0)
-        transform3d = CATransform3DTranslate(transform3d, -size.width/2.0, -size.height/2.0, 0)
-        
-        let affineTransform1 = ProjectionTransform(CGAffineTransform(translationX: size.width/2.0, y: size.height / 2.0))
-        let affineTransform2 = ProjectionTransform(CGAffineTransform(scaleX: CGFloat(pct * 2), y: CGFloat(pct * 2)))
-        
-        if pct <= 0.5 {
-            return ProjectionTransform(transform3d).concatenating(affineTransform2).concatenating(affineTransform1)
-        } else {
-            return ProjectionTransform(transform3d).concatenating(affineTransform1)
-        }
-    }
-}

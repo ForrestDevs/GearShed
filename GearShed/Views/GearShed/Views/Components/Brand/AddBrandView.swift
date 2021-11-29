@@ -67,11 +67,11 @@ extension AddBrandView {
             Button {
                 if isAddFromItem {
                     withAnimation {
-                        detailManager.showContent = false
+                        detailManager.tertiaryTarget = .noView
                     }
                 } else {
                     withAnimation {
-                        detailManager.showAddBrand = false
+                        detailManager.tertiaryTarget = .noView
                     }
                 }
             } label: {
@@ -92,12 +92,12 @@ extension AddBrandView {
             Button {
                 if isAddFromItem {
                     withAnimation {
-                        detailManager.showContent = false
+                        detailManager.tertiaryTarget = .noView
                     }
                     viewModel.addNewBrandFromItem(using: editableData, brandOut: { brand in brandOut!(brand) } )
                 } else {
                     withAnimation {
-                        detailManager.showAddBrand = false
+                        detailManager.tertiaryTarget = .noView
                     }
                     viewModel.addNewBrand(using: editableData)
                 }
@@ -107,7 +107,6 @@ extension AddBrandView {
             .disabled(!editableData.canBrandBeSaved)
         }
     }
-    
 }
 
 extension AddBrandView {

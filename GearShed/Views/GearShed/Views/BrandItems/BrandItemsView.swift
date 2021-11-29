@@ -4,11 +4,9 @@
 //
 //  Created by Luke Forrest Gannon on 2021-11-15.
 //
-
 import SwiftUI
 
 struct BrandItemsView: View {
-    
     @Environment(\.presentationMode) private var presentationMode
 
     @EnvironmentObject private var persistentStore: PersistentStore
@@ -29,18 +27,13 @@ struct BrandItemsView: View {
                     listView
                 }
             }
-            ExpandableButton(type: .brand)
-                .environmentObject(detailManager)
+            addBrandButton
         }
         .sheet(isPresented: $vm.showingUnlockView) {
             UnlockView()
         }
         .alert(item: $vm.confirmDeleteBrandAlert) { brand in brand.alert() }
     }
-    
-}
-
-extension BrandItemsView {
     
     private var listView: some View {
         ScrollView {
@@ -64,7 +57,6 @@ extension BrandItemsView {
                     ItemRowView(item: item)
                         .padding(.leading, 15)
                 }
-                
             }
         }
     }
@@ -85,7 +77,7 @@ extension BrandItemsView {
                         if canCreate {
                             detailManager.selectedBrand = brand
                             withAnimation {
-                                detailManager.showAddItemFromBrand = true
+                                detailManager.target = .showAddItemFromBrand
                             }
                         } else {
                             vm.showingUnlockView.toggle()
@@ -99,7 +91,7 @@ extension BrandItemsView {
                     Button {
                         detailManager.selectedBrand = brand
                         withAnimation {
-                            detailManager.showModifyBrand = true
+                            detailManager.target = .showModifyBrand
                         }
                     } label: {
                         HStack {
@@ -132,26 +124,31 @@ extension BrandItemsView {
         }
     }
     
-    /*private var listContent: some View {
-        List {
-            ForEach(gsData.brands) { brand in
-                Section {
-                    if gsData.showAll {
-                        ForEach(brand.items) { item in
-                            ItemRowView(item: item)
-                        }
+    private var addBrandButton: some View {
+        VStack {
+            Spacer()
+            HStack {
+                Spacer()
+                Button {
+                    withAnimation {
+                        detailManager.tertiaryTarget = .showAddBrand
                     }
-                } header: {
-                    HStack {
-                        Text(brand.name).textCase(.none)
-                            .font(.custom("HelveticaNeue", size: 16.5).bold())
-                        Spacer()
-                        
+                } label: {
+                    VStack {
+                        Text("Add")
+                        Text("Brand")
                     }
+                    .foregroundColor(Color.theme.background)
+                    .font(.system(size: 12, weight: .regular))
                 }
+                .frame(width: 55, height: 55)
+                .background(Color.theme.accent)
+                .cornerRadius(38.5)
+                .padding(.bottom, 5)
+                .padding(.trailing, 15)
+                .shadow(color: Color.theme.accent.opacity(0.3), radius: 3,x: 3,y: 3)
             }
         }
-        .listStyle(.plain)
-    }*/
+        .padding(.bottom, 70)
+    }
 }
-

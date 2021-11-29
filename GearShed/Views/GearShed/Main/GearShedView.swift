@@ -27,35 +27,40 @@ struct GearShedView: View {
         NavigationView {
             PagerTabView(tint: Color.theme.accent, selection: $currentSelection) {
                 Text("Shed")
+                    .formatPageHeaderTitle()
                     .pageLabel()
                 Text("Brand")
+                    .formatPageHeaderTitle()
                     .pageLabel()
                 
                 HStack(spacing: 1) {
                     Text("Wish")
+                        .formatPageHeaderTitle()
                     Image(systemName: "star.fill")
                         .resizable()
                         .frame(width: 10, height: 10)
-                        .foregroundColor(Color.theme.green)
+                        .foregroundColor(Color.yellow)
                         .offset(y: -6)
                 }
                 .pageLabel()
                 
                 HStack(spacing: 1) {
                     Text("Fav")
+                        .formatPageHeaderTitle()
                     Image(systemName: "heart.fill")
                         .resizable()
                         .frame(width: 10, height: 10)
-                        .foregroundColor(Color.theme.green)
+                        .foregroundColor(Color.red)
                         .offset(y: -6)
                 }
                 .pageLabel()
                 HStack(spacing: 1) {
                     Text("Regret")
+                        .formatPageHeaderTitle()
                     Image(systemName: "hand.thumbsdown.fill")
                         .resizable()
                         .frame(width: 10, height: 10)
-                        .foregroundColor(Color.theme.green)
+                        .foregroundColor(Color.theme.regretColor)
                         .offset(y: -6)
                 }
                 .pageLabel()

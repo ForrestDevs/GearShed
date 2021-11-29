@@ -75,7 +75,7 @@ struct AddActivityView: View {
                             }).environmentObject(detailManager)
                         )
                         withAnimation {
-                            detailManager.showContent = true
+                            detailManager.secondaryTarget = .showContent
                         }
                     } label: {
                         Text("Add New Type")
@@ -143,15 +143,19 @@ struct AddActivityView: View {
     private var cancelButtonToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
-                if isAddFromType {
+                withAnimation {
+                    detailManager.target = .noView
+                }
+                /*if isAddFromType {
                     withAnimation {
+                        detailManager.target = .noView
                         detailManager.showAddActivityFromActivityType = false
                     }
                 } else {
                     withAnimation {
                         detailManager.showAddActivity = false
                     }
-                }
+                }*/
             } label:  {
                 Text("Cancel")
             }
@@ -171,17 +175,12 @@ struct AddActivityView: View {
                 if isAddFromType {
                     let newGearList = glData.addNewGearlist(using: editableData)
                     detailManager.selectedGearlist = newGearList
-                    withAnimation {
-                        detailManager.showAddActivityFromActivityType = false
-                        detailManager.showAddItemsToGearlist = true
-                    }
                 } else {
                     let newGearList = glData.addNewGearlist(using: editableData)
                     detailManager.selectedGearlist = newGearList
-                    withAnimation {
-                        detailManager.showAddActivity = false
-                        detailManager.showAddItemsToGearlist = true
-                    }
+                }
+                withAnimation {
+                    detailManager.target = .showAddItemsToGearlist
                 }
             } label: {
                 Text("Save")

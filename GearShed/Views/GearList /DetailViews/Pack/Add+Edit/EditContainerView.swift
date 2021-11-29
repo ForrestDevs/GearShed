@@ -4,7 +4,6 @@
 //
 //  Created by Luke Forrest Gannon on 2021-11-11.
 //
-
 import SwiftUI
 
 struct EditContainerView: View {    
@@ -63,7 +62,7 @@ struct EditContainerView: View {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
                 withAnimation {
-                    detailManager.showModifyContainer = false
+                    detailManager.secondaryTarget = .noView
                 }
             } label: {
                 Text("Cancel")
@@ -82,7 +81,7 @@ struct EditContainerView: View {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
                 withAnimation {
-                    detailManager.showModifyContainer = false
+                    detailManager.secondaryTarget = .noView
                 }
                 viewModel.updateContainer(using: editableData)
             } label: {

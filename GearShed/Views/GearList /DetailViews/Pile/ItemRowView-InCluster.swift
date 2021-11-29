@@ -78,21 +78,21 @@ extension ItemRowView_InCluster {
                 Image(systemName: "heart.fill")
                     .resizable()
                     .frame(width: 12, height: 11)
-                    .foregroundColor(Color.theme.green)
+                    .foregroundColor(Color.red)
                     .padding(.horizontal, 2)
             } else
             if item.isRegret {
                 Image(systemName: "hand.thumbsdown.fill")
                     .resizable()
                     .frame(width: 14, height: 14)
-                    .foregroundColor(Color.theme.green)
+                    .foregroundColor(Color.theme.regretColor)
                     .padding(.horizontal, 2)
             } else
             if item.isWishlist {
                 Image(systemName: "star.fill")
                     .resizable()
                     .frame(width: 14, height: 14)
-                    .foregroundColor(Color.theme.green)
+                    .foregroundColor(Color.yellow)
                     .padding(.horizontal, 2)
             }
         }

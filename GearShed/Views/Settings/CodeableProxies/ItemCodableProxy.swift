@@ -106,7 +106,7 @@ struct ItemDiaryCodableProxy: Codable {
         self.id = diary.id!.uuidString
         self.name = diary.name
         self.details = diary.details
-        self.item = diary.item.id!.uuidString
+        self.item = diary.item!.id!.uuidString
         self.gearlist = diary.gearlist.id!.uuidString
     }
 }

@@ -7,8 +7,6 @@
 import SwiftUI
 
 struct AdventureView: View {
-    @EnvironmentObject private var persistentStore: PersistentStore
-
     @EnvironmentObject private var viewModel: GearlistData
     
     @EnvironmentObject private var detailManager: DetailViewManager
@@ -44,7 +42,7 @@ struct AdventureView: View {
                 Spacer()
                 Button {
                     withAnimation {
-                        detailManager.showAddAdventure = true
+                        detailManager.target = .showAddAdventure
                     }
                 }
                 label: {

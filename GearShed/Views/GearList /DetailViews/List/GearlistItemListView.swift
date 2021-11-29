@@ -4,11 +4,9 @@
 //
 //  Created by Luke Forrest Gannon on 2021-11-10.
 //
-
 import SwiftUI
 
 struct GearlistItemListView: View {
-    
     @EnvironmentObject private var detailManager: DetailViewManager
     
     @EnvironmentObject private var persistentStore: PersistentStore
@@ -16,9 +14,7 @@ struct GearlistItemListView: View {
     @EnvironmentObject private var viewModel: GearlistData
     
     @ObservedObject var gearlist: Gearlist
-    
-    @State private var showAddItem: Bool = false
-    
+        
     var body: some View {
         VStack (spacing: 0) {
             StatBar(statType: .list, gearlist: gearlist)
@@ -33,9 +29,6 @@ struct GearlistItemListView: View {
             }
         }
     }
-}
-
-extension GearlistItemListView {
     
     private var itemList: some View {
         ScrollView {
@@ -48,6 +41,7 @@ extension GearlistItemListView {
                     }
                 }
             }
+            .padding(.bottom, 100)
         }
     }
     
@@ -78,15 +72,15 @@ extension GearlistItemListView {
             HStack {
                 Spacer()
                 Button {
-                    detailManager.selectedGearlist = gearlist
+                    //detailManager.selectedGearlist = gearlist
                     withAnimation {
-                        detailManager.showAddItemsToGearlist = true
+                        detailManager.secondaryTarget = .showAddItemsToGearlist
                     }
                 }
                 label: {
                     VStack{
-                        Text("Revise")
-                        Text("List")
+                        Text("Select")
+                        Text("Gear")
                     }
                     .font(.system(size: 12, weight: .regular))
                     .foregroundColor(Color.theme.background)
@@ -101,20 +95,3 @@ extension GearlistItemListView {
         }
     }
 }
-
-
-/*ScrollView(.vertical, showsIndicators: false) {
-    LazyVStack {
-        ForEach(viewModel.sectionByShed(itemArray: gearlist.items)) { section in
-            Section {
-                sectionItems(section: section)
-            } header: {
-                sectionHeader(section: section)
-                    .padding(.horizontal)
-            }
-        }
-    }
-    .padding(.top, 10)
-    .padding(.bottom, 75)
-}*/
-

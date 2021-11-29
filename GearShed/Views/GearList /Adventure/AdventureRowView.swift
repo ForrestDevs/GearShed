@@ -4,7 +4,6 @@
 //
 //  Created by Luke Forrest Gannon on 2021-11-14.
 //
-
 import SwiftUI
 
 struct AdventureRowView: View {
@@ -24,7 +23,7 @@ struct AdventureRowView: View {
         Button {
             detailManager.selectedGearlist = adventure
             withAnimation {
-                detailManager.showGearlistDetail = true
+                detailManager.target = .showGearlistDetail
             }
         } label: {
             rowBody
@@ -36,18 +35,17 @@ struct AdventureRowView: View {
         }
         .alert(item: $confirmDeleteGearlistAlert) { adventure in adventure.alert() }
     }
-}
-
-extension AdventureRowView {
+    
+    // MARK: Main Content
     
     private var bucketlistStatus: some View {
         VStack {
             if adventure.isBucketlist {
-                Image("Bucket.Fill")
+                Image("flag3")
                     .resizable()
                     .interpolation(.high)
+                    //.foregroundColor(Color.red)
                     .frame(width: 14, height: 14)
-                    .foregroundColor(Color.theme.green)
                     .padding(.horizontal, 2)
             }
         }
@@ -87,11 +85,12 @@ extension AdventureRowView {
     
     }
     
+    // MARK: Context Menus
     private var editContextButton: some View {
         Button {
             detailManager.selectedGearlist = adventure
             withAnimation {
-                detailManager.showModifyAdventure = true
+                detailManager.target = .showModifyAdventure
             }
         } label: {
             HStack {
@@ -128,11 +127,7 @@ extension AdventureRowView {
                 } else {
                     Text("Mark Bucketlist")
                 }
-                Image("Bucket.Fill")
-                    .resizable()
-                    .interpolation(.high)
-                    .frame(width: 14, height: 14)
-                    .foregroundColor(Color.theme.green)
+                Image("flag3")
             }
         }
     }

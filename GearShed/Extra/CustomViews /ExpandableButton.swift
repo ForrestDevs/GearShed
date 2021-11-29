@@ -4,12 +4,10 @@
 //
 //  Created by Luke Forrest Gannon on 2021-11-15.
 //
-
 import SwiftUI
 
 struct ExpandableButton: View {
     @EnvironmentObject private var detailManager: DetailViewManager
-
     @State private var showMenuItem1 = false
     @State private var showMenuItem2 = false
     @State private var showMenuItem3 = false
@@ -124,17 +122,17 @@ struct ExpandableButton: View {
             if type == .item {
                 showMenu()
                 withAnimation {
-                    detailManager.showAddItem = true
+                    detailManager.target = .showAddItem
                 }
             } else if type == .shed {
                 showMenu()
                 withAnimation {
-                    detailManager.showAddShed = true
+                    detailManager.tertiaryTarget = .showAddShed
                 }
             } else if type == .brand {
                 showMenu()
                 withAnimation {
-                    detailManager.showAddBrand = true
+                    detailManager.tertiaryTarget = .showAddBrand
                 }
             }
         } label: {

@@ -80,12 +80,12 @@ struct ModifyAdventureView: View {
                 Text("Date")
                     .formatEntryTitle()
                 Button {
+                    detailManager.secondaryContent = AnyView (
+                        CustomDatePicker(dateRange: self.$dateRange)
+                            .environmentObject(detailManager)
+                    )
                     withAnimation {
-                        detailManager.showSecondaryContent = true
-                        detailManager.secondaryContent = AnyView (
-                            CustomDatePicker(dateRange: self.$dateRange)
-                                .environmentObject(detailManager)
-                        )
+                        detailManager.secondaryTarget = .showSecondaryContent                        
                     }
                 } label: {
                     if let range = dateRange {
@@ -162,7 +162,7 @@ struct ModifyAdventureView: View {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
                 withAnimation {
-                    detailManager.showModifyAdventure = false
+                    detailManager.target = .noView
                 }
             } label:  {
                 Text("Cancel")
@@ -181,7 +181,7 @@ struct ModifyAdventureView: View {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
                 withAnimation {
-                    detailManager.showModifyAdventure = false
+                    detailManager.target = .noView
                 }
                 viewModel.updateGearlist(using: editableData)
             } label: {

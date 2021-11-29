@@ -12,22 +12,22 @@ struct ItemDiaryList: View {
     @ObservedObject var item: Item
     
     var body: some View {
-        ScrollView {
-            LazyVStack (alignment: .leading, spacing: 0, pinnedViews: .sectionHeaders) {
-                Section {
+        VStack (alignment: .leading, spacing: 0) {
+            ZStack {
+                Color.theme.headerBG
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 30)
+                
+                HStack {
+                    Text("Diary")
+                    Spacer()
+                }
+                .padding(.leading, 15)
+            }
+            ScrollView {
+                LazyVStack (alignment: .leading, spacing: 0) {
                     ForEach(item.diaries) { diary in
                         ItemDiaryRowView(diary: diary)
-                    }
-                } header: {
-                    ZStack {
-                        Color.theme.headerBG
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 30)
-                        
-                        HStack {
-                            Text("Diaries")
-                            Spacer()
-                        }
                     }
                 }
             }

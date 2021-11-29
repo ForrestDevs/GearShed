@@ -4,7 +4,6 @@
 //
 //  Created by Luke Forrest Gannon on 2021-11-21.
 //
-
 import SwiftUI
 
 struct GearlistDiaryView: View {
@@ -37,31 +36,31 @@ struct GearlistDiaryView: View {
         ScrollView {
             LazyVStack (alignment: .leading, spacing: 0, pinnedViews: .sectionHeaders) {
                 ForEach(gearlist.diaries) { diary in
-                    Section {
-                        listContent(diary: diary)
-                    } header: {
-                        listHeader(diary: diary)
-                    }
+                    diaryRow(diary: diary)
                 }
             }
         }
     }
     
-    private func listContent(diary: ItemDiary) -> some View {
-        Text(diary.details)
-            .lineLimit(1)
-            .padding(.leading, 15)
-            .contextMenu {
-                editDiaryContext(diary: diary)
-                deleteDiaryContext(diary: diary)
-            }
+    private func diaryRow(diary: ItemDiary) -> some View {
+        VStack (alignment: .leading, spacing: 3) {
+            Text(diary.item!.name)
+                .formatItemNameGreen()
+            Text("''\(diary.details)''")
+                .formatDiaryDetails()
+        }
+        .padding(.leading, 15)
+        .contextMenu {
+            editDiaryContext(diary: diary)
+            deleteDiaryContext(diary: diary)
+        }
     }
     
     private func editDiaryContext(diary: ItemDiary) -> some View {
         Button {
             detailManager.selectedItemDiary = diary
             withAnimation {
-                detailManager.showModifyItemDiary = true
+                detailManager.secondaryTarget = .showModifyItemDiary
             }
         } label: {
             HStack {
@@ -84,19 +83,6 @@ struct GearlistDiaryView: View {
         }
     }
     
-    private func listHeader(diary: ItemDiary) -> some View {
-        ZStack {
-            Color.theme.headerBG
-                .frame(maxWidth: .infinity)
-                .frame(height: 25)
-            HStack {
-                Text(diary.item.name)
-                Spacer()
-            }
-            .padding(.horizontal, 15)
-        }
-    }
-    
     private var addDiaryButtonOverlay: some View {
         VStack {
             Spacer()
@@ -105,13 +91,13 @@ struct GearlistDiaryView: View {
                 Button {
                     detailManager.selectedGearlist = gearlist
                     withAnimation {
-                        detailManager.showAddItemDiary = true
+                        detailManager.secondaryTarget = .showAddItemDiary
                     }
                 }
                 label: {
                     VStack{
-                        Text("Add")
-                        Text("Diary")
+                        Text("New")
+                        Text("Entry")
                     }
                     .font(.system(size: 12, weight: .regular))
                     .foregroundColor(Color.theme.background)
@@ -126,3 +112,23 @@ struct GearlistDiaryView: View {
     }
 }
 
+
+/*private func listHeader(diary: ItemDiary) -> some View {
+    ZStack {
+        Color.theme.headerBG
+            .frame(maxWidth: .infinity)
+            .frame(height: 25)
+        HStack {
+            
+            Text(diary.item.name)
+            Spacer()
+        }
+        .padding(.horizontal, 15)
+    }
+}
+private func listContent(diary: ItemDiary) -> some View {
+     Text(diary.details)
+         
+         
+}
+ */
