@@ -1,5 +1,5 @@
 //
-//  DevTools.swift
+//  BackupManager.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 18/10/21
@@ -20,7 +20,6 @@ final class BackupManager: ObservableObject {
     }
     
     func decode<T: Decodable>(from url: URL) -> T {
-        
         guard let data = try? Data(contentsOf: url) else {
             fatalError("Failed to load backup")
         }
@@ -40,7 +39,6 @@ final class BackupManager: ObservableObject {
         } catch {
             fatalError("Failed to decode backup: \(error.localizedDescription)")
         }
-        
     }
     
     // and (2), knowing that Item, Shed and Brand are NSManagedObjects, and we

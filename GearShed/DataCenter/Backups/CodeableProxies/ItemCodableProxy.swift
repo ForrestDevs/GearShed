@@ -38,6 +38,8 @@ struct ItemCodableProxy: Codable {
     var quantity: Int
     var price: String
     var weight: String
+    var lbs: String
+    var oz: String
     var shed: String
     var brand: String
     var gearlists = [String]()
@@ -67,6 +69,8 @@ struct ItemCodableProxy: Codable {
         
         self.quantity = item.quantity
         self.weight = item.weight
+        self.lbs = item.itemLbs
+        self.oz = item.itemOZ
         self.price = item.price
         
         self.shed = item.shed.id!.uuidString

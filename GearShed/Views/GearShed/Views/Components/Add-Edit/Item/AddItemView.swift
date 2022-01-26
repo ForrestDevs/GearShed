@@ -186,10 +186,32 @@ struct AddItemView: View {
             VStack (alignment: .leading, spacing: 3)  {
                 Text ("Weight")
                     .formatEntryTitle()
-                TextField("Weight in g", text: $editableData.weight)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .disableAutocorrection(true)
-                    .font(.subheadline)
+                
+                if (persistentStore.stateUnit == "g") {
+                    TextField("Weight in g", text: $editableData.weight)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .disableAutocorrection(true)
+                        .font(.subheadline)
+                        .keyboardType(.decimalPad)
+                }
+                
+                if (persistentStore.stateUnit == "lb + oz") {
+                    HStack (spacing: 10) {
+                        TextField("lb", text: $editableData.lbs)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .disableAutocorrection(true)
+                            .font(.subheadline)
+                            .keyboardType(.decimalPad)
+                        
+                        TextField("oz", text: $editableData.oz)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .disableAutocorrection(true)
+                            .font(.subheadline)
+                            .keyboardType(.decimalPad)
+                    }
+                }
+                
+                
             }
         }
     }

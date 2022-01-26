@@ -65,7 +65,7 @@ struct PDFExportView: View {
     }
     
     func weightCount() -> String {
-        let value = viewModel.totalWeight(array: viewModel.items)
+        let value = viewModel.totalGrams(array: viewModel.items)
         return value
     }
     
