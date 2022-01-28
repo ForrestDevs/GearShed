@@ -8,9 +8,12 @@
 import Foundation
 import CoreData
 import SwiftUI
+import Combine
 import UniformTypeIdentifiers
 
 struct SettingsView: View {
+    
+    @EnvironmentObject private var unlockManager: UnlockManager
     
     @StateObject private var gsData: GearShedData
     @StateObject private var glData: GearlistData
@@ -21,9 +24,18 @@ struct SettingsView: View {
     @State private var brandsAdded: Int = 0
     @State private var itemsAdded: Int = 0
     
+    @State private var changeUnitTap: Bool = false
+    
     @State private var showExportSheet: Bool = false
     @State private var showImportSheet: Bool = false
     
+    //@State private var stateWeightUnit: String
+    //@State private var pdfName: String = Prefs.shared.pdfUserName
+    
+    //@AppStorage("pdfName", store: .standard) var pdfName = "New User"
+    
+    
+    let persistentStore: PersistentStore
     
     init(persistentStore: PersistentStore) {
         let gsData = GearShedData(persistentStore: persistentStore)
@@ -34,35 +46,147 @@ struct SettingsView: View {
         
         let backupManager = BackupManager(persistentStore: persistentStore)
         _backupManager = StateObject(wrappedValue: backupManager)
+    
+        //let SWU = Prefs.shared.weightUnit
+        //_stateWeightUnit = State(wrappedValue: SWU)
+        
+        self.persistentStore = persistentStore
+        
     }
+    
+    private func configureItemMassImpToMetric() {
+        for item in gsData.items {
+            if item.weight.isEmpty {
+                let grams =  Prefs.shared.convertImpToMetric(lbs: item.itemLbs, oz: item.itemOZ)
+                item.weight = grams
+                item.itemLbs = ""
+                item.itemOZ = ""
+            } else {
+                item.itemLbs = ""
+                item.itemOZ = ""
+            }
+        }
+        persistentStore.saveContext()
+    }
+    
+    private func configureItemMassMetricToImp() {
+        for item in gsData.items {
+            if (item.itemLbs.isEmpty && item.itemOZ.isEmpty) {
+                let LbOz = Prefs.shared.convertMetricToImp(grams: item.weight)
+                item.itemLbs = LbOz.lbs
+                item.itemOZ = LbOz.oz
+                item.weight = ""
+            } else {
+                item.weight = ""
+            }
+        }
+        persistentStore.saveContext()
+    }
+    
+    
     
     var body: some View {
         NavigationView {
-            VStack (alignment: .leading, spacing: 5)  {
-                Text("Weight")
-                
-                Text("Price")
-                
-                Text("Data")
-                
-                Button {
-                    self.showImportSheet.toggle()
-                } label: {
-                    Text("Load from back-up")
+            ScrollView (.vertical, showsIndicators: false) {
+                VStack (alignment: .center, spacing: 25)  {
+                    
+                    
+                    VStack (alignment: .leading, spacing: 5) {
+                        Text("PDF Username")
+                        
+                        TextField("PDF Name Feild", text: Prefs.shared.$pdfUserName)
+                           // .onReceive(Just(pdfName)) { newValue in
+                             //   Prefs.shared.pdfUserName = newValue
+                            //}
+                    }
+                    
+                    VStack (alignment: .center, spacing: 5) {
+                        Text("Weight Unit")
+                            .formatBlackTitle()
+                        
+                        HStack (spacing: 5) {
+                            Button {
+                                //persistentStore.stateUnit = "g"
+                                //stateWeightUnit = "g"
+                                Prefs.shared.weightUnit = "g"
+                                configureItemMassImpToMetric()
+                            } label: {
+                                HStack {
+                                    Text("Grams 'g'")
+                                    if (Prefs.shared.weightUnit == "g") {
+                                        Image (systemName: "checkmark")
+                                    }
+                                }
+                                .padding()
+                                .background (
+                                    Prefs.shared.weightUnit == "g" ?  RoundedRectangle(cornerRadius: 10)
+                                        .foregroundColor(Color.theme.green)
+                                        .opacity(0.5) : nil
+                                )
+                            }
+                            
+                            Button {
+                                //persistentStore.stateUnit = "lb + oz"
+                                //stateWeightUnit = "lb + oz"
+                                Prefs.shared.weightUnit = "lb + oz"
+                                configureItemMassMetricToImp()
+                            } label: {
+                                HStack {
+                                    Text("lb + oz")
+                                    if (Prefs.shared.weightUnit == "lb + oz") {
+                                        Image (systemName: "checkmark")
+                                    }
+                                }
+                                .padding()
+                                .background (
+                                    Prefs.shared.weightUnit == "lb + oz" ?  RoundedRectangle(cornerRadius: 10)
+                                        .foregroundColor(Color.theme.green)
+                                        .opacity(0.5) : nil
+                                )
+
+                            }
+                        }
+                        .padding(.horizontal)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.theme.green, lineWidth: 1)
+                                .frame(height: 50)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                        )
+                    }
+                    
+                    Button {
+                        self.showImportSheet.toggle()
+                    } label: {
+                        Text("Load from back-up")
+                            .formatBlackTitle()
+                    }
+                    .alert(isPresented: $confirmDataHasBeenAdded) {
+                        Alert(title: Text("Data Added"),
+                              message: Text("Successfully loaded (\(itemsAdded) peices of Gear, \(shedsAdded) Sheds, and \(brandsAdded) Brands) from back up."),
+                              dismissButton: .default(Text("OK")))
+                    }
+                    
+                    Button {
+                        self.showExportSheet.toggle()
+                    } label: {
+                        Text("Offline back-up")
+                            .formatBlackTitle()
+                    }
+                    
+                    Button {
+                        unlockManager.restore()
+                    } label: {
+                        Text("Restore Purchases")
+                            .formatBlackTitle()
+                    }
+                    
+                    Spacer()
+                    
                 }
-                .alert(isPresented: $confirmDataHasBeenAdded) {
-                    Alert(title: Text("Data Added"),
-                          message: Text("Successfully loaded (\(itemsAdded) peices of Gear, \(shedsAdded) Sheds, and \(brandsAdded) Brands) from back up."),
-                          dismissButton: .default(Text("OK")))
-                }
-                
-                Button {
-                    self.showExportSheet.toggle()
-                } label: {
-                    Text("Offline back-up")
-                }
-                
             }
+            
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 viewTitle
@@ -83,6 +207,8 @@ struct SettingsView: View {
                     print(error.localizedDescription)
                 }
             }
+            
+         
             /*.fileImporter(isPresented: $showImportSheet, allowedContentTypes: [UTType.data, UTType.json], allowsMultipleSelection: false) { result in
                 switch result {
                 case .success(let urls):

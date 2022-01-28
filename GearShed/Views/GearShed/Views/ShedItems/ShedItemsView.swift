@@ -13,6 +13,7 @@ struct ShedItemsView: View {
     @EnvironmentObject private var persistentStore: PersistentStore
     @EnvironmentObject private var detailManager: DetailViewManager
     @EnvironmentObject private var gsData: GearShedData
+    @EnvironmentObject private var gsvm: GearShedViewModel
     
     @StateObject private var vm = ShedItemsViewModel()
 
@@ -26,13 +27,26 @@ struct ShedItemsView: View {
                     listView
                 }
             }
+            
+            // Invisible Rects for seperate alerts
+            Rectangle()
+                .opacity(0)
+                .alert(item: $vm.confirmDeleteShedAlert) { shed in shed.alert() }
+            
+            Rectangle()
+                .opacity(0)
+                .alert(item: $gsvm.confirmDeleteItemAlert) { item in item.alert() }
+            
+           
             ExpandableButton(type: .shed)
                 .environmentObject(detailManager)
+                .environmentObject(vm)
+                .environmentObject(gsData)
         }
         .sheet(isPresented: $vm.showingUnlockView) {
             UnlockView()
         }
-        .alert(item: $vm.confirmDeleteShedAlert) { shed in shed.alert() }
+        
     }
     
     private var listView: some View {
@@ -73,9 +87,7 @@ struct ShedItemsView: View {
                 
                 Menu {
                     Button {
-                        let canCreate = self.persistentStore.fullVersionUnlocked ||
-                        self.persistentStore.count(for: Item.fetchRequest()) < 3
-                        if canCreate {
+                        if gsData.proUser() {
                             detailManager.selectedShed = shed
                             withAnimation {
                                 detailManager.target = .showAddItemFromShed

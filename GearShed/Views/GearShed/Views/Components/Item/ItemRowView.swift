@@ -11,12 +11,11 @@ struct ItemRowView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @EnvironmentObject private var detailManager: DetailViewManager
-    
     @EnvironmentObject private var persistentStore: PersistentStore
+    @EnvironmentObject private var vm: GearShedViewModel
     
 	@ObservedObject var item: Item
-    
-    @State private var confirmDeleteItemAlert: ConfirmDeleteItemAlert?
+
     
 	var body: some View {
         Button {
@@ -34,7 +33,7 @@ struct ItemRowView: View {
             editContextButton
             deleteContextButton
         }
-        .alert(item: $confirmDeleteItemAlert) { item in item.alert() }
+        //.alert(item: $confirmDeleteItemAlert) { item in item.alert() }
     }
     
     private var statusIcon: some View {
@@ -81,8 +80,61 @@ struct ItemRowView: View {
             
             VStack (alignment: .leading, spacing: 2) {
                 HStack {
-                    Text("\(item.weight) g")
-                        .formatItemWeightBlack()
+                    
+                    if (Prefs.shared.weightUnit == "g") {
+                        if (Int(item.weight) ?? 0 > 0) {
+                            Text("\(item.weight) g")
+                                .formatItemWeightBlack()
+                        }
+                    }
+                    if (Prefs.shared.weightUnit == "lb + oz") {
+                        if (Int(item.itemLbs) ?? 0 > 0 || Double(item.itemOZ) ?? 0.0 > 0.0) {
+                            Text("\(item.itemLbs) lbs \(item.itemOZ) oz")
+                                .formatItemWeightBlack()
+                        }
+                    }
+                    
+                    
+                    /*if (persistentStore.stateUnit == "g") {
+                        if (Int(item.weight) ?? 0 > 0) {
+                            Text("\(item.weight) g")
+                                .formatItemWeightBlack()
+                        }
+                    }
+                    
+                    if (persistentStore.stateUnit == "lb + oz") {
+                        if (Int(item.itemLbs) ?? 0 > 0 || Double(item.itemOZ) ?? 0.0 > 0.0) {
+                            Text("\(item.itemLbs) lbs \(item.itemOZ) oz")
+                                .formatItemWeightBlack()
+                        }
+                    }*/
+                    
+                    /*if (persistentStore.stateUnit == "g") {
+                        Text("\(item.weight) g")
+                            .formatItemWeightBlack()
+                        /*if (item.itemLbs.isEmpty && item.itemOZ.isEmpty) {
+                            
+                        } else {
+                            let weight = persistentStore.convertImpToMetric(lbs: item.itemLbs, oz: item.itemOZ)
+                            Text("\(weight) g")
+                                .formatItemWeightBlack()
+                        }*/
+                    }
+                    
+                    if (persistentStore.stateUnit == "lb + oz") {
+                        Text("\(item.itemLbs) lbs \(item.itemOZ) oz")
+                            .formatItemWeightBlack()
+                        /*if (item.weight.isEmpty) {
+                        } else {
+                            let weight = persistentStore.convertMetricToImp(value: item.weight)
+                            let lbs = weight.lbs
+                            let ozText = String(format: "%.2f", weight.oz)
+                            Text("\(lbs) lbs \(ozText) oz")
+                                .formatItemWeightBlack()
+                        }*/
+                    }*/
+                    
+                    
                     Text("|")
                         .formatItemWeightBlack()
                     Text("$ \(item.price)")
@@ -123,7 +175,6 @@ struct ItemRowView: View {
             }
         }
     }
-    
     private var regretContextButton: some View {
         Button {
             if item.isRegret {
@@ -148,7 +199,6 @@ struct ItemRowView: View {
             }
         }
     }
-    
     private var wishContextButton: some View {
         Button {
             if item.isWishlist {
@@ -172,7 +222,6 @@ struct ItemRowView: View {
             }
         }
     }
-    
     private var editContextButton: some View {
         Button {
             detailManager.selectedItem = item
@@ -187,10 +236,9 @@ struct ItemRowView: View {
             
         }
     }
-    
     private var deleteContextButton: some View {
         Button {
-            confirmDeleteItemAlert = ConfirmDeleteItemAlert (
+            vm.confirmDeleteItemAlert = ConfirmDeleteItemAlert (
                 persistentStore: persistentStore,
                 item: item,
                 destructiveCompletion: {

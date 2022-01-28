@@ -13,8 +13,9 @@ struct AddItemDiaryView: View {
 
     @State private var editableData: EditableDiaryData
 
-    private var gearlist: Gearlist
+    @State private var isEditing: Bool = false
     
+    private var gearlist: Gearlist
     private var persistentStore: PersistentStore
     
     init(persistentStore: PersistentStore, gearlist: Gearlist) {
@@ -68,6 +69,12 @@ struct AddItemDiaryView: View {
                     ForEach(gearlist.items) { item in
                         Button {
                             editableData.item = item
+                            if let item = editableData.item {
+                                if item.hasExistingDiaryInGearlist(gearlist: gearlist, item: item) {
+                                    editableData.details = item.gearlistDiaryDetails(gearlist: gearlist, item: item)
+                                    isEditing = true
+                                }
+                            }
                         } label: {
                             HStack {
                                 Text(item.name)
@@ -102,6 +109,7 @@ struct AddItemDiaryView: View {
             VStack (alignment: .leading, spacing: 3) {
                 Text("Notes")
                     .formatEntryTitle()
+                
                 ZStack(alignment: .topLeading) {
                     RoundedRectangle(cornerRadius: 5)
                         .fill(Color.theme.background)
@@ -161,7 +169,11 @@ struct AddItemDiaryView: View {
                 withAnimation {
                     detailManager.secondaryTarget = .noView
                 }
-                viewModel.addNewItemDiary(using: editableData)
+                if isEditing {
+                    viewModel.updateItemDiaryFromNewEntry(item: editableData.item!, gearlist: gearlist, details: editableData.details) 
+                } else {
+                    viewModel.addNewItemDiary(using: editableData)
+                }
             } label: {
                 Text("Save")
             }

@@ -85,7 +85,7 @@ struct ModifyAdventureView: View {
                             .environmentObject(detailManager)
                     )
                     withAnimation {
-                        detailManager.secondaryTarget = .showSecondaryContent                        
+                        detailManager.tertiaryTarget = .showSecondaryContent 
                     }
                 } label: {
                     if let range = dateRange {

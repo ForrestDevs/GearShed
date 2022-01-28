@@ -38,7 +38,7 @@ struct GearlistView: View {
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                sortByButton
+                //sortByButton
                 viewTitle
                 shareList
             }

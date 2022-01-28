@@ -10,11 +10,8 @@ struct GearlistDiaryView: View {
     @Environment(\.presentationMode) private var persentationMode
     
     @EnvironmentObject private var persistentStore: PersistentStore
-    
     @EnvironmentObject private var detailManager: DetailViewManager
-    
     @ObservedObject var gearlist: Gearlist
-    
     @State private var confirmDeleteDiaryAlert: ConfirmDeleteDiaryAlert?
 
     var body: some View {
@@ -34,7 +31,7 @@ struct GearlistDiaryView: View {
     
     private var diaryList: some View {
         ScrollView {
-            LazyVStack (alignment: .leading, spacing: 0, pinnedViews: .sectionHeaders) {
+            LazyVStack (alignment: .leading, spacing: 10) {
                 ForEach(gearlist.diaries) { diary in
                     diaryRow(diary: diary)
                 }
@@ -43,16 +40,59 @@ struct GearlistDiaryView: View {
     }
     
     private func diaryRow(diary: ItemDiary) -> some View {
-        VStack (alignment: .leading, spacing: 3) {
-            Text(diary.item!.name)
-                .formatItemNameGreen()
-            Text("''\(diary.details)''")
-                .formatDiaryDetails()
+        ZStack {
+            Color.clear
+            VStack (alignment: .leading, spacing: 3) {
+                HStack (alignment: .firstTextBaseline, spacing: 5) {
+                    HStack (spacing: 5) {
+                        Text(diary.item?.name ?? "N/A")
+                            .formatItemNameGreen()
+                            .fixedSize()
+                        if let item = diary.item {
+                            statusIcon(item: item)
+                        }
+                    }
+                    Text("|")
+                        .formatItemNameBlack()
+                    Text(diary.item?.brandName ?? "N/A")
+                        .formatItemNameBlack()
+                    Spacer()
+                }
+                .lineLimit(1)
+                Text("''\(diary.details)''")
+                    .formatDiaryDetails()
+            }
+            .padding(.horizontal, 15)
         }
-        .padding(.leading, 15)
         .contextMenu {
             editDiaryContext(diary: diary)
             deleteDiaryContext(diary: diary)
+        }
+    }
+    
+    private func statusIcon(item: Item) -> some View {
+        VStack {
+            if item.isFavourite {
+                Image(systemName: "heart.fill")
+                    .resizable()
+                    .frame(width: 12, height: 11)
+                    .foregroundColor(Color.red)
+                    .padding(.horizontal, 2)
+            } else
+            if item.isRegret {
+                Image(systemName: "hand.thumbsdown.fill")
+                    .resizable()
+                    .frame(width: 14, height: 14)
+                    .foregroundColor(Color.theme.regretColor)
+                    .padding(.horizontal, 2)
+            } else
+            if item.isWishlist {
+                Image(systemName: "star.fill")
+                    .resizable()
+                    .frame(width: 14, height: 14)
+                    .foregroundColor(Color.yellow)
+                    .padding(.horizontal, 2)
+            }
         }
     }
     

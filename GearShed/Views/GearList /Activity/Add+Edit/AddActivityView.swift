@@ -172,15 +172,18 @@ struct AddActivityView: View {
     private var saveButtonToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
-                if isAddFromType {
+                let newGearList = glData.addNewGearlist(using: editableData)
+                detailManager.selectedGearlist = newGearList
+                /*if isAddFromType {
                     let newGearList = glData.addNewGearlist(using: editableData)
                     detailManager.selectedGearlist = newGearList
                 } else {
                     let newGearList = glData.addNewGearlist(using: editableData)
                     detailManager.selectedGearlist = newGearList
-                }
+                }*/
                 withAnimation {
-                    detailManager.target = .showAddItemsToGearlist
+                    detailManager.secondaryTarget = .showAddItemsToGearlist
+                    detailManager.target = .showGearlistDetail
                 }
             } label: {
                 Text("Save")

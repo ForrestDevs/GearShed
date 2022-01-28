@@ -15,7 +15,6 @@ struct ItemRowView_InGearlist: View {
     @State var previousItemCluster: Cluster?
     @State var itemContainer: Container?
     @State var previousItemContainer: Container?
-    
     @State private var showDetailSheet: Bool = false
     
     init(persistentStore: PersistentStore, item: Item, gearlist: Gearlist) {
@@ -62,17 +61,110 @@ struct ItemRowView_InGearlist: View {
                     .formatItemNameBlack()
             }
             .lineLimit(1)
+            
+            HStack (spacing: 0) {
+                
+                if (Prefs.shared.weightUnit == "g") {
+                    if (Int(item.weight) ?? 0 > 0) {
+                        Text("\(item.weight) g")
+                            .formatItemWeightBlack()
+                        Text(", ")
+                            .formatItemWeightBlack()
+                    }
+                }
+                if (Prefs.shared.weightUnit == "lb + oz") {
+                    if (Int(item.itemLbs) ?? 0 > 0 || Double(item.itemOZ) ?? 0.0 > 0.0) {
+                        Text("\(item.itemLbs) lbs \(item.itemOZ) oz")
+                            .formatItemWeightBlack()
+                        Text(", ")
+                            .formatItemWeightBlack()
+                    }
+                }
+                
+                /*if (persistentStore.stateUnit == "g") {
+                    if (Int(item.weight) ?? 0 > 0) {
+                        Text("\(item.weight) g")
+                            .formatItemWeightBlack()
+                        Text(", ")
+                            .formatItemWeightBlack()
+                    }
+                }
+                
+                if (persistentStore.stateUnit == "lb + oz") {
+                    if (Int(item.itemLbs) ?? 0 > 0 || Double(item.itemOZ) ?? 0.0 > 0.0) {
+                        Text("\(item.itemLbs) lbs \(item.itemOZ) oz")
+                            .formatItemWeightBlack()
+                        Text(", ")
+                            .formatItemWeightBlack()
+                    }
+                }*/
+                
+                Text(item.detail)
+                    .formatItemDetailsGrey()
+            }
+            .lineLimit(1)
+            Divider()
+        }
+        .padding(.leading, 15)
+        
+        /*VStack (alignment: .leading, spacing: 2) {
+            HStack {
+                HStack (spacing: 5) {
+                    Text(item.name)
+                        .formatItemNameGreen()
+                        .fixedSize()
+                    statusIcon
+                }
+                Text("|")
+                    .formatItemNameBlack()
+                Text(item.brandName)
+                    .formatItemNameBlack()
+            }
+            .lineLimit(1)
+            
+            VStack (alignment: .leading, spacing: 2) {
+                HStack {
+                    Text("\(item.weight) g")
+                        .formatItemWeightBlack()
+                    Text("|")
+                        .formatItemWeightBlack()
+                    Text("$ \(item.price)")
+                        .formatItemWeightBlack()
+                }
+                
+                Text(item.detail)
+                    .formatItemDetailsGrey()
+                    .lineLimit(1)
+            }
+            Divider()
+        }
+        .padding(.top, 2)*/
+        
+        /*VStack (alignment: .leading, spacing: 3) {
+            HStack {
+                HStack (spacing: 5) {
+                    Text(item.name)
+                        .formatItemNameGreen()
+                        .fixedSize()
+                    statusIcon
+                }
+                Text("|")
+                    .formatItemNameBlack()
+                Text(item.brandName)
+                    .formatItemNameBlack()
+            }
+            .lineLimit(1)
             HStack (spacing: 20) {
                 Text(item.weight + "g")
                     .formatItemWeightBlack()
                 HStack {
-                    pileStatusLabel
-                    packStatusLabel
+                    //pileStatusLabel
+                    //packStatusLabel
                 }
             }
             Divider()
         }
-        .padding(.leading, 15)
+        .padding(.leading, 15)*/
     }
     
     private var statusIcon: some View {
@@ -136,9 +228,11 @@ struct ItemRowView_InGearlist: View {
     // MARK: Context Menus
     private var deleteContextButton: some View {
         Button {
-            withAnimation {
-                viewModel.removeItemFromGearlist(item: item, gearlist: gearlist)
-            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                withAnimation {
+                    viewModel.removeItemFromGearlist(item: item, gearlist: gearlist)
+                }
+            })
         } label: {
             HStack {
                 Text("Remove From List")

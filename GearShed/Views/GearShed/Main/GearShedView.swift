@@ -68,24 +68,34 @@ struct GearShedView: View {
             } content: {
                 ShedItemsView()
                     .environmentObject(gsData)
+                    .environmentObject(viewModel)
                     .pageView(ignoresSafeArea: true, edges: .bottom)
                 BrandItemsView()
                     .environmentObject(gsData)
+                    .environmentObject(viewModel)
+
                     .pageView(ignoresSafeArea: true, edges: .bottom)
                 WishesView()
                     .environmentObject(gsData)
+                    .environmentObject(viewModel)
+
                     .pageView(ignoresSafeArea: true, edges: .bottom)
                 FavsView()
                     .environmentObject(gsData)
+                    .environmentObject(viewModel)
+
                     .pageView(ignoresSafeArea: true, edges: .bottom)
                 RegretsView()
                     .environmentObject(gsData)
+                    .environmentObject(viewModel)
+
                     .pageView(ignoresSafeArea: true, edges: .bottom)
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 listExpandingButton
                 viewTitle
+                //loadData
                 shareButton
             }
             .fullScreenCover(isPresented: $viewModel.showPDFScreen) {

@@ -82,14 +82,14 @@ struct AddAdventureView: View {
                             .environmentObject(detailManager)
                     )
                     withAnimation {
-                        detailManager.secondaryTarget = .showSecondaryContent
+                        detailManager.tertiaryTarget = .showSecondaryContent
                     }
                 } label: {
                     if let range = dateRange {
                         HStack {
-                            Text(range.lowerBound.dateText(style: .medium))
+                            Text(range.lowerBound.monthDayYearDateText())
                             Text("-")
-                            Text(range.upperBound.dateText(style: .medium))
+                            Text(range.upperBound.monthDayYearDateText())
                         }
                         .font(.subheadline)
                         .foregroundColor(Color.theme.accent)

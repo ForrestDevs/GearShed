@@ -263,6 +263,38 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         persistentStore.context.delete(gearlist)
         persistentStore.saveContext()
     }
+    /// Function to duplicate a gearlist(Renamed with COPY)
+    func duplicateGearlist(gearlist: Gearlist) {
+        let newGearlist = Gearlist(context: persistentStore.context)
+        newGearlist.id = UUID()
+        newGearlist.name = gearlist.name + "COPY"
+        newGearlist.details = gearlist.details
+        newGearlist.isAdventure = gearlist.isAdventure
+        
+        if gearlist.isAdventure {
+            if let location = gearlist.location {
+                newGearlist.location = location
+            }
+            if let country = gearlist.country {
+                newGearlist.country = country
+            }
+            if let startDate = gearlist.startDate {
+                newGearlist.startDate = startDate
+            }
+            if let endDate = gearlist.endDate {
+                newGearlist.endDate = endDate
+            }
+        } else {
+            newGearlist.activityType = gearlist.activityType!
+            
+        }
+        for item in gearlist.items {
+            newGearlist.addToItems_(item)
+            createNewContainerBool(gearlist: newGearlist, item: item)
+        }
+        persistentStore.saveContext()
+    }
+    
     
     func toggleBucketlist(gearlist: Gearlist) {
         gearlist.isBucketlist = !gearlist.isBucketlist
@@ -555,118 +587,138 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         return trueGearlistContainerBools
     }
     
-    func totalWeight(array: [Item]) -> String {
-        var arrayItem = [Item]()
+    //MARK: Total Mass Methods
+    func totalGrams(array: [Item]) -> String {
+        // Array for holding Item Mass value in Grams as a String
         var arrayString = [String]()
-
+        // Go through each item and add to String Array
         for item in array {
-            arrayItem.append(item)
-        }
-        
-        for item in arrayItem {
             arrayString.append(item.weight)
         }
-        
+        // Convert String array to an array of Int
         let intArray = arrayString.map { Int($0) ?? 0 }
+        // Add total value of Int array
         let total = intArray.reduce(0, +)
+        // Convert total value back to String and return
         let totalString = String(total)
         return totalString
     }
-    func gearlistTotalWeight(gearlist: Gearlist) -> String {
+    func totalLbsOz(array: [Item]) -> (lbs: String, oz: String) {
+        
+        /*// Arrays for holding string values of Lbs + Oz
+        var arrayStringLbs = [String]()
+        var arrayStringOz = [String]()
+        //Populating Lbs + Oz String arrays from Items in holding array
+        for x in array {
+            arrayStringLbs.append(x.itemLbs)
+        }
+        for y in array {
+            arrayStringOz.append(y.itemOZ)
+        }
+        // Convert the array of strings into an array of Int, and Double
+        let IntLbsArray = arrayStringLbs.map { Int($0) ?? 0 }
+        let DoubleOzArray = arrayStringOz.map { Double($0) ?? 0.0 }
+        // Add up the total values from the arrays
+        let totalLbs = IntLbsArray.reduce(0, +)
+        let totalOz = DoubleOzArray.reduce(0, +)
+        // Covnert total values back into string format
+        let totalLbsString = String(totalLbs)
+        let totalOzString = String(format: "%.2f", totalOz)
+        // Return Lbs + Oz String values
+        return (totalLbsString, totalOzString)*/
+        
+        // Taking the intial array of items and mapping the corrosponding mass value while reducing to set a total mass value from the array
+        let totalLbs = array.map { Int($0.itemLbs) ?? 0 }.reduce(0, +)
+        let totalOz = array.map { Double($0.itemOZ) ?? 0.0 }.reduce(0, +)
+        // Doing nessecary math to make sure every 16 ounces gets counted as a pound and then convert final totals of mass units to strings
+        let totalLbsString = String(totalLbs + Int((totalOz / 16).rounded(.towardZero)))
+        let totalOzString = String(format: "%.2f", totalOz - Double(Int((totalOz / 16).rounded(.towardZero)) * 16))
+        return (totalLbsString, totalOzString)
+    
+    }
+    func gearlistTotalGrams(gearlist: Gearlist) -> String {
         var array = [Item]()
-        var arrayString = [String]()
-
         for item in gearlist.items {
             array.append(item)
         }
-        
-        for item in array {
-            arrayString.append(item.weight)
-        }
-        
-        let intArray = arrayString.map { Int($0) ?? 0 }
-        let total = intArray.reduce(0, +)
-        let totalString = String(total)
-        return totalString
+        return totalGrams(array: array)
     }
-    
-    func gearlistContainerTotalWeight(gearlist: Gearlist) -> String {
+    func gearlistTotalLbsOz(gearlist: Gearlist) -> (lbs: String, oz: String) {
+        // Array for holding gearlist Items
         var array = [Item]()
-        var arrayString = [String]()
-
+        // Populating Item Array from gearlist Items
+        for item in gearlist.items {
+            array.append(item)
+        }
+        return totalLbsOz(array: array)
+    }
+    func gearlistPackTotalGrams(gearlist: Gearlist) -> String {
+        var array = [Item]()
         for container in gearlist.containers {
             for item in container.items {
                 array.append(item)
             }
         }
-        
-        for item in array {
-            arrayString.append(item.weight)
-        }
-        
-        let intArray = arrayString.map { Int($0) ?? 0 }
-        let total = intArray.reduce(0, +)
-        let totalString = String(total)
-        return totalString
+        return totalGrams(array: array)
     }
-    
-    func gearlistClusterTotalWeight(gearlist: Gearlist) -> String {
+    func gearlistPackTotalLbsOz(gearlist: Gearlist) -> (lbs: String, oz: String) {
+        // Array for holding gearlist Items
         var array = [Item]()
-        var arrayString = [String]()
-
+        for container in gearlist.containers {
+            for item in container.items {
+                array.append(item)
+            }
+        }
+        return totalLbsOz(array: array)
+    }
+    func gearlistPileTotalGrams(gearlist: Gearlist) -> String {
+        var array = [Item]()
         for cluster in gearlist.clusters {
             for item in cluster.items {
                 array.append(item)
             }
         }
-        
-        for item in array {
-            arrayString.append(item.weight)
-        }
-        
-        let intArray = arrayString.map { Int($0) ?? 0 }
-        let total = intArray.reduce(0, +)
-        let totalString = String(total)
-        return totalString
+        return totalGrams(array: array)
     }
-    
-    func containerTotalWeight(container: Container) -> String {
+    func gearlistPileTotalLbsOz(gearlist: Gearlist) -> (lbs: String, oz: String) {
         var array = [Item]()
-        var arrayString = [String]()
-        
-        for item in container.items {
+        for cluster in gearlist.clusters {
+            for item in cluster.items {
+                array.append(item)
+            }
+        }
+        return totalLbsOz(array: array)
+    }
+    func packTotalGrams(pack: Container) -> String {
+        var array = [Item]()
+        for item in pack.items {
             array.append(item)
         }
-        
-        for item in array {
-            arrayString.append(item.weight)
-        }
-        
-        let intArray = arrayString.map { Int($0) ?? 0 }
-        let total = intArray.reduce(0, +)
-        let totalString = String(total)
-        return totalString
+        return totalGrams(array: array)
     }
-    
-    func clusterTotalWeight(cluster: Cluster) -> String {
+    func packTotalLbsOz(pack: Container) -> (lbs: String, oz: String) {
         var array = [Item]()
-        var arrayString = [String]()
-        
-        for item in cluster.items {
+        for item in pack.items {
             array.append(item)
         }
-        
-        for item in array {
-            arrayString.append(item.weight)
+        return totalLbsOz(array: array)
+    }
+    func pileTotalGrams(pile: Cluster) -> String {
+        var array = [Item]()
+        for item in pile.items {
+            array.append(item)
         }
-        
-        let intArray = arrayString.map { Int($0) ?? 0 }
-        let total = intArray.reduce(0, +)
-        let totalString = String(total)
-        return totalString
-        
+        return totalGrams(array: array)
+    }
+    func pileTotalLbsOz(pile: Cluster) -> (lbs: String, oz: String) {
+        var array = [Item]()
+        for item in pile.items {
+            array.append(item)
+        }
+        return totalLbsOz(array: array)
     }
     
+    //MARK: Counter Totals
     
     func gearlistContainerTotalItems(gearlist: Gearlist) -> Int {
         var counter: Int = 0

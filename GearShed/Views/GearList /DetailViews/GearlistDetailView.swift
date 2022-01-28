@@ -31,9 +31,11 @@ struct GearlistDetailView: View {
                 Text("Pack")
                     .formatPageHeaderTitle()
                     .pageLabel()
-                Text("Diary")
-                    .formatPageHeaderTitle()
-                    .pageLabel()
+                if gearlist.isAdventure {
+                    Text("Diary")
+                        .formatPageHeaderTitle()
+                        .pageLabel()
+                }
             } content: {
                 GearlistItemListView(gearlist: gearlist)
                     .environmentObject(viewModel)
@@ -44,9 +46,11 @@ struct GearlistDetailView: View {
                 GearlistContainerView(gearlist: gearlist)
                     .environmentObject(viewModel)
                     .pageView()
-                GearlistDiaryView(gearlist: gearlist)
-                    .environmentObject(viewModel)
-                    .pageView()
+                if gearlist.isAdventure {
+                    GearlistDiaryView(gearlist: gearlist)
+                        .environmentObject(viewModel)
+                        .pageView()
+                }
             }
             .edgesIgnoringSafeArea(.bottom)
             .navigationBarTitleDisplayMode(.inline)

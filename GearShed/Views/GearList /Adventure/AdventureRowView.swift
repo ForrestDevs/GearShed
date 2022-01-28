@@ -31,6 +31,7 @@ struct AdventureRowView: View {
         .contextMenu {
             bucketListContextMenu
             editContextButton
+            duplicateContextButton
             deleteContextButton
         }
         .alert(item: $confirmDeleteGearlistAlert) { adventure in adventure.alert() }
@@ -78,7 +79,7 @@ struct AdventureRowView: View {
             
             Text(adventure.details)
                 .formatItemDetailsGrey()
-                .lineLimit(1)
+                .lineLimit(2)
             Divider()
         }
         .padding(.leading, 15)
@@ -96,6 +97,17 @@ struct AdventureRowView: View {
             HStack {
                 Text("Edit Adventure")
                 Image(systemName: "square.and.pencil")
+            }
+        }
+    }
+    
+    private var duplicateContextButton: some View {
+        Button {
+            viewModel.duplicateGearlist(gearlist: adventure)
+        } label: {
+            HStack {
+                Text("Duplicate Gearlist")
+                Image(systemName: "doc.on.doc.fill")
             }
         }
     }

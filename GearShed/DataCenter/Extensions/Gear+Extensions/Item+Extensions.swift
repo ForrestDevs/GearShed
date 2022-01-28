@@ -64,10 +64,20 @@ extension Item {
 		set { quantity_ = Int32(newValue) }
 	}
     
-    // the price.  this fronts a Core Data optional attribute
+    // the weight in grams.  this fronts a Core Data optional attribute
     var weight: String {
         get { weight_ ?? "" }
         set { weight_ = newValue }
+    }
+    
+    var itemLbs: String {
+        get { lbs_ ?? "" }
+        set { lbs_ = newValue }
+    }
+    
+    var itemOZ: String {
+        get { oz_ ?? "" }
+        set { oz_ = newValue }
     }
     
     // the price.  this fronts a Core Data optional attribute
@@ -168,6 +178,32 @@ extension Item {
         let cluster = clusters.first(where: { $0.gearlist == gearlist })
         return cluster ?? nil
     }
+    
+    /// Function to find wether or not a diary exists for an item in a gearlist
+    func hasExistingDiaryInGearlist(gearlist: Gearlist, item: Item) -> Bool {
+        var source: Bool = false
+        for diary in item.diaries {
+            if diary.gearlist == gearlist {
+                source = true
+            } else {
+                source = false
+            }
+        }
+        return source
+    }
+    
+    /// Function to return the details of a specifc diary in a gearlist
+    func gearlistDiaryDetails(gearlist: Gearlist, item: Item) -> String {
+        var details: String = ""
+        for diary in item.diaries {
+            if diary.gearlist == gearlist {
+                details = diary.details
+            }
+        }
+        return details
+    }
+    
+    
     
     /// Function to return an Items ContainerBool in a specific Gearlist.
     func gearlistContainerBool(gearlist: Gearlist) -> ContainerBool? {

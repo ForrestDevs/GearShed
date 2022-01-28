@@ -8,13 +8,10 @@ import SwiftUI
 
 struct BrandItemsView: View {
     @Environment(\.presentationMode) private var presentationMode
-
     @EnvironmentObject private var persistentStore: PersistentStore
-
     @EnvironmentObject private var detailManager: DetailViewManager
-
     @EnvironmentObject private var gsData: GearShedData
-
+    @EnvironmentObject private var gsvm: GearShedViewModel
     @StateObject private var vm = BrandItemsViewModel()
     
     var body: some View {
@@ -27,12 +24,19 @@ struct BrandItemsView: View {
                     listView
                 }
             }
+            // Invisible Rects for seperate alerts
+            Rectangle()
+                .opacity(0)
+                .alert(item: $vm.confirmDeleteBrandAlert) { brand in brand.alert() }
+            Rectangle()
+                .opacity(0)
+                .alert(item: $gsvm.confirmDeleteItemAlert) { item in item.alert() }
+            
             addBrandButton
         }
         .sheet(isPresented: $vm.showingUnlockView) {
             UnlockView()
         }
-        .alert(item: $vm.confirmDeleteBrandAlert) { brand in brand.alert() }
     }
     
     private var listView: some View {
@@ -133,6 +137,12 @@ struct BrandItemsView: View {
                     withAnimation {
                         detailManager.tertiaryTarget = .showAddBrand
                     }
+                    
+                    /*if gsData.proUser() {
+                        
+                    } else {
+                        vm.showingUnlockView.toggle()
+                    }*/
                 } label: {
                     VStack {
                         Text("Add")

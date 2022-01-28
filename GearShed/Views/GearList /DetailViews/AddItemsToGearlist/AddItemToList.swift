@@ -112,8 +112,103 @@ extension AddItemsToGearListView {
 
 extension AddItemsToGearListView {
     // MARK: Content
+    
     private var itemList: some View {
-        VStack {
+        ScrollView {
+            LazyVStack (alignment: .leading, spacing: 0, pinnedViews: .sectionHeaders) {
+                switch type {
+                case .gearlistItem:
+                    ForEach(itemVM.sectionByShed(itemArray: itemVM.items)) { section in
+                        Section {
+                            ForEach(section.items) { item in
+                                SelectableItemRowView (
+                                    type: .gearlistItem,
+                                    gearlist: gearlist,
+                                    item: item) {
+                                        handleItemSelected(item)
+                                    } respondToTapOffSelector: {
+                                        handleItemUnSelected(item)
+                                    }
+                                    .padding(.horizontal, 15)
+                                    .padding(.bottom, 5)
+                            }
+                        } header: {
+                            ZStack {
+                                Color.theme.headerBG
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: 25)
+                                HStack {
+                                    Text(section.title)
+                                        .font(.headline)
+                                    Spacer()
+                                }
+                                .padding(.horizontal, 15)
+                            }
+                        }
+                    }
+                case .pileItem:
+                    ForEach(itemVM.sectionByShed(itemArray: availablePileItems())) { section in
+                        Section {
+                            ForEach(section.items) { item in
+                                SelectableItemRowView (
+                                    type: .pileItem,
+                                    pile: pile,
+                                    item: item) {
+                                        handleItemSelected(item)
+                                    } respondToTapOffSelector: {
+                                        handleItemUnSelected(item)
+                                    }
+                                    .padding(.horizontal, 15)
+                                    .padding(.bottom, 5)
+                            }
+                        } header: {
+                            ZStack {
+                                Color.theme.headerBG
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: 25)
+                                HStack {
+                                    Text(section.title)
+                                        .font(.headline)
+                                    Spacer()
+                                }
+                                .padding(.horizontal, 15)
+                            }
+                        }
+                    }
+                case .packItem:
+                    ForEach(itemVM.sectionByShed(itemArray: availablePackItems())) { section in
+                        Section {
+                            ForEach(section.items) { item in
+                                SelectableItemRowView (
+                                    type: .packItem,
+                                    pack: pack,
+                                    item: item) {
+                                        handleItemSelected(item)
+                                    } respondToTapOffSelector: {
+                                        handleItemUnSelected(item)
+                                    }
+                                    .padding(.horizontal, 15)
+                                    .padding(.bottom, 5)
+                            }
+                        } header: {
+                            ZStack {
+                                Color.theme.headerBG
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: 25)
+                                HStack {
+                                    Text(section.title)
+                                        .font(.headline)
+                                    Spacer()
+                                }
+                                .padding(.horizontal, 15)
+                            }
+                        }
+                    }
+                }
+            }
+            .padding(.bottom, 100)
+        }
+        /*VStack {
             List {
                 switch type {
                 case .gearlistItem:
@@ -187,7 +282,7 @@ extension AddItemsToGearListView {
                     }
                 }
             }
-        }
+        }*/
     }
     
     // MARK: Methods

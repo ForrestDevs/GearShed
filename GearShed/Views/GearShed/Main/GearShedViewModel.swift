@@ -14,6 +14,9 @@ final class GearShedViewModel: ObservableObject {
     }
     
     @Published var viewFilter: ViewFilter = .shed
+    
+    
+    @Published var confirmDeleteItemAlert: ConfirmDeleteItemAlert?
 
     
     @Published var showPDFScreen: Bool = false

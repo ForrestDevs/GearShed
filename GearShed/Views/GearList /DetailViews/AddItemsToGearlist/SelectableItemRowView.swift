@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct SelectableItemRowView: View {
+    
+    @EnvironmentObject private var persistentStore: PersistentStore
+    
     private var item: Item
     private var gearlist: Gearlist?
     private var pile: Cluster?
@@ -85,9 +88,35 @@ struct SelectableItemRowView: View {
             .lineLimit(1)
             .fixedSize()
             HStack {
-                Text("\(item.weight)g")
-                    .font(.caption)
-                    .foregroundColor(Color.theme.green)
+                if (Prefs.shared.weightUnit == "g") {
+                    if (Int(item.weight) ?? 0 > 0) {
+                        Text("\(item.weight)g")
+                            .font(.caption)
+                            .foregroundColor(Color.theme.green)
+                    }
+                }
+                if (Prefs.shared.weightUnit == "lb + oz") {
+                    if (Int(item.itemLbs) ?? 0 > 0 || Double(item.itemOZ) ?? 0.0 > 0.0) {
+                        Text("\(item.itemLbs) lbs \(item.itemOZ) oz")
+                            .font(.caption)
+                            .foregroundColor(Color.theme.green)
+                    }
+                }
+                
+                /*if (persistentStore.stateUnit == "g") {
+                    if (Int(item.weight) ?? 0 > 0) {
+                        Text("\(item.weight)g")
+                            .font(.caption)
+                            .foregroundColor(Color.theme.green)
+                    }
+                }
+                if (persistentStore.stateUnit == "lb + oz") {
+                    if (Int(item.itemLbs) ?? 0 > 0 || Double(item.itemOZ) ?? 0.0 > 0.0) {
+                        Text("\(item.itemLbs) lbs \(item.itemOZ) oz")
+                            .font(.caption)
+                            .foregroundColor(Color.theme.green)
+                    }
+                }*/
                 Text(item.detail)
                     .font(.caption)
                     .foregroundColor(Color.theme.secondaryText)

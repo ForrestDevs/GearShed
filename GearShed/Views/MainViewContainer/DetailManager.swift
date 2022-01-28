@@ -242,7 +242,6 @@ struct DetailOverlay: View {
                 }
             }
         }
-        
         .environmentObject(persistentStore)
         .environmentObject(detailManager)
     }

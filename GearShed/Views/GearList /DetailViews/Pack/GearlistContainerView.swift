@@ -57,7 +57,25 @@ struct GearlistContainerView: View {
             HStack {
                 Text(container.name)
                     .font(.headline)
-                Text("\(viewModel.containerTotalWeight(container: container))g")
+                
+                if (Prefs.shared.weightUnit == "g") {
+                    Text("\(viewModel.packTotalGrams(pack: container))g")
+                }
+                if (Prefs.shared.weightUnit == "lb + oz") {
+                    let LbOz = viewModel.packTotalLbsOz(pack: container)
+                    let lbs = LbOz.lbs
+                    let oz = LbOz.oz
+                    Text("\(lbs) lbs \(oz) oz")
+                }
+                /*if (persistentStore.stateUnit == "g") {
+                    Text("\(viewModel.packTotalGrams(pack: container))g")
+                }
+                if (persistentStore.stateUnit == "lb + oz") {
+                    let LbOz = viewModel.packTotalLbsOz(pack: container)
+                    let lbs = LbOz.lbs
+                    let oz = LbOz.oz
+                    Text("\(lbs) lbs \(oz) oz")
+                }*/
                 Spacer()
                 Menu {
                     Button {
@@ -121,6 +139,7 @@ struct GearlistContainerView: View {
             HStack {
                 Spacer()
                 Button {
+                    detailManager.selectedGearlist = gearlist
                     withAnimation {
                         detailManager.secondaryTarget = .showAddContainer
                     }

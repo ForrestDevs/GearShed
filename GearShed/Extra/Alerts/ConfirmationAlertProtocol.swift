@@ -58,12 +58,12 @@ extension ConfirmationAlertProtocol {
 	
 	// produces the actual alert
 	func alert() -> Alert {
-		Alert(title: Text(title),
-					message: Text(message),
-					primaryButton:
-						.cancel(Text(nonDestructiveTitle), action: doNonDestructiveAction),
-					secondaryButton:
-						.destructive(Text(destructiveTitle), action: doDestructiveAction))
+		Alert(
+            title: Text(title),
+            message: Text(message),
+            primaryButton: .cancel(Text(nonDestructiveTitle), action: doNonDestructiveAction),
+            secondaryButton: .destructive(Text(destructiveTitle), action: doDestructiveAction)
+        )
 	}
 }
 

@@ -17,18 +17,20 @@ struct ItemDiaryRowView: View {
                 detailManager.secondaryTarget = .showItemDiaryDetail
             }
         } label: {
-            HStack {
-                VStack (alignment: .leading, spacing: 3) {
+            VStack (alignment: .leading, spacing: 0) {
+                HStack {
                     Text(diary.name)
                         .formatItemNameGreen()
-                    
-                    Text("''\(diary.details)''")
-                        .formatDiaryDetails()
-                        
-                        
-                        .lineLimit(2)
+                    Text("|")
+                        .formatItemNameBlack()
+                    Text((diary.gearlist.startDate?.dateText(style: .medium))!)
+                        .formatItemNameBlack()
                 }
-                Spacer()
+                
+                
+                Text("''\(diary.details)''")
+                    .formatDiaryDetails()
+                    .lineLimit(2)
             }
             .padding(.leading, 15)
         }

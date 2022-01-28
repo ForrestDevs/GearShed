@@ -60,7 +60,29 @@ struct GearlistItemListView: View {
                 Text(section.title)
                     .font(.headline)
                 Spacer()
-                Text("\(viewModel.totalWeight(array: section.items))" + "g" )
+                
+                if (Prefs.shared.weightUnit == "g") {
+                    Text("\(viewModel.totalGrams(array: section.items))" + "g" )
+                }
+                if (Prefs.shared.weightUnit == "lb + oz") {
+                    let LbOz = viewModel.totalLbsOz(array: section.items)
+                    let lbs = LbOz.lbs
+                    let oz = LbOz.oz
+                    Text("\(lbs) lbs \(oz) oz")
+                }
+                
+                /*if (persistentStore.stateUnit == "g") {
+                    Text("\(viewModel.totalGrams(array: section.items))" + "g" )
+                }
+                
+                if (persistentStore.stateUnit == "lb + oz") {
+                    let LbOz = viewModel.totalLbsOz(array: section.items)
+                    let lbs = LbOz.lbs
+                    let oz = LbOz.oz
+                    Text("\(lbs) lbs \(oz) oz")
+                }*/
+                    
+                
             }
             .padding(.horizontal, 15)
         }

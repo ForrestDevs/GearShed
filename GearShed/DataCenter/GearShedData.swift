@@ -180,7 +180,11 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         newItem.name = editableData.name
         newItem.detail = editableData.details
         newItem.quantity = Int(editableData.quantity)
+        
         newItem.weight = editableData.weight
+        newItem.itemLbs = editableData.lbs
+        newItem.itemOZ = editableData.oz
+
         newItem.price = editableData.price
         newItem.isWishlist = editableData.isWishlist
         newItem.shed = editableData.shed!
@@ -188,14 +192,17 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         newItem.datePurchased = editableData.datePurchased
         persistentStore.saveContext()
     }
-    
     /// Function to update an Item's values using the temp stored data.
     func updateItem(using editableData: EditableItemData) {
         let item = editableData.associatedItem
         item.name = editableData.name
         item.detail = editableData.details
         item.quantity = Int(editableData.quantity)
+        
         item.weight = editableData.weight
+        item.itemLbs = editableData.lbs
+        item.itemOZ = editableData.oz
+        
         item.price = editableData.price
         item.isWishlist = editableData.isWishlist
         item.isFavourite = editableData.isFavourite
@@ -255,7 +262,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     func addNewItemDiary(using editableData: EditableDiaryData) {
         let newDiary = ItemDiary(context: persistentStore.context)
         newDiary.id = UUID()
-        newDiary.name = editableData.gearlist.name
+        newDiary.name = editableData.item!.name
         newDiary.details = editableData.details
         newDiary.item = editableData.item!
         newDiary.gearlist = editableData.gearlist
@@ -266,6 +273,17 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     func updateItemDiary(using editableData: EditableDiaryData) {
         let diary = editableData.associatedDiary
         diary.details = editableData.details
+        persistentStore.saveContext()
+    }
+    
+    /// Function to update an existing ItemDiary using editableData.
+    func updateItemDiaryFromNewEntry(item: Item, gearlist: Gearlist, details: String) {
+        for diary in item.diaries {
+            if diary.gearlist == gearlist {
+                diary.details = details
+            }
+        }
+        persistentStore.saveContext()
     }
     
     /// Function to delete an ItemDiary
@@ -449,7 +467,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     
     // MARK: - Total Functions
 
-    func totalWeight(array: [Item]) -> String {
+    func totalGrams(array: [Item]) -> String {
         var arrayString = [String]()
         for x in array {
             arrayString.append(x.weight)
@@ -459,6 +477,46 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         let totalString = String(total)
         return totalString
     }
+    
+    
+    func totalLbsOz(array: [Item]) -> (lbs: String, oz: String) {
+        //var arrayStringLbs = [String]()
+        //var arrayStringOz = [String]()
+        //for x in array {
+        //    arrayStringLbs.append(x.itemLbs)
+        //}
+        //for y in array {
+        //    arrayStringOz.append(y.itemOZ)
+        //}
+        //let IntLbsArray = arrayStringLbs.map { Int($0) ?? 0 }
+        //let DoubleOzArray = arrayStringOz.map { Double($0) ?? 0.0 }
+        //let totalLbs = IntLbsArray.reduce(0, +)
+        //let totalOz = DoubleOzArray.reduce(0, +)
+        //var remainderLbs: Int {
+        //    let x = (totalOz/16)
+        //    return Int(x.rounded(.towardZero))
+        //}
+        //var totalOzReduced: Double {
+        //    (totalOz - Double(remainderLbs * 16))
+        //}
+        //var totalLbsAdded: Int {
+        //    totalLbs + remainderLbs
+        //}
+        //let totalLbsString = String(totalLbsAdded)
+        //let totalOzString = String(format: "%.2f", totalOzReduced)
+        //return (totalLbsString, totalOzString)
+        
+        // Taking the intial array of items and mapping the corrosponding mass value while reducing to set a total mass value from the array
+        let totalLbs = array.map { Int($0.itemLbs) ?? 0 }.reduce(0, +)
+        let totalOz = array.map { Double($0.itemOZ) ?? 0.0 }.reduce(0, +)
+        // Doing nessecary math to make sure every 16 ounces gets counted as a pound and then convert final totals of mass units to strings
+        let totalLbsString = String(totalLbs + Int((totalOz / 16).rounded(.towardZero)))
+        let totalOzString = String(format: "%.2f", totalOz - Double(Int((totalOz / 16).rounded(.towardZero)) * 16))
+        return (totalLbsString, totalOzString)
+    }
+    
+    
+    
     
     func totalCost(array: [Item]) -> String {
         var arrayString = [String]()
@@ -479,5 +537,15 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     func totalRegrets(array: [Item]) -> String {
         let regretItems = array.filter { $0.isRegret }
         return String(regretItems.count)
+    }
+    
+    func proUser() -> Bool {
+        let canCreate = self.persistentStore.fullVersionUnlocked ||
+                                self.persistentStore.count(for: Item.fetchRequest()) < 3
+        if canCreate == true {
+            return true
+        } else {
+            return false
+        }
     }
 }

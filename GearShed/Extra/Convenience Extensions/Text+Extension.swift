@@ -36,7 +36,7 @@ extension Text {
     
     func formatDiaryDetails() -> some View {
         self.foregroundColor(Color.theme.accent)
-            .font(.custom("HelveticaNeue", size: 16.5).italic())
+            .font(.custom("HelveticaNeue", size: 15).italic())
             .frame(alignment: .leading)
     }
     
@@ -109,6 +109,11 @@ extension Text {
     func formatItemNameBlack() -> some View {
         self.foregroundColor(Color.theme.accent)
             .font(.custom("HelveticaNeue", size: 16.5))
+    }
+    
+    func formatItemDetailDiaryHeader() -> some View {
+        self.foregroundColor(Color.theme.accent)
+            .font(.custom("HelveticaNeue", size: 18))
     }
     
     func formatItemWeightBlack() -> some View {

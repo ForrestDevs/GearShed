@@ -74,7 +74,8 @@ struct AdventureView: View {
                 .frame(maxWidth: .infinity)
                 .frame(height: 25)
             HStack {
-                Text(section.title)
+                Text(section.title).textCase(.none)
+                    .font(.custom("HelveticaNeue", size: 16.5).bold())
                 Spacer()
             }
             .padding(.horizontal, 15)

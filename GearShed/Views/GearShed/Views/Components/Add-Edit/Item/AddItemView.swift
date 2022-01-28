@@ -6,25 +6,17 @@
 //  Copyright © 2021 All rights reserved.
 //
 import SwiftUI
+import Combine
 
 struct AddItemView: View {
-    
     @Environment(\.presentationMode) var presentationMode
-    
     @EnvironmentObject private var detailManager: DetailViewManager
-    
-    let persistentStore: PersistentStore
-        
     @StateObject private var viewModel: GearShedData
-    
     @State private var editableData: EditableItemData
-    
     @State private var date: Date? = nil
-
     @State private var showOverlay = false
-    
     @State private var selection = ""
-    
+    let persistentStore: PersistentStore
     var body: some View {
         NavigationView {
             contentLayer
@@ -37,7 +29,6 @@ struct AddItemView: View {
         }
         .transition(.move(edge: .trailing))
     }
-    
     // MARK: Main Content
     private var contentLayer: some View {
         ZStack {
@@ -59,7 +50,6 @@ struct AddItemView: View {
             }
         }
     }
-    
     // MARK: Content Components
     private var itemNameSection: some View {
         Section {
@@ -73,7 +63,6 @@ struct AddItemView: View {
             }
         }
     }
-    
     private var itemBrandSection: some View {
         Section {
             VStack (alignment: .leading, spacing: 3) {
@@ -127,7 +116,6 @@ struct AddItemView: View {
         }
 
     }
-    
     private var itemShedSection: some View {
         Section {
             VStack (alignment: .leading, spacing: 3)  {
@@ -180,19 +168,47 @@ struct AddItemView: View {
         }
 
     }
-    
     private var itemWeightSection: some View {
         Section {
             VStack (alignment: .leading, spacing: 3)  {
                 Text ("Weight")
                     .formatEntryTitle()
                 
-                if (persistentStore.stateUnit == "g") {
+                if (Prefs.shared.weightUnit == "g") {
                     TextField("Weight in g", text: $editableData.weight)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .disableAutocorrection(true)
                         .font(.subheadline)
-                        .keyboardType(.decimalPad)
+                        .keyboardType(.numberPad)
+                }
+                if (Prefs.shared.weightUnit == "lb + oz") {
+                    HStack (spacing: 10) {
+                        TextField("lb", text: $editableData.lbs)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .disableAutocorrection(true)
+                            .font(.subheadline)
+                            .keyboardType(.numberPad)
+                            .onReceive(Just(editableData.lbs)) { (newValue: String) in
+                                self.editableData.lbs = newValue.prefix(20).filter {"1234567890".contains($0)  }
+                            }
+                        
+                        TextField("oz", text: $editableData.oz)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .disableAutocorrection(true)
+                            .font(.subheadline)
+                            .keyboardType(.decimalPad)
+                            .onReceive(Just(editableData.oz)) { (newValue: String) in
+                                self.editableData.oz = newValue.prefix(5).filter {"1234567890.".contains($0)  }
+                            }
+                    }
+                }
+                
+                /*if (persistentStore.stateUnit == "g") {
+                    TextField("Weight in g", text: $editableData.weight)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .disableAutocorrection(true)
+                        .font(.subheadline)
+                        .keyboardType(.numberPad)
                 }
                 
                 if (persistentStore.stateUnit == "lb + oz") {
@@ -201,21 +217,28 @@ struct AddItemView: View {
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .disableAutocorrection(true)
                             .font(.subheadline)
-                            .keyboardType(.decimalPad)
+                            .keyboardType(.numberPad)
+                            .onReceive(Just(editableData.lbs)) { (newValue: String) in
+                                self.editableData.lbs = newValue.prefix(20).filter {"1234567890".contains($0)  }
+                            }
                         
                         TextField("oz", text: $editableData.oz)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .disableAutocorrection(true)
                             .font(.subheadline)
                             .keyboardType(.decimalPad)
+                            .onReceive(Just(editableData.oz)) { (newValue: String) in
+                                self.editableData.oz = newValue.prefix(5).filter {"1234567890.".contains($0)  }
+                            }
                     }
-                }
+                }*/
+                
+                
                 
                 
             }
         }
     }
-    
     private var itemPriceSection: some View {
         Section {
             VStack (alignment: .leading, spacing: 3)  {
@@ -226,10 +249,13 @@ struct AddItemView: View {
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .disableAutocorrection(true)
                     .font(.subheadline)
+                    .keyboardType(.decimalPad)
+                    .onReceive(Just(editableData.oz)) { (newValue: String) in
+                        self.editableData.oz = newValue.prefix(30).filter {"1234567890.".contains($0)  }
+                    }
             }
         }
     }
-    
     private var itemPurchaseDateSection: some View {
         Section {
             VStack (alignment: .leading, spacing: 3) {
@@ -242,10 +268,10 @@ struct AddItemView: View {
                             .environmentObject(detailManager)
                     )
                     withAnimation {
-                        detailManager.secondaryTarget = .showSecondaryContent
+                        detailManager.tertiaryTarget = .showSecondaryContent
                     }
                 } label: {
-                    Text("\(date?.dateText(style: .short) ?? "Select Purchase Date")")
+                    Text("\(date?.monthDayYearDateText() ?? "Select Purchase Date")")
                         .font(.subheadline)
                         .foregroundColor(purchaseDateTitleColor())
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
@@ -266,7 +292,6 @@ struct AddItemView: View {
             }
         }
     }
-    
     private var itemDescriptionSection: some View {
         Section {
             VStack (alignment: .leading, spacing: 3) {
@@ -279,7 +304,6 @@ struct AddItemView: View {
             }
         }
     }
-    
     private var itemWishlistSection: some View {
         Section {
             VStack (alignment: .leading, spacing: 10) {
@@ -289,7 +313,6 @@ struct AddItemView: View {
             }
         }
     }
-    
     // MARK: Private Methods
     private func brandTextColor() -> Color {
         var color: Color
@@ -300,7 +323,6 @@ struct AddItemView: View {
         }
         return color
     }
-    
     private func shedTextColor() -> Color {
         var color: Color
         if editableData.shed == nil {
@@ -310,7 +332,6 @@ struct AddItemView: View {
         }
         return color
     }
-    
     private func purchaseDateTitleColor() -> Color {
         var color: Color
         if editableData.datePurchased == nil {
@@ -320,7 +341,6 @@ struct AddItemView: View {
         }
         return color
     }
-
     // MARK: ToolbarItems
     private var cancelButtonToolbarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
@@ -333,14 +353,12 @@ struct AddItemView: View {
             }
         }
     }
-    
     private var viewTitle: some ToolbarContent {
         ToolbarItem(placement: .principal) {
             Text("Add Gear")
                 .formatGreen()
         }
     }
-    
     private var saveButtonToolbarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
@@ -368,7 +386,6 @@ extension AddItemView {
         _editableData = State(initialValue: initialValue)
                 
     }
-    
     /// Intializer for passing in a brand
     init(persistentStore: PersistentStore, brandIn: Brand) {
         self.persistentStore = persistentStore
@@ -380,7 +397,6 @@ extension AddItemView {
         _editableData = State(initialValue: initialValue)
                 
     }
-
     /// Intializer for passing in the whishlist selected
     init(persistentStore: PersistentStore, wishlist: Bool) {
         self.persistentStore = persistentStore
@@ -392,7 +408,6 @@ extension AddItemView {
         
         _editableData = State(initialValue: initialValue)
     }
-    
     /// Intializer for standard add Item View
     init(persistentStore: PersistentStore, standard: Bool) {
         self.persistentStore = persistentStore
@@ -405,4 +420,8 @@ extension AddItemView {
         _editableData = State(initialValue: initialValue)
     }
 }
+
+
+    
+
 

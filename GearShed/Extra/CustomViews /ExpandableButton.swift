@@ -8,6 +8,8 @@ import SwiftUI
 
 struct ExpandableButton: View {
     @EnvironmentObject private var detailManager: DetailViewManager
+    @EnvironmentObject private var vm: ShedItemsViewModel
+    @EnvironmentObject private var gsData: GearShedData
     @State private var showMenuItem1 = false
     @State private var showMenuItem2 = false
     @State private var showMenuItem3 = false
@@ -28,7 +30,15 @@ struct ExpandableButton: View {
                 VStack (alignment: .center, spacing: 2) {
                     
                     VStack (alignment: .center, spacing: 1) {
-                        if type == .shed {
+                        
+                        if showMenuItem1 {
+                            menuButton(type: .item, buttonText: "Gear")
+                        }
+                        if showMenuItem2 {
+                            menuButton(type: .shed, buttonText: "Shed")
+                        }
+                        
+                        /*if type == .shed {
                             if showMenuItem1 {
                                 menuButton(type: .item, buttonText: "Gear")
                             }
@@ -43,10 +53,10 @@ struct ExpandableButton: View {
                             if showMenuItem3 {
                                 menuButton(type: .brand, buttonText: "Brand")
                             }
-                        }
+                        }*/
                     }
                     
-                    
+                    // "+" button to show menu
                     Button {
                         showMenu()
                     } label: {
@@ -70,7 +80,28 @@ struct ExpandableButton: View {
     }
     
     func showMenu() {
-        if type == .shed {
+        
+        if isClose {
+            withAnimation {
+                showMenuItem2 = false
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.03, execute: {
+                withAnimation {
+                    showMenuItem1 = false
+                }
+            })
+        } else {
+            withAnimation {
+                showMenuItem1 = true
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.03, execute: {
+                withAnimation {
+                    showMenuItem2 = true
+                }
+            })
+        }
+        
+        /*if type == .shed {
             if isClose {
                 withAnimation {
                     showMenuItem2 = false
@@ -90,8 +121,8 @@ struct ExpandableButton: View {
                     }
                 })
             }
-        }
-        if type == .brand {
+        }*/
+        /*if type == .brand {
             if isClose {
                 withAnimation {
                     showMenuItem3 = false
@@ -111,7 +142,7 @@ struct ExpandableButton: View {
                     }
                 })
             }
-        }
+        }*/
         
         isClose.toggle()
         isExpanded.toggle()
@@ -119,21 +150,27 @@ struct ExpandableButton: View {
     
     func menuButton(type: ButtonType, buttonText: String) -> some View {
         Button {
-            if type == .item {
-                showMenu()
-                withAnimation {
-                    detailManager.target = .showAddItem
+            switch type {
+            case .item:
+                if gsData.proUser() {
+                    detailManager.target = .noView
+                    withAnimation {
+                        detailManager.target = .showAddItem
+                    }
+                    showMenu()
+                } else {
+                    vm.showingUnlockView.toggle()
                 }
-            } else if type == .shed {
-                showMenu()
+            case .shed:
                 withAnimation {
                     detailManager.tertiaryTarget = .showAddShed
                 }
-            } else if type == .brand {
                 showMenu()
+            case .brand:
                 withAnimation {
                     detailManager.tertiaryTarget = .showAddBrand
                 }
+                showMenu()
             }
         } label: {
             VStack {

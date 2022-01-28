@@ -63,7 +63,27 @@ struct GearlistClusterView: View {
             HStack {
                 Text(cluster.name)
                     .font(.headline)
-                Text("\(viewModel.clusterTotalWeight(cluster: cluster))g")
+                
+                if (Prefs.shared.weightUnit == "g") {
+                    Text("\(viewModel.pileTotalGrams(pile: cluster))g")
+                }
+                if (Prefs.shared.weightUnit == "lb + oz") {
+                    let LbOz = viewModel.pileTotalLbsOz(pile: cluster)
+                    let lbs = LbOz.lbs
+                    let oz = LbOz.oz
+                    Text("\(lbs) lbs \(oz) oz")
+                }
+                
+                /*if (persistentStore.stateUnit == "g") {
+                    Text("\(viewModel.pileTotalGrams(pile: cluster))g")
+                }
+                
+                if (persistentStore.stateUnit == "lb + oz") {
+                    let LbOz = viewModel.pileTotalLbsOz(pile: cluster)
+                    let lbs = LbOz.lbs
+                    let oz = LbOz.oz
+                    Text("\(lbs) lbs \(oz) oz")
+                }*/
                 Spacer()
                 Menu {
                     Button {

@@ -24,11 +24,8 @@ struct ConfirmDeleteItemAlert: ConfirmationAlertProtocol {
     }
     
 	var id = UUID()
-	
 	var item: Item
-	
 	var title: String { "Delete \(item.name)?" }
-	
 	var message: String {
 		"Are you sure you want to delete \(item.name)? This action cannot be undone"
 	}

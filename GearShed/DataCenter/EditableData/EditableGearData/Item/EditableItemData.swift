@@ -15,6 +15,12 @@ struct EditableItemData {
     var id: UUID?
     var name: String
     var weight: String
+    
+    
+    var lbs: String
+    var oz: String
+    
+    
     var price: String
     var quantity: Int
     var details: String
@@ -43,6 +49,10 @@ extension EditableItemData {
         self.id = item.id
         self.name = item.name
         self.weight = item.weight
+        
+        self.lbs = item.itemLbs
+        self.oz = item.itemOZ
+    
         self.price = item.price
         self.quantity = item.quantity
         self.details = item.detail
@@ -59,6 +69,8 @@ extension EditableItemData {
         self.persistentStore = persistentStore
         self.name = ""
         self.weight = ""
+        self.lbs = ""
+        self.oz = ""
         self.price = ""
         self.quantity = 1
         self.details = ""
@@ -75,6 +87,8 @@ extension EditableItemData {
         self.persistentStore = persistentStore
         self.name = ""
         self.weight = ""
+        self.lbs = ""
+        self.oz = ""
         self.price = ""
         self.quantity = 1
         self.details = ""
@@ -91,6 +105,8 @@ extension EditableItemData {
         self.persistentStore = persistentStore
         self.name = ""
         self.weight = ""
+        self.lbs = ""
+        self.oz = ""
         self.price = ""
         self.quantity = 1
         self.details = ""
@@ -107,6 +123,8 @@ extension EditableItemData {
         self.persistentStore = persistentStore
         self.name = ""
         self.weight = ""
+        self.lbs = ""
+        self.oz = ""
         self.price = ""
         self.quantity = 1
         self.details = ""

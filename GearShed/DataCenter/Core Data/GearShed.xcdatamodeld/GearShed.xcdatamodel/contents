@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19461" systemVersion="20G165" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19461" systemVersion="20G314" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
     <entity name="ActivityType" representedClassName="ActivityType" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name_" optional="YES" attributeType="String"/>
@@ -60,7 +60,9 @@
         <attribute name="isFavourite_" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="isRegret_" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="isWishlist_" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="lbs_" optional="YES" attributeType="String"/>
         <attribute name="name_" optional="YES" attributeType="String"/>
+        <attribute name="oz_" optional="YES" attributeType="String"/>
         <attribute name="price_" optional="YES" attributeType="String"/>
         <attribute name="quantity_" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="weight_" optional="YES" attributeType="String"/>
@@ -112,7 +114,7 @@
         <element name="ContainerBool" positionX="479.8986206054688" positionY="-569.0198669433594" width="128" height="118"/>
         <element name="Gearlist" positionX="259.2347412109374" positionY="-348.9603424072266" width="128" height="268"/>
         <element name="GearPlan" positionX="-50.50823974609375" positionY="-730.9864654541016" width="128" height="88"/>
-        <element name="Item" positionX="91.51422119140625" positionY="-416.1770935058593" width="128" height="313"/>
+        <element name="Item" positionX="91.51422119140625" positionY="-416.1770935058593" width="128" height="329"/>
         <element name="ItemDiary" positionX="461.3603515625" positionY="-171.1017456054688" width="128" height="118"/>
         <element name="ItemImage" positionX="-112.1859741210938" positionY="-312.7723083496094" width="128" height="103"/>
         <element name="PlanGroup" positionX="131.9351806640625" positionY="-727.3628387451172" width="128" height="103"/>

@@ -122,9 +122,11 @@ struct ItemRowView_InContainer: View {
     
     private var deleteContextButton: some View {
         Button {
-            withAnimation {
-                viewModel.removeItemFromContainer(item: item, container: container)
-            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                withAnimation {
+                    viewModel.removeItemFromContainer(item: item, container: container)
+                }
+            })
         } label: {
             HStack {
                 Text("Remove from Pack")

@@ -12,7 +12,7 @@ struct ItemDetailView: View {
     @ObservedObject private var item: Item
     @StateObject private var glData: GearlistData
     @StateObject private var gsData: GearShedData
-        
+            
     init(persistentStore: PersistentStore, item: Item) {
         self.item = item
         
@@ -21,7 +21,11 @@ struct ItemDetailView: View {
         
         let gsData = GearShedData(persistentStore: persistentStore)
         _gsData = StateObject(wrappedValue: gsData)
+        
+        self.persistentStore = persistentStore
     }
+    
+    let persistentStore: PersistentStore
 
     var body: some View {
         NavigationView {
@@ -72,21 +76,21 @@ struct ItemDetailView: View {
                 Image(systemName: "heart.fill")
                     .resizable()
                     .frame(width: 12, height: 11)
-                    .foregroundColor(Color.theme.green)
+                    .foregroundColor(Color.red)
                     .padding(.horizontal, 2)
             } else
             if item.isRegret {
                 Image(systemName: "hand.thumbsdown.fill")
                     .resizable()
                     .frame(width: 14, height: 14)
-                    .foregroundColor(Color.theme.green)
+                    .foregroundColor(Color.theme.regretColor)
                     .padding(.horizontal, 2)
             } else
             if item.isWishlist {
                 Image(systemName: "star.fill")
                     .resizable()
                     .frame(width: 14, height: 14)
-                    .foregroundColor(Color.theme.green)
+                    .foregroundColor(Color.yellow)
                     .padding(.horizontal, 2)
             }
         }
@@ -96,13 +100,44 @@ struct ItemDetailView: View {
         HStack (alignment: .top) {
             VStack (alignment: .leading, spacing: 2) {
                 HStack {
-                    if let weight = item.weight {
-                        Text("\(weight)g")
-                            .formatDetailsWPPBlack()
+                    
+                    
+                    if (Prefs.shared.weightUnit == "g") {
+                        if let weight = item.weight {
+                            if Int(weight) ?? 0 > 0 {
+                                Text("\(weight) g")
+                                    .formatDetailsWPPBlack()
+                            }
+                        }
                     }
+                    if (Prefs.shared.weightUnit == "lb + oz") {
+                        if (Int(item.itemLbs) ?? 0 > 0 || Double(item.itemOZ) ?? 0.0 > 0.0) {
+                            Text("\(item.itemLbs) lbs \(item.itemOZ) oz")
+                                .formatDetailsWPPBlack()
+                        }
+                    }
+                    
+                    /*if (persistentStore.stateUnit == "g") {
+                        if let weight = item.weight {
+                            if Int(weight) ?? 0 > 0 {
+                                Text("\(weight) g")
+                                    .formatDetailsWPPBlack()
+                            }
+                        }
+                    }
+                    
+                    if (persistentStore.stateUnit == "lb + oz") {
+                        if (Int(item.itemLbs) ?? 0 > 0 || Double(item.itemOZ) ?? 0.0 > 0.0) {
+                            Text("\(item.itemLbs) lbs \(item.itemOZ) oz")
+                                .formatDetailsWPPBlack()
+                        }
+                    }*/
+                    
                     if let price = item.price {
-                        Text("$\(price)")
-                            .formatDetailsWPPBlack()
+                        if Int(price) ?? 0 > 0 {
+                            Text("$ \(price)")
+                                .formatDetailsWPPBlack()
+                        }
                     }
                 }
                 
@@ -120,7 +155,9 @@ struct ItemDetailView: View {
             Spacer()
             ItemImageView(item: item)
                 .contextMenu {
+                    
                     addEditButton
+                    
                     if item.image != nil {
                         deleteImageButton
                     }

@@ -20,6 +20,7 @@ struct ItemDiaryList: View {
                 
                 HStack {
                     Text("Diary")
+                        .formatItemDetailDiaryHeader()
                     Spacer()
                 }
                 .padding(.leading, 15)

@@ -10,6 +10,7 @@ import SwiftUI
 struct ItemRowView_InCluster: View {
     
     @EnvironmentObject private var viewModel: GearlistData
+    @EnvironmentObject private var persistentStore: PersistentStore
     
     private var gearlist: Gearlist?
     private var cluster: Cluster?
@@ -60,9 +61,40 @@ extension ItemRowView_InCluster {
             }
             .lineLimit(1)
             
-            HStack {
-                Text(item.weight + "g")
-                    .formatItemWeightBlack()
+            HStack (spacing: 0) {
+                if (Prefs.shared.weightUnit == "g") {
+                    if (Int(item.weight) ?? 0 > 0) {
+                        Text("\(item.weight) g")
+                            .formatItemWeightBlack()
+                        Text(", ")
+                            .formatItemWeightBlack()
+                    }
+                }
+                if (Prefs.shared.weightUnit == "lb + oz") {
+                    if (Int(item.itemLbs) ?? 0 > 0 || Double(item.itemOZ) ?? 0.0 > 0.0) {
+                        Text("\(item.itemLbs) lbs \(item.itemOZ) oz")
+                            .formatItemWeightBlack()
+                        Text(", ")
+                            .formatItemWeightBlack()
+                    }
+                }
+                /*if (persistentStore.stateUnit == "g") {
+                    if (Int(item.weight) ?? 0 > 0) {
+                        Text("\(item.weight) g")
+                            .formatItemWeightBlack()
+                        Text(", ")
+                            .formatItemWeightBlack()
+                    }
+                }
+                
+                if (persistentStore.stateUnit == "lb + oz") {
+                    if (Int(item.itemLbs) ?? 0 > 0 || Double(item.itemOZ) ?? 0.0 > 0.0) {
+                        Text("\(item.itemLbs) lbs \(item.itemOZ) oz")
+                            .formatItemWeightBlack()
+                        Text(", ")
+                            .formatItemWeightBlack()
+                    }
+                }*/
                 Text(item.detail)
                     .formatItemDetailsGrey()
             }
@@ -110,9 +142,11 @@ extension ItemRowView_InCluster {
     
     private var deleteContextButton: some View {
         Button {
-            withAnimation {
-                viewModel.removeItemFromCluster(item: item, cluster: cluster!)
-            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                withAnimation {
+                    viewModel.removeItemFromCluster(item: item, cluster: cluster!)
+                }
+            })
         } label: {
             HStack {
                 Text("Remove From Pile")
