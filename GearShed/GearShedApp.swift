@@ -19,6 +19,8 @@ struct GearShedApp: App {
     @StateObject var unlockManager: UnlockManager
     
     @Environment(\.scenePhase) private var scenePhase
+    
+    @State var isActive:Bool = false
 
     init() {
         let persistentStore = PersistentStore()
@@ -35,20 +37,33 @@ struct GearShedApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, persistentStore.context)
-                .environmentObject(persistentStore)
-                .environmentObject(unlockManager)
-                .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification),
-                                        perform: handleResignActive)
-                .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification),
-                                        perform: handleBecomeActive)
-                .onChange(of: scenePhase, perform: { newScenePhase in
-                    if newScenePhase == .active && askForReview {
-                        lastReviewRequest = Date().timeIntervalSinceReferenceDate
-                        persistentStore.appLaunched()
+            VStack {
+                if self.isActive {
+                    ContentView()
+                        .environment(\.managedObjectContext, persistentStore.context)
+                        .environmentObject(persistentStore)
+                        .environmentObject(unlockManager)
+                        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification),
+                                                perform: handleResignActive)
+                        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification),
+                                                perform: handleBecomeActive)
+                        .onChange(of: scenePhase, perform: { newScenePhase in
+                            if newScenePhase == .active && askForReview {
+                                lastReviewRequest = Date().timeIntervalSinceReferenceDate
+                                persistentStore.appLaunched()
+                            }
+                        })
+                } else {
+                    LaunchAnimation()
+                }
+            }
+            .onAppear {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+                    withAnimation {
+                        self.isActive = true
                     }
-                })
+                }
+            }
         }
     }
     
