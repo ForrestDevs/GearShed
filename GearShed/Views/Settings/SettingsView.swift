@@ -88,11 +88,13 @@ struct SettingsView: View {
     var body: some View {
         NavigationView {
             ScrollView (.vertical, showsIndicators: false) {
-                VStack (alignment: .center, spacing: 25)  {
+                
+                VStack (alignment: .leading, spacing: 25)  {
                     
                     
                     VStack (alignment: .leading, spacing: 5) {
                         Text("PDF Username")
+                            .formatBlackTitle()
                         
                         TextField("PDF Name Feild", text: Prefs.shared.$pdfUserName)
                            // .onReceive(Just(pdfName)) { newValue in
@@ -100,7 +102,7 @@ struct SettingsView: View {
                             //}
                     }
                     
-                    VStack (alignment: .center, spacing: 5) {
+                    VStack (alignment: .leading, spacing: 5) {
                         Text("Weight Unit")
                             .formatBlackTitle()
                         
@@ -185,6 +187,7 @@ struct SettingsView: View {
                     Spacer()
                     
                 }
+                .padding()
             }
             
             .navigationBarTitleDisplayMode(.inline)

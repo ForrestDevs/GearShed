@@ -44,6 +44,8 @@
 		0863DC3A2737054E00A9A3B2 /* EditableItemData-InList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0863DC392737054E00A9A3B2 /* EditableItemData-InList.swift */; };
 		0869ECE127A3C1B400D2ADC5 /* LaunchAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0869ECE027A3C1B400D2ADC5 /* LaunchAnimation.swift */; };
 		086C925227238D03009F962D /* ModifyItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086C925127238D03009F962D /* ModifyItemView.swift */; };
+		087B3BD727AB9BB8003F6C71 /* StringProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087B3BD627AB9BB6003F6C71 /* StringProtocol.swift */; };
+		087B3BD927AB9C4D003F6C71 /* CustomWeightTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087B3BD827AB9C4D003F6C71 /* CustomWeightTextField.swift */; };
 		08877EE62735AB80000D7FF4 /* ShedtemsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08877EE52735AB80000D7FF4 /* ShedtemsViewModel.swift */; };
 		08877EE82735BBA4000D7FF4 /* ListGroup+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08877EE72735BBA4000D7FF4 /* ListGroup+Extensions.swift */; };
 		08877EEA2735BD34000D7FF4 /* AddItemToList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08877EE92735BD34000D7FF4 /* AddItemToList.swift */; };
@@ -214,6 +216,8 @@
 		0863DC392737054E00A9A3B2 /* EditableItemData-InList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditableItemData-InList.swift"; sourceTree = "<group>"; };
 		0869ECE027A3C1B400D2ADC5 /* LaunchAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAnimation.swift; sourceTree = "<group>"; };
 		086C925127238D03009F962D /* ModifyItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyItemView.swift; sourceTree = "<group>"; };
+		087B3BD627AB9BB6003F6C71 /* StringProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringProtocol.swift; sourceTree = "<group>"; };
+		087B3BD827AB9C4D003F6C71 /* CustomWeightTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomWeightTextField.swift; sourceTree = "<group>"; };
 		08877EE52735AB80000D7FF4 /* ShedtemsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShedtemsViewModel.swift; sourceTree = "<group>"; };
 		08877EE72735BBA4000D7FF4 /* ListGroup+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListGroup+Extensions.swift"; sourceTree = "<group>"; };
 		08877EE92735BD34000D7FF4 /* AddItemToList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemToList.swift; sourceTree = "<group>"; };
@@ -787,9 +791,9 @@
 				08D67E142725EEA60064F639 /* ToggleStyles.swift */,
 				08FE3660272CDC60000035A9 /* Text+Extension.swift */,
 				08B6FD32272E636E00B8A9AE /* Array+Extensions.swift */,
-				088B1538272F983400ECBC11 /* LazyNavLink.swift */,
 				088B153A273041DC00ECBC11 /* CustomCornerRadius.swift */,
 				08F99575274DD7DA00211988 /* Binding+Extension.swift */,
+				087B3BD627AB9BB6003F6C71 /* StringProtocol.swift */,
 			);
 			path = "Convenience Extensions";
 			sourceTree = "<group>";
@@ -928,7 +932,6 @@
 			isa = PBXGroup;
 			children = (
 				08FE365D272CC2A3000035A9 /* CustomViews  */,
-				080015A627277C2B00E1BE4C /* SlideableView */,
 				08C7D8FC270F680400EC3984 /* Alerts */,
 				08C7D8C0270F475A00EC3984 /* Convenience Extensions */,
 				08C7D8E7270F65E100EC3984 /* General Purpose Views */,
@@ -969,6 +972,7 @@
 		08ED0FE32719ECEA0072CB90 /* Unused  */ = {
 			isa = PBXGroup;
 			children = (
+				088B1538272F983400ECBC11 /* LazyNavLink.swift */,
 				088B155327335BDF00ECBC11 /* DevData.swift */,
 				08C7D8BB270F422800EC3984 /* PreferencesTabView.swift */,
 				08371B44271BB0280072AD94 /* ViewModel */,
@@ -1015,10 +1019,12 @@
 		08FE365D272CC2A3000035A9 /* CustomViews  */ = {
 			isa = PBXGroup;
 			children = (
+				080015A627277C2B00E1BE4C /* SlideableView */,
 				08A5FB9C2740DDB9008A5D28 /* CustomDatePicker */,
 				08ED0FD82719EAE10072CB90 /* CustomTabBar */,
 				0862EA6D2743642400330FBB /* ExpandableButton.swift */,
 				08FE365E272CC2B9000035A9 /* CustomTextFeild.swift */,
+				087B3BD827AB9C4D003F6C71 /* CustomWeightTextField.swift */,
 			);
 			path = "CustomViews ";
 			sourceTree = "<group>";
@@ -1205,6 +1211,7 @@
 				08371B3D271B72BF0072AD94 /* Color.swift in Sources */,
 				08C7D8CB270F475A00EC3984 /* Bundle+Extensions.swift in Sources */,
 				08C7D8C9270F475A00EC3984 /* Sequence+Extensions.swift in Sources */,
+				087B3BD727AB9BB8003F6C71 /* StringProtocol.swift in Sources */,
 				08B82522273CB2E300326CE9 /* GearlistContainerView.swift in Sources */,
 				08371B3C271B72BF0072AD94 /* Double.swift in Sources */,
 				08A5FBA42740DDDB008A5D28 /* MDPDayOfMonth.swift in Sources */,
@@ -1215,6 +1222,7 @@
 				0863DC3A2737054E00A9A3B2 /* EditableItemData-InList.swift in Sources */,
 				08FFCFAF274985F300E27C93 /* ModifyItemDiaryView.swift in Sources */,
 				080015AC27277C2B00E1BE4C /* PagerHelper.swift in Sources */,
+				087B3BD927AB9C4D003F6C71 /* CustomWeightTextField.swift in Sources */,
 				088B154E2732EBBC00ECBC11 /* EditableShedData.swift in Sources */,
 				088FBFA32747408A00F1BFF7 /* ModifyActivityTypeView.swift in Sources */,
 				08C7D912270F6DFC00EC3984 /* ShedCodableProxy.swift in Sources */,
