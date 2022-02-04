@@ -46,6 +46,9 @@
 		086C925227238D03009F962D /* ModifyItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086C925127238D03009F962D /* ModifyItemView.swift */; };
 		087B3BD727AB9BB8003F6C71 /* StringProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087B3BD627AB9BB6003F6C71 /* StringProtocol.swift */; };
 		087B3BD927AB9C4D003F6C71 /* CustomWeightTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087B3BD827AB9C4D003F6C71 /* CustomWeightTextField.swift */; };
+		0883B95527AC541F006FDAA9 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0883B95427AC541F006FDAA9 /* SwiftUIView.swift */; };
+		0883B95727AC6CD8006FDAA9 /* DocumentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0883B95627AC6CD8006FDAA9 /* DocumentPicker.swift */; };
+		0883B95927ACD44F006FDAA9 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0883B95827ACD44E006FDAA9 /* AboutView.swift */; };
 		08877EE62735AB80000D7FF4 /* ShedtemsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08877EE52735AB80000D7FF4 /* ShedtemsViewModel.swift */; };
 		08877EE82735BBA4000D7FF4 /* ListGroup+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08877EE72735BBA4000D7FF4 /* ListGroup+Extensions.swift */; };
 		08877EEA2735BD34000D7FF4 /* AddItemToList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08877EE92735BD34000D7FF4 /* AddItemToList.swift */; };
@@ -218,6 +221,9 @@
 		086C925127238D03009F962D /* ModifyItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyItemView.swift; sourceTree = "<group>"; };
 		087B3BD627AB9BB6003F6C71 /* StringProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringProtocol.swift; sourceTree = "<group>"; };
 		087B3BD827AB9C4D003F6C71 /* CustomWeightTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomWeightTextField.swift; sourceTree = "<group>"; };
+		0883B95427AC541F006FDAA9 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
+		0883B95627AC6CD8006FDAA9 /* DocumentPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPicker.swift; sourceTree = "<group>"; };
+		0883B95827ACD44E006FDAA9 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		08877EE52735AB80000D7FF4 /* ShedtemsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShedtemsViewModel.swift; sourceTree = "<group>"; };
 		08877EE72735BBA4000D7FF4 /* ListGroup+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListGroup+Extensions.swift"; sourceTree = "<group>"; };
 		08877EE92735BD34000D7FF4 /* AddItemToList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemToList.swift; sourceTree = "<group>"; };
@@ -407,6 +413,9 @@
 			children = (
 				08FFCFC52749D4D700E27C93 /* SettingsView.swift */,
 				081BFDC6279F2B2200EF0190 /* GlobalPrefs.swift */,
+				0883B95427AC541F006FDAA9 /* SwiftUIView.swift */,
+				0883B95627AC6CD8006FDAA9 /* DocumentPicker.swift */,
+				0883B95827ACD44E006FDAA9 /* AboutView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1186,6 +1195,7 @@
 				080015AF272787E700E1BE4C /* RegretsView.swift in Sources */,
 				08877EF727363818000D7FF4 /* EditableContainerData.swift in Sources */,
 				08D67E0C27250F5A0064F639 /* UnlockManager.swift in Sources */,
+				0883B95927ACD44F006FDAA9 /* AboutView.swift in Sources */,
 				08877EF327363779000D7FF4 /* AddContainerView.swift in Sources */,
 				08A5FB9B2740DD62008A5D28 /* CustomDatePicker.swift in Sources */,
 				08C7D900270F680400EC3984 /* ConfirmationAlerts.swift in Sources */,
@@ -1212,6 +1222,7 @@
 				08C7D8CB270F475A00EC3984 /* Bundle+Extensions.swift in Sources */,
 				08C7D8C9270F475A00EC3984 /* Sequence+Extensions.swift in Sources */,
 				087B3BD727AB9BB8003F6C71 /* StringProtocol.swift in Sources */,
+				0883B95527AC541F006FDAA9 /* SwiftUIView.swift in Sources */,
 				08B82522273CB2E300326CE9 /* GearlistContainerView.swift in Sources */,
 				08371B3C271B72BF0072AD94 /* Double.swift in Sources */,
 				08A5FBA42740DDDB008A5D28 /* MDPDayOfMonth.swift in Sources */,
@@ -1257,6 +1268,7 @@
 				08C7D8B8270F41CC00EC3984 /* GearShedView.swift in Sources */,
 				08ED0FDF2719EAE10072CB90 /* CustomTabBarView.swift in Sources */,
 				08371B63271DFEE60072AD94 /* FavsView.swift in Sources */,
+				0883B95727AC6CD8006FDAA9 /* DocumentPicker.swift in Sources */,
 				08A5FBAA2740DDDB008A5D28 /* MDPMonthYearPicker.swift in Sources */,
 				08C7D909270F6D1D00EC3984 /* Item+Extensions.swift in Sources */,
 				08877EE82735BBA4000D7FF4 /* ListGroup+Extensions.swift in Sources */,
