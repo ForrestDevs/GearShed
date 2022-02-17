@@ -55,8 +55,9 @@ struct GearlistDetailView: View {
             .edgesIgnoringSafeArea(.bottom)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                viewTitle
                 backButtonToolBarItem
+                viewTitle
+                shareList
             }
         }
         .transition(.move(edge: .trailing))
@@ -79,6 +80,18 @@ struct GearlistDetailView: View {
         ToolbarItem(placement: .principal) {
             Text(gearlist.name)
                 .formatGreen()
+        }
+    }
+    
+    private var shareList: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Button {
+                withAnimation {
+                    detailManager.secondaryTarget = .showGearlistExport
+                }
+            } label: {
+                Image(systemName: "square.and.arrow.up")
+            }
         }
     }
 }

@@ -30,55 +30,35 @@ struct LaunchAnimation: View {
     var body: some View {
         ZStack {
             Color.theme.background
-            VStack {
-                GeometryReader { geo in
-                    let centerX = geo.frame(in: .local).midX
-                    let centerY = geo.frame(in: .local).midY
-                    ShedRoof()
-                        .stroke(Color.theme.green, style: StrokeStyle(lineWidth: 17, lineJoin: .round))
-                        .frame(width: 220, height: 40)
-                        .opacity(appear ? 1 : 0)
-                        .position(x: centerX, y: centerY - 80)
-                        .offset(y: moveIt ? -410 : 0)
-                    HStack {
-                        VStack (alignment: .center, spacing: -7) {
-                            Text("GE ")
-                                .font(.custom("HelveticaNeue", size: 65).bold().italic())
-                            Text("SH ")
-                                .font(.custom("HelveticaNeue", size: 65).bold().italic())
-                        }
-                        .position(x: centerX - 37, y: centerY + 35)
-                        .offset(x: moveIt ? -210 : 0)
-                        
-                        VStack (alignment: .center, spacing: -7)  {
-                            HStack (spacing: 0) {
-                                Text("i")
-                                    .opacity(0.0)
-                                Text(" AR")
-                                    .font(.custom("HelveticaNeue", size: 65).bold().italic())
-                            }
-                            Text(" ED")
-                                .font(.custom("HelveticaNeue", size: 65).bold().italic())
-                        }
-                        .position(x: centerX - 164, y: centerY + 35)
-                        .offset(x: moveIt ? 210 : 0)
-                    }
+                .ignoresSafeArea(.all, edges: .bottom)
+            
+            VStack (spacing: -10) {
+                
+                Image("roofVector")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
                     .opacity(appear ? 1 : 0)
-                }
-                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height, alignment: .center)
+                
+                Text("GEAR")
+                    .font(.custom("HelveticaNeue", size: 65).bold().italic())
+                    .offset(x: moveIt ? 0 : -300)
+                
+                Text("SHED")
+                    .font(.custom("HelveticaNeue", size: 65).bold().italic())
+                    .offset(x: moveIt ? 0 : 330)
             }
+            .frame(width: UIScreen.main.bounds.width / 1.7, height: UIScreen.main.bounds.height / 3.5, alignment: .center)
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    withAnimation(.easeIn(duration: 1)) {
+                    withAnimation(.easeOut(duration: 1.5)) {
                         self.appear = true
                     }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                        withAnimation(.easeOut(duration: 1)) {
-                            self.appear = false
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        withAnimation(.easeOut(duration: 0.5)) {
                             self.moveIt = true
                         }
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                            withAnimation(.easeOut(duration: 0.5)) {
+                            withAnimation(.easeOut(duration: 1)) {
                                 self.fadeAll = true
                             }
                         }
@@ -89,7 +69,6 @@ struct LaunchAnimation: View {
             }
         }
         .opacity(fadeAll ? 0 : 1)
-        
     }
 }
 
@@ -101,8 +80,35 @@ struct LaunchAnimation_Previews: PreviewProvider {
 }
 
 
+
+
 /*
  
+ 
+ 
+ /*VStack {
+     GeometryReader { geo in
+         let centerX = geo.frame(in: .local).midX
+         let centerY = geo.frame(in: .local).midY
+         ShedRoof()
+             .stroke(Color.theme.green, style: StrokeStyle(lineWidth: 17, lineJoin: .round))
+             .frame(width: 220, height: 40)
+             //
+             .position(x: centerX, y: centerY - 80)
+             //.offset(y: moveIt ? -410 : 0)
+     
+         Text("GEAR")
+             .font(.custom("HelveticaNeue", size: 65).bold().italic())
+             .position(x: centerX, y: centerY)
+             //
+         
+         Text("SHED")
+             .font(.custom("HelveticaNeue", size: 65).bold().italic())
+             .position(x: centerX, y: centerY + 70)
+             //.offset(x: moveIt ? 0 : 330)
+     }
+     .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height, alignment: .center)
+ }*/
  struct Example7: View {
      @State private var moveIt = false
 
@@ -138,6 +144,32 @@ struct LaunchAnimation_Previews: PreviewProvider {
 
      }
  }
+ 
+ 
+ HStack {
+     VStack (alignment: .center, spacing: -7) {
+         Text("GE ")
+             .font(.custom("HelveticaNeue", size: 65).bold().italic())
+         Text("SH ")
+             .font(.custom("HelveticaNeue", size: 65).bold().italic())
+     }
+     .position(x: centerX - 37, y: centerY + 35)
+     
+     
+     VStack (alignment: .center, spacing: -7)  {
+         HStack (spacing: 0) {
+             Text("i")
+                 .opacity(0.0)
+             Text(" AR")
+                 .font(.custom("HelveticaNeue", size: 65).bold().italic())
+         }
+         Text(" ED")
+             .font(.custom("HelveticaNeue", size: 65).bold().italic())
+     }
+     .position(x: centerX - 164, y: centerY + 35)
+     .offset(x: moveIt ? 210 : 0)
+ }
+ .opacity(appear ? 1 : 0)
 
  struct LabelView: View {
      let text: String

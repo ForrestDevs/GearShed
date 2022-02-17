@@ -95,7 +95,7 @@ struct GearShedView: View {
             .toolbar {
                 listExpandingButton
                 viewTitle
-                //loadData
+                loadData
                 shareButton
             }
             .fullScreenCover(isPresented: $viewModel.showPDFScreen) {

@@ -252,6 +252,11 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
             persistentStore.context.delete(containerBool)
         }
         
+        for diary in gearlist.diaries {
+            diary.item?.objectWillChange.send()
+            persistentStore.context.delete(diary)
+        }
+        
         for cluster in gearlist.clusters {
             persistentStore.context.delete(cluster)
         }

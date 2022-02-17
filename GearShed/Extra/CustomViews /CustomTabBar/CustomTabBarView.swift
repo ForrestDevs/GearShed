@@ -32,7 +32,7 @@ struct CustomTabBarView: View {
             Rectangle()
                 .frame(maxWidth: .infinity)
                 .frame(height: 1)
-                .foregroundColor(Color.theme.green)
+                .foregroundColor(Color.theme.headerBG)
             HStack {
                 ForEach(tabs, id: \.self) { tab in
                     tabView(tab: tab)
@@ -43,7 +43,10 @@ struct CustomTabBarView: View {
             }
             .padding(.bottom, 13)
             .padding(.top, 7)
-            .background(Color.black.ignoresSafeArea(edges: .bottom))
+            .background(
+                Color.theme.background
+                    .ignoresSafeArea(edges: .bottom)
+            )
         }
         
     }
@@ -54,7 +57,7 @@ struct CustomTabBarView: View {
             Text(tab.title)
                 .formatNoColorSmall()
         }
-        .foregroundColor(localSelection == tab ? Color.white : Color.theme.green)
+        .foregroundColor(localSelection == tab ? Color.theme.accent : Color.theme.green)
         .frame(maxWidth: .infinity)
     }
     

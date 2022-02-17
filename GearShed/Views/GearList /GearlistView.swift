@@ -40,7 +40,7 @@ struct GearlistView: View {
             .toolbar {
                 //sortByButton
                 viewTitle
-                shareList
+                //shareList
             }
         }
         .navigationViewStyle(.stack)
@@ -79,16 +79,6 @@ extension GearlistView {
                 
             } label: {
                 Image(systemName: "plus")
-            }
-        }
-    }
-    
-    private var shareList: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarTrailing) {
-            Button {
-                
-            } label: {
-                Image(systemName: "square.and.arrow.up")
             }
         }
     }

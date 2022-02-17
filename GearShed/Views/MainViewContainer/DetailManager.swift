@@ -16,8 +16,8 @@ enum DetailTarget {
          showAddActivity, showModifyActivity,
          showAddActivityType, showModifyActivityType, showAddActivityFromActivityType,
          showAddCluster, showModifyCluster, showAddItemsToCluster,
-         showAddContainer, showModifyContainer, showAddItemsToContainer,
-         showContent, showSecondaryContent, noView
+         showAddContainer, showModifyContainer, showAddItemsToContainer, showConfirmEraseView,
+         showGearlistExport, showContent, showSecondaryContent, noView
 }
 
 class DetailViewManager: ObservableObject {
@@ -105,6 +105,10 @@ struct DetailOverlay: View {
                 EditContainerView(persistentStore: persistentStore, container: detailManager.selectedContainer!)
             case .showAddItemsToContainer:
                 AddItemsToGearListView(persistentStore: persistentStore, type: .packItem, gearlist: detailManager.selectedGearlist!, pack: detailManager.selectedContainer!)
+            case .showConfirmEraseView:
+                    ConfirmEraseView(persistentStore: persistentStore, detailManager: detailManager)
+            case .showGearlistExport:
+                    detailManager.secondaryContent
             case .showContent:
                 detailManager.content
             case .showSecondaryContent:
@@ -169,6 +173,10 @@ struct DetailOverlay: View {
                 EditContainerView(persistentStore: persistentStore, container: detailManager.selectedContainer!)
             case .showAddItemsToContainer:
                 AddItemsToGearListView(persistentStore: persistentStore, type: .packItem, gearlist: detailManager.selectedGearlist!, pack: detailManager.selectedContainer!)
+            case .showConfirmEraseView:
+                ConfirmEraseView(persistentStore: persistentStore, detailManager: detailManager)
+            case .showGearlistExport:
+                detailManager.secondaryContent
             case .showContent:
                 detailManager.content
             case .showSecondaryContent:
@@ -232,7 +240,12 @@ struct DetailOverlay: View {
             case .showModifyContainer:
                 EditContainerView(persistentStore: persistentStore, container: detailManager.selectedContainer!)
             case .showAddItemsToContainer:
-                AddItemsToGearListView(persistentStore: persistentStore, type: .packItem, gearlist: detailManager.selectedGearlist!, pack: detailManager.selectedContainer!)
+                AddItemsToGearListView(persistentStore: persistentStore, type: .packItem, gearlist:
+                    detailManager.selectedGearlist!, pack: detailManager.selectedContainer!)
+            case .showConfirmEraseView:
+                ConfirmEraseView(persistentStore: persistentStore, detailManager: detailManager)
+            case .showGearlistExport:
+                detailManager.secondaryContent
             case .showContent:
                 detailManager.content
             case .showSecondaryContent:

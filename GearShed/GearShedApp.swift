@@ -14,14 +14,14 @@ struct GearShedApp: App {
     
     @AppStorage("isFirstLaunch") var isFirstLaunch: Bool = true
     @AppStorage("lastReviewRequest") var lastReviewRequest: TimeInterval?
+    @AppStorage("isDarkMode") var isDarkMode: Bool = false
+    @AppStorage("isSystemMode") var isSystemMode: Bool = false
     
     @StateObject var persistentStore: PersistentStore
     @StateObject var unlockManager: UnlockManager
     
     @Environment(\.scenePhase) private var scenePhase
     
-    @State var isActive:Bool = true
-
     init() {
         let persistentStore = PersistentStore()
         let unlockManager = UnlockManager(persistentStore: persistentStore)
@@ -37,35 +37,22 @@ struct GearShedApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ZStack {
-                ContentView()
-                    .transition(.opacity)
-                    .environment(\.managedObjectContext, persistentStore.context)
-                    .environmentObject(persistentStore)
-                    .environmentObject(unlockManager)
-                    .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification),
-                                            perform: handleResignActive)
-                    .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification),
-                                            perform: handleBecomeActive)
-                    .onChange(of: scenePhase, perform: { newScenePhase in
-                        if newScenePhase == .active && askForReview {
-                            lastReviewRequest = Date().timeIntervalSinceReferenceDate
-                            persistentStore.appLaunched()
-                        }
-                    })
-                
-                if self.isActive {
-                    LaunchAnimation()
-                        //.transition(.opacity)
-                }
-            }
-            .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-                    withAnimation(.easeIn) {
-                        self.isActive = false
+            ContentView()
+                .transition(.opacity)
+                //.preferredColorScheme(isSystemMode ? .none : isDarkMode ? .dark : .light)
+                .environment(\.managedObjectContext, persistentStore.context)
+                .environmentObject(persistentStore)
+                .environmentObject(unlockManager)
+                .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification),
+                                        perform: handleResignActive)
+                .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification),
+                                        perform: handleBecomeActive)
+                .onChange(of: scenePhase, perform: { newScenePhase in
+                    if newScenePhase == .active && askForReview {
+                        lastReviewRequest = Date().timeIntervalSinceReferenceDate
+                        persistentStore.appLaunched()
                     }
-                }
-            }
+                })
         }
     }
     

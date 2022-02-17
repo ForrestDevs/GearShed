@@ -80,9 +80,11 @@ struct AdventureRowView: View {
             Text(adventure.details)
                 .formatItemDetailsGrey()
                 .lineLimit(2)
+                .multilineTextAlignment(.leading)
             Divider()
         }
         .padding(.leading, 15)
+        .padding(.bottom, 4)
     
     }
     

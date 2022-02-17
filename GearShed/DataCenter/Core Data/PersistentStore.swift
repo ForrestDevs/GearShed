@@ -108,6 +108,23 @@ final class PersistentStore: ObservableObject {
         return (try? container.viewContext.fetch(fetchRequest)) ?? []
     }
     
+    func deleteAllEntities() {
+        let entities = container.managedObjectModel.entities
+        
+        for entity in entities {
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity.name!)
+            let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+            do {
+                try context.execute(deleteRequest)
+                print("Deleted Entitie - ", entity)
+            } catch let error as NSError {
+                print("Delete ERROR \(entity)")
+                print(error)
+            }
+        }
+        saveContext()
+    }
+    
     
     //MARK: Global User Settings
     //@Published var stateUnit: String = Prefs.shared.weightUnit

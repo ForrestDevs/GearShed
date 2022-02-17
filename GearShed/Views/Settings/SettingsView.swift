@@ -12,7 +12,14 @@ import Combine
 import UniformTypeIdentifiers
 
 struct SettingsView: View {
+    
+    
+    @AppStorage("Weight_Unit", store: .standard) var weightUnit: String = "g"
+    
+    
     @EnvironmentObject private var unlockManager: UnlockManager
+    @EnvironmentObject private var detailManager: DetailViewManager
+    
     @StateObject private var gsData: GearShedData
     @StateObject private var glData: GearlistData
     @StateObject private var backupManager: BackupManager
@@ -25,11 +32,9 @@ struct SettingsView: View {
         
     @State private var showExportSheet: Bool = false
     @State private var showImportSheet: Bool = false
-    @State private var showAboutSheet: Bool = false
-    @State private var showFeedbackSheet: Bool = false
-    @State private var showPrivacySheet: Bool = false
     
     let persistentStore: PersistentStore
+    let gsbType = UTType(exportedAs: "com.GearShed.gsb", conformingTo: .json)
     
     init(persistentStore: PersistentStore) {
         let gsData = GearShedData(persistentStore: persistentStore)
@@ -67,6 +72,29 @@ struct SettingsView: View {
                         } label: {
                             HStack {
                                 Text("g")
+                                    .foregroundColor(weightUnit == "g" ? Color.theme.accent : Color.theme.promptText)
+                                    .padding(.leading, 10)
+                                Image(systemName: "checkmark")
+                                    .foregroundColor(weightUnit == "g" ? Color.theme.accent : Color.theme.promptText)
+                                    .opacity(Prefs.shared.weightUnit == "g" ? 1 : 0)
+                                    .padding(.trailing, 5)
+                                
+                                Text("lbs + oz")
+                                    .foregroundColor(weightUnit == "lb + oz" ? Color.theme.accent : Color.theme.promptText)
+                                Image(systemName: "checkmark")
+                                    .foregroundColor(weightUnit == "lb + oz" ? Color.theme.accent : Color.theme.promptText)
+                                    .opacity(weightUnit == "lb + oz" ? 1 : 0)
+                            }
+                        }
+                    }
+                    
+                    /*HStack {
+                        Text("Weight Unit:")
+                        Button {
+                            toggleWeightUnit()
+                        } label: {
+                            HStack {
+                                Text("g")
                                     .foregroundColor(Prefs.shared.weightUnit == "g" ? Color.theme.accent : Color.theme.promptText)
                                     .padding(.leading, 10)
                                 Image(systemName: "checkmark")
@@ -81,27 +109,18 @@ struct SettingsView: View {
                                     .opacity(Prefs.shared.weightUnit == "lb + oz" ? 1 : 0)
                             }
                         }
+                    }*/
+                    
+                    NavigationLink {
+                        ColorSchemeView()
+                    } label: {
+                        Text("Color Scheme")
                     }
-                    Button {} label: {
-                        HStack {
-                            Text("Color Scheme")
-                            Spacer()
-                            Image(systemName: "chevron.right")
-                        }
-                    }
-                    Button {} label: {
-                        HStack {
-                            Text("Alternate App Icon")
-                            Spacer()
-                            Image(systemName: "chevron.right")
-                        }
-                    }
-                    Button {} label: {
-                        HStack {
-                            Text("Change Status Icon")
-                            Spacer()
-                            Image(systemName: "chevron.right")
-                        }
+                    
+                    NavigationLink {
+                        AlternateIconView()
+                    } label: {
+                        Text("Alternate App Icon")
                     }
                 } header: {
                     Text("Preferences")
@@ -110,7 +129,11 @@ struct SettingsView: View {
                 Section {
                     // To create a backup file of core data entities
                     Button {
-                        self.showExportSheet.toggle()
+                        writeBackupFile()
+                        
+
+                        //self.showExportSheet.toggle()
+                        //print(NSHomeDirectory())
                     } label: {
                         HStack {
                             Image(systemName: "arrow.up.doc.fill")
@@ -128,11 +151,13 @@ struct SettingsView: View {
                     }
                     // To erase all core data entities and reset settings
                     Button {
-                        
+                        withAnimation {
+                            detailManager.target = .showConfirmEraseView
+                        }
                     } label: {
                         HStack {
                             Image(systemName: "trash.fill")
-                            Text("Erase All Content and Settings")
+                            Text("Erase All Content")
                         }
                         .foregroundColor(.red)
                     }
@@ -174,46 +199,31 @@ struct SettingsView: View {
                 }
                 // More Information
                 Section {
-                    Button {
-                        self.showAboutSheet.toggle()
+                    NavigationLink {
+                        AboutView()
                     } label: {
                         HStack {
                             Image(systemName: "hand.wave")
                             Text("About")
-                            Spacer()
-                            Image(systemName: "chevron.right")
                         }
                     }
-                    .sheet(isPresented: $showAboutSheet) {
-                        AboutView()
-                    }
                     
-                    Button {
-                        self.showFeedbackSheet.toggle()
+                    NavigationLink {
+                        FeedbackView()
                     } label: {
                         HStack {
                             Image(systemName: "message")
                             Text("Feedback")
-                            Spacer()
-                            Image(systemName: "chevron.right")
                         }
                     }
-                    .sheet(isPresented: $showFeedbackSheet) {
-                        Text("Feeback")
-                    }
                     
-                    Button {
-                        self.showPrivacySheet.toggle()
+                    NavigationLink {
+                        PrivacyView()
                     } label: {
                         HStack {
                             Image(systemName: "lock.icloud")
                             Text("Privacy Policy & Terms of Service")
-                            Spacer()
-                            Image(systemName: "chevron.right")
                         }
-                    }
-                    .sheet(isPresented: $showPrivacySheet) {
-                        Text("Privacy")
                     }
                 } header: {
                     Text("More Information")
@@ -226,12 +236,12 @@ struct SettingsView: View {
             .toolbar {
                 viewTitle
             }
-            .fileImporter(isPresented: $showImportSheet, allowedContentTypes: [UTType.json], allowsMultipleSelection: false) { result in
+            .fileImporter(isPresented: $showImportSheet, allowedContentTypes: [gsbType, UTType.json], allowsMultipleSelection: false) { result in
                 do {
                     guard let selectedFile: URL = try result.get().first else { return }
                     if selectedFile.startAccessingSecurityScopedResource() {
-                        backupManager.insertISBFromBackUp(url: selectedFile)
-                        //backupManager.insertFromBackup(url: selectedFile)
+                        //backupManager.insertISBFromBackUp(url: selectedFile)
+                        backupManager.insertFromBackup(url: selectedFile)
                         do { selectedFile.stopAccessingSecurityScopedResource() }
                     } else {
                         // Handle denied access
@@ -247,6 +257,7 @@ struct SettingsView: View {
                     DocumentPicker(URLs: data)
                 }
             }
+            .padding(.bottom, 50)
         }
         .navigationViewStyle(.stack)
     }
@@ -289,6 +300,16 @@ struct SettingsView: View {
     
     
     private func toggleWeightUnit() {
+        if weightUnit == "g" {
+            weightUnit = "lb + oz"
+            configureItemMassMetricToImp()
+        } else {
+            weightUnit = "g"
+            configureItemMassImpToMetric()
+        }
+    }
+    
+    /*private func toggleWeightUnit() {
         if Prefs.shared.weightUnit == "g" {
             Prefs.shared.weightUnit = "lb + oz"
             configureItemMassMetricToImp()
@@ -296,7 +317,7 @@ struct SettingsView: View {
             Prefs.shared.weightUnit = "g"
             configureItemMassImpToMetric()
         }
-    }
+    }*/
     
     private func loadURL(urls: [URL]) {
         guard let url = urls.first else { return }
@@ -315,9 +336,13 @@ struct SettingsView: View {
         //self.confirmDataHasBeenAdded = true
     }
     
+    private func writeBackupFile() {
+        backupManager.backupToiCloudDrive(items: gsData.items, itemImages: gsData.itemImages, itemDiaries: gsData.itemDiaries, sheds: gsData.sheds, brands: gsData.brands, gearlists: glData.gearlists, piles: glData.listgroups, packs: glData.packingGroups, packingBools: glData.packingBools, activityTypes: glData.activityTypes)
+    }
+    
     private func backUpData() -> [URL] {
         var urls = [URL]()
-        urls.append(backupManager.writeAsJSON(items: gsData.items, itemImages: gsData.itemImages, itemDiaries: gsData.itemDiaries, sheds: gsData.sheds, brands: gsData.brands, gearlists: glData.activities, piles: glData.listgroups, packs: glData.packingGroups, packingBools: glData.packingBools, activityTypes: glData.activityTypes))
+        urls.append(backupManager.writeAsJSON(items: gsData.items, itemImages: gsData.itemImages, itemDiaries: gsData.itemDiaries, sheds: gsData.sheds, brands: gsData.brands, gearlists: glData.gearlists, piles: glData.listgroups, packs: glData.packingGroups, packingBools: glData.packingBools, activityTypes: glData.activityTypes))
         return urls
     }
 }

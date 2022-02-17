@@ -13,6 +13,8 @@ struct ContentView: View {
     
     @StateObject private var detailManager: DetailViewManager
     
+    @State var isActive: Bool = true
+
     init() {
         let detailManager = DetailViewManager()
         _detailManager = StateObject(wrappedValue: detailManager)
@@ -22,10 +24,21 @@ struct ContentView: View {
         ZStack {
             AppTabBarView()
                 .environmentObject(detailManager)
+                .environmentObject(IconNames())
                 .ignoresSafeArea(.all, edges: .bottom)
             DetailOverlay(type: detailManager.target, type2: detailManager.secondaryTarget, type3: detailManager.tertiaryTarget)
                 .environmentObject(detailManager)
                 .environmentObject(persistentStore)
+            if self.isActive {
+                LaunchAnimation()
+            }
+        }
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+                withAnimation(.easeIn) {
+                    self.isActive = false
+                }
+            }
         }
     }
 }

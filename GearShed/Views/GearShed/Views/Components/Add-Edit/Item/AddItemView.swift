@@ -184,6 +184,18 @@ struct AddItemView: View {
             }
         }
     }
+    private var itemDescriptionSection: some View {
+        Section {
+            VStack (alignment: .leading, spacing: 3) {
+                Text("Description")
+                    .formatEntryTitle()
+                TextField("Gear Description", text: $editableData.details)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .disableAutocorrection(true)
+                    .font(.subheadline)
+            }
+        }
+    }
     private var itemWeightSection: some View {
         Section {
             VStack (alignment: .leading, spacing: 3)  {
@@ -254,18 +266,6 @@ struct AddItemView: View {
                     }
                     
                 }
-            }
-        }
-    }
-    private var itemDescriptionSection: some View {
-        Section {
-            VStack (alignment: .leading, spacing: 3) {
-                Text("Description")
-                    .formatEntryTitle()
-                TextField("Gear Description", text: $editableData.details)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .disableAutocorrection(true)
-                    .font(.subheadline)
             }
         }
     }
@@ -343,45 +343,33 @@ extension AddItemView {
     /// Intializer for passing in a shed
     init(persistentStore: PersistentStore, shedIn: Shed) {
         self.persistentStore = persistentStore
-                
         let viewModel = GearShedData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
-        
         let initialValue = EditableItemData(persistentStore: persistentStore, shedInEdit: shedIn)
         _editableData = State(initialValue: initialValue)
-                
     }
     /// Intializer for passing in a brand
     init(persistentStore: PersistentStore, brandIn: Brand) {
         self.persistentStore = persistentStore
-        
         let viewModel = GearShedData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
-        
         let initialValue = EditableItemData(persistentStore: persistentStore, brandInEdit: brandIn)
         _editableData = State(initialValue: initialValue)
-                
     }
     /// Intializer for passing in the whishlist selected
     init(persistentStore: PersistentStore, wishlist: Bool) {
         self.persistentStore = persistentStore
-
         let viewModel = GearShedData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
-        
         let initialValue = EditableItemData(persistentStore: persistentStore, wishlistInEdit: true)
-        
         _editableData = State(initialValue: initialValue)
     }
     /// Intializer for standard add Item View
     init(persistentStore: PersistentStore, standard: Bool) {
         self.persistentStore = persistentStore
-
         let viewModel = GearShedData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
-        
         let initialValue = EditableItemData(persistentStore: persistentStore)
-        
         _editableData = State(initialValue: initialValue)
     }
 }
@@ -391,67 +379,6 @@ extension AddItemView {
 
 
 
-/*if (Prefs.shared.weightUnit == "g") {
-    TextField("Weight in g", text: $editableData.weight)
-        .textFieldStyle(RoundedBorderTextFieldStyle())
-        .disableAutocorrection(true)
-        .font(.subheadline)
-        .keyboardType(.numberPad)
-}
-if (Prefs.shared.weightUnit == "lb + oz") {
-    HStack (spacing: 10) {
-        TextField("lb", text: $editableData.lbs)
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-            .disableAutocorrection(true)
-            .font(.subheadline)
-            .keyboardType(.numberPad)
-            .onReceive(Just(editableData.lbs)) { (newValue: String) in
-                self.editableData.lbs = newValue.prefix(20).filter {"1234567890".contains($0)  }
-            }
-        
-        TextField("oz", text: $editableData.oz)
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-            .disableAutocorrection(true)
-            .font(.subheadline)
-            .keyboardType(.decimalPad)
-            .onReceive(Just(editableData.oz)) { (newValue: String) in
-                self.editableData.oz = newValue.prefix(5).filter {"1234567890.".contains($0)  }
-            }
-    }
-}*/
-
-
-
-
-/*if (persistentStore.stateUnit == "g") {
-    TextField("Weight in g", text: $editableData.weight)
-        .textFieldStyle(RoundedBorderTextFieldStyle())
-        .disableAutocorrection(true)
-        .font(.subheadline)
-        .keyboardType(.numberPad)
-}
-
-if (persistentStore.stateUnit == "lb + oz") {
-    HStack (spacing: 10) {
-        TextField("lb", text: $editableData.lbs)
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-            .disableAutocorrection(true)
-            .font(.subheadline)
-            .keyboardType(.numberPad)
-            .onReceive(Just(editableData.lbs)) { (newValue: String) in
-                self.editableData.lbs = newValue.prefix(20).filter {"1234567890".contains($0)  }
-            }
-        
-        TextField("oz", text: $editableData.oz)
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-            .disableAutocorrection(true)
-            .font(.subheadline)
-            .keyboardType(.decimalPad)
-            .onReceive(Just(editableData.oz)) { (newValue: String) in
-                self.editableData.oz = newValue.prefix(5).filter {"1234567890.".contains($0)  }
-            }
-    }
-}*/
 
     
 
