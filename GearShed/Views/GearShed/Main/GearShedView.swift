@@ -11,6 +11,7 @@ struct GearShedView: View {
     
     @EnvironmentObject var persistentStore: PersistentStore
     @StateObject private var gsData: GearShedData
+    @StateObject private var glData: GearlistData
     @StateObject private var viewModel = GearShedViewModel()
     @StateObject private var backupManager: BackupManager
     @State private var currentSelection: Int = 0
@@ -21,6 +22,9 @@ struct GearShedView: View {
         
         let data = BackupManager(persistentStore: persistentStore)
         _backupManager = StateObject(wrappedValue: data)
+        
+        let glData = GearlistData(persistentStore: persistentStore)
+        _glData = StateObject(wrappedValue: glData)
     }
     
     var body: some View {
@@ -95,12 +99,13 @@ struct GearShedView: View {
             .toolbar {
                 listExpandingButton
                 viewTitle
-                loadData
+                //loadData
                 shareButton
             }
             .fullScreenCover(isPresented: $viewModel.showPDFScreen) {
                 NavigationView {
-                    PDFExportView(persistentStore: persistentStore)
+                    GearShedPDFView()
+                        .environmentObject(gsData)
                 }
             }
         }

@@ -17,12 +17,13 @@ enum DetailTarget {
          showAddActivityType, showModifyActivityType, showAddActivityFromActivityType,
          showAddCluster, showModifyCluster, showAddItemsToCluster,
          showAddContainer, showModifyContainer, showAddItemsToContainer, showConfirmEraseView,
-         showGearlistExport, showContent, showSecondaryContent, noView
+         showGearlistExport, showGearListPDF, showContent, showSecondaryContent, showTertiaryContent, noView
 }
 
 class DetailViewManager: ObservableObject {
     @Published var content: AnyView = AnyView(EmptyView())
     @Published var secondaryContent: AnyView = AnyView(EmptyView())
+    @Published var tertiaryContent: AnyView = AnyView(EmptyView())
     
     @Published var target: DetailTarget = .noView
     @Published var secondaryTarget: DetailTarget = .noView
@@ -108,11 +109,15 @@ struct DetailOverlay: View {
             case .showConfirmEraseView:
                     ConfirmEraseView(persistentStore: persistentStore, detailManager: detailManager)
             case .showGearlistExport:
-                    detailManager.secondaryContent
+                detailManager.tertiaryContent
+            case .showGearListPDF:
+                detailManager.secondaryContent
             case .showContent:
                 detailManager.content
             case .showSecondaryContent:
                 detailManager.secondaryContent
+            case .showTertiaryContent:
+                detailManager.tertiaryContent
             case .noView:
                 EmptyView().opacity(0)
                 }
@@ -176,11 +181,15 @@ struct DetailOverlay: View {
             case .showConfirmEraseView:
                 ConfirmEraseView(persistentStore: persistentStore, detailManager: detailManager)
             case .showGearlistExport:
+                detailManager.tertiaryContent
+            case .showGearListPDF:
                 detailManager.secondaryContent
             case .showContent:
                 detailManager.content
             case .showSecondaryContent:
                 detailManager.secondaryContent
+            case .showTertiaryContent:
+                detailManager.tertiaryContent
             case .noView:
                 EmptyView().opacity(0)
                 }
@@ -245,11 +254,15 @@ struct DetailOverlay: View {
             case .showConfirmEraseView:
                 ConfirmEraseView(persistentStore: persistentStore, detailManager: detailManager)
             case .showGearlistExport:
+                detailManager.tertiaryContent
+            case .showGearListPDF:
                 detailManager.secondaryContent
             case .showContent:
                 detailManager.content
             case .showSecondaryContent:
                 detailManager.secondaryContent
+            case .showTertiaryContent:
+                detailManager.tertiaryContent
             case .noView:
                 EmptyView().opacity(0)
                 }

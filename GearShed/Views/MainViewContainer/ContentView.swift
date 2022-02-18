@@ -24,7 +24,7 @@ struct ContentView: View {
         ZStack {
             AppTabBarView()
                 .environmentObject(detailManager)
-                .environmentObject(IconNames())
+                //.environmentObject(IconNames())
                 .ignoresSafeArea(.all, edges: .bottom)
             DetailOverlay(type: detailManager.target, type2: detailManager.secondaryTarget, type3: detailManager.tertiaryTarget)
                 .environmentObject(detailManager)

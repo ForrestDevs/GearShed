@@ -106,7 +106,7 @@ final class BackupManager: ObservableObject {
         let documenDir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let url = documenDir
             .appendingPathComponent("GearShed Backup - \(Date().monthDayYearDateText())")
-            .appendingPathExtension("save")
+            .appendingPathExtension("gsb")
         
         var data = Data()
               

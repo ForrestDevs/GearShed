@@ -10,12 +10,12 @@ import SwiftUI
 struct GearlistDetailView: View {
     @EnvironmentObject private var detailManager: DetailViewManager
     @ObservedObject private var gearlist: Gearlist
-    @StateObject private var viewModel: GearlistData
+    @StateObject private var glData: GearlistData
     @State private var currentScreen: Int = 0
             
     init(persistentStore: PersistentStore, gearlist: Gearlist) {
-        let viewModel = GearlistData(persistentStore: persistentStore)
-        _viewModel = StateObject(wrappedValue: viewModel)
+        let glData = GearlistData(persistentStore: persistentStore)
+        _glData = StateObject(wrappedValue: glData)
         self.gearlist = gearlist
     }
     
@@ -38,17 +38,17 @@ struct GearlistDetailView: View {
                 }
             } content: {
                 GearlistItemListView(gearlist: gearlist)
-                    .environmentObject(viewModel)
+                    .environmentObject(glData)
                     .pageView()
                 GearlistClusterView(gearlist: gearlist)
-                    .environmentObject(viewModel)
+                    .environmentObject(glData)
                     .pageView()
                 GearlistContainerView(gearlist: gearlist)
-                    .environmentObject(viewModel)
+                    .environmentObject(glData)
                     .pageView()
                 if gearlist.isAdventure {
                     GearlistDiaryView(gearlist: gearlist)
-                        .environmentObject(viewModel)
+                        .environmentObject(glData)
                         .pageView()
                 }
             }
@@ -86,8 +86,12 @@ struct GearlistDetailView: View {
     private var shareList: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
+                detailManager.secondaryContent = AnyView (
+                    GearListPDFView(selectedGearlist: gearlist)
+                        .environmentObject(glData)
+                )
                 withAnimation {
-                    detailManager.secondaryTarget = .showGearlistExport
+                    detailManager.secondaryTarget = .showSecondaryContent
                 }
             } label: {
                 Image(systemName: "square.and.arrow.up")

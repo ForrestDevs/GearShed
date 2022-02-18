@@ -59,40 +59,36 @@
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIcons</key>
 	<dict>
-		<key>CFBundleAlternateIcons</key>
-		<dict>
-			<key>Blue</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>Blue</string>
-				</array>
-			</dict>
-			<key>Dark</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>Dark</string>
-				</array>
-			</dict>
-			<key>DarkLight</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>DarkLight</string>
-				</array>
-			</dict>
-		</dict>
 		<key>CFBundlePrimaryIcon</key>
 		<dict>
-			<key>CFBundleIconFiles</key>
-			<array>
-				<string></string>
-			</array>
 			<key>CFBundleIconName</key>
-			<string></string>
+			<string>AppIcon</string>
 			<key>UIPrerenderedIcon</key>
-			<false/>
+			<true/>
+		</dict>
+		<key>CFBundleAlternateIcons</key>
+		<dict>
+			<key>BLUEicon</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>BLUEicon</string>
+				</array>
+			</dict>
+			<key>DARKicon</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>DARKicon</string>
+				</array>
+			</dict>
+			<key>RGBicon</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>RGBicon</string>
+				</array>
+			</dict>
 		</dict>
 		<key>UINewsstandIcon</key>
 		<dict>

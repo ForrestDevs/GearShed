@@ -127,13 +127,18 @@ struct SettingsView: View {
                 }
                 // Database Management
                 Section {
-                    // To create a backup file of core data entities
+                    // To create a backup file of core data entities to iCloud Drive
                     Button {
                         writeBackupFile()
-                        
-
-                        //self.showExportSheet.toggle()
-                        //print(NSHomeDirectory())
+                    } label: {
+                        HStack {
+                            Image(systemName: "externaldrive.badge.icloud")
+                            Text("Create iCloud Drive Backup")
+                        }
+                    }
+                    // To create a backup file of core data entities
+                    Button {
+                        self.showExportSheet.toggle()
                     } label: {
                         HStack {
                             Image(systemName: "arrow.up.doc.fill")
@@ -240,7 +245,6 @@ struct SettingsView: View {
                 do {
                     guard let selectedFile: URL = try result.get().first else { return }
                     if selectedFile.startAccessingSecurityScopedResource() {
-                        //backupManager.insertISBFromBackUp(url: selectedFile)
                         backupManager.insertFromBackup(url: selectedFile)
                         do { selectedFile.stopAccessingSecurityScopedResource() }
                     } else {
