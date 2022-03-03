@@ -724,7 +724,6 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     }
     
     //MARK: Counter Totals
-    
     func gearlistContainerTotalItems(gearlist: Gearlist) -> Int {
         var counter: Int = 0
         for container in gearlist.containers {
@@ -748,6 +747,15 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     func gearlistContainerBoolTotals(gearlist: Gearlist) -> Int {
         let counter = gearListTrueContainerBools(gearlist: gearlist).count
         return counter
+    }
+    
+    func proUser() -> Bool {
+        let canCreate = (self.persistentStore.fullVersionUnlocked) || (self.persistentStore.count(for: Item.fetchRequest()) < 30 && self.persistentStore.count(for: Gearlist.fetchRequest()) < 1)
+        if canCreate == true {
+            return true
+        } else {
+            return false
+        }
     }
     
 }

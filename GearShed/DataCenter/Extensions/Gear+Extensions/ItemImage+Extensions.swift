@@ -23,5 +23,4 @@ extension ItemImage {
         get { imgURL_ ?? "" }
         set { imgURL_ = newValue } 
     }
-    
 }

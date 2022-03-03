@@ -10,17 +10,11 @@ import SwiftUI
 
 struct AddBrandView: View {
     @EnvironmentObject private var detailManager: DetailViewManager
-    @Environment(\.presentationMode) var presentationMode
-    
     @EnvironmentObject var persistentStore: PersistentStore
-
     @StateObject private var viewModel: GearShedData
-    
     @State private var editableData: EditableBrandData
-    
     private var isAddFromItem: Bool = false
     private var brandOut: ((Brand) -> ())?
-    
     var body: some View {
         NavigationView {
             viewContent
@@ -36,7 +30,6 @@ struct AddBrandView: View {
 }
 
 extension AddBrandView {
-    
     // MARK: View Content
     private var viewContent: some View {
         ZStack {
@@ -57,10 +50,8 @@ extension AddBrandView {
                 }
                 .padding()
             }
-            
         }
     }
-    
     // MARK: Toolbar Content
     private var cancelToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
@@ -79,14 +70,12 @@ extension AddBrandView {
             }
         }
     }
-    
     private var viewTitle: some ToolbarContent {
         ToolbarItem(placement: .principal) {
             Text("Add Brand")
                 .formatGreen()
         }
     }
-    
     private var saveToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
@@ -108,9 +97,7 @@ extension AddBrandView {
         }
     }
 }
-
 extension AddBrandView {
-    
     /// Initializer for loading standard Add Brand
     init(persistentStore: PersistentStore) {
         let viewModel = GearShedData(persistentStore: persistentStore)
@@ -119,8 +106,7 @@ extension AddBrandView {
         let initialData = EditableBrandData(persistentStore: persistentStore)
         _editableData = State(initialValue: initialData)
     }
-    
-    /// Initializer for loading Add Brand from Add Item. 
+    /// Initializer for loading Add Brand from Add Item.
     init(persistentStore: PersistentStore, brandOut: @escaping ( (Brand) -> () ) ) {
         let viewModel = GearShedData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -131,7 +117,6 @@ extension AddBrandView {
         self.brandOut = brandOut
         self.isAddFromItem = true
     }
-    
 }
 
 

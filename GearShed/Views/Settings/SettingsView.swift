@@ -32,6 +32,7 @@ struct SettingsView: View {
         
     @State private var showExportSheet: Bool = false
     @State private var showImportSheet: Bool = false
+    @State private var showUpgradeSheet: Bool = false
     
     let persistentStore: PersistentStore
     let gsbType = UTType(exportedAs: "com.GearShed.gsb", conformingTo: .json)
@@ -181,13 +182,15 @@ struct SettingsView: View {
                         }
                     }
                     Button {
-                        
+                        self.showUpgradeSheet.toggle()
                     } label: {
                         HStack {
                             Image(systemName: "lock.open")
                             Text("Unlock Pro")
                         }
-                        
+                    }
+                    .sheet(isPresented: $showUpgradeSheet) {
+                        UnlockView()
                     }
                     Button {
                         

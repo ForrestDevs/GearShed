@@ -96,7 +96,7 @@ struct GearListPDFView: View {
     func weightCount(array: [Item]) -> String {
         var value: String = ""
         if Prefs.shared.weightUnit == "g" {
-            value = glData.totalGrams(array: array)
+            value = "\(glData.totalGrams(array: array)) g"
         } else {
             let lbOz = glData.totalLbsOz(array: array)
             let lb = lbOz.lbs
@@ -165,7 +165,7 @@ struct GearListPDFView: View {
         return value
     }
     func sectionHeaderTitleForGL(name: String, array: [Item]) -> PDFAttributedText {
-        let attributedTitle = NSMutableAttributedString(string: " \(name) \(weightCount(array: array))", attributes: [
+        let attributedTitle = NSMutableAttributedString(string: " \(name), \(weightCount(array: array))", attributes: [
             .font: UIFont(name: "HelveticaNeueBold", size: 11)!
         ])
         let title = PDFAttributedText(text: attributedTitle)
@@ -261,10 +261,10 @@ struct GearListPDFView: View {
         document.add(.contentLeft, attributedTextObject: titleLineTwo())
         document.add(space: 15)
         // Statbar
-        let statTable = PDFTable(rows: 2, columns: 2)
+        let statTable = PDFTable(rows: 2, columns: 4)
         statTable.content = [
-            [stat00(), stat01()],
-            [stat10(), stat11()]
+            [stat00(), stat01(), "", ""],
+            [stat10(), stat11(), "", ""]
         ]
         statTable.rows.allCellsStyle = PDFTableCellStyle.none
         let firstRow = statTable[rows: 0..<1]
@@ -358,7 +358,10 @@ struct GearListPDFView: View {
             }
             
         case .diary:
-            EmptyView()
+            for i in 1..<20 {
+                document.add(text: String(i))
+            }
+            //EmptyView()
         }
         
         // MARK: Generate and return PDF Data

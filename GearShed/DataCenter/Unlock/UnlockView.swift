@@ -1,8 +1,8 @@
 //
 //  UnlockView.swift
-//  UltimatePortfolio
+//  GearShed
 //
-//  Created by Philipp on 04.07.21.
+//  Created by Luke Forrest Gannon
 //
 
 import StoreKit

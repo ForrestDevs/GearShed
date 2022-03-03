@@ -4,7 +4,7 @@
 //
 //  Created by Luke Forrest Gannon on 2022-02-18.
 //
-
+/*
 import SwiftUI
 
 struct GearListExportSheet: View {
@@ -22,5 +22,4 @@ struct GearListExportSheet: View {
         .transition(.move(edge: .bottom))
     }
 }
-
-
+*/

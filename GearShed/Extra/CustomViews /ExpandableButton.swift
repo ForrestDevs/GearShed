@@ -35,7 +35,7 @@ struct ExpandableButton: View {
                             menuButton(type: .item, buttonText: "Gear")
                         }
                         if showMenuItem2 {
-                            menuButton(type: .shed, buttonText: "Shed")
+                            menuButton(type: .shed, buttonText: "Shelf")
                         }
                         
                         /*if type == .shed {

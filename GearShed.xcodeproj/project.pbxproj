@@ -796,11 +796,11 @@
 		08C7D89E270F3D1800EC3984 /* GearShed */ = {
 			isa = PBXGroup;
 			children = (
-				088AA44127C02DD400A32444 /* Resources */,
 				08C7D89F270F3D1800EC3984 /* GearShedApp.swift */,
 				08C9C4EC272DFFC2007DBCF9 /* Views */,
 				08C7D8BF270F434400EC3984 /* DataCenter */,
 				08D67E1727260B920064F639 /* Extra */,
+				088AA44127C02DD400A32444 /* Resources */,
 				08D67E1827260BAC0064F639 /* Config */,
 			);
 			path = GearShed;
@@ -847,6 +847,7 @@
 				08A5FB90274054DF008A5D28 /* ImageHelper.swift */,
 				08371B4F271BC5010072AD94 /* GearShedData.swift */,
 				08371B49271BB2F30072AD94 /* GearlistData.swift */,
+				08D67E0727250F5A0064F639 /* Unlock */,
 				08ED269A27A11507009890DD /* Backups */,
 				08B6FD2D272E1BF900B8A9AE /* PDF */,
 				08B6FD34272E63A700B8A9AE /* DataModels */,
@@ -964,7 +965,6 @@
 				084EDA12272BAE2B00475891 /* ContentView.swift */,
 				08ED0FDD2719EAE10072CB90 /* AppTabBarView.swift */,
 				0869ECE027A3C1B400D2ADC5 /* LaunchAnimation.swift */,
-				0831E84627ADBAF200BCDEA5 /* SwiftUIView1.swift */,
 			);
 			path = MainViewContainer;
 			sourceTree = "<group>";
@@ -1026,7 +1026,6 @@
 				08C7D8FC270F680400EC3984 /* Alerts */,
 				08C7D8C0270F475A00EC3984 /* Convenience Extensions */,
 				08C7D8E7270F65E100EC3984 /* General Purpose Views */,
-				08D67E0727250F5A0064F639 /* Unlock */,
 				08ED0FE32719ECEA0072CB90 /* Unused  */,
 			);
 			path = Extra;
@@ -1064,6 +1063,8 @@
 		08ED0FE32719ECEA0072CB90 /* Unused  */ = {
 			isa = PBXGroup;
 			children = (
+				08FFCFBF2749C02E00E27C93 /* Image */,
+				0831E84627ADBAF200BCDEA5 /* SwiftUIView1.swift */,
 				088AA43327C001FA00A32444 /* GearListExportSheet.swift */,
 				088FBFC02748A7BD00F1BFF7 /* PDFCreatorExportView.swift */,
 				08B6FD37272E643800B8A9AE /* PDFCreator.swift */,
@@ -1140,7 +1141,6 @@
 				08371B71271E5B6D0072AD94 /* ItemDetailView.swift */,
 				08FFCFBC2749BFCC00E27C93 /* ItemDiaryList.swift */,
 				08FFCFB02749860600E27C93 /* ItemDiaryDetailView.swift */,
-				08FFCFBF2749C02E00E27C93 /* Image */,
 			);
 			path = ItemDetail;
 			sourceTree = "<group>";

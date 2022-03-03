@@ -12,6 +12,7 @@ import SwiftUI
 @main
 struct GearShedApp: App {
     
+    @Environment(\.scenePhase) private var scenePhase
     @AppStorage("isFirstLaunch") var isFirstLaunch: Bool = true
     @AppStorage("lastReviewRequest") var lastReviewRequest: TimeInterval?
     @AppStorage("isDarkMode") var isDarkMode: Bool = false
@@ -19,40 +20,21 @@ struct GearShedApp: App {
     
     @StateObject var persistentStore: PersistentStore
     @StateObject var unlockManager: UnlockManager
-    
-    @Environment(\.scenePhase) private var scenePhase
+    @StateObject var detailManager: DetailViewManager
     
     init() {
         let persistentStore = PersistentStore()
-        let unlockManager = UnlockManager(persistentStore: persistentStore)
-        
         _persistentStore = StateObject(wrappedValue: persistentStore)
+        
+        let unlockManager = UnlockManager(persistentStore: persistentStore)
         _unlockManager = StateObject(wrappedValue: unlockManager)
+        
+        let detailManager = DetailViewManager()
+        _detailManager = StateObject(wrappedValue: detailManager)
         
         if isFirstLaunch == true {
             // actions to do on first launch
             isFirstLaunch = false
-        }
-    }
-    
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-                .transition(.opacity)
-                //.preferredColorScheme(isSystemMode ? .none : isDarkMode ? .dark : .light)
-                .environment(\.managedObjectContext, persistentStore.context)
-                .environmentObject(persistentStore)
-                .environmentObject(unlockManager)
-                .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification),
-                                        perform: handleResignActive)
-                .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification),
-                                        perform: handleBecomeActive)
-                .onChange(of: scenePhase, perform: { newScenePhase in
-                    if newScenePhase == .active && askForReview {
-                        lastReviewRequest = Date().timeIntervalSinceReferenceDate
-                        persistentStore.appLaunched()
-                    }
-                })
         }
     }
     
@@ -66,14 +48,30 @@ struct GearShedApp: App {
         }
         return true
     }
-    
     func handleResignActive(_ note: Notification) {
         // when going into background, save Core Data
         persistentStore.saveContext()
     }
-    
     func handleBecomeActive(_ note: Notification) {
         // when app reopens do this...
     }
     
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+                .transition(.opacity)
+                .environment(\.managedObjectContext, persistentStore.context)
+                .environmentObject(persistentStore)
+                .environmentObject(unlockManager)
+                .environmentObject(detailManager)
+                .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification), perform: handleResignActive)
+                .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification), perform: handleBecomeActive)
+                .onChange(of: scenePhase, perform: { newScenePhase in
+                    if newScenePhase == .active && askForReview {
+                        lastReviewRequest = Date().timeIntervalSinceReferenceDate
+                        persistentStore.appLaunched()
+                    }
+                })
+        }
+    }
 }

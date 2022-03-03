@@ -100,8 +100,6 @@ struct ItemDetailView: View {
         HStack (alignment: .top) {
             VStack (alignment: .leading, spacing: 2) {
                 HStack {
-                    
-                    
                     if (Prefs.shared.weightUnit == "g") {
                         if let weight = item.weight {
                             if Int(weight) ?? 0 > 0 {
@@ -116,23 +114,6 @@ struct ItemDetailView: View {
                                 .formatDetailsWPPBlack()
                         }
                     }
-                    
-                    /*if (persistentStore.stateUnit == "g") {
-                        if let weight = item.weight {
-                            if Int(weight) ?? 0 > 0 {
-                                Text("\(weight) g")
-                                    .formatDetailsWPPBlack()
-                            }
-                        }
-                    }
-                    
-                    if (persistentStore.stateUnit == "lb + oz") {
-                        if (Int(item.itemLbs) ?? 0 > 0 || Double(item.itemOZ) ?? 0.0 > 0.0) {
-                            Text("\(item.itemLbs) lbs \(item.itemOZ) oz")
-                                .formatDetailsWPPBlack()
-                        }
-                    }*/
-                    
                     if let price = item.price {
                         if Int(price) ?? 0 > 0 {
                             Text("$ \(price)")
@@ -140,7 +121,6 @@ struct ItemDetailView: View {
                         }
                     }
                 }
-                
                 HStack {
                     if let date = item.datePurchased {
                         Text("Purchased:")
@@ -153,35 +133,8 @@ struct ItemDetailView: View {
                         .formatDetailDescriptionBlack()
             }
             Spacer()
-            ItemImageView(item: item)
-                .contextMenu {
-                    
-                    addEditButton
-                    
-                    if item.image != nil {
-                        deleteImageButton
-                    }
-                }
-                .environmentObject(gsData)
-                
         }
         .padding(.trailing)
-    }
-    // MARK: Item Image Context Menus
-    private var addEditButton: some View {
-        AddImageButton(item: item)
-            .environmentObject(gsData)
-    }
-    
-    private var deleteImageButton: some View {
-        Button {
-            gsData.deleteItemImg(item: item)
-        } label: {
-            HStack {
-                Text("Delete Image")
-                Image(systemName: "trash")
-            }
-        }
     }
     
     // MARK: Extras
@@ -196,24 +149,71 @@ struct ItemDetailView: View {
             }
         }
     }
-    
     private var viewTitle: some ToolbarContent {
         ToolbarItem (placement: .principal) {
             Text(item.shedName)
                 .formatGreen()
         }
     }
-    
-    private var editButton: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarTrailing) {
-            Button {
-                detailManager.selectedItem = item
-                withAnimation {
-                    detailManager.secondaryTarget = .showModifyItem
-                }
-            } label: {
-                Image(systemName: "slider.horizontal.3")
-            }
-        }
-    }
 }
+
+
+/*
+ ItemImageView(item: item)
+     .contextMenu {
+         addEditButton
+         
+         if item.image != nil {
+             deleteImageButton
+         }
+     }
+     .environmentObject(gsData)
+ 
+ 
+ // MARK: Item Image Context Menus
+ private var addEditButton: some View {
+     AddImageButton(item: item)
+         .environmentObject(gsData)
+ }
+ 
+ private var deleteImageButton: some View {
+     Button {
+         gsData.deleteItemImg(item: item)
+     } label: {
+         HStack {
+             Text("Delete Image")
+             Image(systemName: "trash")
+         }
+     }
+ }
+ 
+ 
+ private var editButton: some ToolbarContent {
+     ToolbarItem(placement: .navigationBarTrailing) {
+         Button {
+             detailManager.selectedItem = item
+             withAnimation {
+                 detailManager.secondaryTarget = .showModifyItem
+             }
+         } label: {
+             Image(systemName: "slider.horizontal.3")
+         }
+     }
+ }
+ 
+ /*if (persistentStore.stateUnit == "g") {
+     if let weight = item.weight {
+         if Int(weight) ?? 0 > 0 {
+             Text("\(weight) g")
+                 .formatDetailsWPPBlack()
+         }
+     }
+ }
+ 
+ if (persistentStore.stateUnit == "lb + oz") {
+     if (Int(item.itemLbs) ?? 0 > 0 || Double(item.itemOZ) ?? 0.0 > 0.0) {
+         Text("\(item.itemLbs) lbs \(item.itemOZ) oz")
+             .formatDetailsWPPBlack()
+     }
+ }*/
+ */

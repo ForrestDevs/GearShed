@@ -9,14 +9,10 @@ import SwiftUI
 
 struct ItemRowView: View {
     @Environment(\.presentationMode) var presentationMode
-    
     @EnvironmentObject private var detailManager: DetailViewManager
     @EnvironmentObject private var persistentStore: PersistentStore
     @EnvironmentObject private var vm: GearShedViewModel
-    
 	@ObservedObject var item: Item
-
-    
 	var body: some View {
         Button {
             detailManager.selectedItem = item
@@ -33,9 +29,11 @@ struct ItemRowView: View {
             editContextButton
             deleteContextButton
         }
-        //.alert(item: $confirmDeleteItemAlert) { item in item.alert() }
     }
-    
+}
+
+extension ItemRowView {
+    //MARK: View Components
     private var statusIcon: some View {
         VStack {
             if item.isFavourite {
@@ -61,7 +59,6 @@ struct ItemRowView: View {
             }
         }
     }
-    
     private var itemBody: some View {
         VStack (alignment: .leading, spacing: 2) {
             HStack {
@@ -77,10 +74,8 @@ struct ItemRowView: View {
                     .formatItemNameBlack()
             }
             .lineLimit(1)
-            
             VStack (alignment: .leading, spacing: 2) {
                 HStack {
-                    
                     if (Prefs.shared.weightUnit == "g") {
                         if (Int(item.weight) ?? 0 > 0) {
                             Text("\(item.weight) g")
@@ -93,54 +88,11 @@ struct ItemRowView: View {
                                 .formatItemWeightBlack()
                         }
                     }
-                    
-                    
-                    /*if (persistentStore.stateUnit == "g") {
-                        if (Int(item.weight) ?? 0 > 0) {
-                            Text("\(item.weight) g")
-                                .formatItemWeightBlack()
-                        }
-                    }
-                    
-                    if (persistentStore.stateUnit == "lb + oz") {
-                        if (Int(item.itemLbs) ?? 0 > 0 || Double(item.itemOZ) ?? 0.0 > 0.0) {
-                            Text("\(item.itemLbs) lbs \(item.itemOZ) oz")
-                                .formatItemWeightBlack()
-                        }
-                    }*/
-                    
-                    /*if (persistentStore.stateUnit == "g") {
-                        Text("\(item.weight) g")
-                            .formatItemWeightBlack()
-                        /*if (item.itemLbs.isEmpty && item.itemOZ.isEmpty) {
-                            
-                        } else {
-                            let weight = persistentStore.convertImpToMetric(lbs: item.itemLbs, oz: item.itemOZ)
-                            Text("\(weight) g")
-                                .formatItemWeightBlack()
-                        }*/
-                    }
-                    
-                    if (persistentStore.stateUnit == "lb + oz") {
-                        Text("\(item.itemLbs) lbs \(item.itemOZ) oz")
-                            .formatItemWeightBlack()
-                        /*if (item.weight.isEmpty) {
-                        } else {
-                            let weight = persistentStore.convertMetricToImp(value: item.weight)
-                            let lbs = weight.lbs
-                            let ozText = String(format: "%.2f", weight.oz)
-                            Text("\(lbs) lbs \(ozText) oz")
-                                .formatItemWeightBlack()
-                        }*/
-                    }*/
-                    
-                    
                     Text("|")
                         .formatItemWeightBlack()
                     Text("$ \(item.price)")
                         .formatItemWeightBlack()
                 }
-                
                 Text(item.detail)
                     .formatItemDetailsGrey()
                     .lineLimit(1)
@@ -149,7 +101,6 @@ struct ItemRowView: View {
         }
         .padding(.top, 2)
     }
-    
     // MARK: Context Menus
     private var favContextButton: some View {
         Button {

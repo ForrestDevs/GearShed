@@ -46,7 +46,6 @@ struct ShedItemsView: View {
         .sheet(isPresented: $vm.showingUnlockView) {
             UnlockView()
         }
-        
     }
     
     private var listView: some View {
@@ -63,7 +62,6 @@ struct ShedItemsView: View {
             .padding(.bottom, 150)
         }
     }
-    
     private func sectionContent(shed: Shed) -> some View {
         ForEach (shed.items) { item in
             if gsData.showAll {
@@ -72,7 +70,6 @@ struct ShedItemsView: View {
             }
         }
     }
-    
     private func sectionHeader(shed: Shed) -> some View {
         ZStack {
             Color.theme.headerBG

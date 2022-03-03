@@ -5,7 +5,7 @@
 //  Created by Luke Forrest Gannon on 18/10/21
 //  Copyright © 2021 All rights reserved.
 //
-
+/*
 import SwiftUI
 
 struct HomeView: View {
@@ -168,3 +168,4 @@ struct ContentView_Previews: PreviewProvider {
         MainView1(show: .constant(false),index: .constant(""))
     }
 }
+*/

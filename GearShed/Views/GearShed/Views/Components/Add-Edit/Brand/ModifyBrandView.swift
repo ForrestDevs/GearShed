@@ -8,13 +8,9 @@ import SwiftUI
 
 struct ModifyBrandView: View {
     @EnvironmentObject private var detailManager: DetailViewManager
-    
     @EnvironmentObject var persistentStore: PersistentStore
-    
     @StateObject private var viewModel: GearShedData
-
     @State private var confirmDeleteBrandAlert: ConfirmDeleteBrandAlert?
-    
     @State private var editableData: EditableBrandData
     
     init(persistentStore: PersistentStore, brand: Brand) {
@@ -38,7 +34,9 @@ struct ModifyBrandView: View {
         }
         .transition(.move(edge: .trailing))
     }
-    
+}
+
+extension ModifyBrandView {
     // MARK: View Content
     private var viewContent: some View {
         ZStack {
@@ -61,7 +59,6 @@ struct ModifyBrandView: View {
             }
         }
     }
-    
     // MARK: Toolbar Content
     private var cancelToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
@@ -74,14 +71,12 @@ struct ModifyBrandView: View {
             }
         }
     }
-    
     private var viewTitle: some ToolbarContent {
         ToolbarItem(placement: .principal) {
             Text("Edit Brand Name")
                 .formatGreen()
         }
     }
-    
     private var saveToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {

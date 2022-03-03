@@ -151,7 +151,7 @@ struct GearShedPDFView: View {
         return title
     }
     func sectionHeaderTitle(name: String, array: [pdfItem]) -> PDFAttributedText {
-        let attributedTitle = NSMutableAttributedString(string: " \(name) \(weightCount(pdfItems: array))", attributes: [
+        let attributedTitle = NSMutableAttributedString(string: " \(name), \(weightCount(pdfItems: array))", attributes: [
             .font: UIFont(name: "HelveticaNeueBold", size: 11)!
         ])
         let title = PDFAttributedText(text: attributedTitle)
@@ -406,6 +406,7 @@ struct GearShedPDFView: View {
         switch gsPDFType {
         case .shed:
             for shelf in shelves {
+                let items = items.filter { $0.shed == shelf }
                 let outlineStyle = PDFLineStyle(type: .full, color: Color.black, width: 1)
                 let lineStyle = PDFLineStyle(type: .full, color: Color.clear, width: 0.1)
                 let sectionGroup = PDFGroup(allowsBreaks: false, backgroundColor: Color.clear, outline: outlineStyle)
@@ -418,7 +419,7 @@ struct GearShedPDFView: View {
                 document.add(group: sectionGroup)
                 document.add(space: 10)
             
-                let items = items.filter { $0.shed == shelf }
+                
                 
                 for item in items {
                     let itemGroup = PDFGroup(allowsBreaks: false)

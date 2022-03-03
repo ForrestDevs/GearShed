@@ -9,14 +9,10 @@ import SwiftUI
 
 struct AddShedView: View {
     @EnvironmentObject private var detailManager: DetailViewManager
-    
-	@State private var editableData: EditableShedData
-    
     @StateObject private var viewModel: GearShedData
-    
+	@State private var editableData: EditableShedData
     private var isAddFromItem: Bool = false
     private var shedOut: ((Shed) -> ())?
-    
 	var body: some View {
         NavigationView {
             viewContent
@@ -29,7 +25,9 @@ struct AddShedView: View {
         }
         .transition(.move(edge: .trailing))
 	}
-    
+}
+
+extension AddShedView {
     // MARK: View Content
     private var viewContent: some View {
         ZStack {
@@ -91,9 +89,7 @@ struct AddShedView: View {
             .disabled(!editableData.canShedBeSaved)
         }
     }
-    
 }
-
 extension AddShedView {
     /// Initializer for loading standard Add Shed.
     init(persistentStore: PersistentStore) {
@@ -104,7 +100,6 @@ extension AddShedView {
         let initialData = EditableShedData(persistentStore: persistentStore)
         _editableData = State(initialValue: initialData)
     }
-    
     /// Initializer for loading Add Shed from an Add Item View.
     init(persistentStore: PersistentStore, shedOut: @escaping ((Shed) -> ()) ) {
         

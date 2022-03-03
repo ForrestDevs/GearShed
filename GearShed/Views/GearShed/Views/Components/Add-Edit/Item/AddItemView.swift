@@ -9,13 +9,10 @@ import SwiftUI
 import Combine
 
 struct AddItemView: View {
-    @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject private var detailManager: DetailViewManager
     @StateObject private var viewModel: GearShedData
     @State private var editableData: EditableItemData
     @State private var date: Date? = nil
-    @State private var showOverlay = false
-    @State private var selection = ""
     let persistentStore: PersistentStore
     var body: some View {
         NavigationView {
@@ -29,6 +26,9 @@ struct AddItemView: View {
         }
         .transition(.move(edge: .trailing))
     }
+}
+
+extension AddItemView {
     // MARK: Main Content
     private var contentLayer: some View {
         ZStack {

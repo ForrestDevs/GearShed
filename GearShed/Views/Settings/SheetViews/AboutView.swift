@@ -86,7 +86,7 @@ struct AboutView: View {
                 }
                 
             }
-            .padding(.bottom, 40)
+            .padding(.bottom, 60)
         }
       
     }

@@ -9,9 +9,7 @@
 import SwiftUI
 
 struct FavsView: View {
-    
     @EnvironmentObject private var gsData: GearShedData
-
     var body: some View {
         VStack (spacing: 0) {
             StatBar(statType: .fav)
@@ -19,27 +17,9 @@ struct FavsView: View {
                 EmptyViewTextNonButton(emptyText: "favourite Items", buttonName: "favourite")
             } else {
                 listView
-                /*List {
-                    ForEach(gsData.sectionByShed(itemArray: gsData.favItems)) { section in
-                        Section {
-                            ForEach(section.items) { item in
-                                ItemRowView(item: item)
-                            }
-                        } header: {
-                            HStack {
-                                Text(section.title).textCase(.none)
-                                    .font(.custom("HelveticaNeue", size: 16.5).bold())
-                                Spacer()
-                            }
-                            
-                        }
-                    }
-                }
-                .listStyle(.plain)*/
             }
         }
     }
-    
     private var listView: some View {
         ScrollView {
             LazyVStack (spacing: 0, pinnedViews: .sectionHeaders) {
@@ -54,14 +34,12 @@ struct FavsView: View {
             .padding(.bottom, 150)
         }
     }
-    
     private func sectionContent(section: SectionShedData) -> some View {
         ForEach (section.items) { item in
             ItemRowView(item: item)
                 .padding(.leading, 15)
         }
     }
-    
     private func sectionHeader(section: SectionShedData) -> some View {
         ZStack {
             Color.theme.headerBG
@@ -75,5 +53,4 @@ struct FavsView: View {
             .padding(.horizontal, 15)
         }
     }
-    
 }

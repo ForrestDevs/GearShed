@@ -9,9 +9,7 @@ import SwiftUI
 struct ModifyShedView: View {
     @EnvironmentObject private var detailManager: DetailViewManager
     @StateObject private var viewModel: GearShedData
-    @State private var confirmDeleteShedAlert: ConfirmDeleteShedAlert?
     @State private var editableData: EditableShedData
-        
     init(persistentStore: PersistentStore, shed: Shed) {
         let viewModel = GearShedData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -19,7 +17,6 @@ struct ModifyShedView: View {
         let initialData = EditableShedData(persistentStore: persistentStore, shed: shed)
         _editableData = State(initialValue: initialData)
     }
-
     var body: some View {
         NavigationView {
             viewContent
@@ -29,11 +26,12 @@ struct ModifyShedView: View {
                 viewTitle
                 saveToolBarItem
             }
-            .alert(item: $confirmDeleteShedAlert) { shed in shed.alert() }
         }
         .transition(.move(edge: .trailing))
     }
-    
+}
+
+extension ModifyShedView {
     // MARK: View Content
     private var viewContent: some View {
         ZStack {
@@ -69,14 +67,12 @@ struct ModifyShedView: View {
             }
         }
     }
-    
     private var viewTitle: some ToolbarContent {
         ToolbarItem(placement: .principal) {
             Text("Edit Shed Name")
                 .formatGreen()
         }
     }
-    
     private var saveToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {

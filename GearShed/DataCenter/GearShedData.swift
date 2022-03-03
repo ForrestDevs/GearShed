@@ -540,8 +540,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     }
     
     func proUser() -> Bool {
-        let canCreate = self.persistentStore.fullVersionUnlocked ||
-                                self.persistentStore.count(for: Item.fetchRequest()) < 3
+        let canCreate = (self.persistentStore.fullVersionUnlocked) || (self.persistentStore.count(for: Item.fetchRequest()) < 1 && self.persistentStore.count(for: Gearlist.fetchRequest()) < 1)
         if canCreate == true {
             return true
         } else {

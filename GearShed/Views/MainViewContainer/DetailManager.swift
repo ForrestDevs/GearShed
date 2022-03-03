@@ -41,7 +41,6 @@ class DetailViewManager: ObservableObject {
     init() {}
 }
 
-
 struct DetailOverlay: View {
     @EnvironmentObject private var persistentStore: PersistentStore
     @EnvironmentObject private var detailManager: DetailViewManager

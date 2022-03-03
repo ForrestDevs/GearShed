@@ -37,6 +37,9 @@ struct ModifyItemView: View {
         }
         .transition(.move(edge: .trailing))
     }
+}
+
+extension ModifyItemView {
     // MARK: Main Content
     private var contentLayer: some View {
         ZStack {
@@ -245,7 +248,7 @@ struct ModifyItemView: View {
                             detailManager.tertiaryTarget = .showSecondaryContent
                         }
                     } label: {
-                        Text("\(date?.dateText(style: .short) ?? "Select Purchase Date")")
+                        Text("\(date?.monthDayYearDateText() ?? "Select Purchase Date")")
                             .font(.subheadline)
                             .foregroundColor(purchaseDateTitleColor())
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
@@ -253,7 +256,6 @@ struct ModifyItemView: View {
                             .onChange(of: date) { newValue in
                                 editableData.datePurchased = newValue
                             }
-                            
                     }
                     .background(Color.theme.background)
                     .clipShape(RoundedRectangle(cornerRadius: 5))
