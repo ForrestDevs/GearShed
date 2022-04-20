@@ -29,8 +29,8 @@ struct AdventureRowView: View {
             rowBody
         }
         .contextMenu {
-            bucketListContextMenu
             editContextButton
+            bucketListContextMenu
             duplicateContextButton
             deleteContextButton
         }
@@ -108,7 +108,7 @@ struct AdventureRowView: View {
             viewModel.duplicateGearlist(gearlist: adventure)
         } label: {
             HStack {
-                Text("Duplicate Gearlist")
+                Text("Duplicate Gear List")
                 Image(systemName: "doc.on.doc.fill")
             }
         }
@@ -137,9 +137,9 @@ struct AdventureRowView: View {
         } label: {
             HStack {
                 if adventure.isBucketlist {
-                    Text("Unmark Bucketlist")
+                    Text("Unmark as Bucketlist")
                 } else {
-                    Text("Mark Bucketlist")
+                    Text("Mark as Bucketlist")
                 }
                 Image("flag3")
             }

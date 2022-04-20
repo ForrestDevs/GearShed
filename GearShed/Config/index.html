@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body { 
+            padding: 0; 
+            margin: 0; 
+            background-color: rgb(0, 102, 255);
+            font-family: Helvetica;
+        }
+        #a4pagesize {
+            width: 21cm;
+            height: 29.7cm;
+            background-color: rgb(255, 255, 255);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #pageWrapper { 
+            width: 19cm;
+            height: 27.7cm; 
+            background-color: rgb(255, 255, 255); 
+        }
+        .header {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: flex-end;
+            /* background-color: rgb(255, 157, 0); */
+        }
+        .logoContainer { width: 100%; display: flex; justify-content: flex-end;}
+        .gearshedLogo { width: 100pt; }
+        .headerTitle {
+            width: 100%;
+            /* background-color: rgb(255, 0, 0); */
+        }
+        .headerLine1 {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 10pt;
+        }
+        .headerLine2 {
+            margin-top: -10px;
+            font-size: 18px;
+        }
+        .statBar { 
+            width: 100%;
+            margin-top: 10px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            /* background-color: rgb(238, 91, 91); */
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: baseline;
+            border-top: solid 3px black;
+            border-bottom: solid 3px black;
+        }
+        .statBar h3 {
+            font-size: 17px;
+            font-weight: 550;
+            margin: 0;
+        }
+        .statBar p {
+            margin: 0;
+            padding-top: 5px;
+        }
+        .itemListSection {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            /* background-color: rgb(255, 187, 0); */
+        }
+        .itemListSection p {
+            margin: 0;
+        }
+        .sectionHeader { 
+            display: flex;
+            flex-direction: row;
+            border-bottom: solid 3px black;
+            padding-top: 20px;
+            margin-bottom: 10px;
+        }
+        .sectionHeader p {
+            font-size: 17px;
+            font-weight: 550;
+        }
+        .sectionItems {
+            width: 100%;
+            /* background-color: rgb(255, 146, 4); */
+        }
+        .item {
+            margin-left: 5px;
+            margin-top: 10px;
+            word-wrap: normal;
+        }
+
+
+        .sectionItemsDot {
+            width: 100%;
+            /* background-color: rgb(255, 146, 4); */
+        }
+        .itemDot {
+            margin-left: -15px;
+            margin-top: 10px;
+            word-wrap: normal;
+        }
+
+
+        .item p {
+            margin-right: 2pt; 
+        }
+        .itemDescription { 
+            word-wrap: break-word ;
+        }
+    </style>
+</head>
+<body>
+    <div id="a4pagesize">
+        <div id="pageWrapper">
+
+        
+    
+            <div class="header">
+                <div class="headerTitle">
+                    <p class="headerLine1">Luke Gannon's Gear Shed</p>
+                    <p class="headerLine2">Shelf View | April 19, 2022</p>
+                </div>
+                <img src="./gearShedBlack.png" alt="gearshedlogo" class="gearshedLogo"/>
+            </div>
+    
+            <div class="statBar">
+                <div class="stat1">
+                    <h3 class="stat1-Title">Shelves (#)</h3>
+                    <p class="stat1-Stat">62</p>
+                </div>
+                <div class="stat2">
+                    <h3 class="stat2-Title">Gear (#)</h3>
+                    <p class="stat2-Stat">76</p>
+                </div>
+                <div class="stat3">
+                    <h3 class="stat3-Title">Weight (lb+oz)</h3>
+                    <p class="stat3-Stat">17 lb 12.67 oz</p>
+                </div>
+                <div class="stat4">
+                    <h3 class="stat4-Title">Invested ($)</h3>
+                    <p class="stat4-Stat">62</p>
+                </div>
+            </div>
+    
+
+
+            <div class="itemListSection">
+                <div class="sectionHeader">
+                    <p class="sectionHeaderTitle">Shelters: Tent</p>
+                    <p class="sectionTotalWeight">, 5 lb 6.51 oz</p>
+                </div>
+                <div class="sectionItemsDot">
+                    <ul>
+                        <li class="itemDot">#Name# | #Brand# &nbsp #Weight# | #Price# &nbsp #Description#</li>
+                        <li class="itemDot"> VE 25 | NorthFace &nbsp 3 Lbs 2.51 Oz | $265 &nbsp This is a big waterproof 
+                            bag with a longer 
+                            description that runs off the page
+                            Lorem ipsum dolor sit amet consectetur </li>
+                        <li class="itemDot">#Name# | #Brand# &nbsp #Weight# | #Price# &nbsp #Description#</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="itemListSection">
+                <div class="sectionHeader">
+                    <p class="sectionHeaderTitle">Shelters: Tent</p>
+                    <p class="sectionTotalWeight">, 5 lb 6.51 oz</p>
+                </div>
+                <div class="sectionItemsDot">
+                    <ul>
+                        <li class="itemDot">#Name# | #Brand# &nbsp #Weight# | #Price# &nbsp #Description#</li>
+                        <li class="itemDot"> VE 25 | NorthFace &nbsp 3 Lbs 2.51 Oz | $265 &nbsp This is a big waterproof 
+                            bag with a longer 
+                            description that runs off the page
+                            Lorem ipsum dolor sit amet consectetur </li>
+                        <li class="itemDot">#Name# | #Brand# &nbsp #Weight# | #Price# &nbsp #Description#</li>
+                    </ul>
+                </div>
+            </div>
+    
+        </div>
+    </div>
+    
+</body>
+</html>

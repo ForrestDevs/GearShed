@@ -32,6 +32,8 @@ class Prefs {
         }
     }*/
     
+    @Published var confirmationAlert: Bool = false
+    
     @AppStorage("pdfUserName", store: .standard) var pdfUserName: String = "Default Value"
     
     @AppStorage("Weight_Unit", store: .standard) var weightUnit: String = "g"

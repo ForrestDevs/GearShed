@@ -20,7 +20,7 @@ struct GearlistItemListView: View {
             StatBar(statType: .list, gearlist: gearlist)
             ZStack {
                 if gearlist.items.count == 0 {
-                    EmptyViewText(emptyText: "Items in this List", buttonName: "Revise List")
+                    EmptyViewText(text: "You have not added any gear to this list. To add gear press the 'Select Gear' button below.")
                 } else {
                     itemList
                 }
@@ -94,6 +94,7 @@ struct GearlistItemListView: View {
             HStack {
                 Spacer()
                 Button {
+                    detailManager.secondaryTarget = .noView
                     //detailManager.selectedGearlist = gearlist
                     withAnimation {
                         detailManager.secondaryTarget = .showAddItemsToGearlist

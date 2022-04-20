@@ -41,7 +41,7 @@ struct CustomTabBarView: View {
                     }
                 }
             }
-            .padding(.bottom, 13)
+            .padding(.bottom, 20)
             .padding(.top, 7)
             .background(
                 Color.theme.background
@@ -57,7 +57,7 @@ struct CustomTabBarView: View {
             Text(tab.title)
                 .formatNoColorSmall()
         }
-        .foregroundColor(localSelection == tab ? Color.theme.accent : Color.theme.green)
+        .foregroundColor(localSelection == tab ? Color.theme.green : Color.theme.accent)
         .frame(maxWidth: .infinity)
     }
     

@@ -5,17 +5,22 @@
   ],
   "products" : [
     {
-      "displayPrice" : "9.99",
-      "familyShareable" : true,
+      "displayPrice" : "5.49",
+      "familyShareable" : false,
       "internalID" : "46A21ED6",
       "localizations" : [
         {
-          "description" : "",
-          "displayName" : "",
+          "description" : "Gear Shed Unlimited In App Purchase",
+          "displayName" : "Gear Shed Unlimited",
           "locale" : "en_US"
+        },
+        {
+          "description" : "Gear Shed Unlimited In App Purchase",
+          "displayName" : "Gear Shed Unlimited",
+          "locale" : "en_CA"
         }
       ],
-      "productID" : "app.gearshed.GearShed.ProUnlock",
+      "productID" : "app.gearshed.GearShed.GearShed_Unlimited_V1_IAP",
       "referenceName" : "Unlock Full App",
       "type" : "NonConsumable"
     }

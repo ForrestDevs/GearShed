@@ -186,6 +186,8 @@ final class BackupManager: ObservableObject {
         
         let driveURL = FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents")
         
+        guard driveURL != nil else { return } 
+        
         let backupURL = driveURL!
             .appendingPathComponent("GearShed Backup - \(Date().monthDayYearDateText())")
             .appendingPathExtension("gsb")

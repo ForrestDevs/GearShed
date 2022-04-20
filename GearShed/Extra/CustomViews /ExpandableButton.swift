@@ -152,7 +152,7 @@ struct ExpandableButton: View {
         Button {
             switch type {
             case .item:
-                if gsData.proUser() {
+                if gsData.verifyUnlimitedGear() {
                     detailManager.target = .noView
                     withAnimation {
                         detailManager.target = .showAddItem
@@ -162,11 +162,13 @@ struct ExpandableButton: View {
                     vm.showingUnlockView.toggle()
                 }
             case .shed:
+                detailManager.tertiaryTarget = .noView
                 withAnimation {
                     detailManager.tertiaryTarget = .showAddShed
                 }
                 showMenu()
             case .brand:
+                detailManager.tertiaryTarget = .noView
                 withAnimation {
                     detailManager.tertiaryTarget = .showAddBrand
                 }

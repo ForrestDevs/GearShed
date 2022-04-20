@@ -12,6 +12,9 @@
 		080015AA27277C2B00E1BE4C /* OffsetTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080015A727277C2B00E1BE4C /* OffsetTabView.swift */; };
 		080015AC27277C2B00E1BE4C /* PagerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080015A927277C2B00E1BE4C /* PagerHelper.swift */; };
 		080015AF272787E700E1BE4C /* RegretsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080015AE272787E700E1BE4C /* RegretsView.swift */; };
+		080B00F4280FA414007A2634 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 080B00F3280FA414007A2634 /* index.html */; };
+		080B00F6280FA426007A2634 /* gearShedTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = 080B00F5280FA426007A2634 /* gearShedTemplate.html */; };
+		080B00F8280FA796007A2634 /* gearShedBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 080B00F7280FA796007A2634 /* gearShedBlack.png */; };
 		080D1F83274B4776007D6C5A /* GearlistDiaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080D1F82274B4776007D6C5A /* GearlistDiaryView.swift */; };
 		081BFDC7279F2B2200EF0190 /* GlobalPrefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081BFDC6279F2B2200EF0190 /* GlobalPrefs.swift */; };
 		081E8A5C2739D54A0096CBE8 /* ModifyAdventureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E8A5B2739D54A0096CBE8 /* ModifyAdventureView.swift */; };
@@ -50,7 +53,6 @@
 		087B3BD927AB9C4D003F6C71 /* CustomWeightTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087B3BD827AB9C4D003F6C71 /* CustomWeightTextField.swift */; };
 		087C0D1927BC40FA009899DB /* OLDCODE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087C0D1827BC40FA009899DB /* OLDCODE.swift */; };
 		087C0D1E27BDA384009899DB /* HelveticaNeueBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 087C0D1D27BDA383009899DB /* HelveticaNeueBold.ttf */; };
-		087C0D2027BDC439009899DB /* fullbackup.json in Resources */ = {isa = PBXBuildFile; fileRef = 087C0D1F27BDC439009899DB /* fullbackup.json */; };
 		0883B95527AC541F006FDAA9 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0883B95427AC541F006FDAA9 /* SwiftUIView.swift */; };
 		0883B95727AC6CD8006FDAA9 /* DocumentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0883B95627AC6CD8006FDAA9 /* DocumentPicker.swift */; };
 		0883B95927ACD44F006FDAA9 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0883B95827ACD44E006FDAA9 /* AboutView.swift */; };
@@ -208,6 +210,9 @@
 		080015A727277C2B00E1BE4C /* OffsetTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OffsetTabView.swift; sourceTree = "<group>"; };
 		080015A927277C2B00E1BE4C /* PagerHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PagerHelper.swift; sourceTree = "<group>"; };
 		080015AE272787E700E1BE4C /* RegretsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegretsView.swift; sourceTree = "<group>"; };
+		080B00F3280FA414007A2634 /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
+		080B00F5280FA426007A2634 /* gearShedTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = gearShedTemplate.html; sourceTree = "<group>"; };
+		080B00F7280FA796007A2634 /* gearShedBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gearShedBlack.png; sourceTree = "<group>"; };
 		080D1F82274B4776007D6C5A /* GearlistDiaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GearlistDiaryView.swift; sourceTree = "<group>"; };
 		081BFDC6279F2B2200EF0190 /* GlobalPrefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalPrefs.swift; sourceTree = "<group>"; };
 		081E8A5B2739D54A0096CBE8 /* ModifyAdventureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyAdventureView.swift; sourceTree = "<group>"; };
@@ -246,7 +251,6 @@
 		087B3BD827AB9C4D003F6C71 /* CustomWeightTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomWeightTextField.swift; sourceTree = "<group>"; };
 		087C0D1827BC40FA009899DB /* OLDCODE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OLDCODE.swift; sourceTree = "<group>"; };
 		087C0D1D27BDA383009899DB /* HelveticaNeueBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = HelveticaNeueBold.ttf; sourceTree = "<group>"; };
-		087C0D1F27BDC439009899DB /* fullbackup.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = fullbackup.json; sourceTree = "<group>"; };
 		0883B95427AC541F006FDAA9 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
 		0883B95627AC6CD8006FDAA9 /* DocumentPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPicker.swift; sourceTree = "<group>"; };
 		0883B95827ACD44E006FDAA9 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
@@ -913,13 +917,7 @@
 				0853ABFF271F983000123497 /* StatBarView.swift */,
 				08D67E02272488000064F639 /* SegmentedPicker.swift */,
 				08C7D8E8270F65E100EC3984 /* EmptyViewText.swift */,
-				08C7D8EC270F65E100EC3984 /* EmptyCatelogView.swift */,
 				08C7D8E9270F65E100EC3984 /* SearchBarView.swift */,
-				08C7D8EA270F65E100EC3984 /* SLSliderControl.swift */,
-				08C7D8EB270F65E100EC3984 /* SLFormLabelText.swift */,
-				08C7D8ED270F65E100EC3984 /* SLSimpleHeaderView.swift */,
-				08C7D8EE270F65E100EC3984 /* SLCenteredButton.swift */,
-				08C7D8EF270F65E100EC3984 /* SLSectionHeaderView.swift */,
 				08C7D8F0270F65E100EC3984 /* SelectionIndicatorView.swift */,
 			);
 			path = "General Purpose Views";
@@ -1041,10 +1039,12 @@
 				08C7D8AD270F3D1D00EC3984 /* Info.plist */,
 				08C7D914270F6E1600EC3984 /* brands.json */,
 				08F99577274DF3DD00211988 /* backup.json */,
-				087C0D1F27BDC439009899DB /* fullbackup.json */,
 				08371B6D271E08A20072AD94 /* tags.json */,
 				08C7D913270F6E1600EC3984 /* sheds.json */,
 				08C7D915270F6E1600EC3984 /* items.json */,
+				080B00F7280FA796007A2634 /* gearShedBlack.png */,
+				080B00F3280FA414007A2634 /* index.html */,
+				080B00F5280FA426007A2634 /* gearShedTemplate.html */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -1063,6 +1063,12 @@
 		08ED0FE32719ECEA0072CB90 /* Unused  */ = {
 			isa = PBXGroup;
 			children = (
+				08C7D8EA270F65E100EC3984 /* SLSliderControl.swift */,
+				08C7D8EB270F65E100EC3984 /* SLFormLabelText.swift */,
+				08C7D8ED270F65E100EC3984 /* SLSimpleHeaderView.swift */,
+				08C7D8EE270F65E100EC3984 /* SLCenteredButton.swift */,
+				08C7D8EF270F65E100EC3984 /* SLSectionHeaderView.swift */,
+				08C7D8EC270F65E100EC3984 /* EmptyCatelogView.swift */,
 				08FFCFBF2749C02E00E27C93 /* Image */,
 				0831E84627ADBAF200BCDEA5 /* SwiftUIView1.swift */,
 				088AA43327C001FA00A32444 /* GearListExportSheet.swift */,
@@ -1230,12 +1236,14 @@
 				08D67E1C2726815D0064F639 /* Configuration.storekit in Resources */,
 				08C7D8A7270F3D1D00EC3984 /* Preview Assets.xcassets in Resources */,
 				08C7D917270F6E1600EC3984 /* brands.json in Resources */,
+				080B00F6280FA426007A2634 /* gearShedTemplate.html in Resources */,
 				088AA44027C029E300A32444 /* DARKicon@3x.png in Resources */,
 				08371B6E271E08A20072AD94 /* tags.json in Resources */,
 				087C0D1E27BDA384009899DB /* HelveticaNeueBold.ttf in Resources */,
 				088AA43827C0298200A32444 /* RGBicon@3x.png in Resources */,
 				084EDA11272B5C9900475891 /* HelveticaNeue.ttc in Resources */,
 				08F99578274DF3DD00211988 /* backup.json in Resources */,
+				080B00F8280FA796007A2634 /* gearShedBlack.png in Resources */,
 				088AA43627C0297200A32444 /* RGBicon@2x.png in Resources */,
 				08C7D918270F6E1600EC3984 /* items.json in Resources */,
 				08C7D8A4270F3D1D00EC3984 /* Assets.xcassets in Resources */,
@@ -1243,7 +1251,7 @@
 				088AA43E27C029DB00A32444 /* DARKicon@2x.png in Resources */,
 				088AA43A27C029AC00A32444 /* BLUEicon@2x.png in Resources */,
 				088AA43C27C029B400A32444 /* BLUEicon@3x.png in Resources */,
-				087C0D2027BDC439009899DB /* fullbackup.json in Resources */,
+				080B00F4280FA414007A2634 /* index.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -14,7 +14,7 @@ struct FavsView: View {
         VStack (spacing: 0) {
             StatBar(statType: .fav)
             if gsData.favItems.count == 0 {
-                EmptyViewTextNonButton(emptyText: "favourite Items", buttonName: "favourite")
+                EmptyViewText(text: "You have no favourite gear. To favourite a piece of gear, hold down on the gear row and press the 'Add to Favourite' button.")
             } else {
                 listView
             }

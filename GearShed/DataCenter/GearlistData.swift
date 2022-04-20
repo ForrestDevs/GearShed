@@ -749,15 +749,31 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         return counter
     }
     
-    func proUser() -> Bool {
-        let canCreate = (self.persistentStore.fullVersionUnlocked) || (self.persistentStore.count(for: Item.fetchRequest()) < 30 && self.persistentStore.count(for: Gearlist.fetchRequest()) < 1)
+    //MARK: Unlimted Upgrade Paywall Verification Methods
+    func verifyUnlimitedGear() -> Bool {
+        let canCreate = proUser() || (self.persistentStore.count(for: Item.fetchRequest()) < 30)
         if canCreate == true {
             return true
         } else {
             return false
         }
     }
-    
+    func verifyUnlimitedGearlists() -> Bool {
+        let canCreate = proUser() || (self.persistentStore.count(for: Gearlist.fetchRequest()) < 1)
+        if canCreate == true {
+            return true
+        } else {
+            return false
+        }
+    }
+    func proUser() -> Bool {
+        let canCreate = (self.persistentStore.fullVersionUnlocked)
+        if canCreate == true {
+            return true
+        } else {
+            return false
+        }
+    }
 }
 
 /// Function to tie the relationship between an Item and a Container.

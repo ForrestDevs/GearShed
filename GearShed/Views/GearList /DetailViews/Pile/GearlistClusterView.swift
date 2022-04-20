@@ -24,7 +24,7 @@ struct GearlistClusterView: View {
             StatBar(statType: .pile, gearlist: gearlist)
             ZStack {
                 if gearlist.clusters.count == 0 {
-                    EmptyViewText(emptyText: "Piles", buttonName: "Add Pile")
+                    EmptyViewText(text: "You have not added any piles to this list. To add your first pile press the 'Add Pile' button below.")
                 } else {
                     gearlistClusterList
                 }

@@ -33,16 +33,19 @@ struct ItemRowView_InGearlist: View {
     
     var body: some View {
         Button {
-            self.showDetailSheet.toggle()
+            //detailManager.selectedGearlist = adventure
+            withAnimation {
+                //detailManager.target = .showGearlistDetail
+            }
         } label: {
             itemBody
         }
         .contextMenu {
             deleteContextButton
         }
-        .sheet(isPresented: $showDetailSheet) {
-            ItemDetailView(persistentStore: persistentStore, item: item)
-        }
+//        .sheet(isPresented: $showDetailSheet) {
+//            ItemDetailView(persistentStore: persistentStore, item: item)
+//        }
         
     }
     

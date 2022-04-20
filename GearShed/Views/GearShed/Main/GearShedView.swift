@@ -30,7 +30,7 @@ struct GearShedView: View {
         NavigationView {
             PagerTabView(tint: Color.theme.accent, selection: $currentSelection) {
                 
-                Text("Shed")
+                Text("Shelf")
                     .formatPageHeaderTitle()
                     .pageLabel()
                 

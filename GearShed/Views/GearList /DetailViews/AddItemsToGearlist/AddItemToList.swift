@@ -118,171 +118,110 @@ extension AddItemsToGearListView {
             LazyVStack (alignment: .leading, spacing: 0, pinnedViews: .sectionHeaders) {
                 switch type {
                 case .gearlistItem:
-                    ForEach(itemVM.sectionByShed(itemArray: itemVM.items)) { section in
-                        Section {
-                            ForEach(section.items) { item in
-                                SelectableItemRowView (
-                                    type: .gearlistItem,
-                                    gearlist: gearlist,
-                                    item: item) {
-                                        handleItemSelected(item)
-                                    } respondToTapOffSelector: {
-                                        handleItemUnSelected(item)
+                    if itemVM.items.count == 0 {
+                        EmptyViewText(text: "You have no gear to add to this list. Get started by going back to the 'Gear Shed' tab to add your gear.")
+                    } else {
+                        ForEach(itemVM.sectionByShed(itemArray: itemVM.items)) { section in
+                            Section {
+                                ForEach(section.items) { item in
+                                    SelectableItemRowView (
+                                        type: .gearlistItem,
+                                        gearlist: gearlist,
+                                        item: item) {
+                                            handleItemSelected(item)
+                                        } respondToTapOffSelector: {
+                                            handleItemUnSelected(item)
+                                        }
+                                        .padding(.horizontal, 15)
+                                        .padding(.bottom, 5)
+                                }
+                            } header: {
+                                ZStack {
+                                    Color.theme.headerBG
+                                        .frame(maxWidth: .infinity)
+                                        .frame(height: 25)
+                                    HStack {
+                                        Text(section.title)
+                                            .font(.headline)
+                                        Spacer()
                                     }
                                     .padding(.horizontal, 15)
-                                    .padding(.bottom, 5)
-                            }
-                        } header: {
-                            ZStack {
-                                Color.theme.headerBG
-                                    .frame(maxWidth: .infinity)
-                                    .frame(height: 25)
-                                HStack {
-                                    Text(section.title)
-                                        .font(.headline)
-                                    Spacer()
                                 }
-                                .padding(.horizontal, 15)
                             }
                         }
                     }
                 case .pileItem:
-                    ForEach(itemVM.sectionByShed(itemArray: availablePileItems())) { section in
-                        Section {
-                            ForEach(section.items) { item in
-                                SelectableItemRowView (
-                                    type: .pileItem,
-                                    pile: pile,
-                                    item: item) {
-                                        handleItemSelected(item)
-                                    } respondToTapOffSelector: {
-                                        handleItemUnSelected(item)
+                    if availablePileItems().count == 0 {
+                        EmptyViewText(text: "There is no more gear you can add to this pile. Either add more gear to this list or move gear out of another pile, so you can add it to this one.")
+                    } else {
+                        ForEach(itemVM.sectionByShed(itemArray: availablePileItems())) { section in
+                            Section {
+                                ForEach(section.items) { item in
+                                    SelectableItemRowView (
+                                        type: .pileItem,
+                                        pile: pile,
+                                        item: item) {
+                                            handleItemSelected(item)
+                                        } respondToTapOffSelector: {
+                                            handleItemUnSelected(item)
+                                        }
+                                        .padding(.horizontal, 15)
+                                        .padding(.bottom, 5)
+                                }
+                            } header: {
+                                ZStack {
+                                    Color.theme.headerBG
+                                        .frame(maxWidth: .infinity)
+                                        .frame(height: 25)
+                                    HStack {
+                                        Text(section.title)
+                                            .font(.headline)
+                                        Spacer()
                                     }
                                     .padding(.horizontal, 15)
-                                    .padding(.bottom, 5)
-                            }
-                        } header: {
-                            ZStack {
-                                Color.theme.headerBG
-                                    .frame(maxWidth: .infinity)
-                                    .frame(height: 25)
-                                HStack {
-                                    Text(section.title)
-                                        .font(.headline)
-                                    Spacer()
                                 }
-                                .padding(.horizontal, 15)
                             }
                         }
                     }
                 case .packItem:
-                    ForEach(itemVM.sectionByShed(itemArray: availablePackItems())) { section in
-                        Section {
-                            ForEach(section.items) { item in
-                                SelectableItemRowView (
-                                    type: .packItem,
-                                    pack: pack,
-                                    item: item) {
-                                        handleItemSelected(item)
-                                    } respondToTapOffSelector: {
-                                        handleItemUnSelected(item)
+                    if availablePackItems().count == 0 {
+                        EmptyViewText(text: "There is no more gear you can add to this pack. Either add more gear to this list or move gear out of another pack, so you can add it to this one.")
+                    } else {
+                        ForEach(itemVM.sectionByShed(itemArray: availablePackItems())) { section in
+                            Section {
+                                ForEach(section.items) { item in
+                                    SelectableItemRowView (
+                                        type: .packItem,
+                                        pack: pack,
+                                        item: item) {
+                                            handleItemSelected(item)
+                                        } respondToTapOffSelector: {
+                                            handleItemUnSelected(item)
+                                        }
+                                        .padding(.horizontal, 15)
+                                        .padding(.bottom, 5)
+                                }
+                            } header: {
+                                ZStack {
+                                    Color.theme.headerBG
+                                        .frame(maxWidth: .infinity)
+                                        .frame(height: 25)
+                                    HStack {
+                                        Text(section.title)
+                                            .font(.headline)
+                                        Spacer()
                                     }
                                     .padding(.horizontal, 15)
-                                    .padding(.bottom, 5)
-                            }
-                        } header: {
-                            ZStack {
-                                Color.theme.headerBG
-                                    .frame(maxWidth: .infinity)
-                                    .frame(height: 25)
-                                HStack {
-                                    Text(section.title)
-                                        .font(.headline)
-                                    Spacer()
                                 }
-                                .padding(.horizontal, 15)
                             }
                         }
                     }
+                    
                 }
             }
-            .padding(.bottom, 100)
+            //.padding(.bottom, 100)
         }
-        /*VStack {
-            List {
-                switch type {
-                case .gearlistItem:
-                    ForEach(itemVM.sectionByShed(itemArray: itemVM.items)) { section in
-                        Section {
-                            ForEach(section.items) { item in
-                                SelectableItemRowView (
-                                    type: .gearlistItem,
-                                    gearlist: gearlist,
-                                    item: item) {
-                                        handleItemSelected(item)
-                                    } respondToTapOffSelector: {
-                                        handleItemUnSelected(item)
-                                    }
-                                    .padding(.horizontal, 15)
-                                    .padding(.bottom, 5)
-                            }
-                        } header: {
-                            HStack {
-                                Text(section.title)
-                                    .font(.headline)
-                                Spacer()
-                            }
-                        }
-                    }
-                case .pileItem:
-                    ForEach(itemVM.sectionByShed(itemArray: availablePileItems())) { section in
-                        Section {
-                            ForEach(section.items) { item in
-                                SelectableItemRowView (
-                                    type: .pileItem,
-                                    pile: pile,
-                                    item: item) {
-                                        handleItemSelected(item)
-                                    } respondToTapOffSelector: {
-                                        handleItemUnSelected(item)
-                                    }
-                                    .padding(.horizontal, 15)
-                                    .padding(.bottom, 5)
-                            }
-                        } header: {
-                            HStack {
-                                Text(section.title)
-                                    .font(.headline)
-                                Spacer()
-                            }
-                        }
-                    }
-                case .packItem:
-                    ForEach(itemVM.sectionByShed(itemArray: availablePackItems())) { section in
-                        Section {
-                            ForEach(section.items) { item in
-                                SelectableItemRowView (
-                                    type: .packItem,
-                                    pack: pack,
-                                    item: item) {
-                                        handleItemSelected(item)
-                                    } respondToTapOffSelector: {
-                                        handleItemUnSelected(item)
-                                    }
-                                    .padding(.horizontal, 15)
-                                    .padding(.bottom, 5)
-                            }
-                        } header: {
-                            HStack {
-                                Text(section.title)
-                                    .font(.headline)
-                                Spacer()
-                            }
-                        }
-                    }
-                }
-            }
-        }*/
+        
     }
     
     // MARK: Methods
@@ -359,3 +298,80 @@ extension AddItemsToGearListView {
         }
     }
 }
+
+
+/*VStack {
+    List {
+        switch type {
+        case .gearlistItem:
+            ForEach(itemVM.sectionByShed(itemArray: itemVM.items)) { section in
+                Section {
+                    ForEach(section.items) { item in
+                        SelectableItemRowView (
+                            type: .gearlistItem,
+                            gearlist: gearlist,
+                            item: item) {
+                                handleItemSelected(item)
+                            } respondToTapOffSelector: {
+                                handleItemUnSelected(item)
+                            }
+                            .padding(.horizontal, 15)
+                            .padding(.bottom, 5)
+                    }
+                } header: {
+                    HStack {
+                        Text(section.title)
+                            .font(.headline)
+                        Spacer()
+                    }
+                }
+            }
+        case .pileItem:
+            ForEach(itemVM.sectionByShed(itemArray: availablePileItems())) { section in
+                Section {
+                    ForEach(section.items) { item in
+                        SelectableItemRowView (
+                            type: .pileItem,
+                            pile: pile,
+                            item: item) {
+                                handleItemSelected(item)
+                            } respondToTapOffSelector: {
+                                handleItemUnSelected(item)
+                            }
+                            .padding(.horizontal, 15)
+                            .padding(.bottom, 5)
+                    }
+                } header: {
+                    HStack {
+                        Text(section.title)
+                            .font(.headline)
+                        Spacer()
+                    }
+                }
+            }
+        case .packItem:
+            ForEach(itemVM.sectionByShed(itemArray: availablePackItems())) { section in
+                Section {
+                    ForEach(section.items) { item in
+                        SelectableItemRowView (
+                            type: .packItem,
+                            pack: pack,
+                            item: item) {
+                                handleItemSelected(item)
+                            } respondToTapOffSelector: {
+                                handleItemUnSelected(item)
+                            }
+                            .padding(.horizontal, 15)
+                            .padding(.bottom, 5)
+                    }
+                } header: {
+                    HStack {
+                        Text(section.title)
+                            .font(.headline)
+                        Spacer()
+                    }
+                }
+            }
+        }
+    }
+}*/

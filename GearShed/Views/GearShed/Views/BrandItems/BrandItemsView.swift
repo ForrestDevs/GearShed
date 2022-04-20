@@ -19,7 +19,7 @@ struct BrandItemsView: View {
             VStack (spacing: 0) {
                 StatBar(statType: .brand)
                 if gsData.brands.count == 0 {
-                    EmptyViewText(emptyText: "Brands", buttonName: "Add Brand")
+                    EmptyViewText(text: "You have no brands, to get started - press the 'Add Brand' button bellow.")
                 } else {
                     listView
                 }
@@ -134,6 +134,7 @@ struct BrandItemsView: View {
             HStack {
                 Spacer()
                 Button {
+                    detailManager.tertiaryTarget = .noView
                     withAnimation {
                         detailManager.tertiaryTarget = .showAddBrand
                     }

@@ -10,7 +10,7 @@ struct ActivityView: View {
     @Environment(\.presentationMode) private var presentationMode
     
     @State private var confirmDeleteActivityTypeAlert: ConfirmDeleteActivityTypeAlert?
-    
+    @State private var showUnlock: Bool = false
     @EnvironmentObject private var persistentStore: PersistentStore
 
     @EnvironmentObject private var viewModel: GearlistData
@@ -21,11 +21,18 @@ struct ActivityView: View {
         ZStack {
             VStack (spacing: 0) {
                 StatBar(statType: .activity)
-                activitiesList
+                if viewModel.activities.count == 0 {
+                    EmptyViewText(text: "You have not created any activities yet. To create your first actvity  press the '+' button below.")
+                } else {
+                    activitiesList
+                }
             }
             addListButtonOverlay
         }
         .alert(item: $confirmDeleteActivityTypeAlert) { type in type.alert() }
+        .sheet(isPresented: $showUnlock) {
+            UnlockView()
+        }
     }
     
     private var activitiesList: some View {
@@ -48,8 +55,13 @@ struct ActivityView: View {
             HStack {
                 Spacer()
                 Button {
-                    withAnimation {
-                        detailManager.target = .showAddActivity
+                    detailManager.target = .noView
+                    if viewModel.verifyUnlimitedGearlists() {
+                        withAnimation {
+                            detailManager.target = .showAddActivity
+                        }
+                    } else {
+                        self.showUnlock = true
                     }
                 }
                 label: {

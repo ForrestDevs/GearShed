@@ -22,7 +22,7 @@ struct ShedItemsView: View {
             VStack (spacing: 0) {
                 StatBar(statType: .shed)
                 if gsData.sheds.count == 0 {
-                    EmptyViewText(emptyText: "Shed", buttonName: "Add Shed")
+                    EmptyViewText(text: "You have no shelves or gear, to get started - press the '+' button bellow.")
                 } else {
                     listView
                 }
@@ -94,7 +94,7 @@ struct ShedItemsView: View {
                         }
                     } label: {
                         HStack {
-                            Text("Add Gear to Shed").textCase(.none)
+                            Text("Add Gear to Shelf").textCase(.none)
                             Image(systemName: "plus")
                         }
                     }
@@ -105,7 +105,7 @@ struct ShedItemsView: View {
                         }
                     } label: {
                         HStack {
-                            Text("Edit Shed Name").textCase(.none)
+                            Text("Edit Shelf Name").textCase(.none)
                             Image(systemName: "square.and.pencil")
                         }
                     }
@@ -119,7 +119,7 @@ struct ShedItemsView: View {
                         )
                     } label: {
                         HStack {
-                            Text("Delete Shed").textCase(.none)
+                            Text("Delete Shelf").textCase(.none)
                             Image(systemName: "trash")
                         }
                     }

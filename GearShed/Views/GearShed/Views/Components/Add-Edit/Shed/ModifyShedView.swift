@@ -43,7 +43,7 @@ extension ModifyShedView {
                         VStack(alignment: .leading, spacing: 3) {
                             Text("Name")
                                 .formatEntryTitle()
-                            TextField("Shed Name (Required)", text: $editableData.name)
+                            TextField("Shelf Name (Required)", text: $editableData.name)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .disableAutocorrection(true)
                                 .font(.subheadline)
@@ -69,7 +69,7 @@ extension ModifyShedView {
     }
     private var viewTitle: some ToolbarContent {
         ToolbarItem(placement: .principal) {
-            Text("Edit Shed Name")
+            Text("Edit Shelf Name")
                 .formatGreen()
         }
     }

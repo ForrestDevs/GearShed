@@ -55,6 +55,7 @@ struct ConfirmEraseView: View {
                         Button {
                             guard eraseText == "Erase" else { return }
                             persistentStore.deleteAllEntities()
+                            Prefs.shared.confirmationAlert = true
                             withAnimation {
                                 detailManager.target = .noView
                             }

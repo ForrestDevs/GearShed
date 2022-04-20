@@ -8,16 +8,24 @@ import SwiftUI
 
 struct AdventureView: View {
     @EnvironmentObject private var viewModel: GearlistData
-    
     @EnvironmentObject private var detailManager: DetailViewManager
+    
+    @State private var showUnlock: Bool = false
     
     var body: some View {
         ZStack {
             VStack (spacing: 0){
                 StatBar(statType: .adventure)
-                adventureList
+                if viewModel.adventures.count == 0 {
+                    EmptyViewText(text: "You have not created any adventures yet. To create your first adventure press the '+' button below.")
+                } else {
+                    adventureList
+                }
             }
             addListButtonOverlay
+        }
+        .sheet(isPresented: $showUnlock) {
+            UnlockView()
         }
     }
     
@@ -41,8 +49,13 @@ struct AdventureView: View {
             HStack {
                 Spacer()
                 Button {
-                    withAnimation {
-                        detailManager.target = .showAddAdventure
+                    detailManager.target = .noView
+                    if viewModel.verifyUnlimitedGearlists() {
+                        withAnimation {
+                            detailManager.target = .showAddAdventure
+                        }
+                    } else {
+                        self.showUnlock = true
                     }
                 }
                 label: {

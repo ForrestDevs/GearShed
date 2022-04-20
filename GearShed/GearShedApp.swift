@@ -34,6 +34,7 @@ struct GearShedApp: App {
         
         if isFirstLaunch == true {
             // actions to do on first launch
+            
             isFirstLaunch = false
         }
     }

@@ -24,7 +24,7 @@ enum TabBarItem: Hashable {
     var title: String {
         switch self {
         case .gearshed: return "Gear Shed"
-        case .gearlist: return "Gear List"
+        case .gearlist: return "Gear Lists"
         case .settings: return "Settings"
         }
     }

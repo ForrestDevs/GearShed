@@ -19,7 +19,7 @@ struct GearlistDiaryView: View {
             VStack (spacing: 0) {
                 StatBar(statType: .diary, gearlist: gearlist)
                 if gearlist.diaries.count == 0 {
-                    EmptyViewText(emptyText: "Diaries", buttonName: "Add Diary")
+                    EmptyViewText(text: "You have not created any diaries in this list. To create your first diary press the 'New Entry' button below.")
                 } else {
                     diaryList
                 }

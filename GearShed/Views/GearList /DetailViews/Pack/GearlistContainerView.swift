@@ -24,7 +24,7 @@ struct GearlistContainerView: View {
             StatBar(statType: .pack, gearlist: gearlist)
             ZStack {
                 if gearlist.containers.count == 0 {
-                    EmptyViewText(emptyText: "Packs", buttonName: "Add Pack")
+                    EmptyViewText(text: "You have not added any packs to this list. To add your first pack press the 'Add Pack' button below.")
                 } else {
                     packingContainerList
                 }

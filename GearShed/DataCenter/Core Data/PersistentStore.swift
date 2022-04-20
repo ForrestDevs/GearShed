@@ -108,6 +108,8 @@ final class PersistentStore: ObservableObject {
         return (try? container.viewContext.fetch(fetchRequest)) ?? []
     }
     
+    @Published var eraseVerified: Bool = false
+    
     func deleteAllEntities() {
         let entities = container.managedObjectModel.entities
         

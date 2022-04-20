@@ -137,7 +137,7 @@ extension ModifyItemView {
     private var itemShedSection: some View {
         Section {
             VStack (alignment: .leading, spacing: 3)  {
-                Text ("Shed")
+                Text ("Shelf")
                     .formatEntryTitle()
                 HStack {
                     Menu {
@@ -152,7 +152,7 @@ extension ModifyItemView {
                                 detailManager.tertiaryTarget = .showContent
                             }
                         } label: {
-                            Text("Add New Shed")
+                            Text("Add New Shelf")
                             .font(.subheadline)
                         }
                         ForEach(viewModel.sheds) { shed in
@@ -171,7 +171,7 @@ extension ModifyItemView {
                             }
                         }
                     } label: {
-                        Text(editableData.shed?.name ?? "Select Shed (Required)")
+                        Text(editableData.shed?.name ?? "Select Shelf (Required)")
                             .font(.subheadline)
                             .foregroundColor (shedTextColor())
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
