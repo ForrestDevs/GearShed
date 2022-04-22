@@ -6,16 +6,16 @@
 //
 import SwiftUI
 
-struct AddContainerView: View {
+struct AddPackView: View {
     @EnvironmentObject private var detailManager: DetailViewManager
         
     let gearlist: Gearlist
     
-    @State private var editableData: EditableContainerData
+    @State private var editableData: EditablePackData
     
     @StateObject private var viewModel: GearlistData
     
-    private var containerOut: ((Container) -> ())?
+    private var containerOut: ((Pack) -> ())?
     
     @State private var isAddFromItem: Bool
 
@@ -82,23 +82,23 @@ struct AddContainerView: View {
                     detailManager.secondaryTarget = .noView
                 }
                 if isAddFromItem {
-                    viewModel.addNewContainerFromItem(using: editableData, gearlist: gearlist) { container in
+                    viewModel.addNewPackFromItem(using: editableData, gearlist: gearlist) { container in
                         containerOut!(container)
                     }
                 } else {
-                    viewModel.addNewContainer(using: editableData, gearlist: gearlist)
+                    viewModel.addNewPack(using: editableData, gearlist: gearlist)
                 }
             } label: {
                 Text("Save")
             }
-            .disabled(!editableData.canContainerBeSaved)
+            .disabled(!editableData.canPackBeSaved)
         }
     }
 }
 
-extension AddContainerView {
+extension AddPackView {
     
-    init(persistentStore: PersistentStore, gearlist: Gearlist, containerOut: ((Container) -> ())? = nil) {
+    init(persistentStore: PersistentStore, gearlist: Gearlist, containerOut: ((Pack) -> ())? = nil) {
         self.gearlist = gearlist
         self.containerOut = containerOut
         _isAddFromItem = State(initialValue: true)
@@ -106,7 +106,7 @@ extension AddContainerView {
         let viewModel = GearlistData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
         
-        let initialValue = EditableContainerData(persistentStore: persistentStore)
+        let initialValue = EditablePackData(persistentStore: persistentStore)
         _editableData = State(initialValue: initialValue)
     }
     
@@ -117,7 +117,7 @@ extension AddContainerView {
         let viewModel = GearlistData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
         
-        let initialValue = EditableContainerData(persistentStore: persistentStore)
+        let initialValue = EditablePackData(persistentStore: persistentStore)
         _editableData = State(initialValue: initialValue)
         
     }

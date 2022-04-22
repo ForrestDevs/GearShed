@@ -84,7 +84,7 @@ extension GearlistView {
     
     private var viewTitle: some ToolbarContent {
         ToolbarItem(placement: .principal) {
-            Text("Gear List")
+            Text("Gear Lists")
                 .formatGreen()
         }
     }

@@ -4,18 +4,14 @@
 //
 //  Created by Luke Forrest Gannon on 2021-10-30.
 //
-
+import Foundation
 import SwiftUI
-import UIKit
-import PDFCreator
 import WebKit
 
 struct GearShedPDFView: View {
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject private var persistentStore: PersistentStore
     @EnvironmentObject private var gsData: GearShedData
     @State private var gsPDFType: GearShedPDFType = .shed
-    @State private var showShareSheet : Bool = false
     
     var body: some View {
         VStack {
@@ -32,31 +28,12 @@ struct GearShedPDFView: View {
             case .regret:
                 WebView(htmlString: createHTML())
             }
-//            switch gsPDFType {
-//            case .shed:
-//                PDFPreviews(data: createGSPDF())
-//            case .brand:
-//                PDFPreviews(data: createGSPDF())
-//            case .fav:
-//                PDFPreviews(data: createGSPDF())
-//            case .wish:
-//                PDFPreviews(data: createGSPDF())
-//            case .regret:
-//                PDFPreviews(data: createGSPDF())
-//            }
         }
         .navigationBarTitle("Share Gear Shed", displayMode: .inline)
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) { exportButton() }
-            ToolbarItem(placement: .navigationBarLeading) { cancelButton() }
-        }
-        .sheet(isPresented: $showShareSheet) {
-//            if let data = createGSPDF() {
-//                ShareView(activityItems: [data])
-//            }
-            if let data = generate() {
-                ShareView(activityItems: [data])
-            }
+            cancelButton
+            viewTitle
+            exportButton
         }
     }
     
@@ -85,19 +62,24 @@ struct GearShedPDFView: View {
             let lbOz = gsData.totalLbsOz(array: array)
             let lb = lbOz.lbs
             let oz = lbOz.oz
-            value = "\(lb) Lbs + \(oz) Oz"
+            value = "\(lb) lb \(oz) oz"
         }
         return value
     }
     func weightCount(pdfItems: [pdfItem]) -> String {
         var value: String = ""
         if Prefs.shared.weightUnit == "g" {
-            value = "\(totalGrams(array: pdfItems)) g"
+            let num = "\(totalGrams(array: pdfItems))"
+            if !num.isEmpty {
+                value = ", \(num) g"
+            }
         } else {
             let lbOz = totalLbsOz(array: pdfItems)
             let lb = lbOz.lbs
             let oz = lbOz.oz
-            value = "\(lb) Lbs \(oz) Oz"
+            if !lb.isEmpty || !oz.isEmpty {
+                value = ", \(lb) lb \(oz) oz"
+            }
         }
         return value
     }
@@ -113,6 +95,8 @@ struct GearShedPDFView: View {
     }
     func itemWeightUnit(item: pdfItem) -> String {
         var value: String = ""
+        guard (item.weight == "0") || (item.lbs == "0" && item.oz == "0.00") else { return value }
+        
         if Prefs.shared.weightUnit == "g" {
             value = "\(item.weight) g"
         } else {
@@ -122,17 +106,17 @@ struct GearShedPDFView: View {
         }
         return value
     }
-    func itemWeightUnitForGL(item: Item) -> String {
-        var value: String = ""
-        if Prefs.shared.weightUnit == "g" {
-            value = "\(item.weight) g"
-        } else {
-            let lbs = item.itemLbs
-            let oz = item.itemOZ
-            value = "\(lbs) Lbs \(oz) Oz"
-        }
-        return value
-    }
+//    func itemWeightUnitForGL(item: Item) -> String {
+//            var value: String = ""
+//            if Prefs.shared.weightUnit == "g" {
+//                value = "\(item.weight) g"
+//            } else {
+//                let lbs = item.itemLbs
+//                let oz = item.itemOZ
+//                value = "\(lbs) Lbs \(oz) Oz"
+//            }
+//            return value
+//        }
     func totalLbsOz(array: [pdfItem]) -> (lbs: String, oz: String) {
         // Taking the intial array of items and mapping the corrosponding mass value while reducing to set a total mass value from the array
         let totalLbs = array.map { Int($0.lbs) ?? 0 }.reduce(0, +)
@@ -143,434 +127,37 @@ struct GearShedPDFView: View {
         return (totalLbsString, totalOzString)
     }
     //MARK: Text Formatting/ Logic Functions
-    func statTitleWeightSetting() -> String {
-        var value: String = ""
-        if Prefs.shared.weightUnit == "g" {
-            value = "Weight (g)"
+    func itemNameBrandText(item: pdfItem) -> String {
+        let itemName = item.name
+        let itemBrand = item.brand
+        if itemName.isEmpty && itemBrand.isEmpty {
+            return ""
+        } else if itemName.isEmpty && !itemBrand.isEmpty {
+            return "\(itemBrand); "
+        } else if itemBrand.isEmpty && !itemName.isEmpty {
+            return "\(itemName); "
+        } else if !itemBrand.isEmpty && !itemName.isEmpty {
+            return "\(itemName) | \(itemBrand); "
         } else {
-            value = "Weight (Lbs/Oz)"
-        }
-        return value
-    }
-    func statTitleTextBold(text: String ) -> PDFAttributedText {
-        let attributedTitle = NSMutableAttributedString(string: "\(text)", attributes: [
-            .font: UIFont(name: "HelveticaNeueBold", size: 11)!
-        ])
-        let title = PDFAttributedText(text: attributedTitle)
-        return title
-    }
-    func statText(text: String) -> PDFAttributedText {
-        let attributedTitle = NSMutableAttributedString(string: "\(text)", attributes: [
-            .font: UIFont(name: "HelveticaNeue", size: 11)!
-        ])
-        let title = PDFAttributedText(text: attributedTitle)
-        return title
-    }
-    func sectionHeaderTitle(name: String, array: [pdfItem]) -> PDFAttributedText {
-        let attributedTitle = NSMutableAttributedString(string: " \(name), \(weightCount(pdfItems: array))", attributes: [
-            .font: UIFont(name: "HelveticaNeueBold", size: 11)!
-        ])
-        let title = PDFAttributedText(text: attributedTitle)
-        return title
-    }
-    func titleLineOne() -> PDFAttributedText {
-        let attributedTitleLineOne = NSMutableAttributedString(string: "\(Prefs.shared.pdfUserName)'s GEAR SHED", attributes: [
-            .font: UIFont(name: "HelveticaNeue", size: 11)!
-        ])
-        let title = PDFAttributedText(text: attributedTitleLineOne)
-        return title
-    }
-    func titleLineTwo() -> PDFAttributedText {
-        var text: String = ""
-        
-        switch gsPDFType {
-        case .shed:
-            text = "Shed"
-        case .brand:
-            text = "Brand"
-        case .fav:
-            text = "Fav"
-        case .wish:
-            text = "Wish"
-        case .regret:
-            text = "Regret"
-        }
-        
-        let attributedTitle = NSMutableAttributedString(string: "\(text) View | \(Date().monthDayYearDateText())", attributes: [
-            .font: UIFont(name: "HelveticaNeue", size: 11)!
-        ])
-        let title = PDFAttributedText(text: attributedTitle)
-        return title
-    }
-    
-    
-    
-    func stat00() -> String {
-        switch gsPDFType {
-        case .shed:
-            return "Shelves (#)"
-        case .brand:
-            return "Brands (#)"
-        case .fav:
-            return "Gear (#)"
-        case .wish:
-            return "Gear (#)"
-        case .regret:
-            return "Gear (#)"
-        }
-    }
-    func stat01() -> String {
-        switch gsPDFType {
-        case .shed:
-            return "Gear (#)"
-        case .brand:
-            return "Gear (#)"
-        case .fav:
-            return statTitleWeightSetting()
-        case .wish:
-            return statTitleWeightSetting()
-        case .regret:
-            return statTitleWeightSetting()
-        }
-    }
-    func stat02() -> String {
-        switch gsPDFType {
-        case .shed:
-            return statTitleWeightSetting()
-        case .brand:
-            return statTitleWeightSetting()
-        case .fav:
-            return "Invested ($)"
-        case .wish:
-            return "Cost ($)"
-        case .regret:
-            return "Invested ($)"
-        }
-    }
-    func stat03() -> String {
-        switch gsPDFType {
-        case .shed:
-            return "Invested ($)"
-        case .brand:
-            return "Invested ($)"
-        case .fav:
-            return ""
-        case .wish:
-            return ""
-        case .regret:
             return ""
         }
     }
-    func stat10() -> String {
-        switch gsPDFType {
-        case .shed:
-            return shedCount()
-        case .brand:
-            return brandCount()
-        case .fav:
-            return itemCount(array: gsData.favItems)
-        case .wish:
-            return itemCount(array: gsData.wishListItems)
-        case .regret:
-            return itemCount(array: gsData.regretItems)
-        }
-    }
-    func stat11() -> String {
-        switch gsPDFType {
-        case .shed:
-            return itemCount(array: gsData.items)
-        case .brand:
-            return itemCount(array: gsData.items)
-        case .fav:
-            return weightCount(array: gsData.favItems)
-        case .wish:
-            return weightCount(array: gsData.wishListItems)
-        case .regret:
-            return weightCount(array: gsData.regretItems)
-        }
-    }
-    func stat12() -> String {
-        switch gsPDFType {
-        case .shed:
-            return weightCount(array: gsData.items)
-        case .brand:
-            return weightCount(array: gsData.items)
-        case .fav:
-            return costCount(array: gsData.favItems)
-        case .wish:
-            return costCount(array: gsData.wishListItems)
-        case .regret:
-            return costCount(array: gsData.regretItems)
-        }
-    }
-    func stat13() -> String {
-        switch gsPDFType {
-        case .shed:
-            return costCount(array: gsData.items)
-        case .brand:
-            return costCount(array: gsData.items)
-        case .fav:
+    func itemWeightPriceText(item: pdfItem) -> String {
+        let itemWeightText = itemWeightUnit(item: item)
+        let itemPriceText = item.price
+        if itemWeightText.isEmpty && itemPriceText.isEmpty {
             return ""
-        case .wish:
-            return ""
-        case .regret:
+        } else if itemPriceText.isEmpty && !itemWeightText.isEmpty {
+            return "\(itemWeightText); "
+        } else if itemWeightText.isEmpty && !itemPriceText.isEmpty {
+            return "\(itemPriceText); "
+        } else if !itemWeightText.isEmpty && !itemPriceText.isEmpty {
+            return "\(itemWeightText) | \(itemPriceText); "
+        } else {
             return ""
         }
     }
-    
-    func createGSPDF() -> Data {
-        //MARK: Converting data in PDF Data Models
-        var shelves = [String]()
-        var brands = [String]()
-        var items = [pdfItem]()
-        var favItems = [pdfItem]()
-        var wishItems = [pdfItem]()
-        var regretItems = [pdfItem]()
-        for item in gsData.items {
-            let newItem = pdfItem (
-                name: item.name,
-                brand: item.brandName,
-                shed: item.shedName,
-                weight: item.weight,
-                lbs: item.itemLbs,
-                oz: item.itemOZ,
-                price: item.price,
-                details: item.detail,
-                isFavourite: item.isFavourite,
-                isWish: item.isWishlist,
-                isRegret: item.isRegret)
-            items.append(newItem)
-        }
-        for item in gsData.favItems {
-            let newItem = pdfItem (
-                name: item.name,
-                brand: item.brandName,
-                shed: item.shedName,
-                weight: item.weight,
-                lbs: item.itemLbs,
-                oz: item.itemOZ,
-                price: item.price,
-                details: item.detail,
-                isFavourite: item.isFavourite,
-                isWish: item.isWishlist,
-                isRegret: item.isRegret)
-            favItems.append(newItem)
-        }
-        for item in gsData.wishListItems {
-            let newItem = pdfItem (
-                name: item.name,
-                brand: item.brandName,
-                shed: item.shedName,
-                weight: item.weight,
-                lbs: item.itemLbs,
-                oz: item.itemOZ,
-                price: item.price,
-                details: item.detail,
-                isFavourite: item.isFavourite,
-                isWish: item.isWishlist,
-                isRegret: item.isRegret)
-            wishItems.append(newItem)
-        }
-        for item in gsData.regretItems {
-            let newItem = pdfItem (
-                name: item.name,
-                brand: item.brandName,
-                shed: item.shedName,
-                weight: item.weight,
-                lbs: item.itemLbs,
-                oz: item.itemOZ,
-                price: item.price,
-                details: item.detail,
-                isFavourite: item.isFavourite,
-                isWish: item.isWishlist,
-                isRegret: item.isRegret)
-            regretItems.append(newItem)
-        }
-        for shed in gsData.sheds {
-            shelves.append(shed.name)
-        }
-        for brand in gsData.brands {
-            brands.append(brand.name)
-        }
-        // MARK: Initialize PDF and Size
-        let document = PDFDocument(format: .a4)
-        // MARK: Add Elements to PDF
-        let logo = PDFImage(image: Image(named: "Light-Transparent")!, size: CGSize(width: 120, height: 100))
-        document.add(.contentCenter, image: logo)
-        document.add(space: 10)
-        //Title line one and two
-        document.add(.contentLeft, attributedTextObject: titleLineOne())
-        document.add(.contentLeft, attributedTextObject: titleLineTwo())
-        document.add(space: 15)
-        // Statbar
-        let statTable = PDFTable(rows: 2, columns: 4)
-        statTable.content = [
-            [stat00(), stat01(), stat02(), stat03()],
-            [stat10(), stat11(), stat12(), stat13()]
-        ]
-        statTable.rows.allCellsStyle = PDFTableCellStyle.none
-        let firstRow = statTable[rows: 0..<1]
-        let firstRowStyle = PDFTableCellStyle(font: Font(name: "HelveticaNeue", size: 11)!)
-        firstRow.allCellsStyle = firstRowStyle
-        let secondRow = statTable[rows: 1..<2]
-        let secondRowStyle = PDFTableCellStyle(font: Font(name: "HelveticaNeue", size: 11)!)
-        secondRow.allCellsStyle = secondRowStyle
-        statTable.rows.allCellsAlignment = .left
-        // Set table padding and margin
-        statTable.padding = 2
-        statTable.margin = 0
-        document.add(table: statTable)
-        document.add(space: 15)
-        //Items
-        switch gsPDFType {
-        case .shed:
-            for shelf in shelves {
-                let items = items.filter { $0.shed == shelf }
-                let outlineStyle = PDFLineStyle(type: .full, color: Color.black, width: 1)
-                let lineStyle = PDFLineStyle(type: .full, color: Color.clear, width: 0.1)
-                let sectionGroup = PDFGroup(allowsBreaks: false, backgroundColor: Color.clear, outline: outlineStyle)
-                sectionGroup.set(indentation: 0.0, left: true)
-                sectionGroup.addLineSeparator(style: lineStyle)
-                sectionGroup.add(space: 3)
-                sectionGroup.add(attributedTextObject: sectionHeaderTitle(name: shelf, array: items))
-                sectionGroup.add(space: 3)
-                sectionGroup.addLineSeparator(style: lineStyle)
-                document.add(group: sectionGroup)
-                document.add(space: 10)
-            
-                
-                
-                for item in items {
-                    let itemGroup = PDFGroup(allowsBreaks: false)
-                    itemGroup.set(indentation: 15, left: true)
-                    itemGroup.add(attributedTextObject: statText(text: item.name + " | " + item.brand))
-                    itemGroup.add(attributedTextObject: statText(text: itemWeightUnit(item: item) + " | " + "$ " + item.price))
-                    itemGroup.add(attributedTextObject: statText(text: item.details))
-                    document.add(group: itemGroup)
-                    document.add(space: 10)
-                }
-            }
-        case .brand:
-            brands.forEach { brand in
-                let brand = brand
-                let items = items.filter { $0.brand == brand }
-                let outlineStyle = PDFLineStyle(type: .full, color: Color.black, width: 1)
-                let lineStyle = PDFLineStyle(type: .full, color: Color.clear, width: 0.1)
-                
-                let sectionGroup = PDFGroup(allowsBreaks: false, backgroundColor: Color.clear, outline: outlineStyle)
-                sectionGroup.set(indentation: 0.0, left: true)
-                sectionGroup.addLineSeparator(style: lineStyle)
-                sectionGroup.add(space: 3)
-                sectionGroup.add(attributedTextObject: sectionHeaderTitle(name: brand, array: items))
-                sectionGroup.add(space: 3)
-                sectionGroup.addLineSeparator(style: lineStyle)
-                document.add(group: sectionGroup)
-                
-                document.add(space: 10)
-                items.forEach { item in
-                    let itemGroup = PDFGroup(allowsBreaks: false)
-                    itemGroup.set(indentation: 15, left: true)
-                    itemGroup.add(attributedTextObject: statText(text: item.name + " | " + item.shed))
-                    itemGroup.add(attributedTextObject: statText(text: itemWeightUnit(item: item) + " | " + "$ " + item.price))
-                    itemGroup.add(attributedTextObject: statText(text: item.details))
-                    document.add(group: itemGroup)
-                    document.add(space: 10)
-                }
-            }
-        case .fav:
-            for shelf in shelves {
-                let items = favItems.filter { $0.shed == shelf }
-                guard items.count >= 1 else { continue }
-                
-                let outlineStyle = PDFLineStyle(type: .full, color: Color.black, width: 1)
-                let lineStyle = PDFLineStyle(type: .full, color: Color.clear, width: 0.1)
-                let sectionGroup = PDFGroup(allowsBreaks: false, backgroundColor: Color.clear, outline: outlineStyle)
-                sectionGroup.set(indentation: 0.0, left: true)
-                sectionGroup.addLineSeparator(style: lineStyle)
-                sectionGroup.add(space: 3)
-                sectionGroup.add(attributedTextObject: sectionHeaderTitle(name: shelf, array: items))
-                sectionGroup.add(space: 3)
-                sectionGroup.addLineSeparator(style: lineStyle)
-                
-                document.add(group: sectionGroup)
-                document.add(space: 10)
-                
-                for item in items {
-                    let itemGroup = PDFGroup(allowsBreaks: false)
-                    itemGroup.set(indentation: 15, left: true)
-                    itemGroup.add(attributedTextObject: statText(text: item.name + " | " + item.brand))
-                    itemGroup.add(attributedTextObject: statText(text: itemWeightUnit(item: item) + " | " + "$ " + item.price))
-                    itemGroup.add(attributedTextObject: statText(text: item.details))
-                    document.add(group: itemGroup)
-                    document.add(space: 10)
-                }
-            }
-            
-        case .wish:
-            for shelf in shelves {
-                let items = wishItems.filter { $0.shed == shelf }
-                guard items.count >= 1 else { continue }
-                
-                let outlineStyle = PDFLineStyle(type: .full, color: Color.black, width: 1)
-                let lineStyle = PDFLineStyle(type: .full, color: Color.clear, width: 0.1)
-                let sectionGroup = PDFGroup(allowsBreaks: false, backgroundColor: Color.clear, outline: outlineStyle)
-                sectionGroup.set(indentation: 0.0, left: true)
-                sectionGroup.addLineSeparator(style: lineStyle)
-                sectionGroup.add(space: 3)
-                sectionGroup.add(attributedTextObject: sectionHeaderTitle(name: shelf, array: items))
-                sectionGroup.add(space: 3)
-                sectionGroup.addLineSeparator(style: lineStyle)
-                
-                document.add(group: sectionGroup)
-                document.add(space: 10)
-                
-                for item in items {
-                    let itemGroup = PDFGroup(allowsBreaks: false)
-                    itemGroup.set(indentation: 15, left: true)
-                    itemGroup.add(attributedTextObject: statText(text: item.name + " | " + item.brand))
-                    itemGroup.add(attributedTextObject: statText(text: itemWeightUnit(item: item) + " | " + "$ " + item.price))
-                    itemGroup.add(attributedTextObject: statText(text: item.details))
-                    document.add(group: itemGroup)
-                    document.add(space: 10)
-                }
-            }
-            
-        case .regret:
-            for shelf in shelves {
-                let items = regretItems.filter { $0.shed == shelf }
-                guard items.count >= 1 else { continue }
-                
-                let outlineStyle = PDFLineStyle(type: .full, color: Color.black, width: 1)
-                let lineStyle = PDFLineStyle(type: .full, color: Color.clear, width: 0.1)
-                let sectionGroup = PDFGroup(allowsBreaks: false, backgroundColor: Color.clear, outline: outlineStyle)
-                sectionGroup.set(indentation: 0.0, left: true)
-                sectionGroup.addLineSeparator(style: lineStyle)
-                sectionGroup.add(space: 3)
-                sectionGroup.add(attributedTextObject: sectionHeaderTitle(name: shelf, array: items))
-                sectionGroup.add(space: 3)
-                sectionGroup.addLineSeparator(style: lineStyle)
-                
-                document.add(group: sectionGroup)
-                document.add(space: 10)
-                
-                for item in items {
-                    let itemGroup = PDFGroup(allowsBreaks: false)
-                    itemGroup.set(indentation: 15, left: true)
-                    itemGroup.add(attributedTextObject: statText(text: item.name + " | " + item.brand))
-                    itemGroup.add(attributedTextObject: statText(text: itemWeightUnit(item: item) + " | " + "$ " + item.price))
-                    itemGroup.add(attributedTextObject: statText(text: item.details))
-                    document.add(group: itemGroup)
-                    document.add(space: 10)
-                }
-            }
-        }
-        
-        // MARK: Generate and return PDF Data
-        let generator = PDFGenerator(document: document)
-        let pdf = try! generator.generateData()
-        return pdf
-    }
-    
+    //MARK: Create New HTML String and PDF
     func createHTML() -> String {
         //MARK: Converting data in PDF Data Models
         var shelves = [String]()
@@ -648,20 +235,18 @@ struct GearShedPDFView: View {
         
         func pdfType() -> String {
             var text: String = ""
-            
             switch gsPDFType {
             case .shed:
-                text = "Shed"
+                text = "Shelf View"
             case .brand:
-                text = "Brand"
+                text = "Brand View"
             case .fav:
-                text = "Fav"
+                text = "Favorite View"
             case .wish:
-                text = "Wish"
+                text = "Wishlist View"
             case .regret:
-                text = "Regret"
+                text = "Regret View"
             }
-            
             return text
         }
         func pdfDate() -> String {
@@ -673,111 +258,106 @@ struct GearShedPDFView: View {
             switch gsPDFType {
             case .shed:
                 return """
-    -->
-    <div class="stat1">
-        <h3 class="stat1-Title">Shelves (#)</h3>
-        <p class="stat1-Stat">\(shedCount())</p>
-    </div>
-    <div class="stat2">
-        <h3 class="stat2-Title">Gear (#)</h3>
-        <p class="stat2-Stat">\(itemCount(array: gsData.items))</p>
-    </div>
-    <div class="stat3">
-        <h3 class="stat3-Title">Weight</h3>
-        <p class="stat3-Stat">\(weightCount(array: gsData.items))</p>
-    </div>
-    <div class="stat4">
-        <h3 class="stat4-Title">Invested</h3>
-        <p class="stat4-Stat">\(costCount(array: gsData.items))</p>
-    </div>
-    <!--
-    """
+                        -->
+                        <div class="stat">
+                            <p class="statTitle">Shelves</p>
+                            <p class="statVal">\(shedCount())</p>
+                        </div>
+                        <div class="stat">
+                            <p class="statTitle">Items</p>
+                            <p class="statVal">\(itemCount(array: gsData.items))</p>
+                        </div>
+                        <div class="stat">
+                            <p class="statTitle">Weight</p>
+                            <p class="statVal">\(weightCount(array: gsData.items))</p>
+                        </div>
+                        <div class="stat">
+                            <p class="statTitle">Invested</p>
+                            <p class="statVal">\(costCount(array: gsData.items))</p>
+                        </div>
+                        <!--
+                        """
             case .brand:
                 return """
-    -->
-    <div class="stat1">
-        <h3 class="stat1-Title">Brands (#)</h3>
-        <p class="stat1-Stat">\(brandCount())</p>
-    </div>
-    <div class="stat2">
-        <h3 class="stat2-Title">Gear (#)</h3>
-        <p class="stat2-Stat">\(itemCount(array: gsData.items))</p>
-    </div>
-    <div class="stat3">
-        <h3 class="stat3-Title">Weight</h3>
-        <p class="stat3-Stat">\(weightCount(array: gsData.items))</p>
-    </div>
-    <div class="stat4">
-        <h3 class="stat4-Title">Invested</h3>
-        <p class="stat4-Stat">\(costCount(array: gsData.items))</p>
-    </div>
-    <!--
-    """
+                        -->
+                        <div class="stat">
+                            <p class="statTitle">Shelves</p>
+                            <p class="statVal">\(brandCount())</p>
+                        </div>
+                        <div class="stat">
+                            <p class="statTitle">Items</p>
+                            <p class="statVal">\(itemCount(array: gsData.items))</p>
+                        </div>
+                        <div class="stat">
+                            <p class="statTitle">Weight</p>
+                            <p class="statVal">\(weightCount(array: gsData.items))</p>
+                        </div>
+                        <div class="stat">
+                            <p class="statTitle">Invested</p>
+                            <p class="statVal">\(costCount(array: gsData.items))</p>
+                        </div>
+                        <!--
+                        """
             case .fav:
                 return """
-    -->
-    <div class="stat1">
-        <h3 class="stat1-Title">Gear (#)</h3>
-        <p class="stat1-Stat">\(itemCount(array: gsData.favItems))</p>
-    </div>
-    <div class="stat2">
-        <h3 class="stat2-Title">Weight</h3>
-        <p class="stat2-Stat">\(weightCount(array: gsData.favItems))</p>
-    </div>
-    <div class="stat3">
-        <h3 class="stat3-Title">Invested</h3>
-        <p class="stat3-Stat">\(costCount(array: gsData.favItems))</p>
-    </div>
-    <!--
-    """
+                        -->
+                        <div class="stat">
+                            <p class="statTitle">Items</p>
+                            <p class="statVal">\(itemCount(array: gsData.favItems))</p>
+                        </div>
+                        <div class="stat">
+                            <p class="statTitle">Weight</p>
+                            <p class="statVal">\(weightCount(array: gsData.favItems))</p>
+                        </div>
+                        <div class="stat">
+                            <p class="statTitle">Invested</p>
+                            <p class="statVal">\(costCount(array: gsData.favItems))</p>
+                        </div>
+                        <!--
+                        """
             case .wish:
                 return """
-    -->
-    <div class="stat1">
-        <h3 class="stat1-Title">Gear (#)</h3>
-        <p class="stat1-Stat">\(itemCount(array: gsData.wishListItems))</p>
-    </div>
-    <div class="stat2">
-        <h3 class="stat2-Title">Weight</h3>
-        <p class="stat2-Stat">\(weightCount(array: gsData.wishListItems))</p>
-    </div>
-    <div class="stat3">
-        <h3 class="stat3-Title">Cost</h3>
-        <p class="stat3-Stat">\(costCount(array: gsData.wishListItems))</p>
-    </div>
-    <!--
-    """
+                        -->
+                        <div class="stat">
+                            <p class="statTitle">Items</p>
+                            <p class="statVal">\(itemCount(array: gsData.wishListItems))</p>
+                        </div>
+                        <div class="stat">
+                            <p class="statTitle">Weight</p>
+                            <p class="statVal">\(weightCount(array: gsData.wishListItems))</p>
+                        </div>
+                        <div class="stat">
+                            <p class="statTitle">Cost</p>
+                            <p class="statVal">\(costCount(array: gsData.wishListItems))</p>
+                        </div>
+                        <!--
+                        """
             case .regret:
                 return """
-                       -->
-                       <div class="stat1">
-                           <h3 class="stat1-Title">Gear (#)</h3>
-                           <p class="stat1-Stat">\(itemCount(array: gsData.regretItems))</p>
-                       </div>
-                       <div class="stat2">
-                           <h3 class="stat2-Title">Weight</h3>
-                           <p class="stat2-Stat">\(weightCount(array: gsData.regretItems))</p>
-                       </div>
-                       <div class="stat3">
-                           <h3 class="stat3-Title">Invested</h3>
-                           <p class="stat3-Stat">\(costCount(array: gsData.regretItems))</p>
-                       </div>
-                       <!--
-                       """
+                        -->
+                        <div class="stat">
+                            <p class="statTitle">Items</p>
+                            <p class="statVal">\(itemCount(array: gsData.regretItems))</p>
+                        </div>
+                        <div class="stat">
+                            <p class="statTitle">Weight</p>
+                            <p class="statVal">\(weightCount(array: gsData.regretItems))</p>
+                        </div>
+                        <div class="stat">
+                            <p class="statTitle">Invested</p>
+                            <p class="statVal">\(costCount(array: gsData.regretItems))</p>
+                        </div>
+                        <!--
+                        """
             }
-        }
-        func sectionTotalWeight(array: [pdfItem]) -> String {
-            var text: String = ""
-            text = weightCount(pdfItems: array)
-            return text
         }
         func sectionItems(array: [pdfItem]) -> String {
             var text: String = ""
             for item in array {
-                text.append(contentsOf: """
-                                        <li class="item">\(item.name) | \(item.brand) &nbsp \(itemWeightUnit(item: item)) | \(item.price) &nbsp \(item.details)
-                                        </li>
-                                        """
+                text.append(contentsOf:
+                """
+                <li class="item">\(itemNameBrandText(item: item))\(itemWeightPriceText(item: item))\(item.details)</li>
+                """
                 )
             }
             return text
@@ -789,99 +369,98 @@ struct GearShedPDFView: View {
             case .shed:
                 for shelf in shelves {
                     let items = items.filter { $0.shed == shelf }
-                    textFirst.append(contentsOf: """
-                                            <div class="itemListSection">
-                                                <div class="sectionHeader">
-                                                    <p class="sectionHeaderTitle">\(shelf)</p>
-                                                    <p class="sectionTotalWeight">, \(sectionTotalWeight(array: items))</p>
-                                                </div>
-                                                <div class="sectionItems">
-                                                    <ul>
-                                                        <!-- -->\(sectionItems(array: items))<!-- -->
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            """
+                    textFirst.append(contentsOf:
+                    """
+                    <div class="itemListSection">
+                        <div class="sectionHeader">
+                            <p class="sectionHeaderTitle">\(shelf)\(weightCount(pdfItems: items))</p>
+                        </div>
+                        <div class="sectionItems">
+                            <ul>
+                                <!-- -->\(sectionItems(array: items))<!-- -->
+                            </ul>
+                        </div>
+                    </div>
+                    """
                     )
                 }
                 finalText.append(contentsOf: textFirst)
             case .brand:
                 for brand in brands {
-                    var text: String = ""
                     let items = items.filter { $0.brand == brand }
-                    text.append(contentsOf: """
-                                            <div class="itemListSection">
-                                                <div class="sectionHeader">
-                                                    <p class="sectionHeaderTitle">\(brand)</p>
-                                                    <p class="sectionTotalWeight">, \(sectionTotalWeight(array: items))</p>
-                                                </div>
-                                                <div class="sectionItems">
-                                                    <ul>
-                                                        <!-- -->\(sectionItems(array: items))<!-- -->
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            """
+                    textFirst.append(contentsOf:
+                    """
+                    <div class="itemListSection">
+                        <div class="sectionHeader">
+                            <p class="sectionHeaderTitle">\(brand)\(weightCount(pdfItems: items))</p>
+                        </div>
+                        <div class="sectionItems">
+                            <ul>
+                                <!-- -->\(sectionItems(array: items))<!-- -->
+                            </ul>
+                        </div>
+                    </div>
+                    """
                     )
                 }
                 finalText.append(contentsOf: textFirst)
             case .fav:
                 for shelf in shelves {
-                    var text: String = ""
-                    let items = items.filter { $0.shed == shelf }
-                    text.append(contentsOf: """
-                                            <div class="itemListSection">
-                                                <div class="sectionHeader">
-                                                    <p class="sectionHeaderTitle">\(shelf)</p>
-                                                    <p class="sectionTotalWeight">, \(sectionTotalWeight(array: items))</p>
-                                                </div>
-                                                <div class="sectionItems">
-                                                    <ul>
-                                                        <!-- -->\(sectionItems(array: items))<!-- -->
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            """
+                    let items = favItems.filter { $0.shed == shelf }
+                    guard items.count >= 1 else { continue }
+                    textFirst.append(contentsOf:
+                    """
+                    <div class="itemListSection">
+                        <div class="sectionHeader">
+                            <p class="sectionHeaderTitle">\(shelf)\(weightCount(pdfItems: items))</p>
+                        </div>
+                        <div class="sectionItems">
+                            <ul>
+                                <!-- -->\(sectionItems(array: items))<!-- -->
+                            </ul>
+                        </div>
+                    </div>
+                    """
                     )
                 }
                 finalText.append(contentsOf: textFirst)
             case .wish:
                 for shelf in shelves {
-                    var text: String = ""
-                    let items = items.filter { $0.shed == shelf }
-                    text.append(contentsOf: """
-                                            <div class="itemListSection">
-                                                <div class="sectionHeader">
-                                                    <p class="sectionHeaderTitle">\(shelf)</p>
-                                                    <p class="sectionTotalWeight">, \(sectionTotalWeight(array: items))</p>
-                                                </div>
-                                                <div class="sectionItems">
-                                                    <ul>
-                                                        <!-- -->\(sectionItems(array: items))<!-- -->
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            """
+                    let items = wishItems.filter { $0.shed == shelf }
+                    guard items.count >= 1 else { continue }
+                    textFirst.append(contentsOf:
+                    """
+                    <div class="itemListSection">
+                        <div class="sectionHeader">
+                            <p class="sectionHeaderTitle">\(shelf)\(weightCount(pdfItems: items))</p>
+                        </div>
+                        <div class="sectionItems">
+                            <ul>
+                                <!-- -->\(sectionItems(array: items))<!-- -->
+                            </ul>
+                        </div>
+                    </div>
+                    """
                     )
                 }
                 finalText.append(contentsOf: textFirst)
             case .regret:
                 for shelf in shelves {
-                    var text: String = ""
-                    let items = items.filter { $0.shed == shelf }
-                    text.append(contentsOf: """
-                                            <div class="itemListSection">
-                                                <div class="sectionHeader">
-                                                    <p class="sectionHeaderTitle">\(shelf)</p>
-                                                    <p class="sectionTotalWeight">, \(sectionTotalWeight(array: items))</p>
-                                                </div>
-                                                <div class="sectionItems">
-                                                    <ul>
-                                                        <!-- -->\(sectionItems(array: items))<!-- -->
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            """
+                    let items = regretItems.filter { $0.shed == shelf }
+                    guard items.count >= 1 else { continue }
+                    textFirst.append(contentsOf:
+                    """
+                    <div class="itemListSection">
+                        <div class="sectionHeader">
+                            <p class="sectionHeaderTitle">\(shelf)\(weightCount(pdfItems: items))</p>
+                        </div>
+                        <div class="sectionItems">
+                            <ul>
+                                <!-- -->\(sectionItems(array: items))<!-- -->
+                            </ul>
+                        </div>
+                    </div>
+                    """
                     )
                 }
                 finalText.append(contentsOf: textFirst)
@@ -898,12 +477,13 @@ struct GearShedPDFView: View {
         
         guard let imageURL = Bundle.main.url(forResource: "gearShedBlack", withExtension: "png")
             else { fatalError("Error locating image file.") }
+        
         // Replacing header placeholders with values
         let htmlHeader = htmlContent
             .replacingOccurrences(of: "#USERNAME#", with: "\(Prefs.shared.pdfUserName)'s")
             .replacingOccurrences(of: "#PDF_TYPE#", with: pdfType())
-            .replacingOccurrences(of: "#DATE", with: pdfDate())
-//            .replacingOccurrences(of: "#IMG_SRC#", with: "\(imageURL)")
+            .replacingOccurrences(of: "#DATE#", with: pdfDate())
+            .replacingOccurrences(of: "{{IMG_SRC}}", with: imageURL.description)
         // Replacing stat bar placeholder with values
         let htmlStats = htmlHeader
             .replacingOccurrences(of: "#STAT_BAR#", with: pdfStats())
@@ -913,232 +493,150 @@ struct GearShedPDFView: View {
         
         return finalHTML
     }
-    
-    
-    func generate() -> Data {
-        // assign the print formatter to the print page renderer
-        let renderer = CustomPrintPageRenderer()
-        renderer.addPrintFormatter(UIMarkupTextPrintFormatter(markupText: createHTML()), startingAtPageAt: 0)
-
-        // assign paperRect and printableRect values
-        let page = CGRect(x: 0, y: 0, width: 595.2, height: 841.8) // A4, 72 dpi
-        renderer.setValue(page, forKey: "paperRect")
-        renderer.setValue(page, forKey: "printableRect")
-
-        // create pdf context and draw each page
-        let pdfData = NSMutableData()
-        UIGraphicsBeginPDFContextToData(pdfData, .zero, nil)
-
-        for i in 0..<renderer.numberOfPages {
-            UIGraphicsBeginPDFPage()
-            renderer.drawPage(at: i, in: UIGraphicsGetPDFContextBounds())
+    func printPDF() {
+        let printController = UIPrintInteractionController.shared
+        let printFormatter = UIMarkupTextPrintFormatter(markupText: createHTML())
+        printController.printFormatter = printFormatter
+        printController.present(animated: true) { (controller, completion, error) in
+            print(error ?? "Print controller presented.")
         }
-
-        UIGraphicsEndPDFContext();
-        
-        return pdfData as Data
-        
-
-        // save data to a pdf file and return
-//        guard nil != (try? pdfData.write(to: outputURL, options: .atomic))
-//            else { fatalError("Error writing PDF data to file.") }
-
-        
     }
     
-//    func exportHTMLContentToPDF(HTMLContent: String) {
-//        let printPageRenderer = CustomPrintPageRenderer()
-//
-//        let printFormatter = UIMarkupTextPrintFormatter(markupText: HTMLContent)
-//        printPageRenderer.addPrintFormatter(printFormatter, startingAtPageAt: 0)
-//
-//        let pdfData = drawPDFUsingPrintPageRenderer(printPageRenderer: printPageRenderer)
-//
-//        pdfFilename = "\(AppDelegate.getAppDelegate().getDocDir())/Invoice\(invoiceNumber!).pdf"
-//        pdfData?.write(toFile: pdfFilename, atomically: true)
-//
-//        print(pdfFilename)
-//    }
-//
-//    func drawPDFUsingPrintPageRenderer(printPageRenderer: UIPrintPageRenderer) -> NSData! {
-//        let data = NSMutableData()
-//
-//        UIGraphicsBeginPDFContextToData(data, CGRect.zero, nil)
-//        for i in 0..<printPageRenderer.numberOfPages {
-//            UIGraphicsBeginPDFPage()
-//            printPageRenderer.drawPage(at: i, in: UIGraphicsGetPDFContextBounds())
-//        }
-//
-//        UIGraphicsEndPDFContext()
-//
-//        return data
-//    }
-    
-    private func cancelButton() -> some View {
-        Button("Cancel",action: {presentationMode.wrappedValue.dismiss()})
+    private var viewTitle: some ToolbarContent {
+        ToolbarItem(placement: .principal) {
+            Text("Share Gear Shed")
+        }
     }
-    private func exportButton() -> some View {
-        Button("Export",action: {
-            showShareSheet.toggle()
-            print(createHTML())
-        })
+    private var cancelButton: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button { presentationMode.wrappedValue.dismiss() } label: { Text("Cancel") }
+        }
+    }
+    private var exportButton: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Button { printPDF() } label: { Text("Export") }
+        }
     }
 }
 
 struct WebView: UIViewRepresentable {
-    
     let htmlString: String
-    
-    private let webView = WKWebView()
-    
-    func generate() -> Data {
-        // assign the print formatter to the print page renderer
-        let renderer = CustomPrintPageRenderer()
-        renderer.addPrintFormatter(UIMarkupTextPrintFormatter(markupText: htmlString), startingAtPageAt: 0)
-
-        // assign paperRect and printableRect values
-        let page = CGRect(x: 0, y: 0, width: 595.2, height: 841.8) // A4, 72 dpi
-        renderer.setValue(page, forKey: "paperRect")
-        renderer.setValue(page, forKey: "printableRect")
-
-        // create pdf context and draw each page
-        let pdfData = NSMutableData()
-        UIGraphicsBeginPDFContextToData(pdfData, .zero, nil)
-
-        for i in 0..<renderer.numberOfPages {
-            UIGraphicsBeginPDFPage()
-            renderer.drawPage(at: i, in: UIGraphicsGetPDFContextBounds())
-        }
-
-        UIGraphicsEndPDFContext();
-        
-        return pdfData as Data
-        
-
-        // save data to a pdf file and return
-//        guard nil != (try? pdfData.write(to: outputURL, options: .atomic))
-//            else { fatalError("Error writing PDF data to file.") }
-
-        
-    }
-    
+    let webView = WKWebView()
     func makeUIView(context: Context) -> some UIView {
         return webView
     }
-    
     func updateUIView(_ uiView: UIViewType, context: Context) {
-        loadIntoWKWebView(generate())
-    }
-    
-    private func loadIntoWKWebView(_ data: Data) {
-        webView.load(data, mimeType: "application/pdf", characterEncodingName: "utf-8", baseURL: Bundle.main.bundleURL)
+        webView.loadHTMLString(htmlString, baseURL: Bundle.main.bundleURL)
     }
 }
-
-class PDF {
-
-    /**
-     Generates a PDF using the given print formatter and saves it to the user's document directory.
-
-     - parameters:
-       - printFormatter: The print formatter used to generate the PDF.
-
-     - returns: The generated PDF.
-    */
-    class func generate(using printFormatter: UIPrintFormatter) -> Data {
-
-        // assign the print formatter to the print page renderer
-        let renderer = UIPrintPageRenderer()
-        renderer.addPrintFormatter(printFormatter, startingAtPageAt: 0)
-
-        // assign paperRect and printableRect values
-        let page = CGRect(x: 0, y: 0, width: 595.2, height: 841.8) // A4, 72 dpi
-        renderer.setValue(page, forKey: "paperRect")
-        renderer.setValue(page, forKey: "printableRect")
-
-        // create pdf context and draw each page
-        let pdfData = NSMutableData()
-        UIGraphicsBeginPDFContextToData(pdfData, .zero, nil)
-
-        for i in 0..<renderer.numberOfPages {
-            UIGraphicsBeginPDFPage()
-            renderer.drawPage(at: i, in: UIGraphicsGetPDFContextBounds())
-        }
-
-        UIGraphicsEndPDFContext();
-
-        // save data to a pdf file and return
-        guard nil != (try? pdfData.write(to: outputURL, options: .atomic))
-            else { fatalError("Error writing PDF data to file.") }
-
-        return pdfData as Data
-    }
-
-    private class var outputURL: URL {
-
-        guard let directory = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-            else { fatalError("Error getting user's document directory.") }
-
-        let url = directory.appendingPathComponent(outputFileName).appendingPathExtension("pdf")
-        print("open \(url.path)")
-        return url
-    }
-
-    private class var outputFileName: String {
-        return "generated-\(Int(Date().timeIntervalSince1970))"
-    }
-}
-
-class CustomPrintPageRenderer: UIPrintPageRenderer {
-
-    let A4PageWidth: CGFloat = 595.2
     
-    let A4PageHeight: CGFloat = 841.8
-    
-    
-    override init() {
-        super.init()
-        
-        // Specify the frame of the A4 page.
-        let pageFrame = CGRect(x: 0.0, y: 0.0, width: A4PageWidth, height: A4PageHeight)
-        
-        // Set the page frame.
-        self.setValue(NSValue(cgRect: pageFrame), forKey: "paperRect")
-        
-        // Set the horizontal and vertical insets (that's optional).
-        // self.setValue(NSValue(CGRect: pageFrame), forKey: "printableRect")
-        self.setValue(NSValue(cgRect: pageFrame.insetBy(dx: 10.0, dy: 10.0)), forKey: "printableRect")
-        
-        
-        self.headerHeight = 50.0
-        self.footerHeight = 50.0
-    }
-    
-    
-    
-    
-    
-    
-    func getTextSize(text: String, font: UIFont!, textAttributes: [String: AnyObject]! = nil) -> CGSize {
-        let testLabel = UILabel(frame: CGRect(x: 0.0, y: 0.0, width: self.paperRect.size.width, height: footerHeight))
-        if let attributes = textAttributes {
-            testLabel.attributedText = NSAttributedString(string: text)
-        }
-        else {
-            testLabel.text = text
-            testLabel.font = font!
-        }
-        
-        testLabel.sizeToFit()
-        
-        return testLabel.frame.size
-    }
-    
-}
-
-
-
-
+//class PDF {
+//    /**
+//        Generates a PDF using the given print formatter and saves it to the user's document directory.
+//
+//        - parameters:
+//        - printFormatter: The print formatter used to generate the PDF.
+//
+//        - returns: The generated PDF.
+//    */
+//    class func generate(htmlString: String) -> Data {
+//
+//        // assign the print formatter to the print page renderer
+//        let renderer = CustomPrintPageRenderer()
+//        renderer.addPrintFormatter(UIMarkupTextPrintFormatter(markupText: htmlString), startingAtPageAt: 0)
+//
+////        // assign paperRect and printableRect values
+////        let page = CGRect(x: 0, y: 0, width: 595.2, height: 841.8) // A4, 72 dpi
+////        renderer.setValue(page, forKey: "paperRect")
+////        renderer.setValue(page, forKey: "printableRect")
+//
+//        // create pdf context and draw each page
+//        let pdfData = NSMutableData()
+//        UIGraphicsBeginPDFContextToData(pdfData, .zero, nil)
+//
+//        for i in 0..<renderer.numberOfPages {
+//            UIGraphicsBeginPDFPage()
+//            renderer.drawPage(at: i, in: UIGraphicsGetPDFContextBounds())
+//        }
+//
+//        UIGraphicsEndPDFContext();
+//
+////        // save data to a pdf file and return
+////        guard nil != (try? pdfData.write(to: outputURL, options: .atomic))
+////            else { fatalError("Error writing PDF data to file.") }
+//
+//        return pdfData as Data
+//    }
+//
+//    class func generateURL(htmlString: String) -> URL {
+//
+//        // assign the print formatter to the print page renderer
+//        let renderer = CustomPrintPageRenderer()
+//        renderer.addPrintFormatter(UIMarkupTextPrintFormatter(markupText: htmlString), startingAtPageAt: 0)
+//
+//        // assign paperRect and printableRect values
+////        let page = CGRect(x: 0, y: 0, width: 595.2, height: 841.8) // A4, 72 dpi
+////        renderer.setValue(page, forKey: "paperRect")
+////        renderer.setValue(page, forKey: "printableRect")
+//
+//        // create pdf context and draw each page
+//        let pdfData = NSMutableData()
+//        UIGraphicsBeginPDFContextToData(pdfData, .zero, nil)
+//
+//        for i in 0..<renderer.numberOfPages {
+//            UIGraphicsBeginPDFPage()
+//            renderer.drawPage(at: i, in: UIGraphicsGetPDFContextBounds())
+//        }
+//
+//        UIGraphicsEndPDFContext();
+//
+//        // save data to a pdf file and return
+//        guard nil != (try? pdfData.write(to: outputURL, options: .atomic))
+//            else { fatalError("Error writing PDF data to file.") }
+//
+//        return outputURL as URL
+//    }
+//
+//    private class var outputURL: URL {
+//
+//
+//
+//        guard let directory = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+//            else { fatalError("Error getting user's document directory.") }
+//
+//        let url = directory.appendingPathComponent(outputFileName).appendingPathExtension("pdf")
+//        print("open \(url.path)")
+//        return url
+//    }
+//
+//    private class var outputFileName: String {
+//        return "generated-\(Int(Date().timeIntervalSince1970))"
+//    }
+//}
+//
+//class CustomPrintPageRenderer: UIPrintPageRenderer {
+//
+//    let A4PageWidth: CGFloat = 595.2
+//    let A4PageHeight: CGFloat = 841.8
+//
+//    override init() {
+//        super.init()
+//
+//        // Specify the frame of the A4 page.
+//        let pageFrame = CGRect(x: 0.0, y: 0.0, width: A4PageWidth, height: A4PageHeight)
+//
+//        // Set the page frame.
+//        self.setValue(NSValue(cgRect: pageFrame), forKey: "paperRect")
+//
+//        // Set the horizontal and vertical insets (that's optional).
+//        //self.setValue(NSValue(CGRect: pageFrame), forKey: "printableRect")
+//        self.setValue(NSValue(cgRect: pageFrame.insetBy(dx: 10.0, dy: 15.0)), forKey: "printableRect")
+//
+//
+//        self.headerHeight = 50.0
+//        self.footerHeight = 50.0
+//    }
+//}
 
 //wkWebView.loadHTMLString(html, baseURL: Bundle.main.bundleURL)
 
@@ -1165,9 +663,6 @@ class CustomPrintPageRenderer: UIPrintPageRenderer {
 //        print(error ?? "Print controller presented.")
 //    }
 //}
-
-
-
 
 /*let section = PDFSection(columnWidths: [0.25, 0.75])
 let leftSection = section.columns[0]
@@ -1306,5 +801,473 @@ document.add(space: 10)
      
      return data
  }
+ 
+ 
+ 
+ switch gsPDFType {
+             case .shed:
+                 WebView(htmlString: createHTML())
+             case .brand:
+                 WebView(htmlString: createHTML())
+             case .fav:
+                 WebView(htmlString: createHTML())
+             case .wish:
+                 WebView(htmlString: createHTML())
+             case .regret:
+                 WebView(htmlString: createHTML())
+             }
+ 
  */
 
+
+//func statTitleWeightSetting() -> String {
+//    var value: String = ""
+//    if Prefs.shared.weightUnit == "g" {
+//        value = "Weight (g)"
+//    } else {
+//        value = "Weight (Lbs/Oz)"
+//    }
+//    return value
+//}
+//func statTitleTextBold(text: String ) -> PDFAttributedText {
+//    let attributedTitle = NSMutableAttributedString(string: "\(text)", attributes: [
+//        .font: UIFont(name: "HelveticaNeueBold", size: 11)!
+//    ])
+//    let title = PDFAttributedText(text: attributedTitle)
+//    return title
+//}
+//func statText(text: String) -> PDFAttributedText {
+//    let attributedTitle = NSMutableAttributedString(string: "\(text)", attributes: [
+//        .font: UIFont(name: "HelveticaNeue", size: 11)!
+//    ])
+//    let title = PDFAttributedText(text: attributedTitle)
+//    return title
+//}
+//func sectionHeaderTitle(name: String, array: [pdfItem]) -> PDFAttributedText {
+//    let attributedTitle = NSMutableAttributedString(string: " \(name), \(weightCount(pdfItems: array))", attributes: [
+//        .font: UIFont(name: "HelveticaNeueBold", size: 11)!
+//    ])
+//    let title = PDFAttributedText(text: attributedTitle)
+//    return title
+//}
+//func titleLineOne() -> PDFAttributedText {
+//    let attributedTitleLineOne = NSMutableAttributedString(string: "\(Prefs.shared.pdfUserName)'s GEAR SHED", attributes: [
+//        .font: UIFont(name: "HelveticaNeue", size: 11)!
+//    ])
+//    let title = PDFAttributedText(text: attributedTitleLineOne)
+//    return title
+//}
+//func titleLineTwo() -> PDFAttributedText {
+//    var text: String = ""
+//
+//    switch gsPDFType {
+//    case .shed:
+//        text = "Shed"
+//    case .brand:
+//        text = "Brand"
+//    case .fav:
+//        text = "Fav"
+//    case .wish:
+//        text = "Wish"
+//    case .regret:
+//        text = "Regret"
+//    }
+//
+//    let attributedTitle = NSMutableAttributedString(string: "\(text) View | \(Date().monthDayYearDateText())", attributes: [
+//        .font: UIFont(name: "HelveticaNeue", size: 11)!
+//    ])
+//    let title = PDFAttributedText(text: attributedTitle)
+//    return title
+//}
+//func stat00() -> String {
+//    switch gsPDFType {
+//    case .shed:
+//        return "Shelves (#)"
+//    case .brand:
+//        return "Brands (#)"
+//    case .fav:
+//        return "Gear (#)"
+//    case .wish:
+//        return "Gear (#)"
+//    case .regret:
+//        return "Gear (#)"
+//    }
+//}
+//func stat01() -> String {
+//    switch gsPDFType {
+//    case .shed:
+//        return "Gear (#)"
+//    case .brand:
+//        return "Gear (#)"
+//    case .fav:
+//        return statTitleWeightSetting()
+//    case .wish:
+//        return statTitleWeightSetting()
+//    case .regret:
+//        return statTitleWeightSetting()
+//    }
+//}
+//func stat02() -> String {
+//    switch gsPDFType {
+//    case .shed:
+//        return statTitleWeightSetting()
+//    case .brand:
+//        return statTitleWeightSetting()
+//    case .fav:
+//        return "Invested ($)"
+//    case .wish:
+//        return "Cost ($)"
+//    case .regret:
+//        return "Invested ($)"
+//    }
+//}
+//func stat03() -> String {
+//    switch gsPDFType {
+//    case .shed:
+//        return "Invested ($)"
+//    case .brand:
+//        return "Invested ($)"
+//    case .fav:
+//        return ""
+//    case .wish:
+//        return ""
+//    case .regret:
+//        return ""
+//    }
+//}
+//func stat10() -> String {
+//    switch gsPDFType {
+//    case .shed:
+//        return shedCount()
+//    case .brand:
+//        return brandCount()
+//    case .fav:
+//        return itemCount(array: gsData.favItems)
+//    case .wish:
+//        return itemCount(array: gsData.wishListItems)
+//    case .regret:
+//        return itemCount(array: gsData.regretItems)
+//    }
+//}
+//func stat11() -> String {
+//    switch gsPDFType {
+//    case .shed:
+//        return itemCount(array: gsData.items)
+//    case .brand:
+//        return itemCount(array: gsData.items)
+//    case .fav:
+//        return weightCount(array: gsData.favItems)
+//    case .wish:
+//        return weightCount(array: gsData.wishListItems)
+//    case .regret:
+//        return weightCount(array: gsData.regretItems)
+//    }
+//}
+//func stat12() -> String {
+//    switch gsPDFType {
+//    case .shed:
+//        return weightCount(array: gsData.items)
+//    case .brand:
+//        return weightCount(array: gsData.items)
+//    case .fav:
+//        return costCount(array: gsData.favItems)
+//    case .wish:
+//        return costCount(array: gsData.wishListItems)
+//    case .regret:
+//        return costCount(array: gsData.regretItems)
+//    }
+//}
+//func stat13() -> String {
+//    switch gsPDFType {
+//    case .shed:
+//        return costCount(array: gsData.items)
+//    case .brand:
+//        return costCount(array: gsData.items)
+//    case .fav:
+//        return ""
+//    case .wish:
+//        return ""
+//    case .regret:
+//        return ""
+//    }
+//}
+//func createGSPDF() -> Data {
+//    //MARK: Converting data in PDF Data Models
+//    var shelves = [String]()
+//    var brands = [String]()
+//    var items = [pdfItem]()
+//    var favItems = [pdfItem]()
+//    var wishItems = [pdfItem]()
+//    var regretItems = [pdfItem]()
+//    for item in gsData.items {
+//        let newItem = pdfItem (
+//            name: item.name,
+//            brand: item.brandName,
+//            shed: item.shedName,
+//            weight: item.weight,
+//            lbs: item.itemLbs,
+//            oz: item.itemOZ,
+//            price: item.price,
+//            details: item.detail,
+//            isFavourite: item.isFavourite,
+//            isWish: item.isWishlist,
+//            isRegret: item.isRegret)
+//        items.append(newItem)
+//    }
+//    for item in gsData.favItems {
+//        let newItem = pdfItem (
+//            name: item.name,
+//            brand: item.brandName,
+//            shed: item.shedName,
+//            weight: item.weight,
+//            lbs: item.itemLbs,
+//            oz: item.itemOZ,
+//            price: item.price,
+//            details: item.detail,
+//            isFavourite: item.isFavourite,
+//            isWish: item.isWishlist,
+//            isRegret: item.isRegret)
+//        favItems.append(newItem)
+//    }
+//    for item in gsData.wishListItems {
+//        let newItem = pdfItem (
+//            name: item.name,
+//            brand: item.brandName,
+//            shed: item.shedName,
+//            weight: item.weight,
+//            lbs: item.itemLbs,
+//            oz: item.itemOZ,
+//            price: item.price,
+//            details: item.detail,
+//            isFavourite: item.isFavourite,
+//            isWish: item.isWishlist,
+//            isRegret: item.isRegret)
+//        wishItems.append(newItem)
+//    }
+//    for item in gsData.regretItems {
+//        let newItem = pdfItem (
+//            name: item.name,
+//            brand: item.brandName,
+//            shed: item.shedName,
+//            weight: item.weight,
+//            lbs: item.itemLbs,
+//            oz: item.itemOZ,
+//            price: item.price,
+//            details: item.detail,
+//            isFavourite: item.isFavourite,
+//            isWish: item.isWishlist,
+//            isRegret: item.isRegret)
+//        regretItems.append(newItem)
+//    }
+//    for shed in gsData.sheds {
+//        shelves.append(shed.name)
+//    }
+//    for brand in gsData.brands {
+//        brands.append(brand.name)
+//    }
+//    // MARK: Initialize PDF and Size
+//    let document = PDFDocument(format: .a4)
+//    // MARK: Add Elements to PDF
+//    let logo = PDFImage(image: Image(named: "gearShedBlack")!, size: CGSize(width: 100, height: 100))
+//    document.add(.contentRight, image: logo)
+//    document.add(space: 10)
+//    //Title line one and two
+//    document.add(.contentLeft, attributedTextObject: titleLineOne())
+//    document.add(.contentLeft, attributedTextObject: titleLineTwo())
+//    document.add(space: 15)
+//    // Statbar
+//    let statTable = PDFTable(rows: 2, columns: 4)
+//    statTable.content = [
+//        [stat00(), stat01(), stat02(), stat03()],
+//        [stat10(), stat11(), stat12(), stat13()]
+//    ]
+//    statTable.rows.allCellsStyle = PDFTableCellStyle.none
+//    let firstRow = statTable[rows: 0..<1]
+//    let firstRowStyle = PDFTableCellStyle(font: Font(name: "HelveticaNeue", size: 11)!)
+//    firstRow.allCellsStyle = firstRowStyle
+//    let secondRow = statTable[rows: 1..<2]
+//    let secondRowStyle = PDFTableCellStyle(font: Font(name: "HelveticaNeue", size: 11)!)
+//    secondRow.allCellsStyle = secondRowStyle
+//    statTable.rows.allCellsAlignment = .left
+//    // Set table padding and margin
+//    statTable.padding = 2
+//    statTable.margin = 0
+//    document.add(table: statTable)
+//    document.add(space: 15)
+//    //Items
+//    switch gsPDFType {
+//    case .shed:
+//        for shelf in shelves {
+//            let items = items.filter { $0.shed == shelf }
+//            let outlineStyle = PDFLineStyle(type: .full, color: Color.black, width: 1)
+//            let lineStyle = PDFLineStyle(type: .full, color: Color.clear, width: 0.1)
+//            let sectionGroup = PDFGroup(allowsBreaks: false, backgroundColor: Color.clear, outline: outlineStyle)
+//            sectionGroup.set(indentation: 0.0, left: true)
+//            sectionGroup.addLineSeparator(style: lineStyle)
+//            sectionGroup.add(space: 3)
+//            sectionGroup.add(attributedTextObject: sectionHeaderTitle(name: shelf, array: items))
+//            sectionGroup.add(space: 3)
+//            sectionGroup.addLineSeparator(style: lineStyle)
+//            document.add(group: sectionGroup)
+//            document.add(space: 10)
+//
+//
+//
+//            for item in items {
+//                let itemGroup = PDFGroup(allowsBreaks: false)
+//                itemGroup.set(indentation: 15, left: true)
+//                itemGroup.add(attributedTextObject: statText(text: item.name + " | " + item.brand))
+//                itemGroup.add(attributedTextObject: statText(text: itemWeightUnit(item: item) + " | " + "$ " + item.price))
+//                itemGroup.add(attributedTextObject: statText(text: item.details))
+//                document.add(group: itemGroup)
+//                document.add(space: 10)
+//            }
+//        }
+//    case .brand:
+//        brands.forEach { brand in
+//            let brand = brand
+//            let items = items.filter { $0.brand == brand }
+//            let outlineStyle = PDFLineStyle(type: .full, color: Color.black, width: 1)
+//            let lineStyle = PDFLineStyle(type: .full, color: Color.clear, width: 0.1)
+//
+//            let sectionGroup = PDFGroup(allowsBreaks: false, backgroundColor: Color.clear, outline: outlineStyle)
+//            sectionGroup.set(indentation: 0.0, left: true)
+//            sectionGroup.addLineSeparator(style: lineStyle)
+//            sectionGroup.add(space: 3)
+//            sectionGroup.add(attributedTextObject: sectionHeaderTitle(name: brand, array: items))
+//            sectionGroup.add(space: 3)
+//            sectionGroup.addLineSeparator(style: lineStyle)
+//            document.add(group: sectionGroup)
+//
+//            document.add(space: 10)
+//            items.forEach { item in
+//                let itemGroup = PDFGroup(allowsBreaks: false)
+//                itemGroup.set(indentation: 15, left: true)
+//                itemGroup.add(attributedTextObject: statText(text: item.name + " | " + item.shed))
+//                itemGroup.add(attributedTextObject: statText(text: itemWeightUnit(item: item) + " | " + "$ " + item.price))
+//                itemGroup.add(attributedTextObject: statText(text: item.details))
+//                document.add(group: itemGroup)
+//                document.add(space: 10)
+//            }
+//        }
+//    case .fav:
+//        for shelf in shelves {
+//            let items = favItems.filter { $0.shed == shelf }
+//            guard items.count >= 1 else { continue }
+//
+//
+//
+//            let outlineStyle = PDFLineStyle(type: .full, color: Color.black, width: 1)
+//            let lineStyle = PDFLineStyle(type: .full, color: Color.clear, width: 0.1)
+//            let sectionGroup = PDFGroup(allowsBreaks: false, backgroundColor: Color.clear, outline: outlineStyle)
+//            sectionGroup.set(indentation: 0.0, left: true)
+//            sectionGroup.addLineSeparator(style: lineStyle)
+//            sectionGroup.add(space: 3)
+//            sectionGroup.add(attributedTextObject: sectionHeaderTitle(name: shelf, array: items))
+//            sectionGroup.add(space: 3)
+//            sectionGroup.addLineSeparator(style: lineStyle)
+//
+//            document.add(group: sectionGroup)
+//            document.add(space: 10)
+//
+//            for item in items {
+//                let itemGroup = PDFGroup(allowsBreaks: false)
+//                itemGroup.set(indentation: 15, left: true)
+//                itemGroup.add(attributedTextObject: statText(text: item.name + " | " + item.brand))
+//                itemGroup.add(attributedTextObject: statText(text: itemWeightUnit(item: item) + " | " + "$ " + item.price))
+//                itemGroup.add(attributedTextObject: statText(text: item.details))
+//                document.add(group: itemGroup)
+//                document.add(space: 10)
+//            }
+//        }
+//
+//    case .wish:
+//        for shelf in shelves {
+//            let items = wishItems.filter { $0.shed == shelf }
+//            guard items.count >= 1 else { continue }
+//
+//            let outlineStyle = PDFLineStyle(type: .full, color: Color.black, width: 1)
+//            let lineStyle = PDFLineStyle(type: .full, color: Color.clear, width: 0.1)
+//            let sectionGroup = PDFGroup(allowsBreaks: false, backgroundColor: Color.clear, outline: outlineStyle)
+//            sectionGroup.set(indentation: 0.0, left: true)
+//            sectionGroup.addLineSeparator(style: lineStyle)
+//            sectionGroup.add(space: 3)
+//            sectionGroup.add(attributedTextObject: sectionHeaderTitle(name: shelf, array: items))
+//            sectionGroup.add(space: 3)
+//            sectionGroup.addLineSeparator(style: lineStyle)
+//
+//            document.add(group: sectionGroup)
+//            document.add(space: 10)
+//
+//            for item in items {
+//                let itemGroup = PDFGroup(allowsBreaks: false)
+//                itemGroup.set(indentation: 15, left: true)
+//                itemGroup.add(attributedTextObject: statText(text: item.name + " | " + item.brand))
+//                itemGroup.add(attributedTextObject: statText(text: itemWeightUnit(item: item) + " | " + "$ " + item.price))
+//                itemGroup.add(attributedTextObject: statText(text: item.details))
+//                document.add(group: itemGroup)
+//                document.add(space: 10)
+//            }
+//        }
+//
+//    case .regret:
+//        for shelf in shelves {
+//            let items = regretItems.filter { $0.shed == shelf }
+//            guard items.count >= 1 else { continue }
+//
+//
+//
+//            let outlineStyle = PDFLineStyle(type: .full, color: Color.black, width: 1)
+//            let lineStyle = PDFLineStyle(type: .full, color: Color.clear, width: 0.1)
+//            let sectionGroup = PDFGroup(allowsBreaks: false, backgroundColor: Color.clear, outline: outlineStyle)
+//            sectionGroup.set(indentation: 0.0, left: true)
+//            sectionGroup.addLineSeparator(style: lineStyle)
+//            sectionGroup.add(space: 3)
+//            sectionGroup.add(attributedTextObject: sectionHeaderTitle(name: shelf, array: items))
+//            sectionGroup.add(space: 3)
+//            sectionGroup.addLineSeparator(style: lineStyle)
+//
+//            document.add(group: sectionGroup)
+//            document.add(space: 10)
+//
+//            for item in items {
+//                let itemGroup = PDFGroup(allowsBreaks: false)
+//                itemGroup.set(indentation: 15, left: true)
+//                itemGroup.add(attributedTextObject: statText(text: item.name + " | " + item.brand))
+//                itemGroup.add(attributedTextObject: statText(text: itemWeightUnit(item: item) + " | " + "$ " + item.price))
+//                itemGroup.add(attributedTextObject: statText(text: item.details))
+//                document.add(group: itemGroup)
+//                document.add(space: 10)
+//            }
+//        }
+//    }
+//
+//    // MARK: Generate and return PDF Data
+//    let generator = PDFGenerator(document: document)
+//    let pdf = try! generator.generateData()
+//    return pdf
+//}
+
+//        .sheet(isPresented: $showShareSheet) {
+//            ShareView(activityItems: [UIMarkupTextPrintFormatter(markupText: createHTML())])
+//            if let data = createGSPDF() {
+//               ShareView(activityItems: [data])
+//           }
+//           if let data = webViewDidFinishLoad(WKWebView().loadHTMLString(createHTML(), baseURL: Bundle.main.bundleURL)) {
+//                ShareView(activityItems: [data])
+//            }
+//        }
+//            switch gsPDFType {
+//            case .shed:
+//                PDFPreviews(data: createGSPDF())
+//            case .brand:
+//                PDFPreviews(data: createGSPDF())
+//            case .fav:
+//                PDFPreviews(data: createGSPDF())
+//            case .wish:
+//                PDFPreviews(data: createGSPDF())
+//            case .regret:
+//                PDFPreviews(data: createGSPDF())
+//            }
+//    @EnvironmentObject private var persistentStore: PersistentStore
+//    @State private var showShareSheet : Bool = false

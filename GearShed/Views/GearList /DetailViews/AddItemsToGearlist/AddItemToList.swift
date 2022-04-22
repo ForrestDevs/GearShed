@@ -1,5 +1,5 @@
 //
-//  AddClusterItemView.swift
+//  AddPileItemView.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-11-05.
@@ -20,15 +20,15 @@ struct AddItemsToGearListView: View {
     @State private var canSave: Bool = false
     
     private let gearlist: Gearlist
-    private var pile: Cluster?
-    private var pack: Container?
+    private var pile: Pile?
+    private var pack: Pack?
     private var type: SelectType
     private var itemOut: ((Item) -> ())?
     
     func availablePileItems() -> [Item] {
         var array = [Item]()
         for item in gearlist.items {
-            if item.gearlistCluster(gearlist: gearlist) == nil {
+            if item.gearlistPile(gearlist: gearlist) == nil {
                 array.append(item)
             }
         }
@@ -38,7 +38,7 @@ struct AddItemsToGearListView: View {
     func availablePackItems() -> [Item] {
         var array = [Item]()
         for item in gearlist.items {
-            if item.gearlistContainer(gearlist: gearlist) == nil {
+            if item.gearlistPack(gearlist: gearlist) == nil {
                 array.append(item)
             }
         }
@@ -73,7 +73,7 @@ extension AddItemsToGearListView {
         _itemVM = StateObject(wrappedValue: itemVM)
     }
     /// Initializer for loading a Item Select view (All Shed Items) for addition/ subtraction from pile items.
-    init(persistentStore: PersistentStore, type: SelectType, gearlist: Gearlist, pile: Cluster) {
+    init(persistentStore: PersistentStore, type: SelectType, gearlist: Gearlist, pile: Pile) {
         self.type = type
         self.gearlist = gearlist
         self.pile = pile
@@ -85,7 +85,7 @@ extension AddItemsToGearListView {
         _itemVM = StateObject(wrappedValue: itemVM)
     }
     /// Initializer for loading a Item Select view (All Shed Items) for addition/ subtraction from pack items.
-    init(persistentStore: PersistentStore, type: SelectType, gearlist: Gearlist, pack: Container) {
+    init(persistentStore: PersistentStore, type: SelectType, gearlist: Gearlist, pack: Pack) {
         self.type = type
         self.gearlist = gearlist
         self.pack = pack
@@ -281,12 +281,12 @@ extension AddItemsToGearListView {
                         detailManager.secondaryTarget = .noView
                     }
                 case .pileItem:
-                    viewModel.updateClusterItems(addingItems: itemsChecked, removingItems: itemsUnChecked, pile: pile!)
+                    viewModel.updatePileItems(addingItems: itemsChecked, removingItems: itemsUnChecked, pile: pile!)
                     withAnimation {
                         detailManager.secondaryTarget = .noView
                     }
                 case .packItem:
-                    viewModel.updateContainerItems(addingItems: itemsChecked, removingItems: itemsUnChecked, pack: pack!)
+                    viewModel.updatePackItems(addingItems: itemsChecked, removingItems: itemsUnChecked, pack: pack!)
                     withAnimation {
                         detailManager.secondaryTarget = .noView
                     }

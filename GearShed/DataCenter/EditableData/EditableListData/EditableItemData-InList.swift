@@ -15,13 +15,13 @@ struct EditableItemDataInList {
     var name: String
     var gearlist: Gearlist
     
-    var cluster: Cluster?
-    var previousCluster: Cluster?
+    var pile: Pile?
+    var previousPile: Pile?
     
-    var container: Container?
-    var previousContainer: Container?
+    var container: Pack?
+    var previousPack: Pack?
     
-    var containerBool: ContainerBool?
+    var packingBool: PackingBool?
     
     /// If the item has an ID then the item has already been created and exists in CoreData Store.
     var representsExistingItem: Bool { id != nil }
@@ -39,13 +39,13 @@ extension EditableItemDataInList {
         self.name = item.name
         self.gearlist = gearlist
         
-        self.cluster = item.gearlistCluster(gearlist: gearlist)
-        self.previousCluster = item.gearlistCluster(gearlist: gearlist)
+        self.pile = item.gearlistPile(gearlist: gearlist)
+        self.previousPile = item.gearlistPile(gearlist: gearlist)
         
-        self.container = item.gearlistContainer(gearlist: gearlist)
-        self.previousContainer = item.gearlistContainer(gearlist: gearlist)
+        self.container = item.gearlistPack(gearlist: gearlist)
+        self.previousPack = item.gearlistPack(gearlist: gearlist)
         
-        self.containerBool = item.gearlistContainerBool(gearlist: gearlist)
+        self.packingBool = item.gearlistpackingBool(gearlist: gearlist)
     }
     
     

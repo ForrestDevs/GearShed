@@ -80,15 +80,15 @@ struct ItemCodableProxy: Codable {
             self.gearlists.append(gearlist.id!.uuidString)
         }
         
-        for pile in item.clusters {
+        for pile in item.piles {
             self.piles.append(pile.id!.uuidString)
         }
         
-        for pack in item.containers {
+        for pack in item.packs {
             self.packs.append(pack.id!.uuidString)
         }
         
-        for packingBool in item.containerBools {
+        for packingBool in item.packingBools {
             self.packingBools.append(packingBool.id!.uuidString)
         }
         

@@ -144,7 +144,7 @@ extension GearShedView {
             } label: {
                 HStack {
                     Text("PDF")
-                    Image(systemName: "square.and.arrow.up")
+//                    Image(systemName: "square.and.arrow.up")
                 }
             }
         }

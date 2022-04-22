@@ -1,5 +1,5 @@
 //
-//  Cluster+Extensions.swift
+//  Pile+Extensions.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-11-05.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Cluster {
+extension Pile {
     
     var name: String {
         get { name_ ?? "Unknown Name" }

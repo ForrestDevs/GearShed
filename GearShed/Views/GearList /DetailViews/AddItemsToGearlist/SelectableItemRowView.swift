@@ -13,15 +13,15 @@ struct SelectableItemRowView: View {
     
     private var item: Item
     private var gearlist: Gearlist?
-    private var pile: Cluster?
-    private var pack: Container?
+    private var pile: Pile?
+    private var pack: Pack?
     private var type: SelectType
     var respondToTapOnSelector: () -> ()
     var respondToTapOffSelector: () -> ()
     
     @State private var isChecked: Bool
     
-    init(type: SelectType, gearlist: Gearlist? = nil, pile: Cluster? = nil , pack: Container? = nil, item: Item, respondToTapOnSelector: @escaping () -> (), respondToTapOffSelector: @escaping () -> ()) {
+    init(type: SelectType, gearlist: Gearlist? = nil, pile: Pile? = nil , pack: Pack? = nil, item: Item, respondToTapOnSelector: @escaping () -> (), respondToTapOffSelector: @escaping () -> ()) {
         self.item = item
         self.type = type
         

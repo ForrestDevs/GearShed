@@ -13,19 +13,19 @@ extension ActivityType: CodableStructRepresentable {
     }
 }
 
-extension Cluster: CodableStructRepresentable {
+extension Pile: CodableStructRepresentable {
     var codableProxy: some Encodable & Decodable {
         return PileCodableProxy(from: self)
     }
 }
  
-extension Container: CodableStructRepresentable {
+extension Pack: CodableStructRepresentable {
     var codableProxy: some Encodable & Decodable {
         return PackCodableProxy(from: self)
     }
 }
  
-extension ContainerBool: CodableStructRepresentable {
+extension PackingBool: CodableStructRepresentable {
     var codableProxy: some Encodable & Decodable {
         return PackingBoolCodableProxy(from: self)
     }
@@ -58,7 +58,7 @@ struct PileCodableProxy: Codable {
     var gearlist: String
     var items = [String]()
     
-    init(from pile: Cluster) {
+    init(from pile: Pile) {
         self.id = pile.id!.uuidString
         self.name = pile.name
         self.gearlist = pile.gearlist.id!.uuidString
@@ -75,7 +75,7 @@ struct PackCodableProxy: Codable {
     var gearlist: String
     var items = [String]()
     
-    init(from pack: Container) {
+    init(from pack: Pack) {
         self.id = pack.id!.uuidString
         self.name = pack.name
         self.gearlist = pack.gearlist.id!.uuidString
@@ -93,7 +93,7 @@ struct PackingBoolCodableProxy: Codable {
     var gearlist: String
     var item: String
     
-    init(from packingBool: ContainerBool) {
+    init(from packingBool: PackingBool) {
         self.id = packingBool.id!.uuidString
         self.isPacked = packingBool.isPacked
         self.gearlist = packingBool.gearlist.id!.uuidString
@@ -155,15 +155,15 @@ struct GearlistCodableProxy: Codable {
             self.items.append(item.id!.uuidString)
         }
         
-        for pile in gearlist.clusters {
+        for pile in gearlist.piles {
             self.piles.append(pile.id!.uuidString)
         }
         
-        for pack in gearlist.containers {
+        for pack in gearlist.packs {
             self.packs.append(pack.id!.uuidString)
         }
         
-        for packingBool in gearlist.containerBools {
+        for packingBool in gearlist.packingBools {
             packingBools.append(packingBool.id!.uuidString)
         }
         

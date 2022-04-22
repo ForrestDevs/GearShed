@@ -45,7 +45,7 @@ final class BackupManager: ObservableObject {
     // don't want to write our own custom encoder (eventually we will), we extend each to
     // be able to produce a simple, Codable struct proxy holding only what we want to write out
     // (ItemCodable, ShedCodable, and BrandCodeable structs, respectively)
-    func writeAsJSON (items: [Item], itemImages: [ItemImage], itemDiaries: [ItemDiary], sheds: [Shed], brands: [Brand], gearlists: [Gearlist], piles: [Cluster], packs: [Container], packingBools: [ContainerBool], activityTypes: [ActivityType]) -> URL {
+    func writeAsJSON (items: [Item], itemImages: [ItemImage], itemDiaries: [ItemDiary], sheds: [Shed], brands: [Brand], gearlists: [Gearlist], piles: [Pile], packs: [Pack], packingBools: [PackingBool], activityTypes: [ActivityType]) -> URL {
         
         var all = AllCodableProxy (
             items: [],
@@ -126,7 +126,7 @@ final class BackupManager: ObservableObject {
         return url
     }
     
-    func backupToiCloudDrive(items: [Item], itemImages: [ItemImage], itemDiaries: [ItemDiary], sheds: [Shed], brands: [Brand], gearlists: [Gearlist], piles: [Cluster], packs: [Container], packingBools: [ContainerBool], activityTypes: [ActivityType]) {
+    func backupToiCloudDrive(items: [Item], itemImages: [ItemImage], itemDiaries: [ItemDiary], sheds: [Shed], brands: [Brand], gearlists: [Gearlist], piles: [Pile], packs: [Pack], packingBools: [PackingBool], activityTypes: [ActivityType]) {
         
         var all = AllCodableProxy (
             items: [],
@@ -386,11 +386,11 @@ final class BackupManager: ObservableObject {
         
         print("Begin Importing Piles")
         for pile in piles {
-            guard (Cluster.object(id: UUID(uuidString: pile.id)!, context: persistentStore.context) == nil) else {
+            guard (Pile.object(id: UUID(uuidString: pile.id)!, context: persistentStore.context) == nil) else {
                 print("Pile - \(pile.name) already exists")
                 continue
             }
-            let newPile = Cluster(context: persistentStore.context)
+            let newPile = Pile(context: persistentStore.context)
             newPile.id = UUID(uuidString: pile.id)
             newPile.name = pile.name
             newPile.gearlist = Gearlist.object(id: UUID(uuidString: pile.gearlist)!, context: persistentStore.context)!
@@ -405,11 +405,11 @@ final class BackupManager: ObservableObject {
         }
         
         for pack in packs {
-            guard (Container.object(id: UUID(uuidString: pack.id)!, context: persistentStore.context) == nil) else {
+            guard (Pack.object(id: UUID(uuidString: pack.id)!, context: persistentStore.context) == nil) else {
                 print("Pack - \(pack.name) already exists")
                 continue
             }
-            let newPack = Container(context: persistentStore.context)
+            let newPack = Pack(context: persistentStore.context)
             newPack.id = UUID(uuidString: pack.id)
             newPack.name = pack.name
             newPack.gearlist = Gearlist.object(id: UUID(uuidString: pack.gearlist)!, context: persistentStore.context)!
@@ -421,11 +421,11 @@ final class BackupManager: ObservableObject {
         }
         
         for packingBool in packingBools {
-            guard (ContainerBool.object(id: UUID(uuidString: packingBool.id)!, context: persistentStore.context) == nil) else {
+            guard (PackingBool.object(id: UUID(uuidString: packingBool.id)!, context: persistentStore.context) == nil) else {
                 print("Packing Bool - \(packingBool.id) already exists")
                 continue
             }
-            let newPackingBool = ContainerBool(context: persistentStore.context)
+            let newPackingBool = PackingBool(context: persistentStore.context)
             newPackingBool.id = UUID(uuidString: packingBool.id)
             newPackingBool.isPacked = packingBool.isPacked
             newPackingBool.gearlist = Gearlist.object(id: UUID(uuidString: packingBool.gearlist)!, context: persistentStore.context)!
@@ -564,7 +564,7 @@ final class BackupManager: ObservableObject {
          }
          
          for pile in piles {
-             let newPile = Cluster(context: persistentStore.context)
+             let newPile = Pile(context: persistentStore.context)
              newPile.id = UUID(uuidString: pile.id)
              newPile.name = pile.name
              newPile.gearlist = Gearlist.object(id: UUID(uuidString: pile.gearlist)!, context: persistentStore.context)!
@@ -576,7 +576,7 @@ final class BackupManager: ObservableObject {
          }
          
          for pack in packs {
-             let newPack = Container(context: persistentStore.context)
+             let newPack = Pack(context: persistentStore.context)
              newPack.id = UUID(uuidString: pack.id)
              newPack.name = pack.name
              newPack.gearlist = Gearlist.object(id: UUID(uuidString: pack.gearlist)!, context: persistentStore.context)!
@@ -588,7 +588,7 @@ final class BackupManager: ObservableObject {
          }
          
          for packingBool in packingBools {
-             let newPackingBool = ContainerBool(context: persistentStore.context)
+             let newPackingBool = PackBool(context: persistentStore.context)
              newPackingBool.id = UUID(uuidString: packingBool.id)
              newPackingBool.isPacked = packingBool.isPacked
              newPackingBool.gearlist = Gearlist.object(id: UUID(uuidString: packingBool.gearlist)!, context: persistentStore.context)!

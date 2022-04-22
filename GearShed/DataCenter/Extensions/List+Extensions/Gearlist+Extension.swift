@@ -32,7 +32,7 @@ extension Gearlist {
         get { name_ ?? "Unknown Name" }
         set {
             name_ = newValue
-            clusters.forEach({ $0.objectWillChange.send() })
+            piles.forEach({ $0.objectWillChange.send() })
         }
     }
     
@@ -77,13 +77,13 @@ extension Gearlist {
         get { details_ ?? "Unknown Detials" }
         set {
             details_ = newValue
-            clusters.forEach({ $0.objectWillChange.send() })
+            piles.forEach({ $0.objectWillChange.send() })
         }
     }
     
-    var clusters: [Cluster] {
-        if let clusters = clusters_ as? Set<Cluster> {
-            return clusters.sorted(by: { $0.name < $1.name } )
+    var piles: [Pile] {
+        if let piles = piles_ as? Set<Pile> {
+            return piles.sorted(by: { $0.name < $1.name } )
         }
         return []
     }
@@ -100,16 +100,16 @@ extension Gearlist {
         return []
     }
     
-    var containers: [Container] {
-        if let containers = containers_ as? Set<Container> {
-            return containers.sorted(by: { $0.name < $1.name })
+    var packs: [Pack] {
+        if let packs = packs_ as? Set<Pack> {
+            return packs.sorted(by: { $0.name < $1.name })
         }
         return [] 
     }
     
-    var containerBools: [ContainerBool] {
-        if let containerBools = containerBools_ as? Set<ContainerBool> {
-            return containerBools.sorted(by: { $0.id < $1.id })
+    var packingBools: [PackingBool] {
+        if let packingBools = packingBools_ as? Set<PackingBool> {
+            return packingBools.sorted(by: { $0.id < $1.id })
         }
         return []
     }
@@ -126,7 +126,7 @@ extension Gearlist {
     }*/
     
     // itemCount: computed property from Core Data items_
-    var clustersCount: Int { clusters_?.count ?? 0 }
+    var pileCount: Int { piles_?.count ?? 0 }
     
     // tripCount: computed property from Core Data trips_
    // var tripCount: Int { trips_?.count ?? 0 }

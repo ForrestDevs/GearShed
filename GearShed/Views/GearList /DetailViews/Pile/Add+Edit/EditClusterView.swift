@@ -1,5 +1,5 @@
 //
-//  EditClusterView.swift
+//  EditPileView.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-11-11.
@@ -7,18 +7,18 @@
 
 import SwiftUI
 
-struct EditClusterView: View {
+struct EditPileView: View {
     @EnvironmentObject private var detailManager: DetailViewManager
     
     @StateObject private var viewModel: GearlistData
     
-    @State private var editableData: EditableClusterData
+    @State private var editableData: EditablePileData
     
-    init(persistentStore: PersistentStore, cluster: Cluster) {
+    init(persistentStore: PersistentStore, pile: Pile) {
         let viewModel = GearlistData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
         
-        let initialValue = EditableClusterData(persistentStore: persistentStore, cluster: cluster)
+        let initialValue = EditablePileData(persistentStore: persistentStore, pile: pile)
         _editableData = State(initialValue: initialValue)
     }
 
@@ -36,7 +36,7 @@ struct EditClusterView: View {
     }
 }
 
-extension EditClusterView {
+extension EditPileView {
     // MARK: Main Content
     private var contentView: some View {
         ZStack {
@@ -75,7 +75,7 @@ extension EditClusterView {
     
     private var viewTitle: some ToolbarContent {
         ToolbarItem(placement: .principal) {
-            Text("Edit Cluster Name")
+            Text("Edit Pile Name")
                 .formatGreen()
         }
     }
@@ -86,11 +86,11 @@ extension EditClusterView {
                 withAnimation {
                     detailManager.secondaryTarget = .noView
                 }
-                viewModel.updateCluster(using: editableData)
+                viewModel.updatePile(using: editableData)
             } label: {
                 Text("Save")
             }
-            .disabled(!editableData.canClusterBeSaved)
+            .disabled(!editableData.canPileBeSaved)
         }
     }
 }

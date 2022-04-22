@@ -211,9 +211,9 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         item.brand = editableData.brand!
         item.datePurchased = editableData.datePurchased
         item.gearlists.forEach({ $0.objectWillChange.send() })
-        item.clusters.forEach({ $0.objectWillChange.send() })
-        item.containers.forEach({ $0.objectWillChange.send() })
-        item.containerBools.forEach({ $0.objectWillChange.send() })
+        item.piles.forEach({ $0.objectWillChange.send() })
+        item.packs.forEach({ $0.objectWillChange.send() })
+        item.packingBools.forEach({ $0.objectWillChange.send() })
         persistentStore.saveContext()
     }
     /// Function to delete an Item and move all items at the brand to the Unknown Brand.

@@ -286,39 +286,39 @@
          )
          // MARK: Pile Stuff -----------------------------------------
          // Add new Pile View
-         .overlay(detailManager.showAddCluster ?
-                  (AddClusterView(persistentStore: persistentStore, gearlist: detailManager.selectedGearlist!)
+         .overlay(detailManager.showAddPile ?
+                  (AddPileView(persistentStore: persistentStore, gearlist: detailManager.selectedGearlist!)
                      .environmentObject(detailManager)
                   ) : nil
          )
          // Modify pile name view
-         .overlay(detailManager.showModifyCluster ?
-                  (EditClusterView(persistentStore: persistentStore, cluster: detailManager.selectedCluster!)
+         .overlay(detailManager.showModifyPile ?
+                  (EditPileView(persistentStore: persistentStore, pile: detailManager.selectedPile!)
                      .environmentObject(detailManager)
                   ) : nil
          )
          // Select items to add/remove from pile view
-         .overlay(detailManager.showAddItemsToCluster ?
-                  (AddItemsToGearListView(persistentStore: persistentStore, type: .pileItem, gearlist: detailManager.selectedGearlist!, pile: detailManager.selectedCluster!)
+         .overlay(detailManager.showAddItemsToPile ?
+                  (AddItemsToGearListView(persistentStore: persistentStore, type: .pileItem, gearlist: detailManager.selectedGearlist!, pile: detailManager.selectedPile!)
                      .environmentObject(detailManager)
                   ) : nil
          )
          // MARK: Pack Stuff -----------------------------------------
          // Add new Pack view
-         .overlay(detailManager.showAddContainer ?
-                  (AddContainerView(persistentStore: persistentStore, gearlist: detailManager.selectedGearlist!)
+         .overlay(detailManager.showAddPack ?
+                  (AddPackView(persistentStore: persistentStore, gearlist: detailManager.selectedGearlist!)
                      .environmentObject(detailManager)
                   ) : nil
          )
          // Edit pack name view
-         .overlay(detailManager.showModifyContainer ?
-                  (EditContainerView(persistentStore: persistentStore, container: detailManager.selectedContainer!)
+         .overlay(detailManager.showModifyPack ?
+                  (EditPackView(persistentStore: persistentStore, container: detailManager.selectedPack!)
                      .environmentObject(detailManager)
                   ) : nil
          )
          // Select items to add/remove from pack
-         .overlay(detailManager.showAddItemsToContainer ?
-                  (AddItemsToGearListView(persistentStore: persistentStore, type: .packItem, gearlist: detailManager.selectedGearlist!, pack: detailManager.selectedContainer!)
+         .overlay(detailManager.showAddItemsToPack ?
+                  (AddItemsToGearListView(persistentStore: persistentStore, type: .packItem, gearlist: detailManager.selectedGearlist!, pack: detailManager.selectedPack!)
                      .environmentObject(detailManager)
                   ) : nil
          )
@@ -1361,17 +1361,17 @@
  //var listGroupsCount: Int { listgroups_?.count ?? 0 }
 
  /// Function to return an Items Packing Group In a specifc Gearlist.
- /*func listGroupPackingGroup(gearlist: Gearlist, listGroup: Cluster) -> PackingGroup? {
+ /*func listGroupPackingGroup(gearlist: Gearlist, listGroup: Pile) -> PackingGroup? {
      // First Filter out all the packingGroups by Gearlist
      let packingGroups = packingGroups.filter({ $0.gearlist == gearlist })
      // Second Filter out all the packingGroups by listGroup
-     let packingGroup = packingGroups.first(where: { $0.packingCluster(listGroup: listGroup) == listGroup })
+     let packingGroup = packingGroups.first(where: { $0.packingPile(listGroup: listGroup) == listGroup })
      
      return packingGroup ?? nil
  }*/
 
  /// Function to return an Items PackingBool in a specific Packing Group.
- /*func packingGroupPackingBool(packingGroup: Container, item: Item) -> PackingBool? {
+ /*func packingGroupPackingBool(packingGroup: Pack, item: Item) -> PackingBool? {
      // First Filter out all the packingBools by PackingGroup
      let packingBools = packingBools.filter({$0.packingGroup_ == packingGroup })
      // Second return the packingBool associated with the item

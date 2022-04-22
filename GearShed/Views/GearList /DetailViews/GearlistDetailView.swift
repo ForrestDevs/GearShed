@@ -40,10 +40,10 @@ struct GearlistDetailView: View {
                 GearlistItemListView(gearlist: gearlist)
                     .environmentObject(glData)
                     .pageView()
-                GearlistClusterView(gearlist: gearlist)
+                GearlistPileView(gearlist: gearlist)
                     .environmentObject(glData)
                     .pageView()
-                GearlistContainerView(gearlist: gearlist)
+                GearlistPackView(gearlist: gearlist)
                     .environmentObject(glData)
                     .pageView()
                 if gearlist.isAdventure {
@@ -94,7 +94,8 @@ struct GearlistDetailView: View {
                     detailManager.secondaryTarget = .showSecondaryContent
                 }
             } label: {
-                Image(systemName: "square.and.arrow.up")
+                Text("PDF")
+//                Image(systemName: "square.and.arrow.up")
             }
         }
     }

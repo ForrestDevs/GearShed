@@ -157,7 +157,7 @@ extension SettingsView {
             pdfUsernameSection
             weightUnitSection
             //colorSchemeSection
-            //alternateAppIconSection
+            alternateAppIconSection
         } header: {
             Text("Preferences")
         }

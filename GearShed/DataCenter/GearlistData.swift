@@ -29,17 +29,17 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     private let activityTypeController: NSFetchedResultsController<ActivityType>
     @Published var activityTypes = [ActivityType]()
     
-    private let listGroupController: NSFetchedResultsController<Cluster>
-    @Published var listgroups = [Cluster]()
+    private let listGroupController: NSFetchedResultsController<Pile>
+    @Published var listgroups = [Pile]()
     
-    private let packingGroupController: NSFetchedResultsController<Container>
-    @Published var packingGroups = [Container]()
+    private let packingGroupController: NSFetchedResultsController<Pack>
+    @Published var packingGroups = [Pack]()
     
-    private let trueContainerBoolController: NSFetchedResultsController<ContainerBool>
-    @Published var trueContainerBools = [ContainerBool]()
+    private let truePackBoolController: NSFetchedResultsController<PackingBool>
+    @Published var truePackBools = [PackingBool]()
     
-    private let packingBoolsController: NSFetchedResultsController<ContainerBool>
-    @Published var packingBools = [ContainerBool]()
+    private let packingBoolsController: NSFetchedResultsController<PackingBool>
+    @Published var packingBools = [PackingBool]()
     
     init(persistentStore: PersistentStore) {
         self.persistentStore = persistentStore
@@ -72,23 +72,23 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
 
         activityTypeController = NSFetchedResultsController(fetchRequest: activityTypeRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
         
-        let listGroupRequest: NSFetchRequest<Cluster> = Cluster.fetchRequest()
+        let listGroupRequest: NSFetchRequest<Pile> = Pile.fetchRequest()
         listGroupRequest.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
         
         listGroupController = NSFetchedResultsController(fetchRequest: listGroupRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
         
-        let packingGroupRequest: NSFetchRequest<Container> = Container.fetchRequest()
+        let packingGroupRequest: NSFetchRequest<Pack> = Pack.fetchRequest()
         packingGroupRequest.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
         
         packingGroupController = NSFetchedResultsController(fetchRequest: packingGroupRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
         
-        let trueContainerBoolRequest: NSFetchRequest<ContainerBool> = ContainerBool.fetchRequest()
-        trueContainerBoolRequest.sortDescriptors = [NSSortDescriptor(key: "isPacked_", ascending: true)]
-        trueContainerBoolRequest.predicate = NSPredicate(format: "isPacked_ == %d", true)
+        let truePackBoolRequest: NSFetchRequest<PackingBool> = PackingBool.fetchRequest()
+        truePackBoolRequest.sortDescriptors = [NSSortDescriptor(key: "isPacked_", ascending: true)]
+        truePackBoolRequest.predicate = NSPredicate(format: "isPacked_ == %d", true)
         
-        trueContainerBoolController = NSFetchedResultsController(fetchRequest: trueContainerBoolRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
+        truePackBoolController = NSFetchedResultsController(fetchRequest: truePackBoolRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
         
-        let packingBoolRequest: NSFetchRequest<ContainerBool> = ContainerBool.fetchRequest()
+        let packingBoolRequest: NSFetchRequest<PackingBool> = PackingBool.fetchRequest()
         packingBoolRequest.sortDescriptors = [NSSortDescriptor(key: "isPacked_", ascending: true)]
         packingBoolsController = NSFetchedResultsController(fetchRequest: packingBoolRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
         
@@ -100,7 +100,7 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         activityTypeController.delegate = self
         listGroupController.delegate = self
         packingGroupController.delegate = self
-        trueContainerBoolController.delegate = self
+        truePackBoolController.delegate = self
         packingBoolsController.delegate = self
         
         
@@ -154,8 +154,8 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         }
         
         do {
-            try trueContainerBoolController.performFetch()
-            trueContainerBools = trueContainerBoolController.fetchedObjects ?? []
+            try truePackBoolController.performFetch()
+            truePackBools = truePackBoolController.fetchedObjects ?? []
         } catch {
             print("Failed to fetch true Bools")
         }
@@ -176,18 +176,18 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         activityTypes = activityTypeController.fetchedObjects ?? []
         listgroups = listGroupController.fetchedObjects ?? []
         packingGroups = packingGroupController.fetchedObjects ?? []
-        trueContainerBools = trueContainerBoolController.fetchedObjects ?? []
+        truePackBools = truePackBoolController.fetchedObjects ?? []
         packingBools = packingBoolsController.fetchedObjects ?? []
     }
     
-    func gearlistContainers(gearlist: Gearlist) -> [Container] {
-        let containers = packingGroups.filter( { $0.gearlist == gearlist } )
-        return containers
+    func gearlistPacks(gearlist: Gearlist) -> [Pack] {
+        let packs = packingGroups.filter( { $0.gearlist == gearlist } )
+        return packs
     }
     
-    func gearlistClusters(gearlist: Gearlist) -> [Cluster] {
-        let clusters = listgroups.filter( { $0.gearlist == gearlist } )
-        return clusters
+    func gearlistPiles(gearlist: Gearlist) -> [Pile] {
+        let piles = listgroups.filter( { $0.gearlist == gearlist } )
+        return piles
     }
     
     // MARK: Data CUD Operations
@@ -241,15 +241,15 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         if !editableData.isAdventure {
             gearlist.activityType = editableData.activityType!
         }
-        gearlist.clusters.forEach({ $0.objectWillChange.send() })
-        gearlist.containers.forEach({ $0.objectWillChange.send() })
+        gearlist.piles.forEach({ $0.objectWillChange.send() })
+        gearlist.packs.forEach({ $0.objectWillChange.send() })
         persistentStore.saveContext()
     }
     /// Function to delete a Gearlist
     func deleteGearlist(gearlist: Gearlist) {
         for item in gearlist.items {
-            let containerBool = item.gearlistContainerBool(gearlist: gearlist)!
-            persistentStore.context.delete(containerBool)
+            let packingBool = item.gearlistpackingBool(gearlist: gearlist)!
+            persistentStore.context.delete(packingBool)
         }
         
         for diary in gearlist.diaries {
@@ -257,11 +257,11 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
             persistentStore.context.delete(diary)
         }
         
-        for cluster in gearlist.clusters {
-            persistentStore.context.delete(cluster)
+        for pile in gearlist.piles {
+            persistentStore.context.delete(pile)
         }
         
-        for container in gearlist.containers {
+        for container in gearlist.packs {
             persistentStore.context.delete(container)
         }
         
@@ -295,7 +295,7 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         }
         for item in gearlist.items {
             newGearlist.addToItems_(item)
-            createNewContainerBool(gearlist: newGearlist, item: item)
+            createNewPackBool(gearlist: newGearlist, item: item)
         }
         persistentStore.saveContext()
     }
@@ -340,7 +340,7 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     func addItemsToGearlist(gearlist: Gearlist, itemArray: [Item]) {
         for item in itemArray {
             gearlist.addToItems_(item)
-            createNewContainerBool(gearlist: gearlist, item: item)
+            createNewPackBool(gearlist: gearlist, item: item)
         }
         persistentStore.saveContext()
     }
@@ -349,7 +349,7 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     func updateGearlistItems(gearlist: Gearlist, addingItems: [Item], removingItems: [Item]) {
         for item in addingItems {
             gearlist.addToItems_(item)
-            createNewContainerBool(gearlist: gearlist, item: item)
+            createNewPackBool(gearlist: gearlist, item: item)
         }
         
         for item in removingItems {
@@ -358,19 +358,19 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         persistentStore.saveContext()
     }
     
-    /// Function to remove an Item from a Cluster + associated clean up.
+    /// Function to remove an Item from a Pile + associated clean up.
     func removeItemFromGearlist(item: Item, gearlist: Gearlist) {
-        // First lets delete the items containerBool
-        if let containerBool = item.gearlistContainerBool(gearlist: gearlist) {
-            persistentStore.context.delete(containerBool)
+        // First lets delete the items packingBool
+        if let packingBool = item.gearlistpackingBool(gearlist: gearlist) {
+            persistentStore.context.delete(packingBool)
         }
         // Second lets remove the item -> container relationship
-        if let container = item.gearlistContainer(gearlist: gearlist) {
-            item.removeFromContainers_(container)
+        if let pack = item.gearlistPack(gearlist: gearlist) {
+            item.removeFromPacks_(pack)
         }
-        // Third lets remove the item from its cluster
-        if let cluster = item.gearlistCluster(gearlist: gearlist) {
-            item.removeFromClusters_(cluster)
+        // Third lets remove the item from its pile
+        if let pile = item.gearlistPile(gearlist: gearlist) {
+            item.removeFromPiles_(pile)
         }
         
         // And finally remove the item from the gearlist
@@ -378,43 +378,43 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         // Save the changes.
         persistentStore.saveContext()
     }
-    /// Function to remove an Item from a Cluster.
-    func removeItemFromCluster(item: Item, cluster: Cluster) {
-        cluster.removeFromItems_(item)
+    /// Function to remove an Item from a Pile.
+    func removeItemFromPile(item: Item, pile: Pile) {
+        pile.removeFromItems_(item)
         persistentStore.saveContext()
     }
-    /// Function to remove an Item from a Container.
-    func removeItemFromContainer(item: Item, container: Container) {
-        item.containerContainerBool(container: container)?.isPacked = false
-        item.containerContainerBool(container: container)?.container = nil
+    /// Function to remove an Item from a Pack.
+    func removeItemFromPack(item: Item, container: Pack) {
+        item.packPackingBool(pack: container)?.isPacked = false
+        item.packPackingBool(pack: container)?.pack = nil
         container.removeFromItems_(item)
         persistentStore.saveContext()
     }
     
     
-    // MARK: Cluster Methods
-    /// Function to create a new Cluster.
-    func addNewCluster(using editableData: EditableClusterData, gearlist: Gearlist) {
-        let newCluster = Cluster(context: persistentStore.context)
-        newCluster.id = UUID()
-        newCluster.name = editableData.name
-        newCluster.gearlist = gearlist
+    // MARK: Pile Methods
+    /// Function to create a new Pile.
+    func addNewPile(using editableData: EditablePileData, gearlist: Gearlist) {
+        let newPile = Pile(context: persistentStore.context)
+        newPile.id = UUID()
+        newPile.name = editableData.name
+        newPile.gearlist = gearlist
         persistentStore.saveContext()
     }
-    /// Function to create a new Cluster from the Item Row In Gearlist then pass it back so it can populate as the selected Cluster.
-    func addNewClusterFromItem(using editableData: EditableClusterData, gearlist: Gearlist, clusterOut: ((Cluster) -> ())) {
-        let newCluster = Cluster(context: persistentStore.context)
-        newCluster.id = UUID()
-        newCluster.name = editableData.name
-        newCluster.gearlist = gearlist
-        // Pass back the newly created Cluster
-        clusterOut(newCluster)
-        // Save the newly created cluster. 
+    /// Function to create a new Pile from the Item Row In Gearlist then pass it back so it can populate as the selected Pile.
+    func addNewPileFromItem(using editableData: EditablePileData, gearlist: Gearlist, pileOut: ((Pile) -> ())) {
+        let newPile = Pile(context: persistentStore.context)
+        newPile.id = UUID()
+        newPile.name = editableData.name
+        newPile.gearlist = gearlist
+        // Pass back the newly created Pile
+        pileOut(newPile)
+        // Save the newly created pile. 
         persistentStore.saveContext()
     }
     
     /// Function to update a Piles items
-    func updateClusterItems(addingItems: [Item], removingItems: [Item], pile: Cluster) {
+    func updatePileItems(addingItems: [Item], removingItems: [Item], pile: Pile) {
         for item in addingItems {
             pile.addToItems_(item)
         }
@@ -424,106 +424,106 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         persistentStore.saveContext()
     }
     
-    /// Function to keep an Items associated cluster updated and remove the reference to the old one.
-    func updateItemCluster(newCluster: Cluster?, oldCluster: Cluster?, item: Item) {
-        if let oldCluster = oldCluster {
-            item.removeFromClusters_(oldCluster)
+    /// Function to keep an Items associated pile updated and remove the reference to the old one.
+    func updateItemPile(newPile: Pile?, oldPile: Pile?, item: Item) {
+        if let oldPile = oldPile {
+            item.removeFromPiles_(oldPile)
         }
-        item.addToClusters_(newCluster!)
+        item.addToPiles_(newPile!)
         
         persistentStore.saveContext()
     }
     
-    /// Function to edit Cluster values.
-    func updateCluster(using editableData: EditableClusterData) {
-        let cluster = editableData.associatedCluster
-        cluster.name = editableData.name
+    /// Function to edit Pile values.
+    func updatePile(using editableData: EditablePileData) {
+        let pile = editableData.associatedPile
+        pile.name = editableData.name
         persistentStore.saveContext()
     }
-    /// Function to delete a Cluster.
-    func deleteCluster(cluster: Cluster) {
-        persistentStore.context.delete(cluster)
-        persistentStore.saveContext()
-    }
-    
-    // MARK: Container Methods
-    /// Function to create a new Container.
-    func addNewContainer(using editableData: EditableContainerData, gearlist: Gearlist) {
-        let newContainer = Container(context: persistentStore.context)
-        newContainer.id = UUID()
-        newContainer.name = editableData.name
-        newContainer.gearlist = gearlist
-        // Save the newly created Container
-        persistentStore.saveContext()
-    }
-    /// Function to create a new Container from the Item Row In Gearlist then pass it back so it can populate as the selected Container.
-    func addNewContainerFromItem(using editableData: EditableContainerData, gearlist: Gearlist, containerOut: ((Container) -> ())) {
-        let newContainer = Container(context: persistentStore.context)
-        newContainer.id = UUID()
-        newContainer.name = editableData.name
-        newContainer.gearlist = gearlist
-        // Pass back the newly created Container
-        containerOut(newContainer)
-        // Save the newly created Container
+    /// Function to delete a Pile.
+    func deletePile(pile: Pile) {
+        persistentStore.context.delete(pile)
         persistentStore.saveContext()
     }
     
-    func updateContainerItems(addingItems: [Item], removingItems: [Item], pack: Container) {
+    // MARK: Pack Methods
+    /// Function to create a new Pack.
+    func addNewPack(using editableData: EditablePackData, gearlist: Gearlist) {
+        let newPack = Pack(context: persistentStore.context)
+        newPack.id = UUID()
+        newPack.name = editableData.name
+        newPack.gearlist = gearlist
+        // Save the newly created Pack
+        persistentStore.saveContext()
+    }
+    /// Function to create a new Pack from the Item Row In Gearlist then pass it back so it can populate as the selected Pack.
+    func addNewPackFromItem(using editableData: EditablePackData, gearlist: Gearlist, containerOut: ((Pack) -> ())) {
+        let newPack = Pack(context: persistentStore.context)
+        newPack.id = UUID()
+        newPack.name = editableData.name
+        newPack.gearlist = gearlist
+        // Pass back the newly created Pack
+        containerOut(newPack)
+        // Save the newly created Pack
+        persistentStore.saveContext()
+    }
+    
+    func updatePackItems(addingItems: [Item], removingItems: [Item], pack: Pack) {
         for item in addingItems {
             pack.addToItems_(item)
-            item.containerContainerBool(container: pack)?.container = pack
+            item.packPackingBool(pack: pack)?.pack = pack
         }
         for item in removingItems {
             pack.removeFromItems_(item)
-            item.containerContainerBool(container: pack)?.container = nil
+            item.packPackingBool(pack: pack)?.pack = nil
         }
         persistentStore.saveContext()
     }
     
-    /// Function to keep an Items associated Container updated and remove the reference to the old one.
-    func updateItemContainer(newContainer: Container?, oldContainer: Container?, item: Item, gearlist: Gearlist) {
+    /// Function to keep an Items associated Pack updated and remove the reference to the old one.
+    func updateItemPack(newPack: Pack?, oldPack: Pack?, item: Item, gearlist: Gearlist) {
 
-        if let oldContainer = oldContainer {
-            item.removeFromContainers_(oldContainer)
+        if let oldPack = oldPack {
+            item.removeFromPacks_(oldPack)
         }
-        item.addToContainers_(newContainer!)
+        item.addToPacks_(newPack!)
         
-        item.gearlistContainerBool(gearlist: gearlist)?.container = newContainer!
+        item.gearlistpackingBool(gearlist: gearlist)?.pack = newPack!
         
         persistentStore.saveContext()
     }
-    /// Function to edit Container values.
-    func updateContainer(using editableData: EditableContainerData) {
-        let container = editableData.associatedContainer
+    /// Function to edit Pack values.
+    func updatePack(using editableData: EditablePackData) {
+        let container = editableData.associatedPack
         container.name = editableData.name
         persistentStore.saveContext()
     }
-    /// Function to delete a Container.
-    func deleteContainer(container: Container) {
+    /// Function to delete a Pack.
+    func deletePack(container: Pack) {
         for item in container.items {
-            item.containerContainerBool(container: container)?.isPacked = false
+            item.packPackingBool(pack: container)?.isPacked = false
         }
         persistentStore.context.delete(container)
         persistentStore.saveContext()
     }
     
-    // MARK: ContainerBool Methods
-    /// Function to create a new containerBool for an Item in a Gearlist.
-    func createNewContainerBool(gearlist: Gearlist, item: Item) {
-        let newContainerBool = ContainerBool(context: persistentStore.context)
-        newContainerBool.id = UUID()
-        newContainerBool.isPacked = false
-        newContainerBool.gearlist = gearlist
-        newContainerBool.container = nil
-        newContainerBool.item = item
+    // MARK: PackBool Methods
+    /// Function to create a new packingBool for an Item in a Gearlist.
+    func createNewPackBool(gearlist: Gearlist, item: Item) {
+        let newPackBool = PackingBool(context: persistentStore.context)
+        newPackBool.id = UUID()
+        newPackBool.isPacked = false
+        newPackBool.gearlist = gearlist
+        newPackBool.pack = nil
+        newPackBool.item = item
         persistentStore.saveContext()
     }
     /// Function to toggle the state of wether an Item is packed or not.
-    func toggleContainerBoolState(containerBool: ContainerBool) {
-        if containerBool.isPacked == true {
-            containerBool.isPacked = false
+    func togglePackBoolState(packingBool: PackingBool) {
+        if packingBool.isPacked == true {
+            packingBool.isPacked = false
         } else {
-            containerBool.isPacked = true
+            packingBool.isPacked = true
         }
         persistentStore.saveContext()
     }
@@ -587,9 +587,9 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         }
     }*/
         
-    func gearListTrueContainerBools(gearlist: Gearlist) -> [ContainerBool] {
-        let trueGearlistContainerBools: [ContainerBool] = trueContainerBools.filter( { $0.gearlist == gearlist } )
-        return trueGearlistContainerBools
+    func gearListTruePackingBools(gearlist: Gearlist) -> [PackingBool] {
+        let trueGearlistPackBools: [PackingBool] = truePackBools.filter( { $0.gearlist == gearlist } )
+        return trueGearlistPackBools
     }
     
     //MARK: Total Mass Methods
@@ -605,6 +605,16 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         // Add total value of Int array
         let total = intArray.reduce(0, +)
         // Convert total value back to String and return
+        let totalString = String(total)
+        return totalString
+    }
+    func totalCost(array: [Item]) -> String {
+        var arrayString = [String]()
+        for x in array {
+            arrayString.append(x.price)
+        }
+        let intArray = arrayString.map { Int($0) ?? 0 }
+        let total = intArray.reduce(0, +)
         let totalString = String(total)
         return totalString
     }
@@ -659,7 +669,7 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     }
     func gearlistPackTotalGrams(gearlist: Gearlist) -> String {
         var array = [Item]()
-        for container in gearlist.containers {
+        for container in gearlist.packs {
             for item in container.items {
                 array.append(item)
             }
@@ -669,7 +679,7 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     func gearlistPackTotalLbsOz(gearlist: Gearlist) -> (lbs: String, oz: String) {
         // Array for holding gearlist Items
         var array = [Item]()
-        for container in gearlist.containers {
+        for container in gearlist.packs {
             for item in container.items {
                 array.append(item)
             }
@@ -678,8 +688,8 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     }
     func gearlistPileTotalGrams(gearlist: Gearlist) -> String {
         var array = [Item]()
-        for cluster in gearlist.clusters {
-            for item in cluster.items {
+        for pile in gearlist.piles {
+            for item in pile.items {
                 array.append(item)
             }
         }
@@ -687,35 +697,35 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     }
     func gearlistPileTotalLbsOz(gearlist: Gearlist) -> (lbs: String, oz: String) {
         var array = [Item]()
-        for cluster in gearlist.clusters {
-            for item in cluster.items {
+        for pile in gearlist.piles {
+            for item in pile.items {
                 array.append(item)
             }
         }
         return totalLbsOz(array: array)
     }
-    func packTotalGrams(pack: Container) -> String {
+    func packTotalGrams(pack: Pack) -> String {
         var array = [Item]()
         for item in pack.items {
             array.append(item)
         }
         return totalGrams(array: array)
     }
-    func packTotalLbsOz(pack: Container) -> (lbs: String, oz: String) {
+    func packTotalLbsOz(pack: Pack) -> (lbs: String, oz: String) {
         var array = [Item]()
         for item in pack.items {
             array.append(item)
         }
         return totalLbsOz(array: array)
     }
-    func pileTotalGrams(pile: Cluster) -> String {
+    func pileTotalGrams(pile: Pile) -> String {
         var array = [Item]()
         for item in pile.items {
             array.append(item)
         }
         return totalGrams(array: array)
     }
-    func pileTotalLbsOz(pile: Cluster) -> (lbs: String, oz: String) {
+    func pileTotalLbsOz(pile: Pile) -> (lbs: String, oz: String) {
         var array = [Item]()
         for item in pile.items {
             array.append(item)
@@ -724,9 +734,9 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     }
     
     //MARK: Counter Totals
-    func gearlistContainerTotalItems(gearlist: Gearlist) -> Int {
+    func gearlistPackTotalItems(gearlist: Gearlist) -> Int {
         var counter: Int = 0
-        for container in gearlist.containers {
+        for container in gearlist.packs {
             for _ in container.items {
                 counter = counter + 1
             }
@@ -734,18 +744,18 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         return counter
     }
     
-    func gearlistClusterTotalItems(gearlist: Gearlist) -> Int {
+    func gearlistPileTotalItems(gearlist: Gearlist) -> Int {
         var counter: Int = 0
-        for cluster in gearlist.clusters {
-            for _ in cluster.items {
+        for pile in gearlist.piles {
+            for _ in pile.items {
                 counter = counter + 1
             }
         }
         return counter
     }
     
-    func gearlistContainerBoolTotals(gearlist: Gearlist) -> Int {
-        let counter = gearListTrueContainerBools(gearlist: gearlist).count
+    func gearlistPackingBoolTotals(gearlist: Gearlist) -> Int {
+        let counter = gearListTruePackingBools(gearlist: gearlist).count
         return counter
     }
     
@@ -776,29 +786,29 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     }
 }
 
-/// Function to tie the relationship between an Item and a Container.
-/*func addPackingGroupToItem(item: Item, packingGroup: Container) {
+/// Function to tie the relationship between an Item and a Pack.
+/*func addPackingGroupToItem(item: Item, packingGroup: Pack) {
     item.addToPackingGroups_(packingGroup)
     persistentStore.saveContext()
 }*/
 
 
 /// Function to create a new packingBool for an Item in a packing Group iff that bool does not yet exist.
-/*func createNewContainerBool(container: Container, item: Item) {
-    if item.containerContainerBool(container: container, item: item) != nil {
+/*func createNewPackBool(container: Pack, item: Item) {
+    if item.containerPackBool(container: container, item: item) != nil {
         return
     } else {
-        let newContainerBool = PackingBool(context: persistentStore.context)
-        newContainerBool.id = UUID()
-        newContainerBool.isPacked = false
-        newContainerBool.container = container
-        newContainerBool.item = item
+        let newPackBool = PackingBool(context: persistentStore.context)
+        newPackBool.id = UUID()
+        newPackBool.isPacked = false
+        newPackBool.container = container
+        newPackBool.item = item
     }
     persistentStore.saveContext()
 }*/
 
 /// Function to add Items to a List Group
-/*func addItemsToCluster(listGroup: Cluster, itemArray: [Item]) {
+/*func addItemsToPile(listGroup: Pile, itemArray: [Item]) {
     for item in itemArray {
         listGroup.addToItems_(item)
     }
@@ -807,8 +817,8 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
 
 
 
-/// Function to remove an Item from a Cluster + associated clean up.
-/*func removeItemFromList(item: Item, listGroup: Cluster, packingGroup: PackingGroup?) {
+/// Function to remove an Item from a Pile + associated clean up.
+/*func removeItemFromList(item: Item, listGroup: Pile, packingGroup: PackingGroup?) {
     // If the item has a packingGroup remove it & if so remove the associated packingBool as well.
     if let packingGroup = packingGroup {
         item.removeFromPackingGroups_(packingGroup)
@@ -817,17 +827,17 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
             persistentStore.context.delete(packingBool)
         }
     }
-    // Remove the Item -> Cluster relationship.
+    // Remove the Item -> Pile relationship.
     item.removeFromListgroups_(listGroup)
     // Save the changes.
     persistentStore.saveContext()
 }*/
-/// Function to create a new Cluster.
-/*func createNewCluster(gearlist: Gearlist) {
-    let newCluster = Cluster(context: persistentStore.context)
-    newCluster.id = UUID()
-    newCluster.name_ = ""
-    newCluster.gearlist = gearlist
+/// Function to create a new Pile.
+/*func createNewPile(gearlist: Gearlist) {
+    let newPile = Pile(context: persistentStore.context)
+    newPile.id = UUID()
+    newPile.name_ = ""
+    newPile.gearlist = gearlist
     persistentStore.saveContext()
 }*/
 

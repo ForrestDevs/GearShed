@@ -1,5 +1,5 @@
 //
-//  CustomTabBarContainerView.swift
+//  CustomTabBarPackView.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 18/10/21
@@ -44,7 +44,7 @@ struct CustomTabView <Content:View>: View {
     }
 }
 
-/*struct CustomTabBarContainerView_Previews: PreviewProvider {
+/*struct CustomTabBarPackView_Previews: PreviewProvider {
     
     static let tabs: [TabBarItem] = [
         .shed, .trips, .home

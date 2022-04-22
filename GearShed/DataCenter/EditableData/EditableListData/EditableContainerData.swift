@@ -8,31 +8,31 @@
 import Foundation
 
 
-struct EditableContainerData {
+struct EditablePackData {
     
     let persistentStore: PersistentStore
     
     var id: UUID? = nil
     var name: String
         
-    var canContainerBeSaved: Bool { name.count > 0 }
+    var canPackBeSaved: Bool { name.count > 0 }
     
-    var representsExistingContainer: Bool { id != nil }
+    var representsExistingPack: Bool { id != nil }
     
-    var associatedContainer: Container { Container.object(id: id!, context: persistentStore.context)! }
+    var associatedPack: Pack { Pack.object(id: id!, context: persistentStore.context)! }
     
 }
 
-extension EditableContainerData {
+extension EditablePackData {
     
-    /// Initializer for loading a Container that already exists.
-    init(persistentStore: PersistentStore, container: Container) {
+    /// Initializer for loading a Pack that already exists.
+    init(persistentStore: PersistentStore, container: Pack) {
         self.persistentStore = persistentStore
         self.id = container.id
         self.name = container.name
     }
     
-    /// Initializer for loading a new Container that does not yet exist.
+    /// Initializer for loading a new Pack that does not yet exist.
     init(persistentStore: PersistentStore) {
         self.persistentStore = persistentStore
         self.name = ""

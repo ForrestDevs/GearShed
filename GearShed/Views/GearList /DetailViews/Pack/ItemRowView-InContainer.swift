@@ -1,12 +1,12 @@
 //
-//  ItemRowView-InContainer.swift
+//  ItemRowView-InPack.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-11-11.
 //
 import SwiftUI
 
-struct ItemRowView_InContainer: View {
+struct ItemRowView_InPack: View {
     @EnvironmentObject private var persistentStore: PersistentStore
     @EnvironmentObject private var detailManager: DetailViewManager
         
@@ -16,17 +16,17 @@ struct ItemRowView_InContainer: View {
     
     @ObservedObject private var gearlist: Gearlist
     
-    @ObservedObject private var container: Container
+    @ObservedObject private var container: Pack
     
     @State private var isPacked: Bool
     @State private var showDetail: Bool = false
         
-    init(item: Item, gearlist: Gearlist, container: Container) {
+    init(item: Item, gearlist: Gearlist, container: Pack) {
         self.item = item
         self.gearlist = gearlist
         self.container = container
         
-        let initialState = item.gearlistContainerBool(gearlist: gearlist)?.isPacked
+        let initialState = item.gearlistpackingBool(gearlist: gearlist)?.isPacked
         
         _isPacked = State(initialValue: initialState!)
     }
@@ -34,7 +34,7 @@ struct ItemRowView_InContainer: View {
     var body: some View {
         Button {
             isPacked.toggle()
-            viewModel.toggleContainerBoolState(containerBool: item.gearlistContainerBool(gearlist: gearlist)!)
+            viewModel.togglePackBoolState(packingBool: item.gearlistpackingBool(gearlist: gearlist)!)
         } label: {
             itemBody
         }
@@ -124,7 +124,7 @@ struct ItemRowView_InContainer: View {
         Button {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
                 withAnimation {
-                    viewModel.removeItemFromContainer(item: item, container: container)
+                    viewModel.removeItemFromPack(item: item, container: container)
                 }
             })
         } label: {

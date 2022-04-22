@@ -73,14 +73,14 @@ struct DevView: View {
     @FetchRequest(entity: Gearlist.entity(), sortDescriptors: [])
     private var gearlists: FetchedResults<Gearlist>
     
-    @FetchRequest(entity: Cluster.entity(), sortDescriptors: [])
-    private var listGroups: FetchedResults<Cluster>
+    @FetchRequest(entity: Pile.entity(), sortDescriptors: [])
+    private var listGroups: FetchedResults<Pile>
     
-    @FetchRequest(entity: Container.entity(), sortDescriptors: [])
-    private var packingGroups: FetchedResults<Container>
+    @FetchRequest(entity: Pack.entity(), sortDescriptors: [])
+    private var packingGroups: FetchedResults<Pack>
     
-    @FetchRequest(entity: ContainerBool.entity(), sortDescriptors: [])
-    private var packingBools: FetchedResults<ContainerBool>
+    @FetchRequest(entity: PackBool.entity(), sortDescriptors: [])
+    private var packingBools: FetchedResults<PackBool>
     
     
     var body: some View {
@@ -118,7 +118,7 @@ struct DevView: View {
                 }
                 
                 VStack {
-                    Text("Clusters")
+                    Text("Piles")
                         .font(.headline)
                     ForEach(listGroups) { listGroup in
                         HStack {
@@ -131,7 +131,7 @@ struct DevView: View {
                 }
                 
                 VStack {
-                    Text("Containers")
+                    Text("Packs")
                         .font(.headline)
                     ForEach(packingGroups) { packingGroup in
                         HStack {
@@ -144,7 +144,7 @@ struct DevView: View {
                 }
                 
                 VStack {
-                    Text("ContainerBools")
+                    Text("PackBools")
                         .font(.headline)
                     ForEach(packingBools) { packingBool in
                         HStack {

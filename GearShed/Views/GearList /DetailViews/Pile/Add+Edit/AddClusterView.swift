@@ -1,12 +1,12 @@
 //
-//  AddClusterView.swift
+//  AddPileView.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-11-10.
 //
 import SwiftUI
 
-struct AddClusterView: View {
+struct AddPileView: View {
     
     @EnvironmentObject private var detailManager: DetailViewManager
         
@@ -14,9 +14,9 @@ struct AddClusterView: View {
 
     @StateObject private var viewModel: GearlistData
     
-    @State private var editableData: EditableClusterData
+    @State private var editableData: EditablePileData
 
-    private var clusterOut: ((Cluster) -> ())?
+    private var pileOut: ((Pile) -> ())?
     
     @State private var isAddFromItem: Bool
     
@@ -83,42 +83,42 @@ struct AddClusterView: View {
                     detailManager.secondaryTarget = .noView
                 }
                 if isAddFromItem {
-                    viewModel.addNewClusterFromItem(using: editableData, gearlist: gearlist) { cluster in
-                        clusterOut!(cluster)
+                    viewModel.addNewPileFromItem(using: editableData, gearlist: gearlist) { pile in
+                        pileOut!(pile)
                     }
                 } else {
-                    viewModel.addNewCluster(using: editableData, gearlist: gearlist)
+                    viewModel.addNewPile(using: editableData, gearlist: gearlist)
                 }
             } label: {
                 Text("Save")
             }
-            .disabled(!editableData.canClusterBeSaved)
+            .disabled(!editableData.canPileBeSaved)
         }
     }
 }
 
-extension AddClusterView {
-    /// Initializer for add a cluster from ItemRowView passing the cluster back.
-    init(persistentStore: PersistentStore, gearlist: Gearlist, clusterOut: ((Cluster) -> ())? = nil) {
+extension AddPileView {
+    /// Initializer for add a pile from ItemRowView passing the pile back.
+    init(persistentStore: PersistentStore, gearlist: Gearlist, pileOut: ((Pile) -> ())? = nil) {
         self.gearlist = gearlist
-        self.clusterOut = clusterOut
+        self.pileOut = pileOut
     
         _isAddFromItem = State(initialValue: true)
         
-        let initialValue = EditableClusterData(persistentStore: persistentStore)
+        let initialValue = EditablePileData(persistentStore: persistentStore)
         _editableData = State(initialValue: initialValue)
         
         let viewModel = GearlistData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
     }
     
-    /// Initializer for Adding a cluster from ClusterView
+    /// Initializer for Adding a pile from PileView
     init(persistentStore: PersistentStore, gearlist: Gearlist) {
         self.gearlist = gearlist
     
         _isAddFromItem = State(initialValue: false)
         
-        let initialValue = EditableClusterData(persistentStore: persistentStore)
+        let initialValue = EditablePileData(persistentStore: persistentStore)
         _editableData = State(initialValue: initialValue)
         
         let viewModel = GearlistData(persistentStore: persistentStore)

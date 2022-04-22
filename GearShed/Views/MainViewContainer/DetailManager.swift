@@ -15,8 +15,8 @@ enum DetailTarget {
          showAddAdventure, showModifyAdventure,
          showAddActivity, showModifyActivity,
          showAddActivityType, showModifyActivityType, showAddActivityFromActivityType,
-         showAddCluster, showModifyCluster, showAddItemsToCluster,
-         showAddContainer, showModifyContainer, showAddItemsToContainer, showConfirmEraseView,
+         showAddPile, showModifyPile, showAddItemsToPile,
+         showAddPack, showModifyPack, showAddItemsToPack, showConfirmEraseView,
          showGearlistExport, showGearListPDF, showContent, showSecondaryContent, showTertiaryContent, noView
 }
 
@@ -35,8 +35,8 @@ class DetailViewManager: ObservableObject {
     @Published var selectedBrand: Brand? = nil
     @Published var selectedGearlist: Gearlist? = nil
     @Published var selectedActivityType: ActivityType?
-    @Published var selectedCluster: Cluster? = nil
-    @Published var selectedContainer: Container? = nil
+    @Published var selectedPile: Pile? = nil
+    @Published var selectedPack: Pack? = nil
 
     init() {}
 }
@@ -93,18 +93,18 @@ struct DetailOverlay: View {
                 ModifyActivityTypeView(persistentStore: persistentStore, activityType: detailManager.selectedActivityType!)
             case .showAddActivityFromActivityType:
                 AddActivityView(persistentStore: persistentStore, activityTypeIn: detailManager.selectedActivityType!)
-            case .showAddCluster:
-                AddClusterView(persistentStore: persistentStore, gearlist: detailManager.selectedGearlist!)
-            case .showModifyCluster:
-                EditClusterView(persistentStore: persistentStore, cluster: detailManager.selectedCluster!)
-            case .showAddItemsToCluster:
-                AddItemsToGearListView(persistentStore: persistentStore, type: .pileItem, gearlist: detailManager.selectedGearlist!, pile: detailManager.selectedCluster!)
-            case .showAddContainer:
-                AddContainerView(persistentStore: persistentStore, gearlist: detailManager.selectedGearlist!)
-            case .showModifyContainer:
-                EditContainerView(persistentStore: persistentStore, container: detailManager.selectedContainer!)
-            case .showAddItemsToContainer:
-                AddItemsToGearListView(persistentStore: persistentStore, type: .packItem, gearlist: detailManager.selectedGearlist!, pack: detailManager.selectedContainer!)
+            case .showAddPile:
+                AddPileView(persistentStore: persistentStore, gearlist: detailManager.selectedGearlist!)
+            case .showModifyPile:
+                EditPileView(persistentStore: persistentStore, pile: detailManager.selectedPile!)
+            case .showAddItemsToPile:
+                AddItemsToGearListView(persistentStore: persistentStore, type: .pileItem, gearlist: detailManager.selectedGearlist!, pile: detailManager.selectedPile!)
+            case .showAddPack:
+                AddPackView(persistentStore: persistentStore, gearlist: detailManager.selectedGearlist!)
+            case .showModifyPack:
+                EditPackView(persistentStore: persistentStore, container: detailManager.selectedPack!)
+            case .showAddItemsToPack:
+                AddItemsToGearListView(persistentStore: persistentStore, type: .packItem, gearlist: detailManager.selectedGearlist!, pack: detailManager.selectedPack!)
             case .showConfirmEraseView:
                     ConfirmEraseView(persistentStore: persistentStore, detailManager: detailManager)
             case .showGearlistExport:
@@ -165,18 +165,18 @@ struct DetailOverlay: View {
                 ModifyActivityTypeView(persistentStore: persistentStore, activityType: detailManager.selectedActivityType!)
             case .showAddActivityFromActivityType:
                 AddActivityView(persistentStore: persistentStore, activityTypeIn: detailManager.selectedActivityType!)
-            case .showAddCluster:
-                AddClusterView(persistentStore: persistentStore, gearlist: detailManager.selectedGearlist!)
-            case .showModifyCluster:
-                EditClusterView(persistentStore: persistentStore, cluster: detailManager.selectedCluster!)
-            case .showAddItemsToCluster:
-                AddItemsToGearListView(persistentStore: persistentStore, type: .pileItem, gearlist: detailManager.selectedGearlist!, pile: detailManager.selectedCluster!)
-            case .showAddContainer:
-                AddContainerView(persistentStore: persistentStore, gearlist: detailManager.selectedGearlist!)
-            case .showModifyContainer:
-                EditContainerView(persistentStore: persistentStore, container: detailManager.selectedContainer!)
-            case .showAddItemsToContainer:
-                AddItemsToGearListView(persistentStore: persistentStore, type: .packItem, gearlist: detailManager.selectedGearlist!, pack: detailManager.selectedContainer!)
+            case .showAddPile:
+                AddPileView(persistentStore: persistentStore, gearlist: detailManager.selectedGearlist!)
+            case .showModifyPile:
+                EditPileView(persistentStore: persistentStore, pile: detailManager.selectedPile!)
+            case .showAddItemsToPile:
+                AddItemsToGearListView(persistentStore: persistentStore, type: .pileItem, gearlist: detailManager.selectedGearlist!, pile: detailManager.selectedPile!)
+            case .showAddPack:
+                AddPackView(persistentStore: persistentStore, gearlist: detailManager.selectedGearlist!)
+            case .showModifyPack:
+                EditPackView(persistentStore: persistentStore, container: detailManager.selectedPack!)
+            case .showAddItemsToPack:
+                AddItemsToGearListView(persistentStore: persistentStore, type: .packItem, gearlist: detailManager.selectedGearlist!, pack: detailManager.selectedPack!)
             case .showConfirmEraseView:
                 ConfirmEraseView(persistentStore: persistentStore, detailManager: detailManager)
             case .showGearlistExport:
@@ -237,19 +237,19 @@ struct DetailOverlay: View {
                 ModifyActivityTypeView(persistentStore: persistentStore, activityType: detailManager.selectedActivityType!)
             case .showAddActivityFromActivityType:
                 AddActivityView(persistentStore: persistentStore, activityTypeIn: detailManager.selectedActivityType!)
-            case .showAddCluster:
-                AddClusterView(persistentStore: persistentStore, gearlist: detailManager.selectedGearlist!)
-            case .showModifyCluster:
-                EditClusterView(persistentStore: persistentStore, cluster: detailManager.selectedCluster!)
-            case .showAddItemsToCluster:
-                AddItemsToGearListView(persistentStore: persistentStore, type: .pileItem, gearlist: detailManager.selectedGearlist!, pile: detailManager.selectedCluster!)
-            case .showAddContainer:
-                AddContainerView(persistentStore: persistentStore, gearlist: detailManager.selectedGearlist!)
-            case .showModifyContainer:
-                EditContainerView(persistentStore: persistentStore, container: detailManager.selectedContainer!)
-            case .showAddItemsToContainer:
+            case .showAddPile:
+                AddPileView(persistentStore: persistentStore, gearlist: detailManager.selectedGearlist!)
+            case .showModifyPile:
+                EditPileView(persistentStore: persistentStore, pile: detailManager.selectedPile!)
+            case .showAddItemsToPile:
+                AddItemsToGearListView(persistentStore: persistentStore, type: .pileItem, gearlist: detailManager.selectedGearlist!, pile: detailManager.selectedPile!)
+            case .showAddPack:
+                AddPackView(persistentStore: persistentStore, gearlist: detailManager.selectedGearlist!)
+            case .showModifyPack:
+                EditPackView(persistentStore: persistentStore, container: detailManager.selectedPack!)
+            case .showAddItemsToPack:
                 AddItemsToGearListView(persistentStore: persistentStore, type: .packItem, gearlist:
-                    detailManager.selectedGearlist!, pack: detailManager.selectedContainer!)
+                    detailManager.selectedGearlist!, pack: detailManager.selectedPack!)
             case .showConfirmEraseView:
                 ConfirmEraseView(persistentStore: persistentStore, detailManager: detailManager)
             case .showGearlistExport:

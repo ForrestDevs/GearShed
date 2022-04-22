@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension ContainerBool {
+extension PackingBool {
     
     // whether the item is a packed or not.  this fronts a Core Data boolean
     var isPacked: Bool {
@@ -24,12 +24,12 @@ extension ContainerBool {
         }
     }
     
-    var container: Container? {
-        get { container_ }
+    var pack: Pack? {
+        get { pack_ }
         set {
-            container_?.objectWillChange.send()
-            container_ = newValue
-            container_?.objectWillChange.send()
+            pack_?.objectWillChange.send()
+            pack_ = newValue
+            pack_?.objectWillChange.send()
         }
     }
     

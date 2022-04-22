@@ -11,10 +11,10 @@ struct ItemRowView_InGearlist: View {
     @ObservedObject private var gearlist: Gearlist
     @ObservedObject private var item: Item
     private var persistentStore: PersistentStore
-    @State var itemCluster: Cluster?
-    @State var previousItemCluster: Cluster?
-    @State var itemContainer: Container?
-    @State var previousItemContainer: Container?
+    @State var itemPile: Pile?
+    @State var previousItemPile: Pile?
+    @State var itemPack: Pack?
+    @State var previousItemPack: Pack?
     @State private var showDetailSheet: Bool = false
     
     init(persistentStore: PersistentStore, item: Item, gearlist: Gearlist) {
@@ -22,13 +22,13 @@ struct ItemRowView_InGearlist: View {
         self.item = item
         self.persistentStore = persistentStore
         
-        let initialCluster = item.gearlistCluster(gearlist: gearlist)
-        _itemCluster = State(initialValue: initialCluster)
-        _previousItemCluster = State(initialValue: initialCluster)
+        let initialPile = item.gearlistPile(gearlist: gearlist)
+        _itemPile = State(initialValue: initialPile)
+        _previousItemPile = State(initialValue: initialPile)
         
-        let initialContainer = item.gearlistContainer(gearlist: gearlist)
-        _itemContainer = State(initialValue: initialContainer)
-        _previousItemContainer = State(initialValue: initialContainer)
+        let initialPack = item.gearlistPack(gearlist: gearlist)
+        _itemPack = State(initialValue: initialPack)
+        _previousItemPack = State(initialValue: initialPack)
     }
     
     var body: some View {
@@ -197,9 +197,9 @@ struct ItemRowView_InGearlist: View {
     }
     
     private var packStatusLabel: some View {
-        if ((item.gearlistContainer(gearlist: gearlist)?.name) != nil) {
+        if ((item.gearlistPack(gearlist: gearlist)?.name) != nil) {
             return AnyView (
-                Text ("Pack: " + (item.gearlistContainer(gearlist: gearlist)!.name))
+                Text ("Pack: " + (item.gearlistPack(gearlist: gearlist)!.name))
                     .formatItemWeightBlack()
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
             )
@@ -213,9 +213,9 @@ struct ItemRowView_InGearlist: View {
     }
     
     private var pileStatusLabel: some View {
-        if ((item.gearlistCluster(gearlist: gearlist)?.name) != nil) {
+        if ((item.gearlistPile(gearlist: gearlist)?.name) != nil) {
             return AnyView (
-                Text ("Pile: " + (item.gearlistCluster(gearlist: gearlist)!.name))
+                Text ("Pile: " + (item.gearlistPile(gearlist: gearlist)!.name))
                     .formatItemWeightBlack()
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
             )

@@ -12,8 +12,6 @@
 		080015AA27277C2B00E1BE4C /* OffsetTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080015A727277C2B00E1BE4C /* OffsetTabView.swift */; };
 		080015AC27277C2B00E1BE4C /* PagerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080015A927277C2B00E1BE4C /* PagerHelper.swift */; };
 		080015AF272787E700E1BE4C /* RegretsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080015AE272787E700E1BE4C /* RegretsView.swift */; };
-		080B00F4280FA414007A2634 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 080B00F3280FA414007A2634 /* index.html */; };
-		080B00F6280FA426007A2634 /* gearShedTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = 080B00F5280FA426007A2634 /* gearShedTemplate.html */; };
 		080B00F8280FA796007A2634 /* gearShedBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 080B00F7280FA796007A2634 /* gearShedBlack.png */; };
 		080D1F83274B4776007D6C5A /* GearlistDiaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080D1F82274B4776007D6C5A /* GearlistDiaryView.swift */; };
 		081BFDC7279F2B2200EF0190 /* GlobalPrefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081BFDC6279F2B2200EF0190 /* GlobalPrefs.swift */; };
@@ -92,6 +90,8 @@
 		0892BB6E27B1F6C000BCB902 /* FAQModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0892BB6D27B1F6C000BCB902 /* FAQModalView.swift */; };
 		0892BB7027B2133400BCB902 /* ColorSchemeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0892BB6F27B2133400BCB902 /* ColorSchemeView.swift */; };
 		0892BB7227B2CD1700BCB902 /* ConfirmEraseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0892BB7127B2CD1700BCB902 /* ConfirmEraseView.swift */; };
+		0894B9782812212900A9E503 /* gearShedTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = 0894B9772812212900A9E503 /* gearShedTemplate.html */; };
+		0894B97A2812254000A9E503 /* gearListTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = 0894B9792812254000A9E503 /* gearListTemplate.html */; };
 		08A5FB91274054DF008A5D28 /* ImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A5FB90274054DF008A5D28 /* ImageHelper.swift */; };
 		08A5FB952740AD93008A5D28 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A5FB942740AD92008A5D28 /* ActivityView.swift */; };
 		08A5FB972740B4B5008A5D28 /* AdventureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A5FB962740B4B5008A5D28 /* AdventureView.swift */; };
@@ -210,8 +210,6 @@
 		080015A727277C2B00E1BE4C /* OffsetTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OffsetTabView.swift; sourceTree = "<group>"; };
 		080015A927277C2B00E1BE4C /* PagerHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PagerHelper.swift; sourceTree = "<group>"; };
 		080015AE272787E700E1BE4C /* RegretsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegretsView.swift; sourceTree = "<group>"; };
-		080B00F3280FA414007A2634 /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
-		080B00F5280FA426007A2634 /* gearShedTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = gearShedTemplate.html; sourceTree = "<group>"; };
 		080B00F7280FA796007A2634 /* gearShedBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gearShedBlack.png; sourceTree = "<group>"; };
 		080D1F82274B4776007D6C5A /* GearlistDiaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GearlistDiaryView.swift; sourceTree = "<group>"; };
 		081BFDC6279F2B2200EF0190 /* GlobalPrefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalPrefs.swift; sourceTree = "<group>"; };
@@ -289,6 +287,8 @@
 		0892BB6D27B1F6C000BCB902 /* FAQModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQModalView.swift; sourceTree = "<group>"; };
 		0892BB6F27B2133400BCB902 /* ColorSchemeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSchemeView.swift; sourceTree = "<group>"; };
 		0892BB7127B2CD1700BCB902 /* ConfirmEraseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmEraseView.swift; sourceTree = "<group>"; };
+		0894B9772812212900A9E503 /* gearShedTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = gearShedTemplate.html; sourceTree = "<group>"; };
+		0894B9792812254000A9E503 /* gearListTemplate.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = gearListTemplate.html; sourceTree = "<group>"; };
 		08A5FB90274054DF008A5D28 /* ImageHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHelper.swift; sourceTree = "<group>"; };
 		08A5FB942740AD92008A5D28 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		08A5FB962740B4B5008A5D28 /* AdventureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureView.swift; sourceTree = "<group>"; };
@@ -997,6 +997,16 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		08CB477B2810879000F5F6A9 /* HTML TEMPLATES */ = {
+			isa = PBXGroup;
+			children = (
+				080B00F7280FA796007A2634 /* gearShedBlack.png */,
+				0894B9772812212900A9E503 /* gearShedTemplate.html */,
+				0894B9792812254000A9E503 /* gearListTemplate.html */,
+			);
+			path = "HTML TEMPLATES";
+			sourceTree = "<group>";
+		};
 		08D67E0727250F5A0064F639 /* Unlock */ = {
 			isa = PBXGroup;
 			children = (
@@ -1032,6 +1042,7 @@
 		08D67E1827260BAC0064F639 /* Config */ = {
 			isa = PBXGroup;
 			children = (
+				08CB477B2810879000F5F6A9 /* HTML TEMPLATES */,
 				08C7D8A5270F3D1D00EC3984 /* Preview Content */,
 				084EDA0F272B5C7500475891 /* Fonts */,
 				08D67E1B2726815D0064F639 /* Configuration.storekit */,
@@ -1042,9 +1053,6 @@
 				08371B6D271E08A20072AD94 /* tags.json */,
 				08C7D913270F6E1600EC3984 /* sheds.json */,
 				08C7D915270F6E1600EC3984 /* items.json */,
-				080B00F7280FA796007A2634 /* gearShedBlack.png */,
-				080B00F3280FA414007A2634 /* index.html */,
-				080B00F5280FA426007A2634 /* gearShedTemplate.html */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -1236,7 +1244,8 @@
 				08D67E1C2726815D0064F639 /* Configuration.storekit in Resources */,
 				08C7D8A7270F3D1D00EC3984 /* Preview Assets.xcassets in Resources */,
 				08C7D917270F6E1600EC3984 /* brands.json in Resources */,
-				080B00F6280FA426007A2634 /* gearShedTemplate.html in Resources */,
+				0894B9782812212900A9E503 /* gearShedTemplate.html in Resources */,
+				0894B97A2812254000A9E503 /* gearListTemplate.html in Resources */,
 				088AA44027C029E300A32444 /* DARKicon@3x.png in Resources */,
 				08371B6E271E08A20072AD94 /* tags.json in Resources */,
 				087C0D1E27BDA384009899DB /* HelveticaNeueBold.ttf in Resources */,
@@ -1251,7 +1260,6 @@
 				088AA43E27C029DB00A32444 /* DARKicon@2x.png in Resources */,
 				088AA43A27C029AC00A32444 /* BLUEicon@2x.png in Resources */,
 				088AA43C27C029B400A32444 /* BLUEicon@3x.png in Resources */,
-				080B00F4280FA414007A2634 /* index.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1568,7 +1576,7 @@
 				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "DarkIcon, BlueIcon, RGBIcon";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = GearShed/Config/GearShed.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -1597,7 +1605,7 @@
 				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "DarkIcon, BlueIcon, RGBIcon";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = GearShed/Config/GearShed.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;

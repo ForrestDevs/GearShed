@@ -1,5 +1,5 @@
 //
-//  ItemRowView-InCluster.swift
+//  ItemRowView-InPile.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-11-10.
@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct ItemRowView_InCluster: View {
+struct ItemRowView_InPile: View {
     
     @EnvironmentObject private var viewModel: GearlistData
     @EnvironmentObject private var persistentStore: PersistentStore
     
     private var gearlist: Gearlist?
-    private var cluster: Cluster?
+    private var pile: Pile?
     
     @ObservedObject var item: Item
     
@@ -23,8 +23,8 @@ struct ItemRowView_InCluster: View {
             itemBody
         }
         .contextMenu {
-            if cluster == nil {
-                moveToCluster
+            if pile == nil {
+                moveToPile
             } else {
                 deleteContextButton
             }
@@ -33,15 +33,15 @@ struct ItemRowView_InCluster: View {
 
 }
 
-extension ItemRowView_InCluster {
+extension ItemRowView_InPile {
     
     init(gearlist: Gearlist, item: Item) {
         self.gearlist = gearlist
         self.item = item
     }
     
-    init(cluster: Cluster, item: Item) {
-        self.cluster = cluster
+    init(pile: Pile, item: Item) {
+        self.pile = pile
         self.item = item
     }
     
@@ -130,12 +130,12 @@ extension ItemRowView_InCluster {
         }
     }
     
-    private var moveToCluster: some View {
-        ForEach(gearlist!.clusters) { cluster in
+    private var moveToPile: some View {
+        ForEach(gearlist!.piles) { pile in
             Button {
-                viewModel.updateItemCluster(newCluster: cluster, oldCluster: nil, item: item)
+                viewModel.updateItemPile(newPile: pile, oldPile: nil, item: item)
             } label: {
-                Text(cluster.name)
+                Text(pile.name)
             }
         }
     }
@@ -144,7 +144,7 @@ extension ItemRowView_InCluster {
         Button {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
                 withAnimation {
-                    viewModel.removeItemFromCluster(item: item, cluster: cluster!)
+                    viewModel.removeItemFromPile(item: item, pile: pile!)
                 }
             })
         } label: {

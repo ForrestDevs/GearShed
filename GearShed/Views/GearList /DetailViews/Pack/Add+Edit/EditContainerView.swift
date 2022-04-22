@@ -1,23 +1,23 @@
 //
-//  EditContainerView.swift
+//  EditPackView.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-11-11.
 //
 import SwiftUI
 
-struct EditContainerView: View {    
+struct EditPackView: View {    
     @EnvironmentObject private var detailManager: DetailViewManager
     
     @StateObject private var viewModel: GearlistData
     
-    @State private var editableData: EditableContainerData
+    @State private var editableData: EditablePackData
     
-    init(persistentStore: PersistentStore, container: Container) {
+    init(persistentStore: PersistentStore, container: Pack) {
         let viewModel = GearlistData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
         
-        let initialValue = EditableContainerData(persistentStore: persistentStore, container: container)
+        let initialValue = EditablePackData(persistentStore: persistentStore, container: container)
         _editableData = State(initialValue: initialValue)
     }
 
@@ -83,11 +83,11 @@ struct EditContainerView: View {
                 withAnimation {
                     detailManager.secondaryTarget = .noView
                 }
-                viewModel.updateContainer(using: editableData)
+                viewModel.updatePack(using: editableData)
             } label: {
                 Text("Save")
             }
-            .disabled(!editableData.canContainerBeSaved)
+            .disabled(!editableData.canPackBeSaved)
         }
     }
 }

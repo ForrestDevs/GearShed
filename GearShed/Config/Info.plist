@@ -68,25 +68,25 @@
 		</dict>
 		<key>CFBundleAlternateIcons</key>
 		<dict>
-			<key>BLUEicon</key>
+			<key>BlueIcon</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>BLUEicon</string>
+					<string>BlueIcon</string>
 				</array>
 			</dict>
-			<key>DARKicon</key>
+			<key>DarkIcon</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>DARKicon</string>
+					<string>DarkIcon</string>
 				</array>
 			</dict>
-			<key>RGBicon</key>
+			<key>RGBIcon</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>RGBicon</string>
+					<string>RGBIcon</string>
 				</array>
 			</dict>
 		</dict>
@@ -118,7 +118,7 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>Please allow access to the camera, to take photos of your gear.</string>
-	<key>NSUbiquitousContainers</key>
+	<key>NSUbiquitousPacks</key>
 	<dict>
 		<key>iCloud.GearShed</key>
 		<dict>

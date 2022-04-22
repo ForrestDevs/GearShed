@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=YES">
+    <title>Gear Shed</title>
+    <style>
+        @font-face { font-family: HelveticaNeue; src: url('./HelveticaNeueFonts/HelveticaNeue.ttf'); font-style: normal; font-weight: 100; }
+        @font-face { font-family: HelveticaNeue; src: url('./HelveticaNeueFonts/HelveticaNeueThin.ttf'); font-style: normal; font-weight: 200;}
+        @font-face { font-family: HelveticaNeue; src: url('./HelveticaNeueFonts/HelveticaNeueIt.ttf'); font-style: italic; font-weight: 300; }
+        @font-face { font-family: HelveticaNeue; src: url('./HelveticaNeueFonts/HelveticaNeueLt.ttf'); font-style: normal; font-weight: 300; }
+        @font-face { font-family: HelveticaNeue; src: url('./HelveticaNeueFonts/HelveticaNeueMed.ttf'); font-style: normal; font-weight: 400; }
+        @font-face { font-family: HelveticaNeue; src: url('./HelveticaNeueFonts/HelveticaNeueHv.ttf'); font-style: normal; font-weight: 800; }
+        @font-face { font-family: HelveticaNeue; src: url('./HelveticaNeueFonts/HelveticaNeueBold.ttf'); font-style: normal; font-weight: bold; }
+        @font-face { font-family: HelveticaNeue; src: url('./HelveticaNeueFonts/HelveticaNeueBlackCond.ttf');font-style: normal; font-weight: 900; }
+        body { padding: 0px; margin: 0px; font-family: HelveticaNeue; font-size: 16px; font-weight: 200; }
+        #a4pagesize { width: 21cm; height: 29.7cm; margin-top: 10pt; display: flex; justify-content: center; align-items: center; }
+        #pageWrapper { width: 19cm; height: 28.7cm; padding-bottom: 20px; padding-top: 10px;}
+
+        .header { display: flex; flex-direction: row; justify-content: flex-start; align-items: flex-end; }
+        .gearshedLogo { width: 100pt; }
+        .headerTitle { width: 100%; }
+        .headerLine1 { font-size: 20px; font-weight: bold; margin-top: 10pt; }
+        .headerLine2 { font-size: 18px; margin-top: -10px; }
+
+        .statBar { width: 100%; margin-top: 10px; margin-bottom: 15px; padding-top: 5px; padding-bottom: 5px; display: flex; flex-direction: row; justify-content: space-evenly; align-items: baseline; border-top: solid 2px black; border-bottom: solid 2px black; }
+        .statVal { margin: 0; padding-top: 5px; }
+        .statTitle { font-weight: bold; margin: 0;}
+        
+        .itemListSection { width: 100%; margin-bottom: 10px; padding: 0px; }
+        .sectionHeaderTitle { font-weight: bold; border-bottom: solid 2px black; margin: 0; padding-bottom: 2px;}
+        .sectionItems { width: 100%; }
+        .item { margin-left: -15px; margin-top: 10px; word-wrap: normal; }
+    </style>
+</head>
+<body>
+    <div id="a4pagesize">
+        <div id="pageWrapper">
+            <!-- Start of PDF Header -->
+            <!------------------------------>
+            <div class="header">
+                <div class="headerTitle">
+                    <p class="headerLine1">#USERNAME# GEAR SHED</p>
+                    <p class="headerLine2">#PDF_TYPE# | #DATE#</p>
+                </div>
+                <img src="{{IMG_SRC}}" class="gearshedLogo"/>
+            </div>
+            <!------------------------------>
+            <!-- End of PDF Header -->
+
+
+
+            <!-- Start of Stat Bar -->
+            <!------------------------------>
+            <div class="statBar">
+                <!-- #STAT_BAR# -->
+            </div>
+            <!------------------------------>
+            <!-- End of Stat Bar -->
+
+
+
+            <!-- Start of Item Sections -->
+            <!------------------------------>
+
+            <!-- #ITEM_SECTION# -->
+
+            <!------------------------------>
+            <!-- End of Item Sections -->
+
+    
+        
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+<!-- 
+    ---------------------------------------
+    HOW TO USE TEMPLATE:
+    ---------------------------------------
+
+
+    To add a section type (with out spaces): 
+
+    - -> (Element you want to add) <!- -
+
+    
+    This is a STAT_BAR
+    ---------------------------------------
+    <div class="stat">
+        <p class="statTitle">#STAT1-TITLE#</p>
+        <p class="statVal">#STAT1-STAT#</p>
+    </div>
+
+    Add as many as you want (max 6 to be safe)
+    ---------------------------------------
+
+
+    This is an ITEM_SECTION
+    ---------------------------------------
+    <div class="itemListSection">
+        <div class="sectionHeader">
+            <p class="sectionHeaderTitle">#SECTION_NAME#, #SECTION_WEIGHT#</p>
+        </div>
+        <div class="sectionItems">
+            <ul>
+                <!- - #ITEMS# - -> 
+            </ul>
+        </div>
+    </div>
+    --------------------------------------
+
+
+    This is a single Element which goes in #ITEMS#
+    -------------------------------------------------------------
+    <li class="item">#ITEM_NAME# | #ITEM_BRAND# &nbsp #ITEM_WEIGHT# | #ITEM_PRICE# &nbsp #ITEM_DESCRIPTION#</li>
+    -------------------------------------------------------------
+
+    
+-->

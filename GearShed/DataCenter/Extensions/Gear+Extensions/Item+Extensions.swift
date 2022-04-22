@@ -139,23 +139,23 @@ extension Item {
         set { datePurchased_ = newValue }
     }
     
-    var clusters: [Cluster] {
-        if let clusters = clusters_ as? Set<Cluster> {
-            return clusters.sorted(by: { $0.name < $1.name })
+    var piles: [Pile] {
+        if let piles = piles_ as? Set<Pile> {
+            return piles.sorted(by: { $0.name < $1.name })
         }
         return []
     }
     
-    var containers: [Container] {
-        if let containers = containers_ as? Set<Container> {
-            return containers.sorted(by: { $0.name < $1.name })
+    var packs: [Pack] {
+        if let packs = packs_ as? Set<Pack> {
+            return packs.sorted(by: { $0.name < $1.name })
         }
         return []
     }
     
-    var containerBools: [ContainerBool] {
-        if let containerBools = containerBools_ as? Set<ContainerBool> {
-            return containerBools.sorted(by: { $0.id < $1.id })
+    var packingBools: [PackingBool] {
+        if let packingBools = packingBools_ as? Set<PackingBool> {
+            return packingBools.sorted(by: { $0.id < $1.id })
         }
         return []
     }
@@ -166,17 +166,17 @@ extension Item {
     // the name of its associated brand
     var brandName: String { brand_?.name_ ?? "Not Available" }
     
-    /// Function to return an Items Container In a specifc Gearlist.
-    func gearlistContainer(gearlist: Gearlist) -> Container? {
+    /// Function to return an Items Pack In a specifc Gearlist.
+    func gearlistPack(gearlist: Gearlist) -> Pack? {
         // First Filter out all the packingGroups by Gearlist
-        let container = containers.first(where: { $0.gearlist == gearlist })
-        return container ?? nil
+        let pack = packs.first(where: { $0.gearlist == gearlist })
+        return pack ?? nil
     }
     
-    /// Function to return an Items Cluster In a specifc Gearlist.
-    func gearlistCluster(gearlist: Gearlist) -> Cluster? {
-        let cluster = clusters.first(where: { $0.gearlist == gearlist })
-        return cluster ?? nil
+    /// Function to return an Items Pile In a specifc Gearlist.
+    func gearlistPile(gearlist: Gearlist) -> Pile? {
+        let pile = piles.first(where: { $0.gearlist == gearlist })
+        return pile ?? nil
     }
     
     /// Function to find wether or not a diary exists for an item in a gearlist
@@ -203,15 +203,15 @@ extension Item {
         return details
     }
     
-    /// Function to return an Items ContainerBool in a specific Gearlist.
-    func gearlistContainerBool(gearlist: Gearlist) -> ContainerBool? {
-        let containerBool = containerBools.first(where: {$0.gearlist == gearlist })
-        return containerBool ?? nil
+    /// Function to return an Items PackBool in a specific Gearlist.
+    func gearlistpackingBool(gearlist: Gearlist) -> PackingBool? {
+        let packingBool = packingBools.first(where: {$0.gearlist == gearlist })
+        return packingBool ?? nil
     }
-    /// Function to return an Items ContainerBool in a specific Container.
-    func containerContainerBool(container: Container) -> ContainerBool? {
-        let containerBool = containerBools.first(where: {$0.container == container })
-        return containerBool ?? nil
+    /// Function to return an Items PackBool in a specific Pack.
+    func packPackingBool(pack: Pack) -> PackingBool? {
+        let packingBool = packingBools.first(where: {$0.pack == pack })
+        return packingBool ?? nil
     }
     class func delete(_ item: Item) {
         // remove the reference to this item from its associated shed

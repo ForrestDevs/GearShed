@@ -1,12 +1,12 @@
 //
-//  GearlistContainerView.swift
+//  GearlistPackView.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-11-10.
 //
 import SwiftUI
 
-struct GearlistContainerView: View {
+struct GearlistPackView: View {
     @Environment(\.presentationMode) private var presentationMode
     
     @EnvironmentObject private var detailManager: DetailViewManager
@@ -17,27 +17,27 @@ struct GearlistContainerView: View {
     
     @ObservedObject var gearlist: Gearlist
     
-    @State private var confirmDeleteContainerAlert: ConfirmDeleteContainerAlert?
+    @State private var confirmDeletePackAlert: ConfirmDeletePackAlert?
     
     var body: some View {
         VStack (spacing: 0) {
             StatBar(statType: .pack, gearlist: gearlist)
             ZStack {
-                if gearlist.containers.count == 0 {
+                if gearlist.packs.count == 0 {
                     EmptyViewText(text: "You have not added any packs to this list. To add your first pack press the 'Add Pack' button below.")
                 } else {
-                    packingContainerList
+                    packingPackList
                 }
-                addContainerButtonOverlay
+                addPackButtonOverlay
             }
         }
-        .alert(item: $confirmDeleteContainerAlert) { container in container.alert() }
+        .alert(item: $confirmDeletePackAlert) { container in container.alert() }
     }
     
-    private var packingContainerList: some View {
+    private var packingPackList: some View {
         ScrollView {
             LazyVStack (alignment: .leading, spacing: 0, pinnedViews: .sectionHeaders) {
-                ForEach(gearlist.containers) { container in
+                ForEach(gearlist.packs) { container in
                     Section {
                         listContent(container: container)
                     } header: {
@@ -49,7 +49,7 @@ struct GearlistContainerView: View {
         }
     }
     
-    private func listHeader(container: Container) -> some View {
+    private func listHeader(container: Pack) -> some View {
         ZStack {
             Color.theme.headerBG
                 .frame(maxWidth: .infinity)
@@ -79,9 +79,9 @@ struct GearlistContainerView: View {
                 Spacer()
                 Menu {
                     Button {
-                        detailManager.selectedContainer = container
+                        detailManager.selectedPack = container
                         withAnimation {
-                            detailManager.secondaryTarget = .showAddItemsToContainer
+                            detailManager.secondaryTarget = .showAddItemsToPack
                         }
                     } label: {
                         HStack {
@@ -90,9 +90,9 @@ struct GearlistContainerView: View {
                         }
                     }
                     Button {
-                        detailManager.selectedContainer = container
+                        detailManager.selectedPack = container
                         withAnimation {
-                            detailManager.secondaryTarget = .showModifyContainer
+                            detailManager.secondaryTarget = .showModifyPack
                         }
                     } label: {
                         HStack {
@@ -102,7 +102,7 @@ struct GearlistContainerView: View {
                     }
                     
                     Button {
-                        confirmDeleteContainerAlert = ConfirmDeleteContainerAlert (
+                        confirmDeletePackAlert = ConfirmDeletePackAlert (
                             persistentStore: persistentStore,
                             container: container,
                             destructiveCompletion: {
@@ -127,13 +127,13 @@ struct GearlistContainerView: View {
         }
     }
     
-    private func listContent(container: Container) -> some View {
+    private func listContent(container: Pack) -> some View {
         ForEach(container.items) { item in
-            ItemRowView_InContainer(item: item, gearlist: gearlist, container: container)
+            ItemRowView_InPack(item: item, gearlist: gearlist, container: container)
         }
     }
     
-    private var addContainerButtonOverlay: some View {
+    private var addPackButtonOverlay: some View {
         VStack {
             Spacer()
             HStack {
@@ -141,7 +141,7 @@ struct GearlistContainerView: View {
                 Button {
                     detailManager.selectedGearlist = gearlist
                     withAnimation {
-                        detailManager.secondaryTarget = .showAddContainer
+                        detailManager.secondaryTarget = .showAddPack
                     }
                 }
                 label: {

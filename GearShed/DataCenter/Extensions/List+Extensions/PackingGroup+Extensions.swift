@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Container {
+extension Pack {
     
     var name: String {
         get { name_ ?? "Unknown Name" }
@@ -24,9 +24,9 @@ extension Container {
         return []
     }
     
-    var containerBools: [ContainerBool] {
-        if let containerBools = containerBools_ as? Set<ContainerBool> {
-            return containerBools.sorted(by: { $0.item.name < $1.item.name })
+    var packingBools: [PackingBool] {
+        if let packingBools = packingBools_ as? Set<PackingBool> {
+            return packingBools.sorted(by: { $0.item.name < $1.item.name })
         }
         return []
     }

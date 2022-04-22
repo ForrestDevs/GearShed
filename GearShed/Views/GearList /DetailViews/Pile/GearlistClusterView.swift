@@ -1,12 +1,12 @@
 //
-//  GearlistClusterView.swift
+//  GearlistPileView.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-11-10.
 //
 import SwiftUI
 
-struct GearlistClusterView: View {
+struct GearlistPileView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @EnvironmentObject private var detailManager: DetailViewManager
@@ -15,7 +15,7 @@ struct GearlistClusterView: View {
     
     @EnvironmentObject private var viewModel: GearlistData
     
-    @State private var confirmDeleteClusterAlert: ConfirmDeleteClusterAlert?
+    @State private var confirmDeletePileAlert: ConfirmDeletePileAlert?
     
     @ObservedObject var gearlist: Gearlist
     
@@ -23,25 +23,25 @@ struct GearlistClusterView: View {
         VStack (spacing: 0) {
             StatBar(statType: .pile, gearlist: gearlist)
             ZStack {
-                if gearlist.clusters.count == 0 {
+                if gearlist.piles.count == 0 {
                     EmptyViewText(text: "You have not added any piles to this list. To add your first pile press the 'Add Pile' button below.")
                 } else {
-                    gearlistClusterList
+                    gearlistPileList
                 }
-                addClusterButtonOverlay
+                addPileButtonOverlay
             }
         }
-        .alert(item: $confirmDeleteClusterAlert) { cluster in cluster.alert() }
+        .alert(item: $confirmDeletePileAlert) { pile in pile.alert() }
     }
     
-    private var gearlistClusterList: some View {
+    private var gearlistPileList: some View {
         ScrollView {
             LazyVStack (alignment: .leading, spacing: 0, pinnedViews: .sectionHeaders) {
-                ForEach(gearlist.clusters) { cluster in
+                ForEach(gearlist.piles) { pile in
                     Section {
-                        listContent(cluster: cluster)
+                        listContent(pile: pile)
                     } header: {
-                        listHeader(cluster: cluster)
+                        listHeader(pile: pile)
                     }
                 }
             }
@@ -49,37 +49,37 @@ struct GearlistClusterView: View {
         }
     }
     
-    private func listContent(cluster: Cluster) -> some View {
-        ForEach(cluster.items) { item in
-            ItemRowView_InCluster(cluster: cluster, item: item)
+    private func listContent(pile: Pile) -> some View {
+        ForEach(pile.items) { item in
+            ItemRowView_InPile(pile: pile, item: item)
         }
     }
     
-    private func listHeader(cluster: Cluster) -> some View {
+    private func listHeader(pile: Pile) -> some View {
         ZStack {
             Color.theme.headerBG
                 .frame(maxWidth: .infinity)
                 .frame(height: 25)
             HStack {
-                Text(cluster.name)
+                Text(pile.name)
                     .font(.headline)
                 
                 if (Prefs.shared.weightUnit == "g") {
-                    Text("\(viewModel.pileTotalGrams(pile: cluster))g")
+                    Text("\(viewModel.pileTotalGrams(pile: pile))g")
                 }
                 if (Prefs.shared.weightUnit == "lb + oz") {
-                    let LbOz = viewModel.pileTotalLbsOz(pile: cluster)
+                    let LbOz = viewModel.pileTotalLbsOz(pile: pile)
                     let lbs = LbOz.lbs
                     let oz = LbOz.oz
                     Text("\(lbs) lbs \(oz) oz")
                 }
                 
                 /*if (persistentStore.stateUnit == "g") {
-                    Text("\(viewModel.pileTotalGrams(pile: cluster))g")
+                    Text("\(viewModel.pileTotalGrams(pile: pile))g")
                 }
                 
                 if (persistentStore.stateUnit == "lb + oz") {
-                    let LbOz = viewModel.pileTotalLbsOz(pile: cluster)
+                    let LbOz = viewModel.pileTotalLbsOz(pile: pile)
                     let lbs = LbOz.lbs
                     let oz = LbOz.oz
                     Text("\(lbs) lbs \(oz) oz")
@@ -87,9 +87,9 @@ struct GearlistClusterView: View {
                 Spacer()
                 Menu {
                     Button {
-                        detailManager.selectedCluster = cluster
+                        detailManager.selectedPile = pile
                         withAnimation {
-                            detailManager.secondaryTarget = .showAddItemsToCluster
+                            detailManager.secondaryTarget = .showAddItemsToPile
                         }
                     } label: {
                         HStack {
@@ -98,9 +98,9 @@ struct GearlistClusterView: View {
                         }
                     }
                     Button {
-                        detailManager.selectedCluster = cluster
+                        detailManager.selectedPile = pile
                         withAnimation {
-                            detailManager.secondaryTarget = .showModifyCluster
+                            detailManager.secondaryTarget = .showModifyPile
                         }
                     } label: {
                         HStack {
@@ -110,9 +110,9 @@ struct GearlistClusterView: View {
                     }
                     
                     Button {
-                        confirmDeleteClusterAlert = ConfirmDeleteClusterAlert (
+                        confirmDeletePileAlert = ConfirmDeletePileAlert (
                             persistentStore: persistentStore,
-                            cluster: cluster,
+                            pile: pile,
                             destructiveCompletion: {
                                 presentationMode.wrappedValue.dismiss()
                             }
@@ -135,7 +135,7 @@ struct GearlistClusterView: View {
         }
     }
     
-    private var addClusterButtonOverlay: some View {
+    private var addPileButtonOverlay: some View {
         VStack {
             Spacer()
             HStack {
@@ -143,7 +143,7 @@ struct GearlistClusterView: View {
                 Button {
                     detailManager.selectedGearlist = gearlist
                     withAnimation {
-                        detailManager.secondaryTarget = .showAddCluster
+                        detailManager.secondaryTarget = .showAddPile
                     }
                 }
                 label: {

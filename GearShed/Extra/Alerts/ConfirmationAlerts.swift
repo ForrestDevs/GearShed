@@ -202,45 +202,45 @@ struct ConfirmDeleteActivityTypeAlert: ConfirmationAlertProtocol {
     var nonDestructiveCompletion: (() -> Void)?
 }
 
-struct ConfirmDeleteClusterAlert: ConfirmationAlertProtocol {
+struct ConfirmDeletePileAlert: ConfirmationAlertProtocol {
     @EnvironmentObject var persistentStore: PersistentStore
     
     @State private var viewModel: GearlistData
     
-    init(persistentStore: PersistentStore, cluster: Cluster, destructiveCompletion: (() -> Void)? = nil) {
+    init(persistentStore: PersistentStore, pile: Pile, destructiveCompletion: (() -> Void)? = nil) {
         
         let viewModel = GearlistData(persistentStore: persistentStore)
         _viewModel = State(wrappedValue: viewModel)
         
-        self.cluster = cluster
+        self.pile = pile
         self.destructiveCompletion = destructiveCompletion
     }
     
     var id = UUID()
     
-    var cluster: Cluster
+    var pile: Pile
     
-    var title: String { "Delete \(cluster.name)?" }
+    var title: String { "Delete \(pile.name)?" }
     
     var message: String {
-        "Are you sure you want to delete \(cluster.name)? This action cannot be undone."
+        "Are you sure you want to delete \(pile.name)? This action cannot be undone."
     }
     
     func destructiveAction() {
-        viewModel.deleteCluster(cluster: cluster)
+        viewModel.deletePile(pile: pile)
     }
     
     var destructiveCompletion: (() -> Void)?
     var nonDestructiveCompletion: (() -> Void)?
 }
 
-struct ConfirmDeleteContainerAlert: ConfirmationAlertProtocol {
+struct ConfirmDeletePackAlert: ConfirmationAlertProtocol {
     
     @EnvironmentObject var persistentStore: PersistentStore
     
     @State private var viewModel: GearlistData
     
-    init(persistentStore: PersistentStore, container: Container, destructiveCompletion: (() -> Void)? = nil) {
+    init(persistentStore: PersistentStore, container: Pack, destructiveCompletion: (() -> Void)? = nil) {
         
         let viewModel = GearlistData(persistentStore: persistentStore)
         _viewModel = State(wrappedValue: viewModel)
@@ -251,7 +251,7 @@ struct ConfirmDeleteContainerAlert: ConfirmationAlertProtocol {
     
     var id = UUID()
     
-    var container: Container
+    var container: Pack
     
     var title: String { "Delete \(container.name)?" }
     
@@ -260,7 +260,7 @@ struct ConfirmDeleteContainerAlert: ConfirmationAlertProtocol {
     }
     
     func destructiveAction() {
-        viewModel.deleteContainer(container: container)
+        viewModel.deletePack(container: container)
     }
     
     var destructiveCompletion: (() -> Void)?
