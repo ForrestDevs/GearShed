@@ -1,16 +1,16 @@
 //
-//  ItemRowViewForList.swift
+//  SelectableItemRowView.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-10-27.
+//  Copyright © 2022 All rights reserved.
 //
 
 import SwiftUI
 
 struct SelectableItemRowView: View {
-    
     @EnvironmentObject private var persistentStore: PersistentStore
-    
+    @State private var isChecked: Bool
     private var item: Item
     private var gearlist: Gearlist?
     private var pile: Pile?
@@ -19,24 +19,18 @@ struct SelectableItemRowView: View {
     var respondToTapOnSelector: () -> ()
     var respondToTapOffSelector: () -> ()
     
-    @State private var isChecked: Bool
-    
     init(type: SelectType, gearlist: Gearlist? = nil, pile: Pile? = nil , pack: Pack? = nil, item: Item, respondToTapOnSelector: @escaping () -> (), respondToTapOffSelector: @escaping () -> ()) {
         self.item = item
         self.type = type
-        
         if let gearlist = gearlist {
             self.gearlist = gearlist
         }
-        
         if let pile = pile {
             self.pile = pile
         }
-        
         if let pack = pack {
             self.pack = pack
         }
-        
         switch type {
         case .gearlistItem:
             let initialValue = gearlist!.items.contains(item)
@@ -68,14 +62,13 @@ struct SelectableItemRowView: View {
             }
         }
     }
-    
+    //MARK: Main Content
     private var itemSelectorButton: some View {
         Image(systemName: isChecked ? "circle.fill" : "circle")
             .resizable()
             .frame(width: 13, height: 12)
             .foregroundColor(Color.theme.green)
     }
-    
     private var itemRowView: some View {
         VStack (alignment: .leading, spacing: 0) {
             HStack {
@@ -102,21 +95,6 @@ struct SelectableItemRowView: View {
                             .foregroundColor(Color.theme.green)
                     }
                 }
-                
-                /*if (persistentStore.stateUnit == "g") {
-                    if (Int(item.weight) ?? 0 > 0) {
-                        Text("\(item.weight)g")
-                            .font(.caption)
-                            .foregroundColor(Color.theme.green)
-                    }
-                }
-                if (persistentStore.stateUnit == "lb + oz") {
-                    if (Int(item.itemLbs) ?? 0 > 0 || Double(item.itemOZ) ?? 0.0 > 0.0) {
-                        Text("\(item.itemLbs) lbs \(item.itemOZ) oz")
-                            .font(.caption)
-                            .foregroundColor(Color.theme.green)
-                    }
-                }*/
                 Text(item.detail)
                     .font(.caption)
                     .foregroundColor(Color.theme.secondaryText)
@@ -124,5 +102,4 @@ struct SelectableItemRowView: View {
             .lineLimit(1)
         }
     }
-    
 }

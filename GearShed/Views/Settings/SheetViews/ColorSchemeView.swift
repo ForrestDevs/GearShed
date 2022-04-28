@@ -3,6 +3,7 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2022-02-07.
+//  Copyright © 2022 All rights reserved.
 //
 
 import SwiftUI
@@ -21,7 +22,6 @@ struct ColorSchemeView: View {
                     }
                 }
             }
-            
             Button {
                 Prefs.shared.isSystemMode = false
                 Prefs.shared.isDarkMode = false
@@ -34,7 +34,6 @@ struct ColorSchemeView: View {
                     
                 }
             }
-            
             Button {
                 Prefs.shared.isDarkMode = true
                 Prefs.shared.isSystemMode = false
@@ -48,11 +47,5 @@ struct ColorSchemeView: View {
                 }
             }
         }
-    }
-}
-
-struct ColorSchemeView_Previews: PreviewProvider {
-    static var previews: some View {
-        ColorSchemeView()
     }
 }

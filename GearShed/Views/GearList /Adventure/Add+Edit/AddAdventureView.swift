@@ -1,20 +1,18 @@
 //
-//  AddTripView.swift
+//  AddAdventureView.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-11-13.
+//  Copyright © 2022 All rights reserved.
 //
+
 import SwiftUI
 
 struct AddAdventureView: View {
     @EnvironmentObject private var detailManager: DetailViewManager
-        
     @StateObject private var viewModel: GearlistData
-    
     @State private var editableData: EditableGearlistData
-    
     @State private var dateRange: ClosedRange<Date>? = nil
-
     @State private var showOverlay = false
     
     init(persistentStore: PersistentStore) {
@@ -57,7 +55,6 @@ struct AddAdventureView: View {
             }
         }
     }
-    
     private var adventureNameSection: some View {
         Section {
             VStack(alignment: .leading, spacing: 3) {
@@ -70,7 +67,6 @@ struct AddAdventureView: View {
             }
         }
     }
-    
     private var adventureDateSection: some View {
         Section {
             VStack (alignment: .leading, spacing: 2) {
@@ -116,7 +112,6 @@ struct AddAdventureView: View {
             }
         }
     }
-    
     private var adventureLocationSection: some View {
         Section {
             VStack(alignment: .leading, spacing: 3) {
@@ -129,7 +124,6 @@ struct AddAdventureView: View {
             }
         }
     }
-    
     private var adventureCountrySection: some View {
         Section {
             VStack(alignment: .leading, spacing: 3) {
@@ -142,7 +136,6 @@ struct AddAdventureView: View {
             }
         }
     }
-    
     private var adventureDescriptionSection: some View {
         Section {
             VStack (alignment: .leading, spacing: 3) {
@@ -155,7 +148,6 @@ struct AddAdventureView: View {
             }
         }
     }
-    
     // MARK: Toolbar Content
     private var cancelButtonToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
@@ -168,14 +160,12 @@ struct AddAdventureView: View {
             }
         }
     }
-    
     private var viewTitle: some ToolbarContent {
         ToolbarItem (placement: .principal) {
             Text("Add Adventure")
                 .formatGreen()
         }
     }
-    
     private var saveButtonToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {

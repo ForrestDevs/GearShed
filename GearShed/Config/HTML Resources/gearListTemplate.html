@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Gear List</title>
+        <style>
+            @font-face { font-family: HelveticaNeue; src: url('#hevNeue#'); font-style: normal; font-weight: 100; }
+            @font-face { font-family: HelveticaNeue; src: url('#hevNeueThin#'); font-style: normal; font-weight: 200;}
+            @font-face { font-family: HelveticaNeue; src: url('#hevNeueIt#'); font-style: italic; font-weight: 300; }
+            @font-face { font-family: HelveticaNeue; src: url('#hevNeueLt#'); font-style: normal; font-weight: 300; }
+            @font-face { font-family: HelveticaNeue; src: url('#hevNeueMed#'); font-style: normal; font-weight: 400; }
+            @font-face { font-family: HelveticaNeue; src: url('#hevNeueHv#'); font-style: normal; font-weight: 800; }
+            @font-face { font-family: HelveticaNeue; src: url('#hevNeueBold#'); font-style: normal; font-weight: bold; }
+            @font-face { font-family: HelveticaNeue; src: url('#hevNeueBlackCond#');font-style: normal; font-weight: 900; }
+            body { padding: 0px; margin: 0px; font-family: HelveticaNeue; font-size: 16px; font-weight: 200; }
+            .header { display: flex; flex-direction: row; justify-content: flex-start; align-items: flex-end; }
+            .gearshedLogo { width: 100pt; }
+            .headerTitle { width: 100%; }
+            .headerLine1 { font-size: 18px; font-weight: bold;  margin: 0;}
+            .headerLine2 { font-size: 17px;  margin: 0; }
+            .headerLine3 { font-size: 17px;  margin: 0;}
+            .headerLine4 { font-size: 17px;  margin: 0;}
+    
+            .statBar { width: 100%; margin-top: 10px; margin-bottom: 15px; padding-top: 5px; padding-bottom: 5px; display: flex; flex-direction: row;   justify-content: space-evenly; align-items: baseline; border-top: solid 2px black; border-bottom: solid 2px black; }
+            .statVal { margin: 0; padding-top: 5px; }
+            .statTitle { font-weight: bold; margin: 0;}
+            
+            .itemListSection { width: 100%; margin-bottom: 10px; padding: 0px; }
+            .sectionHeaderTitle { font-weight: bold; border-bottom: solid 2px black; margin: 0; padding-bottom: 2px;}
+            .sectionItems { width: 100%; }
+            .item { margin-left: -15px; margin-top: 10px; word-wrap: normal; }
+        </style>
+    </head>
+    <body>
+        <div id="pageWrapper">
+            <!-- Start of PDF Header -->
+            <!------------------------------>
+            <div class="header">
+                <div class="headerTitle">
+                    <p class="headerLine1">#USERNAME# GEAR LIST</p>
+                    <p class="headerLine2">#GEARLIST_TITLE# | #GEARLIST_START#</p>
+                    <p class="headerLine3">#LOCATION_COUNTRY#</p>
+                    <p class="headerLine4">#PDF_TYPE# | Version: #DATE#, #TIME#</p>
+                </div>
+                <img src="{{IMG_SRC}}" class="gearshedLogo" alt="gearshed-logo"/>
+            </div>
+            <!------------------------------>
+            <!-- End of PDF Header -->
+            <!-- Start of Stat Bar -->
+            <!------------------------------>
+            <div class="statBar">
+                <!-- #STAT_BAR# -->
+            </div>
+            <!------------------------------>
+            <!-- End of Stat Bar -->
+            <!-- Start of Item Sections -->
+            <!------------------------------>
+            <!-- #ITEM_SECTION# -->
+            <!------------------------------>
+            <!-- End of Item Sections -->
+        </div>
+    </body>
+</html>

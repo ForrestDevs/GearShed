@@ -3,7 +3,9 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-11-18.
+//  Copyright © 2022 All rights reserved.
 //
+
 import SwiftUI
 
 struct AddActivityTypeView: View {
@@ -25,7 +27,6 @@ struct AddActivityTypeView: View {
         }
         .transition(.move(edge: .trailing))
     }
-    
     // MARK: Main Content
     private var contentView: some View {
         ZStack {
@@ -48,7 +49,6 @@ struct AddActivityTypeView: View {
             }
         }
     }
-    
     // MARK: Toolbar Content
     private var cancelToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
@@ -61,14 +61,12 @@ struct AddActivityTypeView: View {
             }
         }
     }
-    
     private var viewTitle: some ToolbarContent {
         ToolbarItem(placement: .principal) {
             Text("Add Activity Type")
                 .formatGreen()
         }
     }
-    
     private var saveToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
@@ -94,19 +92,15 @@ extension AddActivityTypeView {
     init(persistentStore: PersistentStore) {
         let glData = GearlistData(persistentStore: persistentStore)
         _glData = StateObject(wrappedValue: glData)
-        
         let initialData = EditableActivityTypeData(persistentStore: persistentStore)
         _editableData = State(initialValue: initialData)
     }
-    
     /// Initializer for loading Add Type from an Add Activity View.
     init(persistentStore: PersistentStore, typeOut: @escaping ((ActivityType) -> ()) ) {
         let glData = GearlistData(persistentStore: persistentStore)
         _glData = StateObject(wrappedValue: glData)
-        
         let initialData = EditableActivityTypeData(persistentStore: persistentStore)
         _editableData = State(initialValue: initialData)
-        
         self.typeOut = typeOut
         self.isAddFromList = true
     }

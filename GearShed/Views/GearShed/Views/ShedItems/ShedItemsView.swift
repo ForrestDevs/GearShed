@@ -3,13 +3,13 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 18/10/21
-//  Copyright © 2021 All rights reserved.
+//  Copyright © 2022 All rights reserved.
 //
+
 import SwiftUI
 
 struct ShedItemsView: View {
     @Environment(\.presentationMode) private var presentationMode
-    
     @EnvironmentObject private var persistentStore: PersistentStore
     @EnvironmentObject private var detailManager: DetailViewManager
     @EnvironmentObject private var gsData: GearShedData
@@ -27,17 +27,13 @@ struct ShedItemsView: View {
                     listView
                 }
             }
-            
             // Invisible Rects for seperate alerts
             Rectangle()
                 .opacity(0)
                 .alert(item: $vm.confirmDeleteShedAlert) { shed in shed.alert() }
-            
             Rectangle()
                 .opacity(0)
                 .alert(item: $gsvm.confirmDeleteItemAlert) { item in item.alert() }
-            
-           
             ExpandableButton(type: .shed)
                 .environmentObject(detailManager)
                 .environmentObject(vm)
@@ -75,13 +71,10 @@ struct ShedItemsView: View {
             Color.theme.headerBG
                 .frame(maxWidth: .infinity)
                 .frame(height: 25)
-            
             HStack {
                 Text(shed.name).textCase(.none)
                     .font(.custom("HelveticaNeue", size: 16.5).bold())
-                
                 Spacer()
-                
                 Menu {
                     Button {
                         if gsData.proUser() {

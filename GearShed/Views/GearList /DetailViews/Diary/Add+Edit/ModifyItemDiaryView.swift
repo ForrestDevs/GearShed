@@ -3,25 +3,23 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-11-20.
+//  Copyright © 2022 All rights reserved.
 //
+
 import SwiftUI
 
 struct ModifyItemDiaryView: View {
     @EnvironmentObject private var detailManager: DetailViewManager
-
     @State private var editableData: EditableDiaryData
-        
     @StateObject private var viewModel: GearShedData
     
     init(persistentStore: PersistentStore, diary: ItemDiary) {
         let viewModel = GearShedData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
-        
         let initialValue = EditableDiaryData(persistentStore: persistentStore, diary: diary)
         _editableData = State(initialValue: initialValue)
     }
-
-    // MARK: Main Content
+    
     var body: some View {
         NavigationView {
             contentView
@@ -34,7 +32,7 @@ struct ModifyItemDiaryView: View {
         }
         .transition(.move(edge: .trailing))
     }
-    
+    // MARK: Main Content
     private var contentView: some View {
         ZStack {
             Color.theme.silver
@@ -49,7 +47,6 @@ struct ModifyItemDiaryView: View {
             }
         }
     }
-    
     // MARK: Content Components
     private var diaryItemSection: some View {
         Section {
@@ -70,7 +67,6 @@ struct ModifyItemDiaryView: View {
             }
         }
     }
-    
     private var diaryDescriptionSection: some View {
         Section {
             VStack (alignment: .leading, spacing: 3) {
@@ -98,7 +94,6 @@ struct ModifyItemDiaryView: View {
             }
         }
     }
-    
     // MARK: ToolbarItems
     private var cancelButtonToolbarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
@@ -111,14 +106,12 @@ struct ModifyItemDiaryView: View {
             }
         }
     }
-    
     private var viewTitle: some ToolbarContent {
         ToolbarItem(placement: .principal) {
             Text("Edit Diary")
                 .formatGreen()
         }
     }
-    
     private var saveButtonToolbarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {

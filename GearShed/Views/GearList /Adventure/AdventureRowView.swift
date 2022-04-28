@@ -1,22 +1,19 @@
 //
-//  TripRowView.swift
+//  AdventureRowView.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-11-14.
+//  Copyright © 2022 All rights reserved.
 //
+
 import SwiftUI
 
 struct AdventureRowView: View {
     @Environment(\.presentationMode) private var presentationMode
-
     @EnvironmentObject var viewModel: GearlistData
-    
     @EnvironmentObject var detailManager: DetailViewManager
-    
     @EnvironmentObject var persistentStore: PersistentStore
-
     @ObservedObject var adventure: Gearlist
-    
     @State private var confirmDeleteGearlistAlert: ConfirmDeleteGearlistAlert?
     
     var body: some View {
@@ -38,7 +35,6 @@ struct AdventureRowView: View {
     }
     
     // MARK: Main Content
-    
     private var bucketlistStatus: some View {
         VStack {
             if adventure.isBucketlist {
@@ -51,7 +47,6 @@ struct AdventureRowView: View {
             }
         }
     }
-    
     private var rowBody: some View {
         VStack (alignment: .leading, spacing: 2) {
             HStack {
@@ -87,7 +82,6 @@ struct AdventureRowView: View {
         .padding(.bottom, 4)
     
     }
-    
     // MARK: Context Menus
     private var editContextButton: some View {
         Button {
@@ -102,7 +96,6 @@ struct AdventureRowView: View {
             }
         }
     }
-    
     private var duplicateContextButton: some View {
         Button {
             viewModel.duplicateGearlist(gearlist: adventure)
@@ -113,7 +106,6 @@ struct AdventureRowView: View {
             }
         }
     }
-    
     private var deleteContextButton: some View {
         Button {
             confirmDeleteGearlistAlert = ConfirmDeleteGearlistAlert (
@@ -130,7 +122,6 @@ struct AdventureRowView: View {
             }
         }
     }
-    
     private var bucketListContextMenu: some View {
         Button {
             viewModel.toggleBucketlist(gearlist: adventure)

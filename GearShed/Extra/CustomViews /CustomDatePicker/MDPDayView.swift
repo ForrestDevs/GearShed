@@ -1,25 +1,17 @@
 //
 //  DayOfMonthView.swift
-//  CustomDatePickerApp
+//  Gear Shed
 //
-//  Created by Peter Ent on 11/2/20.
+//  Created by Luke Forrest Gannon on 2021-11-14.
+//  Copyright © 2022 All rights reserved.
 //
 
 import SwiftUI
 
-/**
- * MDPDayView displays the day of month on a MDPContentView. This a button whose color and
- * selectability is determined from the MDPDayOfMonth in the CustomDatePickerModel.
- */
 struct MDPDayView: View {
     @EnvironmentObject var monthDataModel: CustomDatePickerModel
     let cellSize: CGFloat = 30
     var dayOfMonth: MDPDayOfMonth
-    
-    // outline "today"
-    /*private var strokeColor: Color {
-        dayOfMonth.isToday ? Color.accentColor : Color.clear
-    }*/
     
     // outline "first day"
     private var strokeColor: Color {
@@ -29,11 +21,9 @@ struct MDPDayView: View {
             return Color.clear
         }
     }
-    
     private var currentDayColor: Color {
         dayOfMonth.isToday ? Color.red : Color.theme.accent
     }
-    
     // filled if selected
     private var fillColor: Color {
         if monthDataModel.selections.count == 1 {
@@ -42,7 +32,6 @@ struct MDPDayView: View {
             return monthDataModel.isSelected(dayOfMonth) ? Color.theme.green.opacity(0.55) : Color.clear
         }
     }
-    
     // reverse color for selections or gray if not selectable
     private var textColor: Color {
         if dayOfMonth.isToday {
@@ -55,13 +44,11 @@ struct MDPDayView: View {
             }
         }
     }
-    
     private func handleSelection() {
         if dayOfMonth.isSelectable {
             monthDataModel.selectDay(dayOfMonth)
         }
     }
-    
     var body: some View {
         Button {
             handleSelection()
@@ -81,9 +68,7 @@ struct MDPDayView: View {
     }
 }
 
-struct DayOfMonthView_Previews: PreviewProvider {
-    static var previews: some View {
-        MDPDayView(dayOfMonth: MDPDayOfMonth(index: 0, day: 1, date: Date(), isSelectable: true, isToday: false))
-            .environmentObject(CustomDatePickerModel())
-    }
-}
+/**
+ * MDPDayView displays the day of month on a MDPContentView. This a button whose color and
+ * selectability is determined from the MDPDayOfMonth in the CustomDatePickerModel.
+ */

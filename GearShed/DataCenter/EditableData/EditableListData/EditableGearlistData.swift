@@ -3,14 +3,13 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-10-25.
+//  Copyright © 2022 All rights reserved.
 //
 
 import Foundation
 
 struct EditableGearlistData {
-    
     let persistentStore: PersistentStore
-        
     var id: UUID?
     var name: String
     var details: String
@@ -20,7 +19,6 @@ struct EditableGearlistData {
     var country: String?
     var startDate: Date?
     var endDate: Date?
-        
     // to do a save/commit of an Item, it must have a non-empty name
     var canGearlistBeSaved: Bool {
         var state: Bool = false
@@ -35,18 +33,14 @@ struct EditableGearlistData {
         }
         return state
     }
-
     // useful to know if this is associated with an existing Brand
     var representsExistingGearlist: Bool { id != nil }
-    
-    // useful to know the associated trip (which we'll force unwrap, so
+    // useful to know the associated gearlist (which we'll force unwrap, so
     // be sure you check representsExistingTrip first (!)
     var associatedGearlist: Gearlist { Gearlist.object(id: id!, context: persistentStore.context)! }
-    
 }
 
 extension EditableGearlistData {
-    
     /// Initializer for loading a gearlist that already exists.
     init(persistentStore: PersistentStore, gearlist: Gearlist) {
         self.persistentStore = persistentStore
@@ -59,7 +53,7 @@ extension EditableGearlistData {
         self.startDate = gearlist.startDate
         self.endDate = gearlist.endDate
     }
-    
+    /// Intializer for loading between an adventure or activity gearlist
     init(persistentStore: PersistentStore, isTrip: Bool) {
         self.persistentStore = persistentStore
         self.name = ""
@@ -70,7 +64,7 @@ extension EditableGearlistData {
         self.startDate = nil
         self.endDate = nil
     }
-    
+    /// Initializer for loading an activity gearlist
     init(persistentStore: PersistentStore, activityType: ActivityType) {
         self.persistentStore = persistentStore
         self.name = ""
@@ -78,5 +72,4 @@ extension EditableGearlistData {
         self.activityType = activityType
         self.isAdventure = false
     }
-    
 }

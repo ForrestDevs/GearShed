@@ -3,13 +3,13 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2022-02-03.
+//  Copyright © 2022 All rights reserved.
 //
 
 import SwiftUI
 
 struct AboutView: View {
     @Environment(\.colorScheme) var colorScheme
-    
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack {
@@ -19,9 +19,6 @@ struct AboutView: View {
                     //.frame(maxWidth: .infinity)
                     .frame(width: 200, height: 200, alignment: .center)
                 Text("An App Built For The Adventurous")
-                
-                
-                
                 
                 Text("""
                      As a father-son combo with too much gear to manage, we were in search of an app that could help us organize our uncontrollable amount of gear. Unfortunatly we couldn't find one that met our expectations, so we decieded to build one.
@@ -33,10 +30,9 @@ struct AboutView: View {
                      So we present Gear Shed, an app built by boots on the ground men for the people who have too much gear to keep track of.
                      """)
                     .padding()
+                
                 HStack {
-                    
                     Link(destination: URL(string: "https://www.gearshed.app")!) {
-                        
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(width: 120, height: 55)
@@ -52,7 +48,6 @@ struct AboutView: View {
                             }
                         }
                     }
-                    
                     Link(destination: URL(string: "https://www.instagram.com/gearshedapp/")!) {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
@@ -67,7 +62,6 @@ struct AboutView: View {
                             }
                         }
                     }
-                    
                     Link(destination: URL(string: "https://www.youtube.com/channel/UCGLuWaac-hzz0FYRXMOHqAg")!) {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
@@ -84,16 +78,8 @@ struct AboutView: View {
                         }
                     }
                 }
-                
             }
             .padding(.bottom, 60)
         }
-      
-    }
-}
-
-struct AboutView_Previews: PreviewProvider {
-    static var previews: some View {
-        AboutView()
     }
 }

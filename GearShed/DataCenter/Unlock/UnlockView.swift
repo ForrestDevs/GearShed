@@ -3,6 +3,7 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon
+//  Copyright © 2022 All rights reserved.
 //
 
 import StoreKit
@@ -11,7 +12,6 @@ import SwiftUI
 struct UnlockView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var unlockManager: UnlockManager
-
     var body: some View {
         VStack {
             switch unlockManager.requestState {
@@ -30,13 +30,9 @@ struct UnlockView: View {
         .padding()
         .onReceive(unlockManager.$requestState) { value in
             if case .purchased = value {
-                dismiss()
+                presentationMode.wrappedValue.dismiss()
             }
         }
-    }
-
-    func dismiss() {
-        presentationMode.wrappedValue.dismiss()
     }
 }
 

@@ -3,6 +3,7 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2022-02-07.
+//  Copyright © 2022 All rights reserved.
 //
 
 import SwiftUI
@@ -95,11 +96,5 @@ struct PrivacyView: View {
             .padding()
             .padding(.bottom, 60)
         }
-    }
-}
-
-struct PrivacyView_Previews: PreviewProvider {
-    static var previews: some View {
-        PrivacyView()
     }
 }

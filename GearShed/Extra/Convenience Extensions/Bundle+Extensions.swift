@@ -3,34 +3,25 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 18/10/21
-//  Copyright © 2021 All rights reserved.
+//  Copyright © 2022 All rights reserved.
 //
 
 import Foundation
 
 extension Bundle {
-	
-	// code courtesy of/copyright Paul Hudson (hackingwithswift.com, github.com/twostraws, @twostraws)
-	// -- greatly simplifies loading json files from
+	// greatly simplifies loading json files from
 	// the app bundle.  note that this code throws a fatal error if there's a problem,
 	// under the thinking that the file we're reading must be there and this cannot fail.
 	// if it does fail, we want to know about it.  additionally, Paul recently added a number of
 	// catch handlers which might be helpful in diagnosing possible failures.
-	
-    
-    
 	func decode<T: Decodable>(from filename: String) -> T {
-		
 		guard let url = Bundle.main.url(forResource: filename, withExtension: nil) else {
 			fatalError("Failed to locate \(filename) in app bundle.")
 		}
-		
 		guard let data = try? Data(contentsOf: url) else {
 			fatalError("Failed to load \(filename) in app bundle.")
 		}
-		
 		let decoder = JSONDecoder()
-		
 		do {
 			return try decoder.decode(T.self, from: data)
 		} catch DecodingError.keyNotFound(let key, let context) {
@@ -45,5 +36,4 @@ extension Bundle {
 			fatalError("Failed to decode \(filename) from bundle: \(error.localizedDescription)")
 		}
 	}
-
 }

@@ -3,18 +3,16 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-11-20.
+//  Copyright © 2022 All rights reserved.
 //
+
 import SwiftUI
 
 struct AddItemDiaryView: View {
     @EnvironmentObject private var detailManager: DetailViewManager
-    
     @StateObject private var viewModel: GearShedData
-
     @State private var editableData: EditableDiaryData
-
     @State private var isEditing: Bool = false
-    
     private var gearlist: Gearlist
     private var persistentStore: PersistentStore
     
@@ -23,10 +21,8 @@ struct AddItemDiaryView: View {
         self.gearlist = gearlist
         let viewModel = GearShedData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
-        
         let initialValue = EditableDiaryData(persistentStore: persistentStore, gearlist: gearlist)
         _editableData = State(initialValue: initialValue)
-        
         UITextView.appearance().backgroundColor = .clear
     }
     
@@ -42,7 +38,6 @@ struct AddItemDiaryView: View {
         }
         .transition(.move(edge: .trailing))
     }
-    
     // MARK: Main Content
     private var contentView: some View {
         ZStack {
@@ -58,7 +53,6 @@ struct AddItemDiaryView: View {
             }
         }
     }
-    
     // MARK: Content Components
     private var diaryItemSection: some View {
         Section {
@@ -103,7 +97,6 @@ struct AddItemDiaryView: View {
             }
         }
     }
-    
     private var diaryDescriptionSection: some View {
         Section {
             VStack (alignment: .leading, spacing: 3) {
@@ -132,7 +125,6 @@ struct AddItemDiaryView: View {
             }
         }
     }
-    
     private func itemTextColor() -> Color {
         var color: Color
         if editableData.item == nil {
@@ -142,7 +134,6 @@ struct AddItemDiaryView: View {
         }
         return color
     }
-    
     // MARK: ToolbarItems
     private var cancelButtonToolbarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
@@ -155,14 +146,12 @@ struct AddItemDiaryView: View {
             }
         }
     }
-    
     private var viewTitle: some ToolbarContent {
         ToolbarItem(placement: .principal) {
             Text("New Entry")
                 .formatGreen()
         }
     }
-    
     private var saveButtonToolbarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {

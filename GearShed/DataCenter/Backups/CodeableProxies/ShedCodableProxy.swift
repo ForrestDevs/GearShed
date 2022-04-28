@@ -3,7 +3,7 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 18/10/21
-//  Copyright © 2021 All rights reserved.
+//  Copyright © 2022 All rights reserved.
 //
 
 import Foundation
@@ -18,13 +18,9 @@ struct ShedCodableProxy: Codable {
     var id: String
     var name: String
     var items = [String]()
-
     init(from shed: Shed) {
-        self.id = shed.id!.uuidString
+        self.id = shed.id?.uuidString ?? ""
         self.name = shed.name
-        
-        for item in shed.items {
-            self.items.append(item.id!.uuidString)
-        }
+        shed.items.forEach({self.items.append($0.id?.uuidString ?? "")})
     }
 }

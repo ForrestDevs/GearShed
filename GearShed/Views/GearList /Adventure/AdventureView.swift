@@ -3,13 +3,14 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-11-13.
+//  Copyright © 2022 All rights reserved.
 //
+
 import SwiftUI
 
 struct AdventureView: View {
     @EnvironmentObject private var viewModel: GearlistData
     @EnvironmentObject private var detailManager: DetailViewManager
-    
     @State private var showUnlock: Bool = false
     
     var body: some View {
@@ -28,7 +29,7 @@ struct AdventureView: View {
             UnlockView()
         }
     }
-    
+    //MARK: Main Content
     private var adventureList: some View {
         ScrollView {
             LazyVStack (alignment: .leading, spacing: 0, pinnedViews: .sectionHeaders) {
@@ -42,7 +43,6 @@ struct AdventureView: View {
             }
         }
     }
-    
     private var addListButtonOverlay: some View {
         VStack {
             Spacer()
@@ -74,13 +74,11 @@ struct AdventureView: View {
 
         
     }
-    
     private func listContent(section: SectionYearData) -> some View {
         ForEach(section.adventures) { adventure in
             AdventureRowView(adventure: adventure)
         }
     }
-    
     private func listHeader(section: SectionYearData) -> some View {
         ZStack {
             Color.theme.headerBG

@@ -3,7 +3,7 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 18/10/21
-//  Copyright © 2021 All rights reserved.
+//  Copyright © 2022 All rights reserved.
 //
 
 import Foundation
@@ -11,7 +11,6 @@ import SwiftUI
 
 @main
 struct GearShedApp: App {
-    
     @Environment(\.scenePhase) private var scenePhase
     @AppStorage("isFirstLaunch") var isFirstLaunch: Bool = true
     @AppStorage("lastReviewRequest") var lastReviewRequest: TimeInterval?
@@ -34,7 +33,6 @@ struct GearShedApp: App {
         
         if isFirstLaunch == true {
             // actions to do on first launch
-            
             isFirstLaunch = false
         }
     }

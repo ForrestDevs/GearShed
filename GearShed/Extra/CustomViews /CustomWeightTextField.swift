@@ -3,6 +3,7 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2022-02-03.
+//  Copyright © 2022 All rights reserved.
 //
 
 import SwiftUI
@@ -41,7 +42,6 @@ struct WeightTextField: View {
                         .onChange(of: textValueLbs) { newValue in
                             handleUserInput(for: newValue, type: TextType.lbs)
                         }
-                    
                     TextField("oz", text: $textValueOz)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .disableAutocorrection(true)
@@ -95,12 +95,10 @@ struct WeightTextField: View {
         var numSet = CharacterSet()
         numSet.insert(charactersIn: "23456789")
         //var runCheck = true
-        
         if filteredText != newValue {
             alertText = "Numeric values only."
             inputError = true
         }
-        
         // Make sure our value is not empty before checking:
         guard filteredText.count != 0 else { return returnString }
         // If first value is a "." add a 0 infront of it
@@ -143,7 +141,6 @@ struct WeightTextField: View {
                 }
             }
         }
-        
         let checkDecimals = limitTwoDecimalPlaces(returnString)
         return checkDecimals
     }

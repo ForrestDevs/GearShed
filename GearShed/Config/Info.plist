@@ -116,8 +116,6 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSCameraUsageDescription</key>
-	<string>Please allow access to the camera, to take photos of your gear.</string>
 	<key>NSUbiquitousPacks</key>
 	<dict>
 		<key>iCloud.GearShed</key>

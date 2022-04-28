@@ -1,21 +1,18 @@
 //
-//  GearlistRowView.swift
+//  ActivityRowView.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 18/10/21
-//  Copyright © 2021 All rights reserved.
+//  Copyright © 2022 All rights reserved.
 //
+
 import SwiftUI
 
 struct ActivityRowView: View {
     @Environment(\.presentationMode) private var presentationMode
-    
     @EnvironmentObject var detailManager: DetailViewManager
-    
     @EnvironmentObject var persistentStore: PersistentStore
-
     @ObservedObject var activity: Gearlist
-    
     @State private var confirmDeleteGearlistAlert: ConfirmDeleteGearlistAlert?
     
     var body: some View {
@@ -33,7 +30,6 @@ struct ActivityRowView: View {
         }
         .alert(item: $confirmDeleteGearlistAlert) { activity in activity.alert() }
     }
-    
     private var rowBody: some View {
         VStack (alignment: .leading, spacing: 3) {
             Text(activity.name)
@@ -47,9 +43,7 @@ struct ActivityRowView: View {
         }
         .padding(.leading, 15)
     }
-    
     // MARK: Context Menus
-    
     private var editContextButton: some View {
         Button {
             withAnimation {
@@ -62,7 +56,6 @@ struct ActivityRowView: View {
             }
         }
     }
-    
     private var deleteContextButton: some View {
         Button {
             confirmDeleteGearlistAlert = ConfirmDeleteGearlistAlert (

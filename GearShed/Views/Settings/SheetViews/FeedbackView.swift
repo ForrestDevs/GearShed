@@ -3,6 +3,7 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2022-02-07.
+//  Copyright © 2022 All rights reserved.
 //
 
 import SwiftUI
@@ -18,7 +19,6 @@ struct FeedbackView: View {
                 .foregroundColor(Color.theme.green)
             Text("How can Gear Shed be better?")
                 .font(.headline)
-            
             Text("""
             As an independent developer, I strive to make the best tool possible.
             
@@ -29,9 +29,7 @@ struct FeedbackView: View {
             Many Thanks!
             """)
                 .font(.body)
-            
             HStack (spacing: 10) {
-                
                 Button {
                     
                 } label: {
@@ -46,7 +44,6 @@ struct FeedbackView: View {
                         }
                     }
                 }
-                
                 Button {
                     self.showFAQ.toggle()
                 } label: {
@@ -64,7 +61,6 @@ struct FeedbackView: View {
                 .sheet(isPresented: $showFAQ) {
                     FAQModalView()
                 }
-                
                 Link(destination: URL(string: "https://twitter.com/gearshedapp")!) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
@@ -79,24 +75,10 @@ struct FeedbackView: View {
                         }
                     }
                 }
-                
-                
-                
-                
             }
             Spacer()
-            
         }
         .padding()
         .padding(.top, 10)
     }
 }
-
-struct FeedbackView_Previews: PreviewProvider {
-    static var previews: some View {
-        FeedbackView()
-    }
-}
-
-
-

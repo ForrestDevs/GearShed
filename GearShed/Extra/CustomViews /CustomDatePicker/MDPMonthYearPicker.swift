@@ -1,18 +1,13 @@
 //
 //  MonthYearPicker.swift
-//  CustomDatePickerApp
+//  Gear Shed
 //
-//  Created by Peter Ent on 11/2/20.
+//  Created by Luke Forrest Gannon on 2021-11-14.
+//  Copyright © 2022 All rights reserved.
 //
 
 import SwiftUI
 
-/**
- * This is a two-wheel picker for selecting a month and a year. It appears when the user
- * taps on the month/year at the top of the MDMonthView.
- *
- * When a month or year is selected, the action parameter is invoked with the new values.
- */
 struct MDPMonthYearPicker: View {
     let months = (0...11).map {$0}
     let years = (1970...2099).map {$0}
@@ -68,11 +63,9 @@ struct MDPMonthYearPicker: View {
     }
 }
 
-struct MonthYearPicker_Previews: PreviewProvider {
-    static var previews: some View {
-        MDPMonthYearPicker(date: Date()) { (month, year) in
-            print("You picked \(month), \(year)")
-        }
-        .frame(width: 300, height: 300)
-    }
-}
+/**
+ * This is a two-wheel picker for selecting a month and a year. It appears when the user
+ * taps on the month/year at the top of the MDMonthView.
+ *
+ * When a month or year is selected, the action parameter is invoked with the new values.
+ */

@@ -3,7 +3,7 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 18/10/21
-//  Copyright © 2021 All rights reserved.
+//  Copyright © 2022 All rights reserved.
 //
 import SwiftUI
 
@@ -13,31 +13,23 @@ struct GearShedView: View {
     @StateObject private var glData: GearlistData
     @StateObject private var viewModel = GearShedViewModel()
     @StateObject private var backupManager: BackupManager
-    @State private var currentSelection: Int = 0
-    
     init(persistentStore: PersistentStore) {
         let viewModel = GearShedData(persistentStore: persistentStore)
         _gsData = StateObject(wrappedValue: viewModel)
-        
         let data = BackupManager(persistentStore: persistentStore)
         _backupManager = StateObject(wrappedValue: data)
-        
         let glData = GearlistData(persistentStore: persistentStore)
         _glData = StateObject(wrappedValue: glData)
     }
-    
     var body: some View {
         NavigationView {
-            PagerTabView(tint: Color.theme.accent, selection: $currentSelection) {
-                
+            PagerTabView(tint: Color.theme.accent, selection: $viewModel.currentSelection) {
                 Text("Shelf")
                     .formatPageHeaderTitle()
                     .pageLabel()
-                
                 Text("Brand")
                     .formatPageHeaderTitle()
                     .pageLabel()
-                
                 HStack(spacing: 1) {
                     Text("Wish")
                         .formatPageHeaderTitle()
@@ -48,7 +40,6 @@ struct GearShedView: View {
                         .offset(y: -6)
                 }
                 .pageLabel()
-                
                 HStack(spacing: 1) {
                     Text("Fav")
                         .formatPageHeaderTitle()
@@ -59,7 +50,6 @@ struct GearShedView: View {
                         .offset(y: -6)
                 }
                 .pageLabel()
-                
                 HStack(spacing: 1) {
                     Text("Regret")
                         .formatPageHeaderTitle()
@@ -70,32 +60,26 @@ struct GearShedView: View {
                         .offset(y: -6)
                 }
                 .pageLabel()
-                
             } content: {
                 ShedItemsView()
                     .environmentObject(gsData)
                     .environmentObject(viewModel)
                     .pageView(ignoresSafeArea: true, edges: .bottom)
-                
                 BrandItemsView()
                     .environmentObject(gsData)
                     .environmentObject(viewModel)
                     .pageView(ignoresSafeArea: true, edges: .bottom)
-                
                 WishesView()
                     .environmentObject(gsData)
                     .environmentObject(viewModel)
-
                     .pageView(ignoresSafeArea: true, edges: .bottom)
                 FavsView()
                     .environmentObject(gsData)
                     .environmentObject(viewModel)
-
                     .pageView(ignoresSafeArea: true, edges: .bottom)
                 RegretsView()
                     .environmentObject(gsData)
                     .environmentObject(viewModel)
-
                     .pageView(ignoresSafeArea: true, edges: .bottom)
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -105,18 +89,12 @@ struct GearShedView: View {
                 //loadData
                 shareButton
             }
-            .fullScreenCover(isPresented: $viewModel.showPDFScreen) {
-                NavigationView {
-                    GearShedPDFView()
-                        .environmentObject(gsData)
-                }
-            }
         }
         .navigationViewStyle(.stack)
     }
 }
 extension GearShedView {
-    
+    //MARK: Nav Bar Buttons
     private var listExpandingButton: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
@@ -129,27 +107,22 @@ extension GearShedView {
             }
         }
     }
-    
     private var viewTitle: some ToolbarContent {
         ToolbarItem (placement: .principal) {
             Text("Gear Shed")
                 .formatGreen()
         }
     }
-    
     private var shareButton: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
-                viewModel.showPDFScreen.toggle()
+                gsData.printPDF(pdfInt: viewModel.currentSelection)
             } label: {
-                HStack {
-                    Text("PDF")
-//                    Image(systemName: "square.and.arrow.up")
-                }
+                Text("PDF")
             }
         }
     }
-    
+    //MARK: Developer Data Functions
     private var loadData: some ToolbarContent {
         ToolbarItem (placement: .navigationBarLeading) {
             Button {
@@ -159,7 +132,6 @@ extension GearShedView {
             }
         }
     }
-
     private func makeData() {
         for x in 1...20 {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {

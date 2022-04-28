@@ -3,6 +3,7 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon
+//  Copyright © 2022 All rights reserved.
 //
 
 import SwiftUI

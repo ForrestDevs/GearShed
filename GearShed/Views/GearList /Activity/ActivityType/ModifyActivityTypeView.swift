@@ -3,7 +3,9 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-11-18.
+//  Copyright © 2022 All rights reserved.
 //
+
 import SwiftUI
 
 struct ModifyActivityTypeView: View {
@@ -31,7 +33,6 @@ struct ModifyActivityTypeView: View {
         }
         .transition(.move(edge: .trailing))
     }
-    
     // MARK: Main Content
     private var contentView: some View {
         ZStack {
@@ -54,7 +55,6 @@ struct ModifyActivityTypeView: View {
             }
         }
     }
-    
     // MARK: Toolbar Content
     private var cancelToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
@@ -67,14 +67,12 @@ struct ModifyActivityTypeView: View {
             }
         }
     }
-    
     private var viewTitle: some ToolbarContent {
         ToolbarItem(placement: .principal) {
             Text("Edit Activity Type Name")
                 .formatGreen()
         }
     }
-    
     private var saveToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {

@@ -3,6 +3,7 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2022-02-07.
+//  Copyright © 2022 All rights reserved.
 //
 
 import SwiftUI
@@ -13,15 +14,8 @@ struct FAQModalView: View {
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             Text("Why the subscription?")
-            
         }
         .padding()
-    }
-}
-
-struct FAQModalView_Previews: PreviewProvider {
-    static var previews: some View {
-        FAQModalView()
     }
 }
 

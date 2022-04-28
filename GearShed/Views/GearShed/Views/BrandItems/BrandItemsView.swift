@@ -3,7 +3,9 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-11-15.
+//  Copyright © 2022 All rights reserved.
 //
+
 import SwiftUI
 
 struct BrandItemsView: View {
@@ -31,7 +33,6 @@ struct BrandItemsView: View {
             Rectangle()
                 .opacity(0)
                 .alert(item: $gsvm.confirmDeleteItemAlert) { item in item.alert() }
-            
             addBrandButton
         }
         .sheet(isPresented: $vm.showingUnlockView) {
@@ -138,12 +139,6 @@ struct BrandItemsView: View {
                     withAnimation {
                         detailManager.tertiaryTarget = .showAddBrand
                     }
-                    
-                    /*if gsData.proUser() {
-                        
-                    } else {
-                        vm.showingUnlockView.toggle()
-                    }*/
                 } label: {
                     VStack {
                         Text("Add")

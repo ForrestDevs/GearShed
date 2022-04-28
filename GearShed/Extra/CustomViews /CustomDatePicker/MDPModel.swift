@@ -1,28 +1,15 @@
 //
 //  MonthDataModel.swift
-//  CustomDatePickerApp
+//  Gear Shed
 //
-//  Created by Peter Ent on 11/2/20.
+//  Created by Luke Forrest Gannon on 2021-11-14.
+//  Copyright © 2022 All rights reserved.
 //
 
 import SwiftUI
 import Combine
 
-/**
- * This model is used internally by the CustomDatePicker to coordinate what is displayed and what
- * is selected.
- *
- * When the controlDate is set, an array of MDPDayOfMonth objects are created, each representing
- * a day of the controlDate's month/year.
- *
- * The type of selection (single, allDays, dateRange) is determined by which init() method is used
- * for the model.
- *
- * The CustomDatePickerModel should not be used outside of the CustomDatePicker, which initalizes this model
- * according to the type of selection required.
- */
 class CustomDatePickerModel: NSObject, ObservableObject {
-    
     // the controlDate determines which month/year is being modeled. whenever it changes it
     // triggers a refresh of the days collection.
     public var controlDate: Date = Date() {
@@ -30,42 +17,30 @@ class CustomDatePickerModel: NSObject, ObservableObject {
             buildDays()
         }
     }
-    
     // this collection is created whenever the controlDate is changed and reflects the
     // days of the month for the controlDate's month/year
     @Published var days = [MDPDayOfMonth]()
-    
     // once a controlDate is establed, this value will be the formatted Month Year (localized)
     @Published var title = ""
-    
     // this array maintains the selections. for a single date it is an array of 1. for many
     // dates it is an array of those dates. for a date range, it is an array of 2.
     @Published var selections = [Date]()
-    
     // the localized days of the week
     let dayNames = Calendar.current.shortWeekdaySymbols
-    
     // MARK: - PRIVATE VARS
-    
     // holds the bindings from the app and get updated as the selection changes
     private var singleDayWrapper: Binding<Date?>?
     private var anyDatesWrapper: Binding<[Date]>?
     private var dateRangeWrapper: Binding<ClosedRange<Date>?>?
-    
     private var minDate: Date? = nil
     private var maxDate: Date? = nil
-    
     // the type of date picker
     private var pickerType: CustomDatePicker.PickerType = .singleDay
-    
     // which days are available for selection
     private var selectionType: CustomDatePicker.DateSelectionChoices = .allDays
-    
     // the actual number of days in this calendar month/year (eg, 28 for February)
     private var numDays = 0
-    
     // MARK: - INIT
-    
     convenience init(anyDays: Binding<[Date]>,
                      includeDays: CustomDatePicker.DateSelectionChoices,
                      minDate: Date?,
@@ -84,7 +59,6 @@ class CustomDatePickerModel: NSObject, ObservableObject {
         }
         buildDays()
     }
-    
     convenience init(singleDay: Binding<Date?>,
                      includeDays: CustomDatePicker.DateSelectionChoices,
                      minDate: Date?,
@@ -100,7 +74,6 @@ class CustomDatePickerModel: NSObject, ObservableObject {
         controlDate = singleDay.wrappedValue ?? Date()
         buildDays()
     }
-    
     convenience init(dateRange: Binding<ClosedRange<Date>?>,
                      includeDays: CustomDatePicker.DateSelectionChoices,
                      minDate: Date?,
@@ -118,9 +91,7 @@ class CustomDatePickerModel: NSObject, ObservableObject {
         }
         buildDays()
     }
-    
     // MARK: - PUBLIC
-    
     func dayOfMonth(byDay: Int) -> MDPDayOfMonth? {
         guard 1 <= byDay && byDay <= 31 else { return nil }
         for dom in days {
@@ -130,7 +101,6 @@ class CustomDatePickerModel: NSObject, ObservableObject {
         }
         return nil
     }
-    
     func selectDay(_ day: MDPDayOfMonth) {
         guard day.isSelectable else { return }
         guard let date = day.date else { return }
@@ -168,7 +138,6 @@ class CustomDatePickerModel: NSObject, ObservableObject {
             }
         }
     }
-    
     func isSelected(_ day: MDPDayOfMonth) -> Bool {
         guard day.isSelectable else { return false }
         guard let date = day.date else { return false }
@@ -193,21 +162,18 @@ class CustomDatePickerModel: NSObject, ObservableObject {
         }
         return false
     }
-    
     func incrMonth() {
         let calendar = Calendar.current
         if let newDate = calendar.date(byAdding: .month, value: 1, to: controlDate) {
             controlDate = newDate
         }
     }
-    
     func decrMonth() {
         let calendar = Calendar.current
         if let newDate = calendar.date(byAdding: .month, value: -1, to: controlDate) {
             controlDate = newDate
         }
     }
-    
     func show(month: Int, year: Int) {
         let calendar = Calendar.current
         let components = DateComponents(year: year, month: month, day: 1)
@@ -215,11 +181,23 @@ class CustomDatePickerModel: NSObject, ObservableObject {
             controlDate = newDate
         }
     }
-    
 }
 
-// MARK: - BUILD DAYS
+/**
+ * This model is used internally by the CustomDatePicker to coordinate what is displayed and what
+ * is selected.
+ *
+ * When the controlDate is set, an array of MDPDayOfMonth objects are created, each representing
+ * a day of the controlDate's month/year.
+ *
+ * The type of selection (single, allDays, dateRange) is determined by which init() method is used
+ * for the model.
+ *
+ * The CustomDatePickerModel should not be used outside of the CustomDatePicker, which initalizes this model
+ * according to the type of selection required.
+ */
 
+// MARK: - BUILD DAYS
 extension CustomDatePickerModel {
     
     private func buildDays() {
@@ -278,7 +256,6 @@ extension CustomDatePickerModel {
 }
 
 // MARK: - UTILITIES
-
 extension CustomDatePickerModel {
     
     private func setSelection(_ date: Date) {

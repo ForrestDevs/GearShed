@@ -1,16 +1,13 @@
 //
 //  MonthView.swift
-//  CustomDatePickerApp
+//  Gear Shed
 //
-//  Created by Peter Ent on 11/2/20.
+//  Created by Luke Forrest Gannon on 2021-11-14.
+//  Copyright © 2022 All rights reserved.
 //
 
 import SwiftUI
 
-/**
- * MDPMonthView is really the crux of the control. This displays everything and handles the interactions
- * and selections. MulitDatePicker is the public interface that sets up the model and this view.
- */
 struct MDPMonthView: View {
     @EnvironmentObject var monthDataModel: CustomDatePickerModel
         
@@ -69,9 +66,7 @@ struct MDPMonthView: View {
     }
 }
 
-struct MonthView_Previews: PreviewProvider {
-    static var previews: some View {
-        MDPMonthView()
-            .environmentObject(CustomDatePickerModel())
-    }
-}
+/**
+ * MDPMonthView is really the crux of the control. This displays everything and handles the interactions
+ * and selections. MulitDatePicker is the public interface that sets up the model and this view.
+ */

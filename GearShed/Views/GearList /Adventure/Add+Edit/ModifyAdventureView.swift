@@ -1,18 +1,17 @@
 //
-//  ModifyListView.swift
+//  ModifyAdventureView.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-11-08.
+//  Copyright © 2022 All rights reserved.
 //
+
 import SwiftUI
 
 struct ModifyAdventureView: View {
     @EnvironmentObject private var detailManager: DetailViewManager
-    
     @StateObject private var viewModel: GearlistData
-
     @State private var editableData: EditableGearlistData
-        
     @State private var dateRange: ClosedRange<Date>? = nil
     
     init(persistentStore: PersistentStore, adventure: Gearlist) {
@@ -42,7 +41,6 @@ struct ModifyAdventureView: View {
         }
         .transition(.move(edge: .trailing))
     }
-    
     // MARK: Main Content
     private var contentView: some View {
         ZStack {
@@ -60,7 +58,6 @@ struct ModifyAdventureView: View {
             }
         }
     }
-    
     private var adventureNameSection: some View {
         Section {
             VStack(alignment: .leading, spacing: 3) {
@@ -73,7 +70,6 @@ struct ModifyAdventureView: View {
             }
         }
     }
-    
     private var adventureDateSection: some View {
         Section {
             VStack (alignment: .leading, spacing: 2) {
@@ -117,7 +113,6 @@ struct ModifyAdventureView: View {
             }
         }
     }
-    
     private var adventureLocationSection: some View {
         Section {
             VStack(alignment: .leading, spacing: 3) {
@@ -130,7 +125,6 @@ struct ModifyAdventureView: View {
             }
         }
     }
-    
     private var adventureCountrySection: some View {
         Section {
             VStack(alignment: .leading, spacing: 3) {
@@ -143,7 +137,6 @@ struct ModifyAdventureView: View {
             }
         }
     }
-    
     private var adventureDescriptionSection: some View {
         Section {
             VStack (alignment: .leading, spacing: 3) {
@@ -156,7 +149,6 @@ struct ModifyAdventureView: View {
             }
         }
     }
-    
     // MARK: Toolbar Content
     private var cancelButtonToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
@@ -169,14 +161,12 @@ struct ModifyAdventureView: View {
             }
         }
     }
-    
     private var viewTitle: some ToolbarContent {
         ToolbarItem (placement: .principal) {
             Text("Edit Adventure")
                 .formatGreen()
         }
     }
-    
     private var saveButtonToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {

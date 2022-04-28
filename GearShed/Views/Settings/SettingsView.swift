@@ -3,6 +3,7 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-11-20.
+//  Copyright © 2022 All rights reserved.
 //
 
 import Foundation
@@ -32,24 +33,18 @@ struct SettingsView: View {
     @State private var showImportAlert: Bool = false
     @State private var showUpgradeSheet: Bool = false
     @State private var showSuccessfulEraseAlert: Bool = false
-    
     let test = Prefs.shared
-    
     let persistentStore: PersistentStore
     let gsbType = UTType(exportedAs: "com.GearShed.gsb", conformingTo: .json)
     init(persistentStore: PersistentStore) {
         let gsData = GearShedData(persistentStore: persistentStore)
         _gsData = StateObject(wrappedValue: gsData)
-        
         let glData = GearlistData(persistentStore: persistentStore)
         _glData = StateObject(wrappedValue: glData)
-        
         let backupManager = BackupManager(persistentStore: persistentStore)
         _backupManager = StateObject(wrappedValue: backupManager)
-    
         let pdfUsername = Prefs.shared.pdfUserName
         _pdfUsername = State(wrappedValue: pdfUsername)
-        
         self.persistentStore = persistentStore
     }
     
@@ -470,198 +465,3 @@ extension SettingsView {
         return String(returnTextFinal)
     }
 }
-
-
-/*
- 
- private func loadURL(urls: [URL]) {
-     guard let url = urls.first else { return }
-     backupManager.insertISBFromBackUp(url: url)
-     //backupManager.insertFromBackup(url: url)
- }
- 
- 
- /*private func toggleWeightUnit() {
-     if Prefs.shared.weightUnit == "g" {
-         Prefs.shared.weightUnit = "lb + oz"
-         configureItemMassMetricToImp()
-     } else {
-         Prefs.shared.weightUnit = "g"
-         configureItemMassImpToMetric()
-     }
- }*/
- 
- NavigationView {
-    ScrollView (.vertical, showsIndicators: false) {
-        
-        VStack (alignment: .leading, spacing: 25)  {
-            VStack (alignment: .leading, spacing: 5) {
-                Text("PDF Username")
-                    .formatBlackTitle()
-                
-                TextField("PDF Name Feild", text: Prefs.shared.$pdfUserName)
-                   // .onReceive(Just(pdfName)) { newValue in
-                     //   Prefs.shared.pdfUserName = newValue
-                    //}
-            }
-            
-            VStack (alignment: .leading, spacing: 5) {
-                Text("Weight Unit")
-                    .formatBlackTitle()
-                
-                HStack (spacing: 5) {
-                    Button {
-                        //persistentStore.stateUnit = "g"
-                        //stateWeightUnit = "g"
-                        Prefs.shared.weightUnit = "g"
-                        configureItemMassImpToMetric()
-                    } label: {
-                        HStack {
-                            Text("Grams 'g'")
-                            if (Prefs.shared.weightUnit == "g") {
-                                Image (systemName: "checkmark")
-                            }
-                        }
-                        .padding()
-                        .background (
-                            Prefs.shared.weightUnit == "g" ?  RoundedRectangle(cornerRadius: 10)
-                                .foregroundColor(Color.theme.green)
-                                .opacity(0.5) : nil
-                        )
-                    }
-                    
-                    Button {
-                        //persistentStore.stateUnit = "lb + oz"
-                        //stateWeightUnit = "lb + oz"
-                        Prefs.shared.weightUnit = "lb + oz"
-                        configureItemMassMetricToImp()
-                    } label: {
-                        HStack {
-                            Text("lb + oz")
-                            if (Prefs.shared.weightUnit == "lb + oz") {
-                                Image (systemName: "checkmark")
-                            }
-                        }
-                        .padding()
-                        .background (
-                            Prefs.shared.weightUnit == "lb + oz" ?  RoundedRectangle(cornerRadius: 10)
-                                .foregroundColor(Color.theme.green)
-                                .opacity(0.5) : nil
-                        )
-
-                    }
-                }
-                .padding(.horizontal)
-                .background(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.theme.green, lineWidth: 1)
-                        .frame(height: 50)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                )
-            }
-            
-            Button {
-                self.showImportSheet.toggle()
-            } label: {
-                Text("Load from back-up")
-                    .formatBlackTitle()
-            }
-            .alert(isPresented: $confirmDataHasBeenAdded) {
-                Alert(title: Text("Data Added"),
-                      message: Text("Successfully loaded (\(itemsAdded) peices of Gear, \(shedsAdded) Sheds, and \(brandsAdded) Brands) from back up."),
-                      dismissButton: .default(Text("OK")))
-            }
-            
-            Button {
-                self.showExportSheet.toggle()
-            } label: {
-                Text("Offline back-up")
-                    .formatBlackTitle()
-            }
-            
-            Button {
-                unlockManager.restore()
-            } label: {
-                Text("Restore Purchases")
-                    .formatBlackTitle()
-            }
-            
-            Spacer()
-            
-        }
-        .padding()
-    }
-    
-    .navigationBarTitleDisplayMode(.inline)
-    .toolbar {
-        viewTitle
-    }
-    .fileImporter(isPresented: $showImportSheet, allowedContentTypes: [UTType.json], allowsMultipleSelection: false) { result in
-        do {
-            guard let selectedFile: URL = try result.get().first else { return }
-            if selectedFile.startAccessingSecurityScopedResource() {
-                backupManager.insertISBFromBackUp(url: selectedFile)
-                //backupManager.insertFromBackup(url: selectedFile)
-                do { selectedFile.stopAccessingSecurityScopedResource() }
-            } else {
-                // Handle denied access
-            }
-        } catch {
-            // Handle failure.
-            print("Unable to read file contents")
-            print(error.localizedDescription)
-        }
-    }
-    
- 
-    /*.fileImporter(isPresented: $showImportSheet, allowedContentTypes: [UTType.data, UTType.json], allowsMultipleSelection: false) { result in
-        switch result {
-        case .success(let urls):
-            loadURL(urls: urls)
-        case .failure(let error):
-            print(error.localizedDescription)
-        }
-    }*/
-    /*.fileExporter(isPresented: $showExportSheet, documents: backUpData(), contentType: .text) { result in
-        switch result {
-            case .success(let url):
-                print("Saved to \(url)")
-            case .failure(let error):
-                
-            }
-    }*/
-    .sheet(isPresented: $showExportSheet) {
-        if let data = backUpData() {
-            DocumentPicker(URLs: data)
-        }
-    }
-}
-.navigationViewStyle(.stack)
- 
- 
- 
- /*HStack {
-     Text("Weight Unit:")
-     Button {
-         toggleWeightUnit()
-     } label: {
-         HStack {
-             Text("g")
-                 .foregroundColor(Prefs.shared.weightUnit == "g" ? Color.theme.accent : Color.theme.promptText)
-                 .padding(.leading, 10)
-             Image(systemName: "checkmark")
-                 .foregroundColor(Prefs.shared.weightUnit == "g" ? Color.theme.accent : Color.theme.promptText)
-                 .opacity(Prefs.shared.weightUnit == "g" ? 1 : 0)
-                 .padding(.trailing, 5)
-             
-             Text("lbs + oz")
-                 .foregroundColor(Prefs.shared.weightUnit == "lb + oz" ? Color.theme.accent : Color.theme.promptText)
-             Image(systemName: "checkmark")
-                 .foregroundColor(Prefs.shared.weightUnit == "lb + oz" ? Color.theme.accent : Color.theme.promptText)
-                 .opacity(Prefs.shared.weightUnit == "lb + oz" ? 1 : 0)
-         }
-     }
- }*/
- 
- */

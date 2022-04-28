@@ -3,7 +3,7 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 18/10/21
-//  Copyright © 2021 All rights reserved.
+//  Copyright © 2022 All rights reserved.
 //
 
 import Foundation
@@ -11,36 +11,25 @@ import CoreData
 import UIKit
 
 final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  ObservableObject {
-    
     @Published var showAll: Bool = true
     // MARK: Data Publishing Operations
-    
     let persistentStore: PersistentStore
-        
     private let itemsController: NSFetchedResultsController<Item>
     @Published var items = [Item]()
-    
     private let itemImagesController: NSFetchedResultsController<ItemImage>
     @Published var itemImages = [ItemImage]()
-    
     private let itemDiariesController: NSFetchedResultsController<ItemDiary>
     @Published var itemDiaries = [ItemDiary]()
-    
     private let favItemsController: NSFetchedResultsController<Item>
     @Published var favItems = [Item]()
-    
     private let regretItemsController: NSFetchedResultsController<Item>
     @Published var regretItems = [Item]()
-    
     private let wishlistItemsController: NSFetchedResultsController<Item>
     @Published var wishListItems = [Item]()
-    
     let shedsController: NSFetchedResultsController<Shed>
     @Published var sheds = [Shed]()
-    
     private let brandsController: NSFetchedResultsController<Brand>
     @Published var brands = [Brand]()
-    
     init(persistentStore: PersistentStore) {
         self.persistentStore = persistentStore
         
@@ -158,7 +147,6 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
             print("Failed to fetch Brands")
         }
     }
-    
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         items = itemsController.fetchedObjects ?? []
         itemImages = itemImagesController.fetchedObjects ?? []
@@ -169,9 +157,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         sheds = shedsController.fetchedObjects ?? []
         brands = brandsController.fetchedObjects ?? []
     }
-    
     // MARK: Data CUD Operations
-    
     // Item ------------------------------------------------------------------------------------------------
     /// Function to create a new Item using the temp stored data.
     func addNewItem(using editableData: EditableItemData) {
@@ -225,38 +211,6 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         persistentStore.context.delete(item)
         persistentStore.saveContext()
     }
-    
-    func updateItemImg(img: UIImage?, item: Item, imgURL: URL?) {
-        
-        if let img = img {
-            guard let imgData: Data = img.jpegData(compressionQuality: 0.5) else { return }
-            if item.image == nil {
-                let newImage = ItemImage(context: persistentStore.context)
-                newImage.id = UUID()
-                newImage.img = imgData
-                newImage.imgURL = String(describing: imgURL)
-                item.image = newImage
-            } else {
-                let oldImg = item.image!
-                persistentStore.context.delete(oldImg)
-                
-                let newImg = ItemImage(context: persistentStore.context)
-                newImg.id = UUID()
-                newImg.img = imgData
-                newImg.imgURL = String(describing: imgURL)
-                item.image = newImg
-            }
-        }
-        
-        persistentStore.saveContext()
-    }
-    
-    func deleteItemImg(item: Item) {
-        let img = item.image!
-        persistentStore.context.delete(img)
-        persistentStore.saveContext()
-    }
-    
     // MARK: Item Diary Stuff ---------------------------------------------------------------------------------
     /// Function to add a new ItemDiary using editableData.
     func addNewItemDiary(using editableData: EditableDiaryData) {
@@ -268,14 +222,12 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         newDiary.gearlist = editableData.gearlist
         persistentStore.saveContext()
     }
-    
     /// Function to update an existing ItemDiary using editableData.
     func updateItemDiary(using editableData: EditableDiaryData) {
         let diary = editableData.associatedDiary
         diary.details = editableData.details
         persistentStore.saveContext()
     }
-    
     /// Function to update an existing ItemDiary using editableData.
     func updateItemDiaryFromNewEntry(item: Item, gearlist: Gearlist, details: String) {
         for diary in item.diaries {
@@ -285,13 +237,11 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         }
         persistentStore.saveContext()
     }
-    
     /// Function to delete an ItemDiary
     func deleteItemDiary(diary: ItemDiary) {
         persistentStore.context.delete(diary)
         persistentStore.saveContext()
     }
-    
     // Brand ------------------------------------------------------------------------------------------------
     /// Function to create a new Brand using the temp stored data.
     func addNewBrand(using editableData: EditableBrandData) {
@@ -317,19 +267,16 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     }
     /// Function to delete a brand and move all items at the brand to the Unknown Brand.
     func deleteBrand(brand: Brand)  {
-        
         if brand.unBrandID_ == kUnknownBrandID && brand.items.count >= 1 {
             return
         } else {
             // Get list of all items for this brand so we can work with them
             let itemsAtThisBrand = brand.items
-            
             // reset brand associated with each of these Items to the unknownBrand
             // (which in turn, removes the current association with brand). additionally,
             // this could affect each item's computed properties
             let theUnknownBrand = unknownBrand()
             itemsAtThisBrand.forEach({ $0.brand = theUnknownBrand })
-            
             // now finish the deletion and save
             persistentStore.context.delete(brand)
             persistentStore.saveContext()
@@ -339,7 +286,6 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         
         
     }
-    
     // Shed ------------------------------------------------------------------------------------------------
     /// Function to create a new Shed using the temp stored data.
     func addNewShed(using editableData: EditableShedData) {
@@ -348,7 +294,6 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         newShed.name = editableData.name
         persistentStore.saveContext()
     }
-    
     /// Function to create a new Shed from the Item entry form, then pass it back so it can populate as the selected Shed.
     func addNewShedFromItem(using editableData: EditableShedData, shedOut: ((Shed) -> ())) {
         let newShed = Shed(context: persistentStore.context)
@@ -386,7 +331,6 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         }
         //guard shed.unShedID_ != kUnknownShedID else { return }
     }
-    
     // Unknown Shed + Brand ---------------------------------------------------------------------------------
     /// Function to create an UnknownBrand and return it when needed.
     func createUnknownBrand() -> Brand {
@@ -438,9 +382,8 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
             fatalError("Error fetching unknown shed: \(error.localizedDescription), \(error.userInfo)")
         }
     }
-    
     // MARK: Data Sectioning Functions
-    
+    /// Function to return a 2D array with Items grouped by Shed
     func sectionByShed(itemArray: [Item]) -> [SectionShedData] {
         var completedSectionData = [SectionShedData]()
         // otherwise, one section for each shed, please.  break the data out by shed first
@@ -452,7 +395,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         }
         return completedSectionData
     }
-    
+    /// Function to return a 2D array with Items grouped by Brand
     func sectionByBrand(itemArray: [Item]) -> [SectionBrandData] {
         var completedSectionData = [SectionBrandData]()
         // otherwise, one section for each shed, please.  break the data out by shed first
@@ -464,9 +407,8 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         }
         return completedSectionData
     }
-    
     // MARK: - Total Functions
-
+    /// Function to return total grams of an array of items.
     func totalGrams(array: [Item]) -> String {
         var arrayString = [String]()
         for x in array {
@@ -477,35 +419,8 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         let totalString = String(total)
         return totalString
     }
-    
-    
+    /// Function to return total lbs + oz of an array of items.
     func totalLbsOz(array: [Item]) -> (lbs: String, oz: String) {
-        //var arrayStringLbs = [String]()
-        //var arrayStringOz = [String]()
-        //for x in array {
-        //    arrayStringLbs.append(x.itemLbs)
-        //}
-        //for y in array {
-        //    arrayStringOz.append(y.itemOZ)
-        //}
-        //let IntLbsArray = arrayStringLbs.map { Int($0) ?? 0 }
-        //let DoubleOzArray = arrayStringOz.map { Double($0) ?? 0.0 }
-        //let totalLbs = IntLbsArray.reduce(0, +)
-        //let totalOz = DoubleOzArray.reduce(0, +)
-        //var remainderLbs: Int {
-        //    let x = (totalOz/16)
-        //    return Int(x.rounded(.towardZero))
-        //}
-        //var totalOzReduced: Double {
-        //    (totalOz - Double(remainderLbs * 16))
-        //}
-        //var totalLbsAdded: Int {
-        //    totalLbs + remainderLbs
-        //}
-        //let totalLbsString = String(totalLbsAdded)
-        //let totalOzString = String(format: "%.2f", totalOzReduced)
-        //return (totalLbsString, totalOzString)
-        
         // Taking the intial array of items and mapping the corrosponding mass value while reducing to set a total mass value from the array
         let totalLbs = array.map { Int($0.itemLbs) ?? 0 }.reduce(0, +)
         let totalOz = array.map { Double($0.itemOZ) ?? 0.0 }.reduce(0, +)
@@ -514,10 +429,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         let totalOzString = String(format: "%.2f", totalOz - Double(Int((totalOz / 16).rounded(.towardZero)) * 16))
         return (totalLbsString, totalOzString)
     }
-    
-    
-    
-    
+    /// Function to return the total cost of an array of items.
     func totalCost(array: [Item]) -> String {
         var arrayString = [String]()
         for x in array {
@@ -528,17 +440,16 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         let totalString = String(total)
         return totalString
     }
-    
+    /// Function to return the total fav items out of an array of items.
     func totalFavs(array: [Item]) -> String {
         let favItems = array.filter { $0.isFavourite }
         return String(favItems.count)
     }
-    
+    /// Function to return the total regret items out of an array of items.
     func totalRegrets(array: [Item]) -> String {
         let regretItems = array.filter { $0.isRegret }
         return String(regretItems.count)
     }
-    
     //MARK: Unlimted Upgrade Paywall Verification Methods
     func verifyUnlimitedGear() -> Bool {
         let canCreate = proUser() || (self.persistentStore.count(for: Item.fetchRequest()) < 30)
@@ -562,6 +473,363 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
             return true
         } else {
             return false
+        }
+    }
+    //MARK: PDF Export Functions
+    func itemCount(array: [Item]) -> String {
+        let count = array.count
+        return String(count)
+    }
+    func weightCount(array: [Item]) -> String {
+        var value: String = ""
+        if Prefs.shared.weightUnit == "g" {
+            value = "\(totalGrams(array: array)) g"
+        } else {
+            let lbOz = totalLbsOz(array: array)
+            let lb = lbOz.lbs
+            let oz = lbOz.oz
+            value = "\(lb) lb \(oz) oz"
+        }
+        return value
+    }
+    func itemWeightUnit(item: Item) -> String {
+        var value: String = ""
+        guard (item.weight == "0") || (item.itemLbs == "0" && item.itemOZ == "0.00") else { return value }
+        
+        if Prefs.shared.weightUnit == "g" {
+            value = "\(item.weight) g"
+        } else {
+            let lbs = item.itemLbs
+            let oz = item.itemOZ
+            value = "\(lbs) Lbs \(oz) Oz"
+        }
+        return value
+    }
+    //MARK: Text Formatting/ Logic Functions
+    func itemNameBrandText(item: Item) -> String {
+        let itemName = item.name
+        let itemBrand = item.brandName
+        if itemName.isEmpty && itemBrand.isEmpty {
+            return ""
+        } else if itemName.isEmpty && !itemBrand.isEmpty {
+            return "\(itemBrand); "
+        } else if itemBrand.isEmpty && !itemName.isEmpty {
+            return "\(itemName); "
+        } else if !itemBrand.isEmpty && !itemName.isEmpty {
+            return "\(itemName) | \(itemBrand); "
+        } else {
+            return ""
+        }
+    }
+    func itemWeightPriceText(item: Item) -> String {
+        let itemWeightText = itemWeightUnit(item: item)
+        let itemPriceText = item.price
+        if itemWeightText.isEmpty && itemPriceText.isEmpty {
+            return ""
+        } else if itemPriceText.isEmpty && !itemWeightText.isEmpty {
+            return "\(itemWeightText); "
+        } else if itemWeightText.isEmpty && !itemPriceText.isEmpty {
+            return "$ \(itemPriceText); "
+        } else if !itemWeightText.isEmpty && !itemPriceText.isEmpty {
+            return "\(itemWeightText) | $ \(itemPriceText); "
+        } else {
+            return ""
+        }
+    }
+    //MARK: Create New HTML String and PDF
+    func createHTML(pdfInt: Int) -> String {
+        var shelves = [String]()
+        var brands = [String]()
+        self.sheds.forEach { shed in
+            shelves.append(shed.name)
+        }
+        self.brands.forEach { brand in
+            brands.append(brand.name)
+        }
+        func pdfType() -> String {
+            var text: String = ""
+            if pdfInt == 0 {
+                text = "Shelf View"
+            } else if pdfInt == 1 {
+                text = "Brand View"
+            } else if pdfInt == 2 {
+                text = "Wishlist View"
+            } else if pdfInt == 3 {
+                text = "Favorite View"
+            } else if pdfInt == 4 {
+                text = "Regret View"
+            }
+            return text
+        }
+        func pdfDate() -> String {
+            var text: String = ""
+            text = Date().monthDayYearDateText()
+            return text
+        }
+        func pdfStats() -> String {
+            if pdfInt == 0 {
+                return """
+                        -->
+                        <div class="stat">
+                            <p class="statTitle">Shelves</p>
+                            <p class="statVal">\(shelves.count)</p>
+                        </div>
+                        <div class="stat">
+                            <p class="statTitle">Items</p>
+                            <p class="statVal">\(itemCount(array: items))</p>
+                        </div>
+                        <div class="stat">
+                            <p class="statTitle">Weight</p>
+                            <p class="statVal">\(weightCount(array: items))</p>
+                        </div>
+                        <div class="stat">
+                            <p class="statTitle">Invested</p>
+                            <p class="statVal">\(totalCost(array: items))</p>
+                        </div>
+                        <!--
+                        """
+            } else if pdfInt == 1 {
+                return """
+                        -->
+                        <div class="stat">
+                            <p class="statTitle">Shelves</p>
+                            <p class="statVal">\(brands.count)</p>
+                        </div>
+                        <div class="stat">
+                            <p class="statTitle">Items</p>
+                            <p class="statVal">\(itemCount(array: items))</p>
+                        </div>
+                        <div class="stat">
+                            <p class="statTitle">Weight</p>
+                            <p class="statVal">\(weightCount(array: items))</p>
+                        </div>
+                        <div class="stat">
+                            <p class="statTitle">Invested</p>
+                            <p class="statVal">\(totalCost(array: items))</p>
+                        </div>
+                        <!--
+                        """
+            } else if pdfInt == 2 {
+                return """
+                        -->
+                        <div class="stat">
+                            <p class="statTitle">Items</p>
+                            <p class="statVal">\(itemCount(array: wishListItems))</p>
+                        </div>
+                        <div class="stat">
+                            <p class="statTitle">Weight</p>
+                            <p class="statVal">\(weightCount(array: wishListItems))</p>
+                        </div>
+                        <div class="stat">
+                            <p class="statTitle">Cost</p>
+                            <p class="statVal">\(totalCost(array: wishListItems))</p>
+                        </div>
+                        <!--
+                        """
+            } else if pdfInt == 3 {
+                return """
+                        -->
+                        <div class="stat">
+                            <p class="statTitle">Items</p>
+                            <p class="statVal">\(itemCount(array: favItems))</p>
+                        </div>
+                        <div class="stat">
+                            <p class="statTitle">Weight</p>
+                            <p class="statVal">\(weightCount(array: favItems))</p>
+                        </div>
+                        <div class="stat">
+                            <p class="statTitle">Invested</p>
+                            <p class="statVal">\(totalCost(array: favItems))</p>
+                        </div>
+                        <!--
+                        """
+            } else if pdfInt == 4 {
+                return """
+                        -->
+                        <div class="stat">
+                            <p class="statTitle">Items</p>
+                            <p class="statVal">\(itemCount(array: regretItems))</p>
+                        </div>
+                        <div class="stat">
+                            <p class="statTitle">Weight</p>
+                            <p class="statVal">\(weightCount(array: regretItems))</p>
+                        </div>
+                        <div class="stat">
+                            <p class="statTitle">Invested</p>
+                            <p class="statVal">\(totalCost(array: regretItems))</p>
+                        </div>
+                        <!--
+                        """
+            } else {
+                return ""
+            }
+        }
+        func sectionItems(array: [Item]) -> String {
+            var text: String = ""
+            for item in array {
+                text.append(contentsOf:
+                """
+                <li class="item">\(itemNameBrandText(item: item))\(itemWeightPriceText(item: item))\(item.detail)</li>
+                """
+                )
+            }
+            return text
+        }
+        func pdfItemSections() -> String {
+            var finalText: String = "-->"
+            var textFirst: String = ""
+            if pdfInt == 0 {
+                for shelf in shelves {
+                    let items = items.filter { $0.shedName == shelf }
+                    textFirst.append(contentsOf:
+                    """
+                    <div class="itemListSection">
+                        <div class="sectionHeader">
+                            <p class="sectionHeaderTitle">\(shelf)\(weightCount(array: items))</p>
+                        </div>
+                        <div class="sectionItems">
+                            <ul>
+                                <!-- -->\(sectionItems(array: items))<!-- -->
+                            </ul>
+                        </div>
+                    </div>
+                    """
+                    )
+                }
+                finalText.append(contentsOf: textFirst)
+            } else if pdfInt == 1 {
+                for brand in brands {
+                    let items = items.filter { $0.brandName == brand }
+                    textFirst.append(contentsOf:
+                    """
+                    <div class="itemListSection">
+                        <div class="sectionHeader">
+                            <p class="sectionHeaderTitle">\(brand)\(weightCount(array: items))</p>
+                        </div>
+                        <div class="sectionItems">
+                            <ul>
+                                <!-- -->\(sectionItems(array: items))<!-- -->
+                            </ul>
+                        </div>
+                    </div>
+                    """
+                    )
+                }
+                finalText.append(contentsOf: textFirst)
+            } else if pdfInt == 2 {
+                for shelf in shelves {
+                    let items = wishListItems.filter { $0.shedName == shelf }
+                    guard items.count >= 1 else { continue }
+                    textFirst.append(contentsOf:
+                    """
+                    <div class="itemListSection">
+                        <div class="sectionHeader">
+                            <p class="sectionHeaderTitle">\(shelf)\(weightCount(array: items))</p>
+                        </div>
+                        <div class="sectionItems">
+                            <ul>
+                                <!-- -->\(sectionItems(array: items))<!-- -->
+                            </ul>
+                        </div>
+                    </div>
+                    """
+                    )
+                }
+                finalText.append(contentsOf: textFirst)
+            } else if pdfInt == 3 {
+                for shelf in shelves {
+                    let items = favItems.filter { $0.shedName == shelf }
+                    guard items.count >= 1 else { continue }
+                    textFirst.append(contentsOf:
+                    """
+                    <div class="itemListSection">
+                        <div class="sectionHeader">
+                            <p class="sectionHeaderTitle">\(shelf)\(weightCount(array: items))</p>
+                        </div>
+                        <div class="sectionItems">
+                            <ul>
+                                <!-- -->\(sectionItems(array: items))<!-- -->
+                            </ul>
+                        </div>
+                    </div>
+                    """
+                    )
+                }
+                finalText.append(contentsOf: textFirst)
+            } else if pdfInt == 4 {
+                for shelf in shelves {
+                    let items = regretItems.filter { $0.shedName == shelf }
+                    guard items.count >= 1 else { continue }
+                    textFirst.append(contentsOf:
+                    """
+                    <div class="itemListSection">
+                        <div class="sectionHeader">
+                            <p class="sectionHeaderTitle">\(shelf)\(weightCount(array: items))</p>
+                        </div>
+                        <div class="sectionItems">
+                            <ul>
+                                <!-- -->\(sectionItems(array: items))<!-- -->
+                            </ul>
+                        </div>
+                    </div>
+                    """
+                    )
+                }
+                finalText.append(contentsOf: textFirst)
+            }
+            finalText.append(contentsOf: "<!--")
+            return finalText
+        }
+        //Get HTML Template URL from Bundle
+        guard let htmlFile = Bundle.main.url(forResource: "gearShedTemplate", withExtension: "html")
+            else { fatalError("Error locating HTML file.") }
+        //Convert HTML URL Contents to String
+        guard let htmlContent = try? String(contentsOf: htmlFile)
+            else { fatalError("Error getting HTML file content.") }
+        //Get Logo URL from Bundle
+        guard let imageURL = Bundle.main.url(forResource: "gearShedBlack", withExtension: "png")
+            else { fatalError("Error locating image file.") }
+        //Get HelveticaNeue Fonts URL from Bundle
+        guard let hevNeue = Bundle.main.url(forResource: "pHelveticaNeue", withExtension: "ttf")
+            else { fatalError("Error locating font file.") }
+        guard let hevNeueThin = Bundle.main.url(forResource: "pHelveticaNeueThin", withExtension: "ttf")
+            else { fatalError("Error locating font file.") }
+        guard let hevNeueIt = Bundle.main.url(forResource: "pHelveticaNeueIt", withExtension: "ttf")
+            else { fatalError("Error locating font file.") }
+        guard let hevNeueLt = Bundle.main.url(forResource: "pHelveticaNeueLt", withExtension: "ttf")
+            else { fatalError("Error locating font file.") }
+        guard let hevNeueMed = Bundle.main.url(forResource: "pHelveticaNeueMed", withExtension: "ttf")
+            else { fatalError("Error locating font file.") }
+        guard let hevNeueHv = Bundle.main.url(forResource: "pHelveticaNeueHv", withExtension: "ttf")
+            else { fatalError("Error locating font file.") }
+        guard let hevNeueBold = Bundle.main.url(forResource: "pHelveticaNeueBold", withExtension: "ttf")
+            else { fatalError("Error locating font file.") }
+        guard let hevNeueBlackCond = Bundle.main.url(forResource: "pHelveticaNeueBlackCond", withExtension: "ttf")
+            else { fatalError("Error locating font file.") }
+        // Replace HTMML placeholders with values
+        let finalHTML = htmlContent
+            .replacingOccurrences(of: "#hevNeue#", with: hevNeue.description)
+            .replacingOccurrences(of: "#hevNeueThin#", with: hevNeueThin.description)
+            .replacingOccurrences(of: "#hevNeueIt#", with: hevNeueIt.description)
+            .replacingOccurrences(of: "#hevNeueLt#", with: hevNeueLt.description)
+            .replacingOccurrences(of: "#hevNeueMed#", with: hevNeueMed.description)
+            .replacingOccurrences(of: "#hevNeueHv#", with: hevNeueHv.description)
+            .replacingOccurrences(of: "#hevNeueBold#", with: hevNeueBold.description)
+            .replacingOccurrences(of: "#hevNeueBlackCond#", with: hevNeueBlackCond.description)
+            .replacingOccurrences(of: "#USERNAME#", with: "\(Prefs.shared.pdfUserName)'s")
+            .replacingOccurrences(of: "#PDF_TYPE#", with: pdfType())
+            .replacingOccurrences(of: "#DATE#", with: pdfDate())
+            .replacingOccurrences(of: "{{IMG_SRC}}", with: imageURL.description)
+            .replacingOccurrences(of: "#STAT_BAR#", with: pdfStats())
+            .replacingOccurrences(of: "#ITEM_SECTION#", with: pdfItemSections())
+        return finalHTML
+    }
+    func printPDF(pdfInt: Int) {
+        let printController = UIPrintInteractionController.shared
+        let printFormatter = UIMarkupTextPrintFormatter(markupText: createHTML(pdfInt: pdfInt))
+        printController.printFormatter = printFormatter
+        printController.present(animated: true) { (controller, completion, error) in
+            print(error ?? "Print controller presented.")
         }
     }
 }

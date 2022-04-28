@@ -1,20 +1,13 @@
 //
 //  MonthYearPickerButton.swift
-//  CustomDatePickerApp
+//  Gear Shed
 //
-//  Created by Peter Ent on 11/3/20.
+//  Created by Luke Forrest Gannon on 2021-11-14.
+//  Copyright © 2022 All rights reserved.
 //
 
 import SwiftUI
 
-/**
- * The MDPMonthYearPickerButton sits at the top of the MDPMonthView and displays the current month
- * and year showing in the view. Tapping this control switches the main view to the month/year
- * picker.
- *
- * This is a quick way for the user to jump the year or month without having to the < or >
- * buttons.
- */
 struct MDPMonthYearPickerButton: View {
     @EnvironmentObject var monthDataModel: CustomDatePickerModel
     
@@ -34,8 +27,11 @@ struct MDPMonthYearPickerButton: View {
     }
 }
 
-struct MonthYearPickerButton_Previews: PreviewProvider {
-    static var previews: some View {
-        MDPMonthYearPickerButton(isPresented: .constant(false))
-    }
-}
+/**
+ * The MDPMonthYearPickerButton sits at the top of the MDPMonthView and displays the current month
+ * and year showing in the view. Tapping this control switches the main view to the month/year
+ * picker.
+ *
+ * This is a quick way for the user to jump the year or month without having to the < or >
+ * buttons.
+ */

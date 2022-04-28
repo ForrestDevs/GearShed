@@ -3,27 +3,21 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-11-20.
+//  Copyright © 2022 All rights reserved.
 //
 
 import Foundation
 
 struct EditableDiaryData {
-    
     let persistentStore: PersistentStore
-    
     var id: UUID?
     var name: String
     var details: String
-
     var item: Item?
     var gearlist: Gearlist
-    
     var canBeSaved: Bool { item != nil && details.count > 0 }
-    
     var representsExisting: Bool { id != nil }
-    
     var associatedDiary: ItemDiary { ItemDiary.object(id: id!, context: persistentStore.context)! }
-    
 }
 
 extension EditableDiaryData {
@@ -36,7 +30,6 @@ extension EditableDiaryData {
         self.name = diary.name
         self.details = diary.details
     }
-    
     /// Initializer for standard add Diary
     init(persistentStore: PersistentStore, gearlist: Gearlist) {
         self.persistentStore = persistentStore

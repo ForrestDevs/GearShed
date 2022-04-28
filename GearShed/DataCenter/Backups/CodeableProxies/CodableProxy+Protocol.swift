@@ -3,16 +3,11 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-11-20.
+//  Copyright © 2022 All rights reserved.
 //
 
 import Foundation
 
-
-// to write stuff out - Core Data Objects -
-// the code is essentially the same except for the typing of the objects
-// in the list.  so we use the power of generics:  we introduce
-// (1) a protocol that demands that something be able to produce a simple
-// Codable (struct) representation of itself -- a proxy as it were.
 protocol CodableStructRepresentable {
     associatedtype DataType: Codable
     var codableProxy: DataType { get }
@@ -20,7 +15,6 @@ protocol CodableStructRepresentable {
 
 struct AllCodableProxy: Codable {
     var items: [ItemCodableProxy]
-    var itemImages: [ItemImageCodableProxy]
     var itemDiaries: [ItemDiaryCodableProxy]
     var sheds: [ShedCodableProxy]
     var brands: [BrandCodableProxy]

@@ -1,10 +1,11 @@
 //
-//  TripDetailView.swift
+//  GearlistDetailView.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 18/10/21
-//  Copyright © 2021 All rights reserved.
+//  Copyright © 2022 All rights reserved.
 //
+
 import SwiftUI
 
 struct GearlistDetailView: View {
@@ -62,7 +63,6 @@ struct GearlistDetailView: View {
         }
         .transition(.move(edge: .trailing))
     }
-    
     // MARK: Toolbar Content
     private var backButtonToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
@@ -75,27 +75,18 @@ struct GearlistDetailView: View {
             }
         }
     }
-    
     private var viewTitle: some ToolbarContent {
         ToolbarItem(placement: .principal) {
             Text(gearlist.name)
                 .formatGreen()
         }
     }
-    
     private var shareList: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
-                detailManager.secondaryContent = AnyView (
-                    GearListPDFView(selectedGearlist: gearlist)
-                        .environmentObject(glData)
-                )
-                withAnimation {
-                    detailManager.secondaryTarget = .showSecondaryContent
-                }
+                glData.printPDF(selectedGearlist: gearlist, pdfInt: currentScreen)
             } label: {
                 Text("PDF")
-//                Image(systemName: "square.and.arrow.up")
             }
         }
     }

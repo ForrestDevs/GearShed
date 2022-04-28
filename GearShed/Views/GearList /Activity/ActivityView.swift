@@ -3,18 +3,17 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-11-13.
+//  Copyright © 2022 All rights reserved.
 //
+
 import SwiftUI
 
 struct ActivityView: View {
     @Environment(\.presentationMode) private var presentationMode
-    
     @State private var confirmDeleteActivityTypeAlert: ConfirmDeleteActivityTypeAlert?
     @State private var showUnlock: Bool = false
     @EnvironmentObject private var persistentStore: PersistentStore
-
     @EnvironmentObject private var viewModel: GearlistData
-    
     @EnvironmentObject private var detailManager: DetailViewManager
     
     var body: some View {
@@ -34,7 +33,7 @@ struct ActivityView: View {
             UnlockView()
         }
     }
-    
+    //MARK: Main Content
     private var activitiesList: some View {
         ScrollView {
             LazyVStack (alignment: .leading, spacing: 0, pinnedViews: .sectionHeaders) {
@@ -48,7 +47,6 @@ struct ActivityView: View {
             }
         }
     }
-    
     private var addListButtonOverlay: some View {
         VStack {
             Spacer()
@@ -79,13 +77,11 @@ struct ActivityView: View {
         .padding(.bottom, 30)
 
     }
-    
     private func listContent(type: ActivityType) -> some View {
         ForEach(type.gearlists) { activity in
             ActivityRowView(activity: activity)
         }
     }
-    
     private func listHeader(type: ActivityType) -> some View {
         ZStack {
             Color.theme.headerBG

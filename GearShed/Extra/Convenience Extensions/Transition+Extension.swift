@@ -3,6 +3,7 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-10-23.
+//  Copyright © 2022 All rights reserved.
 //
 
 import Foundation

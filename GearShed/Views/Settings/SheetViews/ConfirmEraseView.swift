@@ -3,6 +3,7 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2022-02-08.
+//  Copyright © 2022 All rights reserved.
 //
 
 import SwiftUI
@@ -10,10 +11,9 @@ import SwiftUI
 struct ConfirmEraseView: View {
     @StateObject var persistentStore: PersistentStore
     @StateObject var detailManager: DetailViewManager
-    
+    @State private var eraseText: String = ""
     let width = UIScreen.main.bounds.width
     let height = UIScreen.main.bounds.height
-    @State private var eraseText: String = ""
     
     var body: some View {
         ZStack {
@@ -25,7 +25,6 @@ struct ConfirmEraseView: View {
                         detailManager.target = .noView
                     }
                 }
-            
             ZStack {
                 RoundedRectangle(cornerRadius: 10)
                     .frame(width: width / 1.2, height: height / 3.5)
@@ -93,6 +92,5 @@ struct ConfirmEraseView: View {
                 
             }
         }
-
     }
 }

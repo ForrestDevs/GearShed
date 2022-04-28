@@ -1,21 +1,18 @@
 //
-//  AddListView.swift
+//  AddActivityView.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 18/10/21
-//  Copyright © 2021 All rights reserved.
+//  Copyright © 2022 All rights reserved.
 //
+
 import SwiftUI
 
 struct AddActivityView: View {
     @EnvironmentObject private var persistentStore: PersistentStore
-    
     @EnvironmentObject private var detailManager: DetailViewManager
-        
     @StateObject private var glData: GearlistData
-    
     @State private var editableData: EditableGearlistData
-        
     private let isAddFromType: Bool
     
     var body: some View {
@@ -30,7 +27,6 @@ struct AddActivityView: View {
         }
         .transition(.move(edge: .trailing))
     }
-    
     // MARK: Main Content
     private var contentView: some View {
         ZStack {
@@ -46,7 +42,6 @@ struct AddActivityView: View {
             }
         }
     }
-    
     private var activityNameSection: some View {
         Section {
             VStack(alignment: .leading, spacing: 3) {
@@ -59,13 +54,11 @@ struct AddActivityView: View {
             }
         }
     }
-    
     private var activityTypeSection: some View {
         Section {
             VStack (alignment: .leading, spacing: 3)  {
                 Text ("Type")
                     .formatEntryTitle()
-                
                 Menu {
                     // Add New Type Button
                     Button {
@@ -115,7 +108,6 @@ struct AddActivityView: View {
             }
         }
     }
-
     private func typeTextColor() -> Color {
         var color: Color
         if editableData.activityType == nil {
@@ -125,7 +117,6 @@ struct AddActivityView: View {
         }
         return color
     }
-
     private var activityDescriptionSection: some View {
         Section {
             VStack (alignment: .leading, spacing: 3) {
@@ -138,7 +129,6 @@ struct AddActivityView: View {
             }
         }
     }
-    
     // MARK: Toolbar Content
     private var cancelButtonToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
@@ -146,41 +136,22 @@ struct AddActivityView: View {
                 withAnimation {
                     detailManager.target = .noView
                 }
-                /*if isAddFromType {
-                    withAnimation {
-                        detailManager.target = .noView
-                        detailManager.showAddActivityFromActivityType = false
-                    }
-                } else {
-                    withAnimation {
-                        detailManager.showAddActivity = false
-                    }
-                }*/
             } label:  {
                 Text("Cancel")
             }
         }
     }
-    
     private var viewTitle: some ToolbarContent {
         ToolbarItem (placement: .principal) {
             Text("Add Activity")
                 .formatGreen()
         }
     }
-    
     private var saveButtonToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
                 let newGearList = glData.addNewGearlist(using: editableData)
                 detailManager.selectedGearlist = newGearList
-                /*if isAddFromType {
-                    let newGearList = glData.addNewGearlist(using: editableData)
-                    detailManager.selectedGearlist = newGearList
-                } else {
-                    let newGearList = glData.addNewGearlist(using: editableData)
-                    detailManager.selectedGearlist = newGearList
-                }*/
                 withAnimation {
                     detailManager.secondaryTarget = .showAddItemsToGearlist
                     detailManager.target = .showGearlistDetail
@@ -198,22 +169,16 @@ extension AddActivityView {
     init(persistentStore: PersistentStore) {
         let glData = GearlistData(persistentStore: persistentStore)
         _glData = StateObject(wrappedValue: glData)
-        
         let initialValue = EditableGearlistData(persistentStore: persistentStore, isTrip: false)
         _editableData = State(initialValue: initialValue)
-        
         self.isAddFromType = false
-
     }
-    
     /// Initializer for loading Add Activity with Type passed in
     init(persistentStore: PersistentStore, activityTypeIn: ActivityType) {
         let glData = GearlistData(persistentStore: persistentStore)
         _glData = StateObject(wrappedValue: glData)
-        
         let initialValue = EditableGearlistData(persistentStore: persistentStore, activityType: activityTypeIn)
         _editableData = State(initialValue: initialValue)
-        
         self.isAddFromType = true
     }
 }

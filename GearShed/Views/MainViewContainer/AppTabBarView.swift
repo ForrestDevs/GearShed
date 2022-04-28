@@ -3,13 +3,13 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 18/10/21
-//  Copyright © 2021 All rights reserved.
+//  Copyright © 2022 All rights reserved.
 //
+
 import SwiftUI
 
 struct AppTabBarView: View {
     @EnvironmentObject var persistentStore: PersistentStore
-    
     @State private var selection: String = "gearshed"
     @State private var tabSelection: TabBarItem = .gearshed
     

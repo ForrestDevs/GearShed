@@ -3,45 +3,19 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2022-01-24.
+//  Copyright © 2022 All rights reserved.
 //
 
 import Foundation
 import SwiftUI
 
 class Prefs {
-    
-    //private let defaults = UserDefaults.standard
-    //private let keyWeightUnit = "Weight_Unit"
-    //private let keyPDFUserName = "pdfUserName"
-  
-    /*var weightUnit: String {
-        get {
-            return defaults.string(forKey: keyWeightUnit) ?? "g"
-        }
-        set {
-            defaults.setValue(newValue, forKey: keyWeightUnit)
-        }
-    }
-    
-    var pdfUserName: String {
-        get {
-            return defaults.string(forKey: keyPDFUserName) ?? "New User"
-        }
-        set {
-            defaults.setValue(newValue, forKey: keyPDFUserName)
-        }
-    }*/
-    
     @Published var confirmationAlert: Bool = false
-    
     @AppStorage("pdfUserName", store: .standard) var pdfUserName: String = "Default Value"
-    
     @AppStorage("Weight_Unit", store: .standard) var weightUnit: String = "g"
-    
     @AppStorage("isDarkMode", store: .standard) var isDarkMode: Bool = false
-    
     @AppStorage("isSystemMode", store: .standard) var isSystemMode: Bool = true
-    
+    //MARK: Global Weight Conversion Functions
     func convertMetricToImp(grams: String) -> (lbs: String, oz: String) {
         let weight = Double(grams) ?? 0
         var totalOZ: Double {
@@ -58,7 +32,6 @@ class Prefs {
         let StringOz = String(format: "%.2f", oz)
         return (StringLbs, StringOz)
     }
-    
     func convertImpToMetric(lbs: String, oz: String) -> String {
         //print("LBS as string \(lbs)")
         let IntPound = Int(lbs)
@@ -82,7 +55,7 @@ class Prefs {
         //print(" string total grams \(StringGram) ")
         return StringGram
     }
-  
+    //MARK: Global Singleton
     class var shared: Prefs {
         struct Static {
             static let instance = Prefs()

@@ -3,17 +3,13 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 18/10/21
-//  Copyright © 2021 All rights reserved.
+//  Copyright © 2022 All rights reserved.
 //
 
 import Foundation
 import CoreData
 
-// ideas below due to @Hatsushira and @NigelGee on the Hacking With Swift forums
-// (something i wanted a while ago, but could never quite get the syntax right)
-
 extension NSManagedObject {
-	
 	// makes it easy to count NSManagedObjects in a given context.  useful during
 	// app development.  used in Item.count() and Shed.count() in this app
 	class func count(context: NSManagedObjectContext) -> Int {
@@ -26,7 +22,6 @@ extension NSManagedObject {
 		}
 		return 0
 	}
-	
 	// simple way to get all objects
 	class func allObjects(context: NSManagedObjectContext) -> [NSManagedObject] {
 		let fetchRequest: NSFetchRequest<Self> = NSFetchRequest<Self>(entityName: Self.description())
@@ -38,8 +33,6 @@ extension NSManagedObject {
 		}
 		return []
 	}
-
-	
 	// finds an NSManagedObject with the given UUID (there should only be one, really)
 	class func object(id: UUID, context: NSManagedObjectContext) -> Self? {
 		let fetchRequest: NSFetchRequest<Self> = NSFetchRequest<Self>(entityName: Self.description())
@@ -52,6 +45,4 @@ extension NSManagedObject {
 		}
 		return nil
 	}
-
-	
 }

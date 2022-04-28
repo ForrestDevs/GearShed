@@ -1,8 +1,9 @@
 //
 //  SKProduct-LocalizedPrice.swift
-//  UltimatePortfolio
+//  GearShed
 //
-//  Created by Philipp on 04.07.21.
+//  Created by Luke Forrest Gannon on 18/10/21
+//  Copyright © 2022 All rights reserved.
 //
 
 import StoreKit

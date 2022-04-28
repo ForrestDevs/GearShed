@@ -1,8 +1,9 @@
 //
-//  AddPileItemView.swift
+//  AddItemsToGearListView.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-11-05.
+//  Copyright © 2022 All rights reserved.
 //
 
 import SwiftUI
@@ -18,32 +19,11 @@ struct AddItemsToGearListView: View {
     @State private var itemsChecked: [Item] = []
     @State private var itemsUnChecked: [Item] = []
     @State private var canSave: Bool = false
-    
     private let gearlist: Gearlist
     private var pile: Pile?
     private var pack: Pack?
     private var type: SelectType
     private var itemOut: ((Item) -> ())?
-    
-    func availablePileItems() -> [Item] {
-        var array = [Item]()
-        for item in gearlist.items {
-            if item.gearlistPile(gearlist: gearlist) == nil {
-                array.append(item)
-            }
-        }
-        return array
-    }
-    
-    func availablePackItems() -> [Item] {
-        var array = [Item]()
-        for item in gearlist.items {
-            if item.gearlistPack(gearlist: gearlist) == nil {
-                array.append(item)
-            }
-        }
-        return array
-    }
     
     var body: some View {
         NavigationView {
@@ -58,61 +38,71 @@ struct AddItemsToGearListView: View {
         }
         .transition(.move(edge: .trailing))
     }
+    //MARK: Available Item Functions
+    func availablePileItems() -> [Item] {
+        var array = [Item]()
+        for item in gearlist.items {
+            if item.gearlistPile(gearlist: gearlist) == nil {
+                array.append(item)
+            }
+        }
+        return array
+    }
+    func availablePackItems() -> [Item] {
+        var array = [Item]()
+        for item in gearlist.items {
+            if item.gearlistPack(gearlist: gearlist) == nil {
+                array.append(item)
+            }
+        }
+        return array
+    }
 }
 
 extension AddItemsToGearListView {
     /// Initializer for loading a Item Select view (All Shed Items) for addition/ subtraction from gearlist items.
     init(persistentStore: PersistentStore, type: SelectType, gearlist: Gearlist) {
-        self.type = type
-        self.gearlist = gearlist
-        
         let viewModel = GearlistData(persistentStore: persistentStore)
         _viewModel = StateObject(wrappedValue: viewModel)
-        
         let itemVM = GearShedData(persistentStore: persistentStore)
         _itemVM = StateObject(wrappedValue: itemVM)
+        self.type = type
+        self.gearlist = gearlist
     }
     /// Initializer for loading a Item Select view (All Shed Items) for addition/ subtraction from pile items.
     init(persistentStore: PersistentStore, type: SelectType, gearlist: Gearlist, pile: Pile) {
+        let viewModel = GearlistData(persistentStore: persistentStore)
+        _viewModel = StateObject(wrappedValue: viewModel)
+        let itemVM = GearShedData(persistentStore: persistentStore)
+        _itemVM = StateObject(wrappedValue: itemVM)
         self.type = type
         self.gearlist = gearlist
         self.pile = pile
-        
-        let viewModel = GearlistData(persistentStore: persistentStore)
-        _viewModel = StateObject(wrappedValue: viewModel)
-        
-        let itemVM = GearShedData(persistentStore: persistentStore)
-        _itemVM = StateObject(wrappedValue: itemVM)
     }
     /// Initializer for loading a Item Select view (All Shed Items) for addition/ subtraction from pack items.
     init(persistentStore: PersistentStore, type: SelectType, gearlist: Gearlist, pack: Pack) {
+        let viewModel = GearlistData(persistentStore: persistentStore)
+        _viewModel = StateObject(wrappedValue: viewModel)
+        let itemVM = GearShedData(persistentStore: persistentStore)
+        _itemVM = StateObject(wrappedValue: itemVM)
         self.type = type
         self.gearlist = gearlist
         self.pack = pack
-        
-        let viewModel = GearlistData(persistentStore: persistentStore)
-        _viewModel = StateObject(wrappedValue: viewModel)
-        
-        let itemVM = GearShedData(persistentStore: persistentStore)
-        _itemVM = StateObject(wrappedValue: itemVM)
     }
     /// Initializer for loading a Item Select view (All Shed Items) for selecting a single Item that gets returned with an @escaping function.
     init(persistentStore: PersistentStore, type: SelectType, gearlist: Gearlist, itemOut: @escaping ((Item) -> ())) {
+        let viewModel = GearlistData(persistentStore: persistentStore)
+        _viewModel = StateObject(wrappedValue: viewModel)
+        let itemVM = GearShedData(persistentStore: persistentStore)
+        _itemVM = StateObject(wrappedValue: itemVM)
         self.type = type
         self.itemOut = itemOut
         self.gearlist = gearlist
-        
-        let viewModel = GearlistData(persistentStore: persistentStore)
-        _viewModel = StateObject(wrappedValue: viewModel)
-        
-        let itemVM = GearShedData(persistentStore: persistentStore)
-        _itemVM = StateObject(wrappedValue: itemVM)
     }
 }
 
 extension AddItemsToGearListView {
     // MARK: Content
-    
     private var itemList: some View {
         ScrollView {
             LazyVStack (alignment: .leading, spacing: 0, pinnedViews: .sectionHeaders) {
@@ -216,23 +206,17 @@ extension AddItemsToGearListView {
                             }
                         }
                     }
-                    
                 }
             }
-            //.padding(.bottom, 100)
         }
-        
     }
-    
     // MARK: Methods
     /// Function to add selected Item to temp array.
     private func handleItemSelected(_ item: Item) {
         canSave = true
-        
         if !itemsChecked.contains(item) {
             itemsChecked.append(item)
         }
-        
         if itemsUnChecked.contains(item) {
             itemsUnChecked.removeAll{$0.id == item.id}
         }
@@ -240,16 +224,13 @@ extension AddItemsToGearListView {
     /// Function to remove selected Item from temp array.
     private func handleItemUnSelected(_ item: Item) {
         canSave = true
-        
         if !itemsUnChecked.contains(item) {
             itemsUnChecked.append(item)
         }
-        
         if itemsChecked.contains(item) {
             itemsChecked.removeAll{$0.id == item.id}
         }
     }
-    
     // MARK: ToolbarItems
     private var cancelButtonToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
@@ -262,14 +243,12 @@ extension AddItemsToGearListView {
             }
         }
     }
-    
     private var viewTitle: some ToolbarContent {
         ToolbarItem (placement: .principal) {
             Text("Select Gear")
                 .formatGreen()
         }
     }
-    
     private var saveButtonToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
@@ -299,79 +278,3 @@ extension AddItemsToGearListView {
     }
 }
 
-
-/*VStack {
-    List {
-        switch type {
-        case .gearlistItem:
-            ForEach(itemVM.sectionByShed(itemArray: itemVM.items)) { section in
-                Section {
-                    ForEach(section.items) { item in
-                        SelectableItemRowView (
-                            type: .gearlistItem,
-                            gearlist: gearlist,
-                            item: item) {
-                                handleItemSelected(item)
-                            } respondToTapOffSelector: {
-                                handleItemUnSelected(item)
-                            }
-                            .padding(.horizontal, 15)
-                            .padding(.bottom, 5)
-                    }
-                } header: {
-                    HStack {
-                        Text(section.title)
-                            .font(.headline)
-                        Spacer()
-                    }
-                }
-            }
-        case .pileItem:
-            ForEach(itemVM.sectionByShed(itemArray: availablePileItems())) { section in
-                Section {
-                    ForEach(section.items) { item in
-                        SelectableItemRowView (
-                            type: .pileItem,
-                            pile: pile,
-                            item: item) {
-                                handleItemSelected(item)
-                            } respondToTapOffSelector: {
-                                handleItemUnSelected(item)
-                            }
-                            .padding(.horizontal, 15)
-                            .padding(.bottom, 5)
-                    }
-                } header: {
-                    HStack {
-                        Text(section.title)
-                            .font(.headline)
-                        Spacer()
-                    }
-                }
-            }
-        case .packItem:
-            ForEach(itemVM.sectionByShed(itemArray: availablePackItems())) { section in
-                Section {
-                    ForEach(section.items) { item in
-                        SelectableItemRowView (
-                            type: .packItem,
-                            pack: pack,
-                            item: item) {
-                                handleItemSelected(item)
-                            } respondToTapOffSelector: {
-                                handleItemUnSelected(item)
-                            }
-                            .padding(.horizontal, 15)
-                            .padding(.bottom, 5)
-                    }
-                } header: {
-                    HStack {
-                        Text(section.title)
-                            .font(.headline)
-                        Spacer()
-                    }
-                }
-            }
-        }
-    }
-}*/

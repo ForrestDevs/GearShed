@@ -3,23 +3,20 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-11-19.
+//  Copyright © 2022 All rights reserved.
 //
+
 import SwiftUI
 
 struct ModifyActivityView: View {
-        
     @EnvironmentObject private var persistentStore: PersistentStore
-    
     @EnvironmentObject private var detailManager: DetailViewManager
-    
     @StateObject private var glData: GearlistData
-
     @State private var editableData: EditableGearlistData
             
     init(persistentStore: PersistentStore, activity: Gearlist) {
         let glData = GearlistData(persistentStore: persistentStore)
         _glData = StateObject(wrappedValue: glData)
-        
         let initialValue = EditableGearlistData(persistentStore: persistentStore, gearlist: activity)
         _editableData = State(initialValue: initialValue)
     }
@@ -36,7 +33,6 @@ struct ModifyActivityView: View {
         }
         .transition(.move(edge: .trailing))
     }
-    
     // MARK: Main Content
     private var contentView: some View {
         ZStack {
@@ -52,7 +48,6 @@ struct ModifyActivityView: View {
             }
         }
     }
-    
     private var activityNameSection: some View {
         Section {
             VStack(alignment: .leading, spacing: 3) {
@@ -65,7 +60,6 @@ struct ModifyActivityView: View {
             }
         }
     }
-    
     private var activityTypeSection: some View {
         Section {
             VStack (alignment: .leading, spacing: 3)  {
@@ -121,7 +115,6 @@ struct ModifyActivityView: View {
             }
         }
     }
-
     private func typeTextColor() -> Color {
         var color: Color
         if editableData.activityType == nil {
@@ -131,7 +124,6 @@ struct ModifyActivityView: View {
         }
         return color
     }
-
     private var activityDescriptionSection: some View {
         Section {
             VStack (alignment: .leading, spacing: 3) {
@@ -144,7 +136,6 @@ struct ModifyActivityView: View {
             }
         }
     }
-    
     // MARK: Toolbar Content
     private var cancelButtonToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
@@ -157,14 +148,12 @@ struct ModifyActivityView: View {
             }
         }
     }
-    
     private var viewTitle: some ToolbarContent {
         ToolbarItem (placement: .principal) {
             Text("Edit Activity")
                 .formatGreen()
         }
     }
-    
     private var saveButtonToolBarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {

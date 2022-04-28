@@ -3,7 +3,9 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-11-15.
+//  Copyright © 2022 All rights reserved.
 //
+
 import SwiftUI
 
 struct ExpandableButton: View {
@@ -21,39 +23,20 @@ struct ExpandableButton: View {
     }
 
     var type: ButtonType
-    
+
     var body: some View {
         VStack {
             Spacer()
             HStack {
                 Spacer()
                 VStack (alignment: .center, spacing: 2) {
-                    
                     VStack (alignment: .center, spacing: 1) {
-                        
                         if showMenuItem1 {
                             menuButton(type: .item, buttonText: "Gear")
                         }
                         if showMenuItem2 {
                             menuButton(type: .shed, buttonText: "Shelf")
                         }
-                        
-                        /*if type == .shed {
-                            if showMenuItem1 {
-                                menuButton(type: .item, buttonText: "Gear")
-                            }
-                            if showMenuItem2 {
-                                menuButton(type: .shed, buttonText: "Shed")
-                            }
-                        }
-                        if type == .brand {
-                            if showMenuItem1 {
-                                menuButton(type: .item, buttonText: "Gear")
-                            }
-                            if showMenuItem3 {
-                                menuButton(type: .brand, buttonText: "Brand")
-                            }
-                        }*/
                     }
                     
                     // "+" button to show menu
@@ -76,11 +59,9 @@ struct ExpandableButton: View {
                 .padding(.bottom, 50)
             }
         }
-        
     }
     
     func showMenu() {
-        
         if isClose {
             withAnimation {
                 showMenuItem2 = false
@@ -100,54 +81,9 @@ struct ExpandableButton: View {
                 }
             })
         }
-        
-        /*if type == .shed {
-            if isClose {
-                withAnimation {
-                    showMenuItem2 = false
-                }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.03, execute: {
-                    withAnimation {
-                        showMenuItem1 = false
-                    }
-                })
-            } else {
-                withAnimation {
-                    showMenuItem1 = true
-                }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.03, execute: {
-                    withAnimation {
-                        showMenuItem2 = true
-                    }
-                })
-            }
-        }*/
-        /*if type == .brand {
-            if isClose {
-                withAnimation {
-                    showMenuItem3 = false
-                }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.03, execute: {
-                    withAnimation {
-                        showMenuItem1 = false
-                    }
-                })
-            } else {
-                withAnimation {
-                    showMenuItem1 = true
-                }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.03, execute: {
-                    withAnimation {
-                        showMenuItem3 = true
-                    }
-                })
-            }
-        }*/
-        
         isClose.toggle()
         isExpanded.toggle()
     }
-    
     func menuButton(type: ButtonType, buttonText: String) -> some View {
         Button {
             switch type {

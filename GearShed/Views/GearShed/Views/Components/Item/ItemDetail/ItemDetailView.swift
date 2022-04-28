@@ -3,8 +3,9 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 18/10/21
-//  Copyright © 2021 All rights reserved.
+//  Copyright © 2022 All rights reserved.
 //
+
 import SwiftUI
 
 struct ItemDetailView: View {
@@ -12,7 +13,7 @@ struct ItemDetailView: View {
     @ObservedObject private var item: Item
     @StateObject private var glData: GearlistData
     @StateObject private var gsData: GearShedData
-            
+    let persistentStore: PersistentStore
     init(persistentStore: PersistentStore, item: Item) {
         self.item = item
         
@@ -25,17 +26,15 @@ struct ItemDetailView: View {
         self.persistentStore = persistentStore
     }
     
-    let persistentStore: PersistentStore
-
     var body: some View {
         NavigationView {
             VStack (alignment: .leading) {
                 viewContent
                 ItemDiaryList(item: item)
+                ItemGearlistHistoryView(item: item)
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                //editButton
                 viewTitle
                 backButton
             }
@@ -130,7 +129,7 @@ struct ItemDetailView: View {
                     }
                 }
                 Text(item.detail)
-                        .formatDetailDescriptionBlack()
+                    .formatDetailDescriptionBlack()
             }
             Spacer()
         }
@@ -157,63 +156,3 @@ struct ItemDetailView: View {
     }
 }
 
-
-/*
- ItemImageView(item: item)
-     .contextMenu {
-         addEditButton
-         
-         if item.image != nil {
-             deleteImageButton
-         }
-     }
-     .environmentObject(gsData)
- 
- 
- // MARK: Item Image Context Menus
- private var addEditButton: some View {
-     AddImageButton(item: item)
-         .environmentObject(gsData)
- }
- 
- private var deleteImageButton: some View {
-     Button {
-         gsData.deleteItemImg(item: item)
-     } label: {
-         HStack {
-             Text("Delete Image")
-             Image(systemName: "trash")
-         }
-     }
- }
- 
- 
- private var editButton: some ToolbarContent {
-     ToolbarItem(placement: .navigationBarTrailing) {
-         Button {
-             detailManager.selectedItem = item
-             withAnimation {
-                 detailManager.secondaryTarget = .showModifyItem
-             }
-         } label: {
-             Image(systemName: "slider.horizontal.3")
-         }
-     }
- }
- 
- /*if (persistentStore.stateUnit == "g") {
-     if let weight = item.weight {
-         if Int(weight) ?? 0 > 0 {
-             Text("\(weight) g")
-                 .formatDetailsWPPBlack()
-         }
-     }
- }
- 
- if (persistentStore.stateUnit == "lb + oz") {
-     if (Int(item.itemLbs) ?? 0 > 0 || Double(item.itemOZ) ?? 0.0 > 0.0) {
-         Text("\(item.itemLbs) lbs \(item.itemOZ) oz")
-             .formatDetailsWPPBlack()
-     }
- }*/
- */

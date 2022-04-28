@@ -3,7 +3,9 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2022-01-28.
+//  Copyright © 2022 All rights reserved.
 //
+
 import SwiftUI
 
 struct LaunchAnimation: View {
@@ -15,9 +17,7 @@ struct LaunchAnimation: View {
         ZStack {
             Color.theme.background
                 .ignoresSafeArea(.all, edges: .bottom)
-            
             VStack (spacing: -10) {
-                
                 Image("roofVector")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -46,9 +46,7 @@ struct LaunchAnimation: View {
                                 self.fadeAll = true
                             }
                         }
-                        
                     }
-                    
                 }
             }
         }

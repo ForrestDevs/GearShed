@@ -3,17 +3,15 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 18/10/21
-//  Copyright © 2021 All rights reserved.
+//  Copyright © 2022 All rights reserved.
 //
 
 import Foundation
 import SwiftUI
 
 extension Color {
-    
     static let theme = ColorTheme()
     static let launch = LaunchTheme()
-    
 }
 
 struct ColorTheme {
@@ -40,8 +38,6 @@ struct ColorTheme2 {
 }
 
 struct LaunchTheme {
-    
     let accent = Color("LaunchAccentColor")
     let background = Color("LaunchBackgroundColor")
-    
 }

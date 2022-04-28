@@ -3,8 +3,9 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-10-22.
-//  Copyright © 2021 All rights reserved.
+//  Copyright © 2022 All rights reserved.
 //
+
 import SwiftUI
 import Combine
 

@@ -3,12 +3,13 @@
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2021-11-21.
+//  Copyright © 2022 All rights reserved.
 //
+
 import SwiftUI
 
 struct GearlistDiaryView: View {
     @Environment(\.presentationMode) private var persentationMode
-    
     @EnvironmentObject private var persistentStore: PersistentStore
     @EnvironmentObject private var detailManager: DetailViewManager
     @ObservedObject var gearlist: Gearlist
@@ -28,7 +29,7 @@ struct GearlistDiaryView: View {
         }
         .alert(item: $confirmDeleteDiaryAlert) { diary in diary.alert() }
     }
-    
+    //MARK: Main Content
     private var diaryList: some View {
         ScrollView {
             LazyVStack (alignment: .leading, spacing: 10) {
@@ -38,7 +39,6 @@ struct GearlistDiaryView: View {
             }
         }
     }
-    
     private func diaryRow(diary: ItemDiary) -> some View {
         ZStack {
             Color.clear
@@ -69,7 +69,6 @@ struct GearlistDiaryView: View {
             deleteDiaryContext(diary: diary)
         }
     }
-    
     private func statusIcon(item: Item) -> some View {
         VStack {
             if item.isFavourite {
@@ -95,7 +94,7 @@ struct GearlistDiaryView: View {
             }
         }
     }
-    
+    //MARK: Context Buttons
     private func editDiaryContext(diary: ItemDiary) -> some View {
         Button {
             detailManager.selectedItemDiary = diary
@@ -109,7 +108,6 @@ struct GearlistDiaryView: View {
             }
         }
     }
-    
     private func deleteDiaryContext(diary: ItemDiary) -> some View {
         Button {
             confirmDeleteDiaryAlert = ConfirmDeleteDiaryAlert(persistentStore: persistentStore, diary: diary) {
@@ -122,7 +120,6 @@ struct GearlistDiaryView: View {
             }
         }
     }
-    
     private var addDiaryButtonOverlay: some View {
         VStack {
             Spacer()
@@ -151,24 +148,3 @@ struct GearlistDiaryView: View {
         }
     }
 }
-
-
-/*private func listHeader(diary: ItemDiary) -> some View {
-    ZStack {
-        Color.theme.headerBG
-            .frame(maxWidth: .infinity)
-            .frame(height: 25)
-        HStack {
-            
-            Text(diary.item.name)
-            Spacer()
-        }
-        .padding(.horizontal, 15)
-    }
-}
-private func listContent(diary: ItemDiary) -> some View {
-     Text(diary.details)
-         
-         
-}
- */
