@@ -37,7 +37,7 @@ final class BackupManager: ObservableObject {
             fatalError("Failed to decode backup: \(error.localizedDescription)")
         }
     }
-    func writeAsJSON (items: [Item], itemImages: [ItemImage], itemDiaries: [ItemDiary], sheds: [Shed], brands: [Brand], gearlists: [Gearlist], piles: [Pile], packs: [Pack], packingBools: [PackingBool], activityTypes: [ActivityType]) -> URL {
+    func writeAsJSON (items: [Item], itemDiaries: [ItemDiary], sheds: [Shed], brands: [Brand], gearlists: [Gearlist], piles: [Pile], packs: [Pack], packingBools: [PackingBool], activityTypes: [ActivityType]) -> URL {
         var all = AllCodableProxy (
             items: [],
             itemDiaries: [],
@@ -105,7 +105,7 @@ final class BackupManager: ObservableObject {
         }
         return url
     }
-    func backupToiCloudDrive(items: [Item], itemImages: [ItemImage], itemDiaries: [ItemDiary], sheds: [Shed], brands: [Brand], gearlists: [Gearlist], piles: [Pile], packs: [Pack], packingBools: [PackingBool], activityTypes: [ActivityType]) {
+    func backupToiCloudDrive(items: [Item], itemDiaries: [ItemDiary], sheds: [Shed], brands: [Brand], gearlists: [Gearlist], piles: [Pile], packs: [Pack], packingBools: [PackingBool], activityTypes: [ActivityType]) {
         
         var all = AllCodableProxy (
             items: [],

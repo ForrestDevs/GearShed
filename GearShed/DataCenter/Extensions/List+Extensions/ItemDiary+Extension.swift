@@ -11,11 +11,7 @@ import Foundation
 extension ItemDiary {
     var name: String {
         get { name_ ?? "Not Available" }
-        set {
-            name_ = newValue
-            item?.objectWillChange.send()
-            gearlist.objectWillChange.send()
-        }
+        set { name_ = newValue }
     }
     var details: String {
         get { details_ ?? "Not Available"}

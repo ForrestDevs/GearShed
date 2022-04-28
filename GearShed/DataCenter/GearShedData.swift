@@ -16,8 +16,8 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     let persistentStore: PersistentStore
     private let itemsController: NSFetchedResultsController<Item>
     @Published var items = [Item]()
-    private let itemImagesController: NSFetchedResultsController<ItemImage>
-    @Published var itemImages = [ItemImage]()
+//    private let itemImagesController: NSFetchedResultsController<ItemImage>
+//    @Published var itemImages = [ItemImage]()
     private let itemDiariesController: NSFetchedResultsController<ItemDiary>
     @Published var itemDiaries = [ItemDiary]()
     private let favItemsController: NSFetchedResultsController<Item>
@@ -40,9 +40,9 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         
         itemsController = NSFetchedResultsController(fetchRequest: itemRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
         
-        let itemImagesRequest: NSFetchRequest<ItemImage> = ItemImage.fetchRequest()
-        itemImagesRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
-        itemImagesController = NSFetchedResultsController(fetchRequest: itemImagesRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
+//        let itemImagesRequest: NSFetchRequest<ItemImage> = ItemImage.fetchRequest()
+//        itemImagesRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
+//        itemImagesController = NSFetchedResultsController(fetchRequest: itemImagesRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
         
         let itemDiaryRequest: NSFetchRequest<ItemDiary> = ItemDiary.fetchRequest()
         itemDiaryRequest.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
@@ -82,7 +82,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         // MARK: Assign Entities to corosponding arrays
         super.init()
         itemsController.delegate = self
-        itemImagesController.delegate = self
+        //itemImagesController.delegate = self
         itemDiariesController.delegate = self
         
         favItemsController.delegate = self
@@ -98,12 +98,12 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
             print("Failed to fetch Items")
         }
         
-        do {
-            try itemImagesController.performFetch()
-            itemImages = itemImagesController.fetchedObjects ?? []
-        } catch {
-            print("Failed to fetch ItemsImages")
-        }
+//        do {
+//            try itemImagesController.performFetch()
+//            itemImages = itemImagesController.fetchedObjects ?? []
+//        } catch {
+//            print("Failed to fetch ItemsImages")
+//        }
         
         do {
             try itemDiariesController.performFetch()
@@ -149,7 +149,6 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     }
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         items = itemsController.fetchedObjects ?? []
-        itemImages = itemImagesController.fetchedObjects ?? []
         itemDiaries = itemDiariesController.fetchedObjects ?? []
         favItems = favItemsController.fetchedObjects ?? []
         regretItems = regretItemsController.fetchedObjects ?? []

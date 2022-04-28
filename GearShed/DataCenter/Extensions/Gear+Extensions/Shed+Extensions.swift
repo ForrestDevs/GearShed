@@ -21,10 +21,7 @@ extension Shed: Comparable {
 	// MARK: - Computed properties
 	var name: String {
 		get { name_ ?? "Unknown Name" }
-		set {
-			name_ = newValue
-			items.forEach({ $0.objectWillChange.send() })
-		}
+		set { name_ = newValue }
 	}
     var unShedID: Int {
         get { Int(unShedID_) }

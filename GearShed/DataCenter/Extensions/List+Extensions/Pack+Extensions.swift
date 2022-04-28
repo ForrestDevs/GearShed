@@ -11,12 +11,7 @@ import Foundation
 extension Pack {
     var name: String {
         get { name_ ?? "Unknown Name" }
-        set {
-            name_ = newValue
-            items.forEach({ $0.objectWillChange.send() })
-            gearlist.objectWillChange.send()
-            packingBools.forEach({ $0.objectWillChange.send() })
-        }
+        set { name_ = newValue }
     }
     var items: [Item] {
         if let items = items_ as? Set<Item> {

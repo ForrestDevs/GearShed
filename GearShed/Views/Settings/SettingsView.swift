@@ -399,11 +399,11 @@ extension SettingsView {
         self.diariesAdded = gsData.itemDiaries.count - currentDiaryCount
     }
     private func writeBackupFile() {
-        backupManager.backupToiCloudDrive(items: gsData.items, itemImages: gsData.itemImages, itemDiaries: gsData.itemDiaries, sheds: gsData.sheds, brands: gsData.brands, gearlists: glData.gearlists, piles: glData.listgroups, packs: glData.packingGroups, packingBools: glData.packingBools, activityTypes: glData.activityTypes)
+        backupManager.backupToiCloudDrive(items: gsData.items, itemDiaries: gsData.itemDiaries, sheds: gsData.sheds, brands: gsData.brands, gearlists: glData.gearlists, piles: glData.listgroups, packs: glData.packingGroups, packingBools: glData.packingBools, activityTypes: glData.activityTypes)
     }
     private func backUpData() -> [URL] {
         var urls = [URL]()
-        urls.append(backupManager.writeAsJSON(items: gsData.items, itemImages: gsData.itemImages, itemDiaries: gsData.itemDiaries, sheds: gsData.sheds, brands: gsData.brands, gearlists: glData.gearlists, piles: glData.listgroups, packs: glData.packingGroups, packingBools: glData.packingBools, activityTypes: glData.activityTypes))
+        urls.append(backupManager.writeAsJSON(items: gsData.items, itemDiaries: gsData.itemDiaries, sheds: gsData.sheds, brands: gsData.brands, gearlists: glData.gearlists, piles: glData.listgroups, packs: glData.packingGroups, packingBools: glData.packingBools, activityTypes: glData.activityTypes))
         return urls
     }
     private func loadedBackupMessage() -> String {

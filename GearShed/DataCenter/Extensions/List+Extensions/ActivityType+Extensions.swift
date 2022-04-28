@@ -15,10 +15,7 @@ extension ActivityType: Comparable {
     }
     var name: String {
         get { name_ ?? "Unknown Name" }
-        set {
-            name_ = newValue
-            gearlists.forEach({ $0.objectWillChange.send() })
-        }
+        set { name_ = newValue }
     }
     var gearlists: [Gearlist] {
         if let gearlists = gearlists_ as? Set<Gearlist>  {

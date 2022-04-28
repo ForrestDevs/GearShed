@@ -11,11 +11,7 @@ import Foundation
 extension Pile {
     var name: String {
         get { name_ ?? "Unknown Name" }
-        set {
-            name_ = newValue
-            items.forEach({ $0.objectWillChange.send() })
-            gearlist.objectWillChange.send()
-        }
+        set { name_ = newValue }
     }
     // items: fronts Core Data attribute items_ that is an NSSet, and turns it into
     // a Swift array

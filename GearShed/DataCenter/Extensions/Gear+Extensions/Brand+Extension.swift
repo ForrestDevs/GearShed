@@ -22,10 +22,7 @@ extension Brand: Comparable {
     // MARK: - Computed properties
     var name: String {
         get { name_ ?? "Unknown Name" }
-        set {
-            name_ = newValue
-            items.forEach({ $0.objectWillChange.send() })
-        }
+        set { name_ = newValue }
     }
     var unBrandID: Int {
         get { Int(unBrandID_) }

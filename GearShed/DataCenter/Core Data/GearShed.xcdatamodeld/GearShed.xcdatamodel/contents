@@ -28,11 +28,6 @@
         <relationship name="packs_" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Pack" inverseName="gearlist_" inverseEntity="Pack"/>
         <relationship name="piles_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Pile" inverseName="gearlist_" inverseEntity="Pile"/>
     </entity>
-    <entity name="GearPlan" representedClassName="GearPlan" syncable="YES" codeGenerationType="class">
-        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="name_" optional="YES" attributeType="String"/>
-        <relationship name="planGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PlanGroup" inverseName="gearPlans_" inverseEntity="PlanGroup"/>
-    </entity>
     <entity name="Item" representedClassName="Item" syncable="YES" codeGenerationType="class">
         <attribute name="datePurchased_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="detail_" optional="YES" attributeType="String"/>
@@ -88,18 +83,6 @@
         <relationship name="gearlist_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gearlist" inverseName="piles_" inverseEntity="Gearlist"/>
         <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="piles_" inverseEntity="Item"/>
     </entity>
-    <entity name="PlanGroup" representedClassName="PlanGroup" syncable="YES" codeGenerationType="class">
-        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="name_" optional="YES" attributeType="String"/>
-        <relationship name="gearPlans_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="GearPlan" inverseName="planGroups" inverseEntity="GearPlan"/>
-        <relationship name="newRelationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PlanItem" inverseName="newRelationship" inverseEntity="PlanItem"/>
-    </entity>
-    <entity name="PlanItem" representedClassName="PlanItem" syncable="YES" codeGenerationType="class">
-        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="name_" optional="YES" attributeType="String"/>
-        <relationship name="newRelationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PlanGroup" inverseName="newRelationship" inverseEntity="PlanGroup"/>
-    </entity>
-    <entity name="PlanItemLabel" representedClassName="PlanItemLabel" syncable="YES" codeGenerationType="class"/>
     <entity name="Shed" representedClassName="Shed" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name_" optional="YES" attributeType="String"/>
@@ -107,19 +90,15 @@
         <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="shed_" inverseEntity="Item"/>
     </entity>
     <elements>
-        <element name="ActivityType" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Brand" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Gearlist" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="GearPlan" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Item" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="ItemDiary" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="ItemImage" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Pack" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="PackingBool" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Pile" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="PlanGroup" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="PlanItem" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="PlanItemLabel" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Shed" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ActivityType" positionX="214.2069091796875" positionY="20.17404174804688" width="128" height="74"/>
+        <element name="Brand" positionX="-274.284912109375" positionY="45.57496643066406" width="128" height="89"/>
+        <element name="Gearlist" positionX="214.8423461914062" positionY="127.1612243652344" width="128" height="254"/>
+        <element name="Item" positionX="-118.5619506835938" positionY="43.87983703613281" width="128" height="329"/>
+        <element name="ItemDiary" positionX="-115.8923950195312" positionY="409.0172424316406" width="128" height="104"/>
+        <element name="ItemImage" positionX="-288.908935546875" positionY="273.0596008300781" width="128" height="89"/>
+        <element name="Pack" positionX="53.39117431640625" positionY="45.292724609375" width="128" height="104"/>
+        <element name="PackingBool" positionX="51.8111572265625" positionY="172.0259704589844" width="128" height="104"/>
+        <element name="Pile" positionX="52.032470703125" positionY="291.976318359375" width="128" height="89"/>
+        <element name="Shed" positionX="-281.8968505859375" positionY="157.0187225341797" width="128" height="89"/>
     </elements>
 </model>

@@ -15,15 +15,7 @@ extension Item {
 	// the name.  this fronts a Core Data optional attribute
 	var name: String {
 		get { name_ ?? "Not Available" }
-		set {
-            gearlists.forEach({$0.objectWillChange.send()})
-            piles.forEach({$0.objectWillChange.send()})
-            packs.forEach({$0.objectWillChange.send()})
-            packingBools.forEach({$0.objectWillChange.send()})
-            shed.objectWillChange.send()
-            brand.objectWillChange.send()
-            name_ = newValue
-        }
+		set { name_ = newValue }
 	}
     // the details.  this fronts a Core Data optional attribute
     var detail: String {
@@ -80,10 +72,9 @@ extension Item {
 	// know that some of their computed properties could be invalidated
 	var shed: Shed {
         get { shed_! }
-		set {
-            shed_?.objectWillChange.send()
-            shed_ = newValue
-            shed_?.objectWillChange.send()
+		set { shed_?.objectWillChange.send()
+              shed_ = newValue
+              shed_?.objectWillChange.send()
 		}
 	}
     // an item's associated brand.  this fronts a Core Data optional attribute.
