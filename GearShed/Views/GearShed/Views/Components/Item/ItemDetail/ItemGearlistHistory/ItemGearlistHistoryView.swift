@@ -18,7 +18,7 @@ struct ItemGearlistHistoryView: View {
                     .frame(maxWidth: .infinity)
                     .frame(height: 30)
                 HStack {
-                    Text("Gearlist")
+                    Text("Gear List")
                         .formatItemDetailDiaryHeader()
                     Spacer()
                 }

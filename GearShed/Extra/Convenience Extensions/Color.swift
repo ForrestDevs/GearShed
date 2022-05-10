@@ -26,7 +26,8 @@ struct ColorTheme {
     let boarderGrey = Color("BoarderGrey")
     let promptText = Color("PromptText")
     let buttonColor = Color("ButtonColor")
-    let regretColor = Color("RegretColor") 
+    let regretColor = Color("RegretColor")
+    let tabBarBG = Color("TabBarBG")
 }
 
 struct ColorTheme2 {

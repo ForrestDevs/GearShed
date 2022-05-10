@@ -44,13 +44,37 @@ struct ItemDetailView: View {
     
     private var viewContent: some View {
         VStack(alignment: .leading, spacing: 5) {
-            titleBar
+            itemName
+            itemBrand
+            //titleBar
             itemDetails
         }
         .padding(.leading, 25)
     }
     
     // MARK: Main
+    private var itemName: some View {
+        HStack {
+            HStack (spacing: 5) {
+                Text(item.name)
+                    .formatGreenTitle()
+                    .fixedSize()
+                statusIcon
+            }
+            .lineLimit(1)
+            .padding(.top, 20)
+            Spacer()
+        }
+    }
+    
+    private var itemBrand: some View {
+        HStack {
+            Text(item.brandName)
+                .formatBlackTitle()
+            Spacer()
+        }
+    }
+    
     private var titleBar: some View {
         HStack {
             HStack (spacing: 5) {

@@ -12,6 +12,11 @@ struct AddShedView: View {
     @EnvironmentObject private var detailManager: DetailViewManager
     @StateObject private var viewModel: GearShedData
 	@State private var editableData: EditableShedData
+    
+  //  @State private var shedNames: [String] = []
+//    @State private var test1: String = ""
+//    @State private var test2: String = ""
+    
     private var isAddFromItem: Bool = false
     private var shedOut: ((Shed) -> ())?
 	var body: some View {
@@ -44,6 +49,27 @@ extension AddShedView {
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .disableAutocorrection(true)
                                 .font(.subheadline)
+                            
+//                            if !isAddFromItem {
+//                                ForEach($shedNames, id: \.self) { name in
+//                                    TextField("Shelf Name (Required)", text: name)
+//                                        .textFieldStyle(RoundedBorderTextFieldStyle())
+//                                        .disableAutocorrection(true)
+//                                        .font(.subheadline)
+//
+//                                }
+//                                Button {
+//                                    shedNames.append(editableData.name)
+//                                    editableData.name = ""
+//
+//                                    //self.shedNames.append("")
+//
+//                                    //editableData.nameArray.append("")
+//                                } label: {
+//                                    Image(systemName: "plus.circle")
+//                                        .foregroundColor(Color.black)
+//                                }
+//                            }
                         }
                     }
                 }
@@ -83,6 +109,7 @@ extension AddShedView {
                     viewModel.addNewShedFromItem(using: editableData, shedOut: { shed in shedOut!(shed) })
                 } else {
                     viewModel.addNewShed(using: editableData)
+                    //viewModel.addMultipleSheds(using: editableData)
                 }
             } label: {
                 Text("Save")

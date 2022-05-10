@@ -14,7 +14,7 @@ struct RegretsView: View {
         VStack (spacing: 0) {
             StatBar(statType: .regret)
             if gsData.regretItems.count == 0 {
-                EmptyViewText(text: "You have no regrets. To regret a piece of gear, hold down on the gear row and press the 'Add to Regret' button.")
+                EmptyViewText(text: "You currently have no regrets. To access \"Add Gear to Regrets\" feature, press and hold the desired gear item in \"Shelf View\".")
             } else {
                 listView
             }

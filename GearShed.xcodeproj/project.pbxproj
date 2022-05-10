@@ -64,12 +64,6 @@
 		08877EF327363779000D7FF4 /* AddPackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08877EF227363779000D7FF4 /* AddPackView.swift */; };
 		08877EF727363818000D7FF4 /* EditablePackData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08877EF627363818000D7FF4 /* EditablePackData.swift */; };
 		088AA43227BEE1C500A32444 /* BinaryInteger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088AA43127BEE1C500A32444 /* BinaryInteger.swift */; };
-		088AA43627C0297200A32444 /* RGBicon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 088AA43527C0297200A32444 /* RGBicon@2x.png */; };
-		088AA43827C0298200A32444 /* RGBicon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 088AA43727C0298200A32444 /* RGBicon@3x.png */; };
-		088AA43A27C029AC00A32444 /* BLUEicon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 088AA43927C029AB00A32444 /* BLUEicon@2x.png */; };
-		088AA43C27C029B400A32444 /* BLUEicon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 088AA43B27C029B400A32444 /* BLUEicon@3x.png */; };
-		088AA43E27C029DB00A32444 /* DARKicon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 088AA43D27C029DB00A32444 /* DARKicon@2x.png */; };
-		088AA44027C029E300A32444 /* DARKicon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 088AA43F27C029E300A32444 /* DARKicon@3x.png */; };
 		088B154C2732EB7500ECBC11 /* EditableBrandData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088B154B2732EB7400ECBC11 /* EditableBrandData.swift */; };
 		088B154E2732EBBC00ECBC11 /* EditableShedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088B154D2732EBBC00ECBC11 /* EditableShedData.swift */; };
 		088FBF9D2746ABEF00F1BFF7 /* ActivityType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088FBF9C2746ABEE00F1BFF7 /* ActivityType+Extensions.swift */; };
@@ -153,10 +147,6 @@
 		08D67E11272523680064F639 /* SKProduct-LocalizedPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D67E10272523680064F639 /* SKProduct-LocalizedPrice.swift */; };
 		08D67E13272529730064F639 /* PersistantStore+StoreKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D67E12272529730064F639 /* PersistantStore+StoreKit.swift */; };
 		08D67E1C2726815D0064F639 /* Configuration.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 08D67E1B2726815D0064F639 /* Configuration.storekit */; };
-		08ED0FDE2719EAE10072CB90 /* TabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ED0FD92719EAE10072CB90 /* TabBarItem.swift */; };
-		08ED0FDF2719EAE10072CB90 /* CustomTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ED0FDA2719EAE10072CB90 /* CustomTabBarView.swift */; };
-		08ED0FE02719EAE10072CB90 /* CustomTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ED0FDB2719EAE10072CB90 /* CustomTabView.swift */; };
-		08ED0FE12719EAE10072CB90 /* TabBarItemsPreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ED0FDC2719EAE10072CB90 /* TabBarItemsPreferenceKey.swift */; };
 		08ED0FE22719EAE10072CB90 /* AppTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ED0FDD2719EAE10072CB90 /* AppTabBarView.swift */; };
 		08F99576274DD7DA00211988 /* Binding+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F99575274DD7DA00211988 /* Binding+Extension.swift */; };
 		08F99578274DF3DD00211988 /* backup.json in Resources */ = {isa = PBXBuildFile; fileRef = 08F99577274DF3DD00211988 /* backup.json */; };
@@ -231,12 +221,6 @@
 		08877EF227363779000D7FF4 /* AddPackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPackView.swift; sourceTree = "<group>"; };
 		08877EF627363818000D7FF4 /* EditablePackData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditablePackData.swift; sourceTree = "<group>"; };
 		088AA43127BEE1C500A32444 /* BinaryInteger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryInteger.swift; sourceTree = "<group>"; };
-		088AA43527C0297200A32444 /* RGBicon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RGBicon@2x.png"; sourceTree = "<group>"; };
-		088AA43727C0298200A32444 /* RGBicon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RGBicon@3x.png"; sourceTree = "<group>"; };
-		088AA43927C029AB00A32444 /* BLUEicon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BLUEicon@2x.png"; sourceTree = "<group>"; };
-		088AA43B27C029B400A32444 /* BLUEicon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BLUEicon@3x.png"; sourceTree = "<group>"; };
-		088AA43D27C029DB00A32444 /* DARKicon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DARKicon@2x.png"; sourceTree = "<group>"; };
-		088AA43F27C029E300A32444 /* DARKicon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DARKicon@3x.png"; sourceTree = "<group>"; };
 		088B154B2732EB7400ECBC11 /* EditableBrandData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableBrandData.swift; sourceTree = "<group>"; };
 		088B154D2732EBBC00ECBC11 /* EditableShedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableShedData.swift; sourceTree = "<group>"; };
 		088FBF9C2746ABEE00F1BFF7 /* ActivityType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ActivityType+Extensions.swift"; sourceTree = "<group>"; };
@@ -322,10 +306,6 @@
 		08D67E10272523680064F639 /* SKProduct-LocalizedPrice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SKProduct-LocalizedPrice.swift"; sourceTree = "<group>"; };
 		08D67E12272529730064F639 /* PersistantStore+StoreKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersistantStore+StoreKit.swift"; sourceTree = "<group>"; };
 		08D67E1B2726815D0064F639 /* Configuration.storekit */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Configuration.storekit; sourceTree = "<group>"; };
-		08ED0FD92719EAE10072CB90 /* TabBarItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarItem.swift; sourceTree = "<group>"; };
-		08ED0FDA2719EAE10072CB90 /* CustomTabBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBarView.swift; sourceTree = "<group>"; };
-		08ED0FDB2719EAE10072CB90 /* CustomTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabView.swift; sourceTree = "<group>"; };
-		08ED0FDC2719EAE10072CB90 /* TabBarItemsPreferenceKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarItemsPreferenceKey.swift; sourceTree = "<group>"; };
 		08ED0FDD2719EAE10072CB90 /* AppTabBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppTabBarView.swift; sourceTree = "<group>"; };
 		08F99575274DD7DA00211988 /* Binding+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+Extension.swift"; sourceTree = "<group>"; };
 		08F99577274DF3DD00211988 /* backup.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = backup.json; sourceTree = "<group>"; };
@@ -552,19 +532,6 @@
 			path = EditableListData;
 			sourceTree = "<group>";
 		};
-		088AA44127C02DD400A32444 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				088AA43F27C029E300A32444 /* DARKicon@3x.png */,
-				088AA43D27C029DB00A32444 /* DARKicon@2x.png */,
-				088AA43B27C029B400A32444 /* BLUEicon@3x.png */,
-				088AA43927C029AB00A32444 /* BLUEicon@2x.png */,
-				088AA43727C0298200A32444 /* RGBicon@3x.png */,
-				088AA43527C0297200A32444 /* RGBicon@2x.png */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
 		088FBFB52748407D00F1BFF7 /* ActivityType */ = {
 			isa = PBXGroup;
 			children = (
@@ -742,7 +709,6 @@
 				08C9C4EC272DFFC2007DBCF9 /* Views */,
 				08C7D8BF270F434400EC3984 /* DataCenter */,
 				08D67E1727260B920064F639 /* Extra */,
-				088AA44127C02DD400A32444 /* Resources */,
 				08D67E1827260BAC0064F639 /* Config */,
 			);
 			path = GearShed;
@@ -964,17 +930,6 @@
 			path = Config;
 			sourceTree = "<group>";
 		};
-		08ED0FD82719EAE10072CB90 /* CustomTabBar */ = {
-			isa = PBXGroup;
-			children = (
-				08ED0FD92719EAE10072CB90 /* TabBarItem.swift */,
-				08ED0FDA2719EAE10072CB90 /* CustomTabBarView.swift */,
-				08ED0FDB2719EAE10072CB90 /* CustomTabView.swift */,
-				08ED0FDC2719EAE10072CB90 /* TabBarItemsPreferenceKey.swift */,
-			);
-			path = CustomTabBar;
-			sourceTree = "<group>";
-		};
 		08ED269A27A11507009890DD /* Backups */ = {
 			isa = PBXGroup;
 			children = (
@@ -1016,7 +971,6 @@
 			children = (
 				080015A627277C2B00E1BE4C /* SlideableView */,
 				08A5FB9C2740DDB9008A5D28 /* CustomDatePicker */,
-				08ED0FD82719EAE10072CB90 /* CustomTabBar */,
 				0862EA6D2743642400330FBB /* ExpandableButton.swift */,
 				087B3BD827AB9C4D003F6C71 /* CustomWeightTextField.swift */,
 				08C7D8E8270F65E100EC3984 /* EmptyViewText.swift */,
@@ -1120,11 +1074,9 @@
 				08C7D917270F6E1600EC3984 /* brands.json in Resources */,
 				0894B9782812212900A9E503 /* gearShedTemplate.html in Resources */,
 				0894B97A2812254000A9E503 /* gearListTemplate.html in Resources */,
-				088AA44027C029E300A32444 /* DARKicon@3x.png in Resources */,
 				08371B6E271E08A20072AD94 /* tags.json in Resources */,
 				087C0D1E27BDA384009899DB /* HelveticaNeueBold.ttf in Resources */,
 				0813B51C2814669C003832C9 /* pHelveticaNeueThin.ttf in Resources */,
-				088AA43827C0298200A32444 /* RGBicon@3x.png in Resources */,
 				084EDA11272B5C9900475891 /* HelveticaNeue.ttc in Resources */,
 				0813B5152814669C003832C9 /* pHelveticaNeueLt.ttf in Resources */,
 				0813B5162814669C003832C9 /* pHelveticaNeueBlackCond.ttf in Resources */,
@@ -1132,16 +1084,12 @@
 				08F99578274DF3DD00211988 /* backup.json in Resources */,
 				0813B5192814669C003832C9 /* pHelveticaNeueBold.ttf in Resources */,
 				080B00F8280FA796007A2634 /* gearShedBlack.png in Resources */,
-				088AA43627C0297200A32444 /* RGBicon@2x.png in Resources */,
 				0813B51B2814669C003832C9 /* pHelveticaNeueIt.ttf in Resources */,
 				08C7D918270F6E1600EC3984 /* items.json in Resources */,
 				08C7D8A4270F3D1D00EC3984 /* Assets.xcassets in Resources */,
 				08C7D916270F6E1600EC3984 /* sheds.json in Resources */,
 				0813B5182814669C003832C9 /* pHelveticaNeueHv.ttf in Resources */,
-				088AA43E27C029DB00A32444 /* DARKicon@2x.png in Resources */,
-				088AA43A27C029AC00A32444 /* BLUEicon@2x.png in Resources */,
 				0813B5172814669C003832C9 /* pHelveticaNeue.ttf in Resources */,
-				088AA43C27C029B400A32444 /* BLUEicon@3x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1242,7 +1190,6 @@
 				08877EEA2735BD34000D7FF4 /* AddItemToList.swift in Sources */,
 				08A5FB992740B81B008A5D28 /* AddAdventureView.swift in Sources */,
 				08C7D8B8270F41CC00EC3984 /* GearShedView.swift in Sources */,
-				08ED0FDF2719EAE10072CB90 /* CustomTabBarView.swift in Sources */,
 				08371B63271DFEE60072AD94 /* FavsView.swift in Sources */,
 				0883B95727AC6CD8006FDAA9 /* DocumentPicker.swift in Sources */,
 				08A5FBAA2740DDDB008A5D28 /* MDPMonthYearPicker.swift in Sources */,
@@ -1251,21 +1198,18 @@
 				08A7CFFD2728D25D006FA3F7 /* CustomAlert.swift in Sources */,
 				0853AC00271F983000123497 /* StatBarView.swift in Sources */,
 				08FFCFBD2749BFCC00E27C93 /* ItemDiaryList.swift in Sources */,
-				08ED0FDE2719EAE10072CB90 /* TabBarItem.swift in Sources */,
 				08F99576274DD7DA00211988 /* Binding+Extension.swift in Sources */,
 				08C7D90A270F6D1D00EC3984 /* Shed+Extensions.swift in Sources */,
 				08B82520273CB14F00326CE9 /* GearlistPileView.swift in Sources */,
 				08C7D8C8270F475A00EC3984 /* String+Extensions.swift in Sources */,
 				081BFDC7279F2B2200EF0190 /* GlobalPrefs.swift in Sources */,
 				08C7D8CD270F475A00EC3984 /* Date+Extensions.swift in Sources */,
-				08ED0FE02719EAE10072CB90 /* CustomTabView.swift in Sources */,
 				088FBF9F274714CB00F1BFF7 /* EditableActivityTypeView.swift in Sources */,
 				08C7D911270F6DFC00EC3984 /* ItemCodableProxy.swift in Sources */,
 				08C7D8E5270F485300EC3984 /* EditableItemData.swift in Sources */,
 				0892BB7027B2133400BCB902 /* ColorSchemeView.swift in Sources */,
 				08D67E13272529730064F639 /* PersistantStore+StoreKit.swift in Sources */,
 				080D1F83274B4776007D6C5A /* GearlistDiaryView.swift in Sources */,
-				08ED0FE12719EAE10072CB90 /* TabBarItemsPreferenceKey.swift in Sources */,
 				08C7D929270F7F7500EC3984 /* GearlistDetailView.swift in Sources */,
 				08C7D8BA270F41F300EC3984 /* GearlistView.swift in Sources */,
 				0862EA6E2743642400330FBB /* ExpandableButton.swift in Sources */,
@@ -1298,8 +1242,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "DarkIcon, BlueIcon, RGBIcon";
-				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "BlueIcon DarkIcon RGBIcon";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1361,8 +1306,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "DarkIcon, BlueIcon, RGBIcon";
-				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "BlueIcon DarkIcon RGBIcon";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1417,14 +1363,14 @@
 		08C7D8B1270F3D1D00EC3984 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "DarkIcon, BlueIcon, RGBIcon";
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "RGBIcon BlueIcon DarkIcon";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = GearShed/Config/GearShed.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"GearShed/Config/Preview Content\"";
 				DEVELOPMENT_TEAM = 7RGH8ZBBW8;
 				ENABLE_PREVIEWS = YES;
@@ -1434,7 +1380,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = app.gearshed.GearShed;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1446,14 +1392,14 @@
 		08C7D8B2270F3D1D00EC3984 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "DarkIcon, BlueIcon, RGBIcon";
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "RGBIcon BlueIcon DarkIcon";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = GearShed/Config/GearShed.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"GearShed/Config/Preview Content\"";
 				DEVELOPMENT_TEAM = 7RGH8ZBBW8;
 				ENABLE_PREVIEWS = YES;
@@ -1463,7 +1409,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = app.gearshed.GearShed;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

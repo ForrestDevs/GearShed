@@ -30,12 +30,16 @@ struct ItemDiaryDetailView: View {
             Color.theme.silver
                 .ignoresSafeArea()
             ScrollView {
-                VStack (alignment: .leading, spacing: 2){
-                    HStack {
-                        Text("Gearlist:")
-                        Text(diary.gearlist.name)
-                    }
-                    Text(diary.details)
+                VStack (alignment: .leading, spacing: 2) {
+                    Text("\(diary.gearlist.startDate?.monthDayYearDateText() ?? "") | \(diary.gearlist.name)")
+                        .formatItemNameBlack()
+                        .frame(alignment: .center)
+                        .padding()
+                    
+                    Text("\"\(diary.details)\"")
+                        .formatDiaryDetails()
+                        .frame(alignment: .center)
+                        .padding()
                 }
             }
         }

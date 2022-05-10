@@ -15,6 +15,7 @@ class Prefs {
     @AppStorage("Weight_Unit", store: .standard) var weightUnit: String = "g"
     @AppStorage("isDarkMode", store: .standard) var isDarkMode: Bool = false
     @AppStorage("isSystemMode", store: .standard) var isSystemMode: Bool = true
+    
     //MARK: Global Weight Conversion Functions
     func convertMetricToImp(grams: String) -> (lbs: String, oz: String) {
         let weight = Double(grams) ?? 0

@@ -16,6 +16,8 @@ struct EditableShedData {
     var id: UUID? = nil
     // all of the values here provide suitable defaults for a new Shed
     var name: String
+    //an array for adding multiple sheds at a time
+    //var nameArray: [String]
     // to do a save/commit of an Item, it must have a non-empty name
     var canShedBeSaved: Bool { name.count > 0 }
     // useful to know if this is associated with an existing Shed
@@ -31,11 +33,13 @@ extension EditableShedData {
         self.persistentStore = persistentStore
         self.id = shed.id
         self.name = shed.name
+        //self.nameArray = [""]
     }
     /// Initializer for loading a new Shed.
     init(persistentStore: PersistentStore) {
         self.persistentStore = persistentStore
         self.name = ""
+        //self.nameArray = [""]
     }
 }
 

@@ -92,7 +92,7 @@ struct SettingsView: View {
                 }
             }
         }
-        .padding(.bottom, 50)
+        //.padding(.bottom, 50)
         .navigationViewStyle(.stack)
     }
 }

@@ -35,7 +35,7 @@ struct ItemRowViewInPack: View {
         }
         .contextMenu {
             deleteContextButton
-            itemDetailContextButton
+            //itemDetailContextButton
         }
         .sheet(isPresented: $showDetail) {
             ItemDetailView(persistentStore: persistentStore, item: item)
@@ -101,14 +101,14 @@ struct ItemRowViewInPack: View {
             }
         }
     }
-    private var itemDetailContextButton: some View {
-        Button {
-            self.showDetail.toggle()
-        } label: {
-            Text("Item Detail")
-        }
-        
-    }
+//    private var itemDetailContextButton: some View {
+//        Button {
+//            self.showDetail.toggle()
+//        } label: {
+//            Text("Item Detail")
+//        }
+//        
+//    }
     //MARK: Context Buttons
     private var deleteContextButton: some View {
         Button {

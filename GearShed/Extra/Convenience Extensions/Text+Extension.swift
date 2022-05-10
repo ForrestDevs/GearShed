@@ -29,7 +29,7 @@ extension Text {
     // MARK: Diary Row Views
     func formatDiaryDetails() -> some View {
         self.foregroundColor(Color.theme.accent)
-            .font(.custom("HelveticaNeue", size: 15).italic())
+            .font(.custom("HelveticaNeue", size: 16.5).italic())
             .frame(alignment: .leading)
     }
     // MARK: Item Detail

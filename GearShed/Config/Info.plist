@@ -2,8 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>LSSupportsOpeningDocumentsInPlace</key>
-	<false/>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>Gear Shed</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -13,95 +15,8 @@
 			<string>Owner</string>
 		</dict>
 	</array>
-	<key>UTImportedTypeDeclarations</key>
-	<array>
-		<dict>
-			<key>UTTypeConformsTo</key>
-			<array>
-				<string>public.json</string>
-			</array>
-			<key>UTTypeIdentifier</key>
-			<string>com.GearShed.gsb</string>
-			<key>UTTypeTagSpecification</key>
-			<dict>
-				<key>public.filename-extension</key>
-				<array>
-					<string>gsb</string>
-				</array>
-			</dict>
-		</dict>
-	</array>
-	<key>UTExportedTypeDeclarations</key>
-	<array>
-		<dict>
-			<key>UTTypeIdentifier</key>
-			<string>com.GearShed.gsb</string>
-			<key>UTTypeConformsTo</key>
-			<array>
-				<string>public.json</string>
-			</array>
-			<key>UTTypeDescription</key>
-			<string>Gear Shed Backup</string>
-			<key>UTTypeTagSpecification</key>
-			<dict>
-				<key>public.filename-extension</key>
-				<array>
-					<string>gsb</string>
-				</array>
-			</dict>
-		</dict>
-	</array>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>$(DEVELOPMENT_LANGUAGE)</string>
-	<key>CFBundleDisplayName</key>
-	<string>Gear Shed</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
-	<key>CFBundleIcons</key>
-	<dict>
-		<key>CFBundlePrimaryIcon</key>
-		<dict>
-			<key>CFBundleIconName</key>
-			<string>AppIcon</string>
-			<key>UIPrerenderedIcon</key>
-			<true/>
-		</dict>
-		<key>CFBundleAlternateIcons</key>
-		<dict>
-			<key>BlueIcon</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>BlueIcon</string>
-				</array>
-			</dict>
-			<key>DarkIcon</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>DarkIcon</string>
-				</array>
-			</dict>
-			<key>RGBIcon</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>RGBIcon</string>
-				</array>
-			</dict>
-		</dict>
-		<key>UINewsstandIcon</key>
-		<dict>
-			<key>CFBundleIconFiles</key>
-			<array>
-				<string></string>
-			</array>
-			<key>UINewsstandBindingEdge</key>
-			<string>UINewsstandBindingEdgeLeft</string>
-			<key>UINewsstandBindingType</key>
-			<string>UINewsstandBindingTypeMagazine</string>
-		</dict>
-	</dict>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -116,6 +31,8 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<false/>
 	<key>NSUbiquitousPacks</key>
 	<dict>
 		<key>iCloud.GearShed</key>
@@ -160,6 +77,44 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.json</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Gear Shed Backup</string>
+			<key>UTTypeIdentifier</key>
+			<string>com.GearShed.gsb</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>gsb</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
+	<key>UTImportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.json</string>
+			</array>
+			<key>UTTypeIdentifier</key>
+			<string>com.GearShed.gsb</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>gsb</string>
+				</array>
+			</dict>
+		</dict>
 	</array>
 </dict>
 </plist>

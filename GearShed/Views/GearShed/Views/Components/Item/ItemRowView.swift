@@ -115,13 +115,13 @@ extension ItemRowView {
         } label: {
             if item.isFavourite {
                 HStack {
-                    Text("Remove from Favourite")
+                    Text("Remove Gear from Favourite")
                     Image(systemName: "heart.fill")
                 }
                 
             } else {
                 HStack {
-                    Text("Add to Favourite")
+                    Text("Add Gear to Favourite")
                     Image(systemName: "heart.fill")
                 }
             }
@@ -139,13 +139,13 @@ extension ItemRowView {
         } label: {
             if item.isRegret {
                 HStack {
-                    Text("Remove from Regret")
+                    Text("Remove Gear from Regret")
                     Image(systemName: "hand.thumbsdown.fill")
                 }
                 
             } else {
                 HStack {
-                    Text("Add to Regret")
+                    Text("Add Gear to Regret")
                     Image(systemName: "hand.thumbsdown.fill")
                 }
             }
@@ -163,12 +163,12 @@ extension ItemRowView {
         } label: {
             if item.isWishlist {
                 HStack {
-                    Text("Remove from Wishlist")
+                    Text("Remove Gear from Wishlist")
                     Image(systemName: "star.fill")
                 }
             } else {
                 HStack {
-                    Text("Add to Wishlist")
+                    Text("Add Gear to Wishlist")
                     Image(systemName: "star.fill")
                 }
             }

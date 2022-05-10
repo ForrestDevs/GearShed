@@ -25,7 +25,7 @@ struct LaunchAnimation: View {
                 
                 Text("GEAR")
                     .font(.custom("HelveticaNeue", size: 65).bold().italic())
-                    .offset(x: moveIt ? 0 : -300)
+                    .offset(x: moveIt ? 0 : -330)
                 
                 Text("SHED")
                     .font(.custom("HelveticaNeue", size: 65).bold().italic())

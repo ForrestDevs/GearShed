@@ -14,7 +14,7 @@ struct WishesView: View {
         VStack (spacing: 0) {
             StatBar(statType: .wish)
             if gsData.wishListItems.count == 0 {
-                EmptyViewText(text: "You have no wishes. To add a piece of gear to your wishlist, hold down on the gear row and press the 'Add to Wishlist' button.")
+                EmptyViewText(text: "You currently have no wishes. To access \"Add Gear to Wishlist\" feature, press and hold the desired gear item in \"Shelf View\".")
             } else {
                 listView
             }

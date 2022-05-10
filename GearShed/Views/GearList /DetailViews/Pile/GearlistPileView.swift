@@ -76,7 +76,7 @@ struct GearlistPileView: View {
                         }
                     } label: {
                         HStack {
-                            Text("Add to Pile").textCase(.none)
+                            Text("Add Gear to Pile").textCase(.none)
                             Image(systemName: "plus")
                         }
                     }

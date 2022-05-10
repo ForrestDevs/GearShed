@@ -102,8 +102,16 @@ extension GearShedView {
                     gsData.showAll.toggle()
                 }
             } label: {
-                Image(systemName: "chevron.down")
-                    .rotationEffect(.degrees(gsData.showAll ? 180 : 0))
+                if #available(iOS 15.0, *) {
+                    Image(systemName: "chevron.down")
+                        .rotationEffect(.degrees(gsData.showAll ? 180 : 0))
+                } else {
+                    if gsData.showAll {
+                        Image(systemName: "chevron.up")
+                    } else {
+                        Image(systemName: "chevron.down")
+                    }
+                }
             }
         }
     }

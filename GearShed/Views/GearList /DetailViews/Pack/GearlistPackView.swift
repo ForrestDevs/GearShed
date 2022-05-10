@@ -71,7 +71,7 @@ struct GearlistPackView: View {
                         }
                     } label: {
                         HStack {
-                            Text("Add to Pack").textCase(.none)
+                            Text("Add Gear to Pack").textCase(.none)
                             Image(systemName: "plus")
                         }
                     }

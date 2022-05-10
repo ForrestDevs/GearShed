@@ -293,6 +293,15 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         newShed.name = editableData.name
         persistentStore.saveContext()
     }
+    /// Function to add multiple sheds at a time.
+//    func addMultipleSheds(using editableData: EditableShedData) {
+//        for shedName in editableData.nameArray {
+//            let newShed = Shed(context: persistentStore.context)
+//            newShed.id = UUID()
+//            newShed.name = shedName
+//        }
+//        persistentStore.saveContext()
+//    }
     /// Function to create a new Shed from the Item entry form, then pass it back so it can populate as the selected Shed.
     func addNewShedFromItem(using editableData: EditableShedData, shedOut: ((Shed) -> ())) {
         let newShed = Shed(context: persistentStore.context)
@@ -437,7 +446,9 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         let intArray = arrayString.map { Int($0) ?? 0 }
         let total = intArray.reduce(0, +)
         let totalString = String(total)
-        return totalString
+        
+        let finalString = "$ \(totalString)"
+        return finalString
     }
     /// Function to return the total fav items out of an array of items.
     func totalFavs(array: [Item]) -> String {
@@ -591,7 +602,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
                 return """
                         -->
                         <div class="stat">
-                            <p class="statTitle">Shelves</p>
+                            <p class="statTitle">Brands</p>
                             <p class="statVal">\(brands.count)</p>
                         </div>
                         <div class="stat">
@@ -684,7 +695,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
                     """
                     <div class="itemListSection">
                         <div class="sectionHeader">
-                            <p class="sectionHeaderTitle">\(shelf)\(weightCount(array: items))</p>
+                            <p class="sectionHeaderTitle">\(shelf) | \(weightCount(array: items))</p>
                         </div>
                         <div class="sectionItems">
                             <ul>
@@ -703,7 +714,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
                     """
                     <div class="itemListSection">
                         <div class="sectionHeader">
-                            <p class="sectionHeaderTitle">\(brand)\(weightCount(array: items))</p>
+                            <p class="sectionHeaderTitle">\(brand) | \(weightCount(array: items))</p>
                         </div>
                         <div class="sectionItems">
                             <ul>
@@ -723,7 +734,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
                     """
                     <div class="itemListSection">
                         <div class="sectionHeader">
-                            <p class="sectionHeaderTitle">\(shelf)\(weightCount(array: items))</p>
+                            <p class="sectionHeaderTitle">\(shelf) | \(weightCount(array: items))</p>
                         </div>
                         <div class="sectionItems">
                             <ul>
@@ -743,7 +754,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
                     """
                     <div class="itemListSection">
                         <div class="sectionHeader">
-                            <p class="sectionHeaderTitle">\(shelf)\(weightCount(array: items))</p>
+                            <p class="sectionHeaderTitle">\(shelf) | \(weightCount(array: items))</p>
                         </div>
                         <div class="sectionItems">
                             <ul>
@@ -763,7 +774,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
                     """
                     <div class="itemListSection">
                         <div class="sectionHeader">
-                            <p class="sectionHeaderTitle">\(shelf)\(weightCount(array: items))</p>
+                            <p class="sectionHeaderTitle">\(shelf) | \(weightCount(array: items))</p>
                         </div>
                         <div class="sectionItems">
                             <ul>
