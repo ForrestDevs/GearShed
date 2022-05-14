@@ -73,85 +73,28 @@ struct AlternateIconView: View {
                     }
                 }
             }
-            
-            Button {
-                guard UIApplication.shared.supportsAlternateIcons else { return print("Does Not Allow Icon Change") }
-                selectedIcon = "RGBIcon"
-                UIApplication.shared.setAlternateIconName("RGBIcon") { error in
-                    if let error = error { print(error.localizedDescription) }
-                    else { print("Success!") }
-                }
-            } label: {
-                HStack {
-                    Image(uiImage: getAltAppIcon(iconName: "RGBIcon"))
-                        .cornerRadius(radius)
-                    Text("RGB")
-                    if selectedIcon == "RGBIcon" {
-                        Image(systemName: "checkmark")
-                            .foregroundColor(.blue)
-                    }
-                }
-            }
-            
 //            Button {
-//                UIApplication.shared.setAlternateIconName(nil)
-//            } label: {
-//                HStack {
-//                    Image("AppIcon")
-//                        .cornerRadius(20)
-//                    Text("Light")
+//                guard UIApplication.shared.supportsAlternateIcons else { return print("Does Not Allow Icon Change") }
+//                selectedIcon = "RGBIcon"
+//                UIApplication.shared.setAlternateIconName("RGBIcon") { error in
+//                    if let error = error { print(error.localizedDescription) }
+//                    else { print("Success!") }
 //                }
-//                
-//            }
-//            
-//            Button {
-//                UIApplication.shared.setAlternateIconName("RGBIcon")
 //            } label: {
 //                HStack {
-//                    Image("RGBIcon")
-//                        .cornerRadius(20)
+//                    Image(uiImage: getAltAppIcon(iconName: "RGBIcon"))
+//                        .cornerRadius(radius)
 //                    Text("RGB")
-//                }
-//            }
-//
-//            
-//            Button {
-//                UIApplication.shared.setAlternateIconName("DarkIcon") { error in
-//                    if let error = error {
-//                        print(error.localizedDescription)
-//                    } else {
-//                        print("Success!")
+//                    if selectedIcon == "RGBIcon" {
+//                        Image(systemName: "checkmark")
+//                            .foregroundColor(.blue)
 //                    }
 //                }
-//            } label: {
-//                HStack {
-//                    Image("DarkIcon")
-//                        .cornerRadius(20)
-//                    Text("Dark")
-//                }
 //            }
-//            
-//            Button {
-//                UIApplication.shared.setAlternateIconName("BlueIcon") { error in
-//                    if let error = error {
-//                        print(error.localizedDescription)
-//                    } else {
-//                        print("Success!")
-//                    }
-//                }
-//            } label: {
-//                HStack {
-//                    Image("BlueIcon")
-//                        .cornerRadius(20)
-//                    Text("Blue")
-//                }
-//            }
-            
         }
         .listStyle(InsetGroupedListStyle())
         .navigationBarTitle("Change App Icon", displayMode: .inline)
     }
-    
     func getAppIcon() -> UIImage {
         var appIcon: UIImage! {
             guard let iconDir = Bundle.main.infoDictionary?["CFBundleIcons"] as? [String:Any],
@@ -163,7 +106,6 @@ struct AlternateIconView: View {
         }
         return appIcon
     }
-    
     func getAltAppIcon(iconName: String) -> UIImage {
         var appIcon: UIImage! {
             guard let iconDir = Bundle.main.infoDictionary?["CFBundleIcons"] as? [String:Any],

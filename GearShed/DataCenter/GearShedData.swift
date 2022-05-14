@@ -447,7 +447,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         let total = intArray.reduce(0, +)
         let totalString = String(total)
         
-        let finalString = "$ \(totalString)"
+        let finalString = "\(Prefs.shared.currencyUnitSetting) \(totalString)"
         return finalString
     }
     /// Function to return the total fav items out of an array of items.

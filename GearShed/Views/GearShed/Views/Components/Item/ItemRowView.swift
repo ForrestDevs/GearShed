@@ -76,24 +76,28 @@ extension ItemRowView {
             }
             .lineLimit(1)
             VStack (alignment: .leading, spacing: 2) {
-                HStack {
-                    if (Prefs.shared.weightUnit == "g") {
-                        if (Int(item.weight) ?? 0 > 0) {
-                            Text("\(item.weight) g")
-                                .formatItemWeightBlack()
-                        }
-                    }
-                    if (Prefs.shared.weightUnit == "lb + oz") {
-                        if (Int(item.itemLbs) ?? 0 > 0 || Double(item.itemOZ) ?? 0.0 > 0.0) {
-                            Text("\(item.itemLbs) lbs \(item.itemOZ) oz")
-                                .formatItemWeightBlack()
-                        }
-                    }
-                    Text("|")
-                        .formatItemWeightBlack()
-                    Text("$ \(item.price)")
-                        .formatItemWeightBlack()
-                }
+                Text("\(vm.itemWeightPriceText(item: item))")
+                    .formatItemWeightBlack()
+//                HStack {
+//
+//
+//                    if (Prefs.shared.weightUnit == "g") {
+//                        if (Int(item.weight) ?? 0 > 0) {
+//                            Text("\(item.weight) g")
+//                                .formatItemWeightBlack()
+//                        }
+//                    }
+//                    if (Prefs.shared.weightUnit == "lb + oz") {
+//                        if (Int(item.itemLbs) ?? 0 > 0 || Double(item.itemOZ) ?? 0.0 > 0.0) {
+//                            Text("\(item.itemLbs) lbs \(item.itemOZ) oz")
+//                                .formatItemWeightBlack()
+//                        }
+//                    }
+//                    Text("|")
+//                        .formatItemWeightBlack()
+//                    Text("$ \(item.price)")
+//                        .formatItemWeightBlack()
+//                }
                 Text(item.detail)
                     .formatItemDetailsGrey()
                     .lineLimit(1)

@@ -26,6 +26,7 @@
 		0813B5202819E4F8003832C9 /* ItemGearlistHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0813B51F2819E4F8003832C9 /* ItemGearlistHistoryView.swift */; };
 		081BFDC7279F2B2200EF0190 /* GlobalPrefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081BFDC6279F2B2200EF0190 /* GlobalPrefs.swift */; };
 		081E8A5C2739D54A0096CBE8 /* ModifyAdventureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E8A5B2739D54A0096CBE8 /* ModifyAdventureView.swift */; };
+		082ECC7E282F60800097E6CE /* CurrencyUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082ECC7D282F60800097E6CE /* CurrencyUnitView.swift */; };
 		0831E84927ADBFB400BCDEA5 /* AlternateIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0831E84827ADBFB400BCDEA5 /* AlternateIconView.swift */; };
 		08371B3C271B72BF0072AD94 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B36271B72BF0072AD94 /* Double.swift */; };
 		08371B3D271B72BF0072AD94 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B37271B72BF0072AD94 /* Color.swift */; };
@@ -183,6 +184,7 @@
 		0813B51F2819E4F8003832C9 /* ItemGearlistHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemGearlistHistoryView.swift; sourceTree = "<group>"; };
 		081BFDC6279F2B2200EF0190 /* GlobalPrefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalPrefs.swift; sourceTree = "<group>"; };
 		081E8A5B2739D54A0096CBE8 /* ModifyAdventureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyAdventureView.swift; sourceTree = "<group>"; };
+		082ECC7D282F60800097E6CE /* CurrencyUnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyUnitView.swift; sourceTree = "<group>"; };
 		0831E84827ADBFB400BCDEA5 /* AlternateIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternateIconView.swift; sourceTree = "<group>"; };
 		08371B36271B72BF0072AD94 /* Double.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
 		08371B37271B72BF0072AD94 /* Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
@@ -578,6 +580,7 @@
 				0892BB6927B19D1E00BCB902 /* PrivacyView.swift */,
 				0892BB6D27B1F6C000BCB902 /* FAQModalView.swift */,
 				0892BB7127B2CD1700BCB902 /* ConfirmEraseView.swift */,
+				082ECC7D282F60800097E6CE /* CurrencyUnitView.swift */,
 			);
 			path = SheetViews;
 			sourceTree = "<group>";
@@ -1192,6 +1195,7 @@
 				08C7D8B8270F41CC00EC3984 /* GearShedView.swift in Sources */,
 				08371B63271DFEE60072AD94 /* FavsView.swift in Sources */,
 				0883B95727AC6CD8006FDAA9 /* DocumentPicker.swift in Sources */,
+				082ECC7E282F60800097E6CE /* CurrencyUnitView.swift in Sources */,
 				08A5FBAA2740DDDB008A5D28 /* MDPMonthYearPicker.swift in Sources */,
 				08C7D909270F6D1D00EC3984 /* Item+Extensions.swift in Sources */,
 				08877EE82735BBA4000D7FF4 /* Pile+Extensions.swift in Sources */,

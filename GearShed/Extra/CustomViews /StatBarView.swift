@@ -106,7 +106,7 @@ struct StatBar: View {
             VStack (alignment: .leading, spacing: 2) {
                 Text("Invested")
                     .formatStatBarTitle()
-                Text("$ \(gsData.totalCost(array: gsData.items))")
+                Text("\(gsData.totalCost(array: gsData.items))")
                     .formatStatBarContent()
             }
             Spacer()
@@ -153,7 +153,7 @@ struct StatBar: View {
             VStack (alignment: .leading, spacing: 2) {
                 Text("Invested")
                     .formatStatBarTitle()
-                Text("$ \(gsData.totalCost(array: gsData.favItems))")
+                Text("\(gsData.totalCost(array: gsData.favItems))")
                     .formatStatBarContent()
             }
             Spacer()
@@ -170,7 +170,7 @@ struct StatBar: View {
             VStack (alignment: .leading, spacing: 2) {
                 Text("Invested")
                     .formatStatBarTitle()
-                Text("$ \(gsData.totalCost(array: gsData.regretItems))")
+                Text("\(gsData.totalCost(array: gsData.regretItems))")
                     .formatStatBarContent()
             }
             Spacer()
@@ -187,7 +187,7 @@ struct StatBar: View {
             VStack (alignment: .leading, spacing: 2) {
                 Text("Cost")
                     .formatStatBarTitle()
-                Text("$ \(gsData.totalCost(array: gsData.wishListItems))")
+                Text("\(gsData.totalCost(array: gsData.wishListItems))")
                     .formatStatBarContent()
             }
             Spacer()

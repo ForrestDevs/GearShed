@@ -223,7 +223,7 @@ extension ModifyItemView {
                 Text ("Price")
                     .formatEntryTitle()
 
-                TextField("Price in $", text: $editableData.price)
+                TextField("Price in \(Prefs.shared.currencyUnitSetting)", text: $editableData.price)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .disableAutocorrection(true)
                     .font(.subheadline)

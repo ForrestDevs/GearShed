@@ -139,7 +139,7 @@ struct ItemDetailView: View {
                     }
                     if let price = item.price {
                         if Int(price) ?? 0 > 0 {
-                            Text("$ \(price)")
+                            Text("\(Prefs.shared.currencyUnitSetting) \(price)")
                                 .formatDetailsWPPBlack()
                         }
                     }

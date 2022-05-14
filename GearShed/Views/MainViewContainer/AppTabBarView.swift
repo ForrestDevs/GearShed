@@ -18,7 +18,6 @@ struct AppTabBarView: View {
         appearence.backgroundEffect = .init(style: .systemThinMaterial)
         appearence.backgroundColor = UIColor(.theme.background)
         
-
         appearence.stackedLayoutAppearance.normal.iconColor = UIColor(.theme.accent)
         appearence.stackedLayoutAppearance.normal.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(.theme.accent)]
 
@@ -40,16 +39,16 @@ struct AppTabBarView: View {
     }
     
     var body: some View {
-            TabView(selection: $selection) {
-                GearShedView(persistentStore: persistentStore)
-                    .tabItem { Label("Gear Shed", systemImage: "house").accentColor(Color.theme.green) }
-                    .tag("gearshed")
-                GearlistView(persistentStore: persistentStore)
-                    .tabItem { Label("Gear Lists", systemImage: "figure.walk").accentColor(Color.theme.green) }
-                    .tag("gearlists")
-                SettingsView(persistentStore: persistentStore)
-                    .tabItem { Label("Settings", systemImage: "gear").accentColor(Color.theme.green) }
-                    .tag("settings")
-            }
+        TabView(selection: $selection) {
+            GearShedView(persistentStore: persistentStore)
+                .tabItem { Label("Gear Shed", systemImage: "house").accentColor(Color.theme.green) }
+                .tag("gearshed")
+            GearlistView(persistentStore: persistentStore)
+                .tabItem { Label("Gear Lists", systemImage: "figure.walk").accentColor(Color.theme.green) }
+                .tag("gearlists")
+            SettingsView(persistentStore: persistentStore)
+                .tabItem { Label("Settings", systemImage: "gear").accentColor(Color.theme.green) }
+                .tag("settings")
+        }
     }
 }

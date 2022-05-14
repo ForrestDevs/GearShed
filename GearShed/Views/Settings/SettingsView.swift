@@ -132,6 +132,13 @@ extension SettingsView {
             }
         }
     }
+    private var currencyUnitSection: some View {
+        NavigationLink {
+            CurrencyUnitView()
+        } label: {
+            Text("Currency Unit")
+        }
+    }
     private var colorSchemeSection: some View {
         //NOT IN USE AT THE MOMENT
         NavigationLink {
@@ -151,6 +158,7 @@ extension SettingsView {
         Section {
             pdfUsernameSection
             weightUnitSection
+            currencyUnitSection
             //colorSchemeSection
             alternateAppIconSection
         } header: {

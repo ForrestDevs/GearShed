@@ -101,7 +101,7 @@ struct AdventureRowView: View {
             viewModel.duplicateGearlist(gearlist: adventure)
         } label: {
             HStack {
-                Text("Duplicate Gear List")
+                Text("Duplicate Adventure")
                 Image(systemName: "doc.on.doc.fill")
             }
         }
