@@ -35,7 +35,7 @@ struct RegretsView: View {
         }
     }
     private func sectionContent(section: SectionShedData) -> some View {
-        ForEach (section.items) { item in
+        ForEach (section.items, id: \.id) { item in
             ItemRowView(item: item)
                 .padding(.leading, 15)
         }

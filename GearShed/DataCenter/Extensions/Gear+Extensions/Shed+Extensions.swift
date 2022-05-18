@@ -44,6 +44,18 @@ extension Shed: Comparable {
         }
         return []
     }
+    var favItems: [Item] {
+        if let items = items_ as? Set<Item> {
+            return items.sorted(by: { $0.name < $1.name }).filter { $0.isFavourite }
+        }
+        return []
+    }
+    var wishItems: [Item] {
+        if let items = items_ as? Set<Item> {
+            return items.sorted(by: { $0.name < $1.name }).filter { $0.isWishlist }
+        }
+        return []
+    }
 	// itemCount: computed property from Core Data items_
 	var itemCount: Int { items_?.count ?? 0 }
 	// simplified test of "is the unknown shed"

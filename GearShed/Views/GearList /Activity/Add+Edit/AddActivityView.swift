@@ -39,6 +39,9 @@ struct AddActivityView: View {
                     activityDescriptionSection
                 }
                 .padding()
+                .onTapGesture {
+                    dismissKeyboard()
+                }
             }
         }
     }

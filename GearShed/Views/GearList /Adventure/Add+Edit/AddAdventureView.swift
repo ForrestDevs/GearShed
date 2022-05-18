@@ -52,6 +52,9 @@ struct AddAdventureView: View {
                     
                 }
                 .padding()
+                .onTapGesture {
+                    dismissKeyboard()
+                }
             }
         }
     }

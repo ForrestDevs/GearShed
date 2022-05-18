@@ -46,6 +46,9 @@ struct AddActivityTypeView: View {
                     }
                 }
                 .padding()
+                .onTapGesture {
+                    dismissKeyboard()
+                }
             }
         }
     }

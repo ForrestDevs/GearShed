@@ -54,6 +54,9 @@ extension EditPileView {
                     }
                 }
                 .padding()
+                .onTapGesture {
+                    dismissKeyboard()
+                }
             }
         }
     }

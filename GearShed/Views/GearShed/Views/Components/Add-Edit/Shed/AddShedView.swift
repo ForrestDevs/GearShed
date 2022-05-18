@@ -74,6 +74,9 @@ extension AddShedView {
                     }
                 }
                 .padding()
+                .onTapGesture {
+                    dismissKeyboard()
+                }
             }
             
         }

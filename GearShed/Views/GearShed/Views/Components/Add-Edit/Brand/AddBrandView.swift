@@ -49,6 +49,9 @@ extension AddBrandView {
                     }
                 }
                 .padding()
+                .onTapGesture {
+                    dismissKeyboard()
+                }
             }
         }
     }

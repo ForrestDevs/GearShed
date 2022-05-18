@@ -1,5 +1,5 @@
 //
-//  CustomWeightTextField.swift
+//  WeightTextField.swift
 //  GearShed
 //
 //  Created by Luke Forrest Gannon on 2022-02-03.

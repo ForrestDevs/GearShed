@@ -32,7 +32,12 @@ struct SettingsView: View {
     @State private var showImportSheet: Bool = false
     @State private var showImportAlert: Bool = false
     @State private var showUpgradeSheet: Bool = false
+    //Alerts
     @State private var showSuccessfulEraseAlert: Bool = false
+    @State private var showSuccessfullIAPRestore: Bool = false
+    @State private var showFailureIAPRestore: Bool = false
+    @State private var failureRestoreErrorTitle: String = ""
+    @State private var failureRestoreErrorMessage: String = ""
     let test = Prefs.shared
     let persistentStore: PersistentStore
     let gsbType = UTType(exportedAs: "com.GearShed.gsb", conformingTo: .json)
@@ -84,6 +89,18 @@ struct SettingsView: View {
                 Alert (
                     title: Text("Successfully Loaded Backup"),
                     message: Text(loadedBackupMessage())
+                )
+            }
+            .alert(isPresented: $showSuccessfullIAPRestore) {
+                Alert (
+                    title: Text("Success"),
+                    message: Text("Gear Shed Unlimited has been restored!")
+                )
+            }
+            .alert(isPresented: $showFailureIAPRestore) {
+                Alert (
+                    title: Text(failureRestoreErrorTitle),
+                    message: Text(failureRestoreErrorMessage)
                 )
             }
             .sheet(isPresented: $showExportSheet) {
@@ -252,6 +269,24 @@ extension SettingsView {
     //In App Purchases
     private var restorePurchasesSection: some View {
         Button {
+            unlockManager.restorePurchases { result in
+                switch result {
+                case .success(let success):
+                    if success {
+                        self.showSuccessfullIAPRestore.toggle()
+                    } else {
+                        failureRestoreErrorTitle = "No Purchases"
+                        failureRestoreErrorMessage = """
+                                              There are no purchases to restore, or Gear Shed Unlimited is already active.\n\nIf you feel this is an error, please send us an email.
+                                              """
+                        self.showFailureIAPRestore.toggle()
+                    }
+                case .failure(let error):
+                    failureRestoreErrorTitle = "Error"
+                    failureRestoreErrorMessage = error.localizedDescription
+                    self.showFailureIAPRestore.toggle()
+                }
+            }
             unlockManager.restore()
         } label: {
             HStack {

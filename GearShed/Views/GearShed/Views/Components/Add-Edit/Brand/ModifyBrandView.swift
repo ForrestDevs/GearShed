@@ -58,6 +58,9 @@ extension ModifyBrandView {
                     }
                 }
                 .padding()
+                .onTapGesture {
+                    dismissKeyboard()
+                }
             }
         }
     }

@@ -59,6 +59,9 @@ extension ModifyItemView {
                 }
                 .padding(.horizontal)
                 .padding(.top)
+                .onTapGesture {
+                    dismissKeyboard()
+                }
             }
         }
     }
@@ -222,15 +225,7 @@ extension ModifyItemView {
             VStack (alignment: .leading, spacing: 3)  {
                 Text ("Price")
                     .formatEntryTitle()
-
-                TextField("Price in \(Prefs.shared.currencyUnitSetting)", text: $editableData.price)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .disableAutocorrection(true)
-                    .font(.subheadline)
-                    .keyboardType(.decimalPad)
-                    .onReceive(Just(editableData.oz)) { (newValue: String) in
-                        self.editableData.oz = newValue.prefix(30).filter {"1234567890.".contains($0)  }
-                    }
+                PriceTextField(textValue: $editableData.price)
             }
         }
     }

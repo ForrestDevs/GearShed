@@ -53,6 +53,9 @@ extension ModifyShedView {
                     }
                 }
                 .padding()
+                .onTapGesture {
+                    dismissKeyboard()
+                }
             }
             
         }

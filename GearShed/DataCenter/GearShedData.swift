@@ -9,8 +9,10 @@
 import Foundation
 import CoreData
 import UIKit
+import SwiftUI
 
 final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  ObservableObject {
+    @AppStorage("Currency_Unit", store: .standard) var currencyUnitSetting: String = "$"
     @Published var showAll: Bool = true
     // MARK: Data Publishing Operations
     let persistentStore: PersistentStore
@@ -162,8 +164,8 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     func addNewItem(using editableData: EditableItemData) {
         let newItem = Item(context: persistentStore.context)
         newItem.id = UUID()
-        newItem.name = editableData.name
-        newItem.detail = editableData.details
+        newItem.name = editableData.name.trimmingCharacters(in: .whitespacesAndNewlines)
+        newItem.detail = editableData.details.trimmingCharacters(in: .whitespacesAndNewlines)
         newItem.quantity = Int(editableData.quantity)
         
         newItem.weight = editableData.weight
@@ -180,8 +182,8 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     /// Function to update an Item's values using the temp stored data.
     func updateItem(using editableData: EditableItemData) {
         let item = editableData.associatedItem
-        item.name = editableData.name
-        item.detail = editableData.details
+        item.name = editableData.name.trimmingCharacters(in: .whitespacesAndNewlines)
+        item.detail = editableData.details.trimmingCharacters(in: .whitespacesAndNewlines)
         item.quantity = Int(editableData.quantity)
         
         item.weight = editableData.weight
@@ -246,21 +248,21 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     func addNewBrand(using editableData: EditableBrandData) {
         let newBrand = Brand(context: persistentStore.context)
         newBrand.id = UUID()
-        newBrand.name = editableData.name
+        newBrand.name = editableData.name.trimmingCharacters(in: .whitespacesAndNewlines)
         persistentStore.saveContext()
     }
     /// Function to create a new Brand from the Item entry form then pass It back so it can populate as the selected Brand.
     func addNewBrandFromItem(using editableData: EditableBrandData, brandOut: ((Brand) -> ())) {
         let newBrand = Brand(context: persistentStore.context)
         newBrand.id = UUID()
-        newBrand.name = editableData.name
+        newBrand.name = editableData.name.trimmingCharacters(in: .whitespacesAndNewlines)
         persistentStore.saveContext()
         brandOut(newBrand)
     }
     /// Function to update a Brand's values using the temp stored data.
     func updateBrand(using editableData: EditableBrandData) {
         let brand = editableData.associatedBrand
-        brand.name = editableData.name
+        brand.name = editableData.name.trimmingCharacters(in: .whitespacesAndNewlines)
         brand.items.forEach({ $0.objectWillChange.send() })
         persistentStore.saveContext()
     }
@@ -290,7 +292,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     func addNewShed(using editableData: EditableShedData) {
         let newShed = Shed(context: persistentStore.context)
         newShed.id = UUID()
-        newShed.name = editableData.name
+        newShed.name = editableData.name.trimmingCharacters(in: .whitespacesAndNewlines)
         persistentStore.saveContext()
     }
     /// Function to add multiple sheds at a time.
@@ -306,7 +308,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     func addNewShedFromItem(using editableData: EditableShedData, shedOut: ((Shed) -> ())) {
         let newShed = Shed(context: persistentStore.context)
         newShed.id = UUID()
-        newShed.name = editableData.name
+        newShed.name = editableData.name.trimmingCharacters(in: .whitespacesAndNewlines)
         persistentStore.saveContext()
         shedOut(newShed)
     }
@@ -314,7 +316,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     func updateShed(using editableData: EditableShedData) {
         let shed = editableData.associatedShed
         //editableData.associatedShed.name_ = editableData.shedName
-        shed.name = editableData.name
+        shed.name = editableData.name.trimmingCharacters(in: .whitespacesAndNewlines)
         shed.items.forEach({ $0.objectWillChange.send() })
         persistentStore.saveContext()
     }
@@ -447,7 +449,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         let total = intArray.reduce(0, +)
         let totalString = String(total)
         
-        let finalString = "\(Prefs.shared.currencyUnitSetting) \(totalString)"
+        let finalString = "\(currencyUnitSetting) \(totalString)"
         return finalString
     }
     /// Function to return the total fav items out of an array of items.
@@ -842,4 +844,5 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
             print(error ?? "Print controller presented.")
         }
     }
+    
 }

@@ -58,7 +58,8 @@ struct ItemDetailView: View {
             HStack (spacing: 5) {
                 Text(item.name)
                     .formatGreenTitle()
-                    .fixedSize()
+                    .frame(width: UIScreen.main.bounds.width * 0.9, alignment: .leading)
+                    //.fixedSize()
                 statusIcon
             }
             .lineLimit(1)

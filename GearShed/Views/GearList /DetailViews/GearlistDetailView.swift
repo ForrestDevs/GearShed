@@ -79,6 +79,7 @@ struct GearlistDetailView: View {
         ToolbarItem(placement: .principal) {
             Text(gearlist.name)
                 .formatGreen()
+                .lineLimit(1)
         }
     }
     private var shareList: some ToolbarContent {

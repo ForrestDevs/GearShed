@@ -55,6 +55,9 @@ struct ModifyAdventureView: View {
                     adventureDescriptionSection
                 }
                 .padding()
+                .onTapGesture {
+                    dismissKeyboard()
+                }
             }
         }
     }

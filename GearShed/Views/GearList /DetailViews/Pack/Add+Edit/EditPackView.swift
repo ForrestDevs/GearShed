@@ -51,6 +51,9 @@ struct EditPackView: View {
                     }
                 }
                 .padding()
+                .onTapGesture {
+                    dismissKeyboard()
+                }
             }
         }
     }

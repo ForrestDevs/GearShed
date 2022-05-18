@@ -163,13 +163,13 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     func addNewGearlist(using editableData: EditableGearlistData) -> Gearlist {
         let newGearlist = Gearlist(context: persistentStore.context)
         newGearlist.id = UUID()
-        newGearlist.name = editableData.name
-        newGearlist.details = editableData.details
+        newGearlist.name = editableData.name.trimmingCharacters(in: .whitespacesAndNewlines)
+        newGearlist.details = editableData.details.trimmingCharacters(in: .whitespacesAndNewlines)
         newGearlist.isAdventure = editableData.isAdventure
         
         if editableData.isAdventure {
-            newGearlist.location = editableData.location ?? ""
-            newGearlist.country = editableData.country ?? ""
+            newGearlist.location = editableData.location?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            newGearlist.country = editableData.country?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
             if let startDate = editableData.startDate {
                 newGearlist.startDate = startDate
             }
@@ -186,11 +186,11 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     /// Function to update a Gearlists values using the temp stored data.
     func updateGearlist(using editableData: EditableGearlistData) {
         let gearlist = editableData.associatedGearlist
-        gearlist.name = editableData.name
-        gearlist.details = editableData.details
+        gearlist.name = editableData.name.trimmingCharacters(in: .whitespacesAndNewlines)
+        gearlist.details = editableData.details.trimmingCharacters(in: .whitespacesAndNewlines)
         if editableData.isAdventure {
-            gearlist.location = editableData.location!
-            gearlist.country = editableData.country!
+            gearlist.location = editableData.location?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            gearlist.country = editableData.country?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
             gearlist.startDate = editableData.startDate!
             gearlist.endDate = editableData.endDate!
         }
@@ -341,7 +341,7 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     func addNewPile(using editableData: EditablePileData, gearlist: Gearlist) {
         let newPile = Pile(context: persistentStore.context)
         newPile.id = UUID()
-        newPile.name = editableData.name
+        newPile.name = editableData.name.trimmingCharacters(in: .whitespacesAndNewlines)
         newPile.gearlist = gearlist
         persistentStore.saveContext()
     }
@@ -349,7 +349,7 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     func addNewPileFromItem(using editableData: EditablePileData, gearlist: Gearlist, pileOut: ((Pile) -> ())) {
         let newPile = Pile(context: persistentStore.context)
         newPile.id = UUID()
-        newPile.name = editableData.name
+        newPile.name = editableData.name.trimmingCharacters(in: .whitespacesAndNewlines)
         newPile.gearlist = gearlist
         // Pass back the newly created Pile
         pileOut(newPile)
@@ -377,7 +377,7 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     /// Function to edit Pile values.
     func updatePile(using editableData: EditablePileData) {
         let pile = editableData.associatedPile
-        pile.name = editableData.name
+        pile.name = editableData.name.trimmingCharacters(in: .whitespacesAndNewlines)
         persistentStore.saveContext()
     }
     /// Function to delete a Pile.
@@ -395,7 +395,7 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     func addNewPack(using editableData: EditablePackData, gearlist: Gearlist) {
         let newPack = Pack(context: persistentStore.context)
         newPack.id = UUID()
-        newPack.name = editableData.name
+        newPack.name = editableData.name.trimmingCharacters(in: .whitespacesAndNewlines)
         newPack.gearlist = gearlist
         // Save the newly created Pack
         persistentStore.saveContext()
@@ -404,7 +404,7 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     func addNewPackFromItem(using editableData: EditablePackData, gearlist: Gearlist, containerOut: ((Pack) -> ())) {
         let newPack = Pack(context: persistentStore.context)
         newPack.id = UUID()
-        newPack.name = editableData.name
+        newPack.name = editableData.name.trimmingCharacters(in: .whitespacesAndNewlines)
         newPack.gearlist = gearlist
         // Pass back the newly created Pack
         containerOut(newPack)
@@ -435,7 +435,7 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     /// Function to edit Pack values.
     func updatePack(using editableData: EditablePackData) {
         let container = editableData.associatedPack
-        container.name = editableData.name
+        container.name = editableData.name.trimmingCharacters(in: .whitespacesAndNewlines)
         persistentStore.saveContext()
     }
     /// Function to delete a Pack.

@@ -47,6 +47,9 @@ struct AddPackView: View {
                     }
                 }
                 .padding()
+                .onTapGesture {
+                    dismissKeyboard()
+                }
             }
         }
     }

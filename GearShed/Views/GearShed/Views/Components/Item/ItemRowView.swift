@@ -13,6 +13,9 @@ struct ItemRowView: View {
     @EnvironmentObject private var detailManager: DetailViewManager
     @EnvironmentObject private var persistentStore: PersistentStore
     @EnvironmentObject private var vm: GearShedViewModel
+    
+    @State private var removeItemAnimation: Bool = false
+    
 	@ObservedObject var item: Item
 	var body: some View {
         Button {
@@ -105,16 +108,22 @@ extension ItemRowView {
             Divider()
         }
         .padding(.top, 2)
+        .transition(.asymmetric(insertion: .scale, removal: .opacity))
     }
     // MARK: Context Menus
     private var favContextButton: some View {
         Button {
             if item.isFavourite {
-                item.unmarkFavourite()
-                persistentStore.saveContext()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.7){
+                    item.unmarkFavourite()
+                    persistentStore.saveContext()
+                }
+               
             } else {
-                item.markFavourite()
-                persistentStore.saveContext()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.7){
+                    item.markFavourite()
+                    persistentStore.saveContext()
+                }
             }
         } label: {
             if item.isFavourite {
@@ -134,11 +143,15 @@ extension ItemRowView {
     private var regretContextButton: some View {
         Button {
             if item.isRegret {
-                item.unmarkRegret()
-                persistentStore.saveContext()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                    item.unmarkRegret()
+                    persistentStore.saveContext()
+                }
             } else {
-                item.markRegret()
-                persistentStore.saveContext()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                    item.markRegret()
+                    persistentStore.saveContext()
+                }
             }
         } label: {
             if item.isRegret {
@@ -158,11 +171,15 @@ extension ItemRowView {
     private var wishContextButton: some View {
         Button {
             if item.isWishlist {
-                item.unmarkWish()
-                persistentStore.saveContext()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                    item.unmarkWish()
+                    persistentStore.saveContext()
+                }
             } else {
-                item.markWish()
-                persistentStore.saveContext()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                    item.markWish()
+                    persistentStore.saveContext()
+                }
             }
         } label: {
             if item.isWishlist {

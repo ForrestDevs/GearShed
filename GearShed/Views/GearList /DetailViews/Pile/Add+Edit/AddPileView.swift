@@ -48,6 +48,9 @@ struct AddPileView: View {
                     }
                 }
                 .padding()
+                .onTapGesture {
+                    dismissKeyboard()
+                }
             }
         }
     }

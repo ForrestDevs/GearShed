@@ -24,9 +24,10 @@ class UnlockManager: NSObject, ObservableObject, SKPaymentTransactionObserver, S
     private let persistentStore: PersistentStore
     private let request: SKProductsRequest
     private var loadedProducts = [SKProduct]()
-    var canMakePayments: Bool {
-        SKPaymentQueue.canMakePayments()
-    }
+    var canMakePayments: Bool { SKPaymentQueue.canMakePayments() }
+    
+    var onBuyProductHandler: ((Result<Bool, Error>) -> Void)?
+    var totalRestoredPurchases = 0
 
     init(persistentStore: PersistentStore) {
         self.persistentStore = persistentStore
@@ -48,9 +49,12 @@ class UnlockManager: NSObject, ObservableObject, SKPaymentTransactionObserver, S
         DispatchQueue.main.async { [self] in
             for transaction in transactions {
                 switch transaction.transactionState {
-                case .purchased, .restored:
+                case .purchased:
                     self.persistentStore.fullVersionUnlocked = true
                     self.requestState = .purchased
+                    queue.finishTransaction(transaction)
+                case .restored:
+                    totalRestoredPurchases += 1
                     queue.finishTransaction(transaction)
                 case .failed:
                     if let product = loadedProducts.first {
@@ -67,6 +71,39 @@ class UnlockManager: NSObject, ObservableObject, SKPaymentTransactionObserver, S
             }
         }
     }
+    
+    
+    func paymentQueueRestoreCompletedTransactionsFinished(_ queue: SKPaymentQueue) {
+        if totalRestoredPurchases != 0 {
+            onBuyProductHandler?(.success(true))
+        } else {
+            print("IAP: No purchases to restore!")
+            onBuyProductHandler?(.success(false))
+        }
+    }
+//    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+//        DispatchQueue.main.async { [self] in
+//            for transaction in transactions {
+//                switch transaction.transactionState {
+//                case .purchased, .restored:
+//                    self.persistentStore.fullVersionUnlocked = true
+//                    self.requestState = .purchased
+//                    queue.finishTransaction(transaction)
+//                case .failed:
+//                    if let product = loadedProducts.first {
+//                        self.requestState = .loaded(product)
+//                    } else {
+//                        self.requestState = .failed(transaction.error)
+//                    }
+//                    queue.finishTransaction(transaction)
+//                case .deferred:
+//                    self.requestState = .deferred
+//                default:
+//                    break
+//                }
+//            }
+//        }
+//    }
     func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
         DispatchQueue.main.async {
             self.loadedProducts = response.products
@@ -89,5 +126,12 @@ class UnlockManager: NSObject, ObservableObject, SKPaymentTransactionObserver, S
     func restore() {
         SKPaymentQueue.default().restoreCompletedTransactions()
     }
+    
+    func restorePurchases(withHandler handler: @escaping ((_ result: Result<Bool, Error>) -> Void)) {
+        onBuyProductHandler = handler
+        totalRestoredPurchases = 0
+        SKPaymentQueue.default().restoreCompletedTransactions()
+    }
+    
 }
 

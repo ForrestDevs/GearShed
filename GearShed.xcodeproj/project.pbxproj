@@ -39,6 +39,7 @@
 		08371B65271DFEF80072AD94 /* WishesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B64271DFEF80072AD94 /* WishesView.swift */; };
 		08371B6E271E08A20072AD94 /* tags.json in Resources */ = {isa = PBXBuildFile; fileRef = 08371B6D271E08A20072AD94 /* tags.json */; };
 		08371B72271E5B6D0072AD94 /* ItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08371B71271E5B6D0072AD94 /* ItemDetailView.swift */; };
+		083AA07C283487F3000A8D2F /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 083AA07B283487F3000A8D2F /* StoreKit.framework */; };
 		084EDA11272B5C9900475891 /* HelveticaNeue.ttc in Resources */ = {isa = PBXBuildFile; fileRef = 084EDA10272B5C9800475891 /* HelveticaNeue.ttc */; };
 		084EDA13272BAE2B00475891 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084EDA12272BAE2B00475891 /* ContentView.swift */; };
 		0853ABF8271F824700123497 /* ModifyBrandView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0853ABF7271F824700123497 /* ModifyBrandView.swift */; };
@@ -53,7 +54,7 @@
 		0869ECE127A3C1B400D2ADC5 /* LaunchAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0869ECE027A3C1B400D2ADC5 /* LaunchAnimation.swift */; };
 		086C925227238D03009F962D /* ModifyItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086C925127238D03009F962D /* ModifyItemView.swift */; };
 		087B3BD727AB9BB8003F6C71 /* StringProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087B3BD627AB9BB6003F6C71 /* StringProtocol.swift */; };
-		087B3BD927AB9C4D003F6C71 /* CustomWeightTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087B3BD827AB9C4D003F6C71 /* CustomWeightTextField.swift */; };
+		087B3BD927AB9C4D003F6C71 /* WeightTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087B3BD827AB9C4D003F6C71 /* WeightTextField.swift */; };
 		087C0D1E27BDA384009899DB /* HelveticaNeueBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 087C0D1D27BDA383009899DB /* HelveticaNeueBold.ttf */; };
 		0883B95727AC6CD8006FDAA9 /* DocumentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0883B95627AC6CD8006FDAA9 /* DocumentPicker.swift */; };
 		0883B95927ACD44F006FDAA9 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0883B95827ACD44E006FDAA9 /* AboutView.swift */; };
@@ -64,6 +65,7 @@
 		08877EF0273631C1000D7FF4 /* PackingBool+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08877EEF273631C1000D7FF4 /* PackingBool+Extensions.swift */; };
 		08877EF327363779000D7FF4 /* AddPackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08877EF227363779000D7FF4 /* AddPackView.swift */; };
 		08877EF727363818000D7FF4 /* EditablePackData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08877EF627363818000D7FF4 /* EditablePackData.swift */; };
+		0889EA9928341702001641E6 /* PriceTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0889EA9828341702001641E6 /* PriceTextField.swift */; };
 		088AA43227BEE1C500A32444 /* BinaryInteger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088AA43127BEE1C500A32444 /* BinaryInteger.swift */; };
 		088B154C2732EB7500ECBC11 /* EditableBrandData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088B154B2732EB7400ECBC11 /* EditableBrandData.swift */; };
 		088B154E2732EBBC00ECBC11 /* EditableShedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088B154D2732EBBC00ECBC11 /* EditableShedData.swift */; };
@@ -197,6 +199,7 @@
 		08371B64271DFEF80072AD94 /* WishesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishesView.swift; sourceTree = "<group>"; };
 		08371B6D271E08A20072AD94 /* tags.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = tags.json; sourceTree = "<group>"; };
 		08371B71271E5B6D0072AD94 /* ItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailView.swift; sourceTree = "<group>"; };
+		083AA07B283487F3000A8D2F /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		084EDA10272B5C9800475891 /* HelveticaNeue.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; path = HelveticaNeue.ttc; sourceTree = "<group>"; };
 		084EDA12272BAE2B00475891 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		0853ABF7271F824700123497 /* ModifyBrandView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyBrandView.swift; sourceTree = "<group>"; };
@@ -211,7 +214,7 @@
 		0869ECE027A3C1B400D2ADC5 /* LaunchAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAnimation.swift; sourceTree = "<group>"; };
 		086C925127238D03009F962D /* ModifyItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyItemView.swift; sourceTree = "<group>"; };
 		087B3BD627AB9BB6003F6C71 /* StringProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringProtocol.swift; sourceTree = "<group>"; };
-		087B3BD827AB9C4D003F6C71 /* CustomWeightTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomWeightTextField.swift; sourceTree = "<group>"; };
+		087B3BD827AB9C4D003F6C71 /* WeightTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightTextField.swift; sourceTree = "<group>"; };
 		087C0D1D27BDA383009899DB /* HelveticaNeueBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = HelveticaNeueBold.ttf; sourceTree = "<group>"; };
 		0883B95627AC6CD8006FDAA9 /* DocumentPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPicker.swift; sourceTree = "<group>"; };
 		0883B95827ACD44E006FDAA9 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
@@ -222,6 +225,7 @@
 		08877EEF273631C1000D7FF4 /* PackingBool+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PackingBool+Extensions.swift"; sourceTree = "<group>"; };
 		08877EF227363779000D7FF4 /* AddPackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPackView.swift; sourceTree = "<group>"; };
 		08877EF627363818000D7FF4 /* EditablePackData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditablePackData.swift; sourceTree = "<group>"; };
+		0889EA9828341702001641E6 /* PriceTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceTextField.swift; sourceTree = "<group>"; };
 		088AA43127BEE1C500A32444 /* BinaryInteger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryInteger.swift; sourceTree = "<group>"; };
 		088B154B2732EB7400ECBC11 /* EditableBrandData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableBrandData.swift; sourceTree = "<group>"; };
 		088B154D2732EBBC00ECBC11 /* EditableShedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableShedData.swift; sourceTree = "<group>"; };
@@ -330,6 +334,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				08A7D00C2729FBCF006FA3F7 /* CloudKit.framework in Frameworks */,
+				083AA07C283487F3000A8D2F /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -633,6 +638,7 @@
 		08A7D00A2729FBCF006FA3F7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				083AA07B283487F3000A8D2F /* StoreKit.framework */,
 				08A7D00B2729FBCF006FA3F7 /* CloudKit.framework */,
 			);
 			name = Frameworks;
@@ -975,9 +981,10 @@
 				080015A627277C2B00E1BE4C /* SlideableView */,
 				08A5FB9C2740DDB9008A5D28 /* CustomDatePicker */,
 				0862EA6D2743642400330FBB /* ExpandableButton.swift */,
-				087B3BD827AB9C4D003F6C71 /* CustomWeightTextField.swift */,
+				087B3BD827AB9C4D003F6C71 /* WeightTextField.swift */,
 				08C7D8E8270F65E100EC3984 /* EmptyViewText.swift */,
 				0853ABFF271F983000123497 /* StatBarView.swift */,
+				0889EA9828341702001641E6 /* PriceTextField.swift */,
 			);
 			path = "CustomViews ";
 			sourceTree = "<group>";
@@ -1165,7 +1172,7 @@
 				08FFCFAF274985F300E27C93 /* ModifyItemDiaryView.swift in Sources */,
 				080015AC27277C2B00E1BE4C /* PagerHelper.swift in Sources */,
 				0813B51E2819E4A3003832C9 /* ItemGearlistHistoryRowView.swift in Sources */,
-				087B3BD927AB9C4D003F6C71 /* CustomWeightTextField.swift in Sources */,
+				087B3BD927AB9C4D003F6C71 /* WeightTextField.swift in Sources */,
 				088B154E2732EBBC00ECBC11 /* EditableShedData.swift in Sources */,
 				088FBFA32747408A00F1BFF7 /* ModifyActivityTypeView.swift in Sources */,
 				08C7D912270F6DFC00EC3984 /* ShedCodableProxy.swift in Sources */,
@@ -1236,6 +1243,7 @@
 				0853ABFA271F876F00123497 /* ModifyShedView.swift in Sources */,
 				08C7D927270F7DC200EC3984 /* ActivityRowView.swift in Sources */,
 				08371B5D271DFEA20072AD94 /* ShedItemsView.swift in Sources */,
+				0889EA9928341702001641E6 /* PriceTextField.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

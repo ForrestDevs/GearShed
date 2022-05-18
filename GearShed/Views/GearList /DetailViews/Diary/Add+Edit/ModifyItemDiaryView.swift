@@ -45,6 +45,9 @@ struct ModifyItemDiaryView: View {
                 .padding(.horizontal)
                 .padding(.top)
             }
+            .onTapGesture {
+                dismissKeyboard()
+            }
         }
     }
     // MARK: Content Components
