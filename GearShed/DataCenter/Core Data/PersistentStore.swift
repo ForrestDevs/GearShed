@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import CloudKit
 
 /// An environment singleton responsible for managing our Core Data stack, including handling
 /// saving, counting fetch requests, and dealing with sample data.
@@ -49,8 +50,14 @@ final class PersistentStore: ObservableObject {
             guard let persistentStoreDescriptions = container.persistentStoreDescriptions.first else {
                 fatalError("\(#function): Failed to retrieve a persistent store description.")
             }
+            // Option to re sync data when cloudkit is enabled
             persistentStoreDescriptions.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
             persistentStoreDescriptions.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
+            
+            // if "icloud_sync" boolean key isn't set or isn't set to true, don't sync to iCloud
+//            if(!NSUbiquitousKeyValueStore.default.bool(forKey: "icloud_sync")) {
+//                persistentStoreDescriptions.cloudKitContainerOptions = nil
+//            }
         }
         // Loads the persistent store + added instances for CloudKit updating
         container.loadPersistentStores {_, error in
@@ -91,21 +98,49 @@ final class PersistentStore: ObservableObject {
     func results<T: NSManagedObject>(for fetchRequest: NSFetchRequest<T>) -> [T] {
         return (try? container.viewContext.fetch(fetchRequest)) ?? []
     }
-    @Published var eraseVerified: Bool = false
+    
+    //@Published var eraseVerified: Bool = false
+    
+    /// Function to completly erase all core data entities which will also wipe cloudKit data as well when changes get published
     func deleteAllEntities() {
         let entities = container.managedObjectModel.entities
         for entity in entities {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity.name!)
             let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+            deleteRequest.resultType = .resultTypeObjectIDs
             do {
-                try context.execute(deleteRequest)
-                print("Deleted Entitie - ", entity)
+                let batchDelete = try context.execute(deleteRequest) as? NSBatchDeleteResult
+                guard let deleteResult = batchDelete?.result as? [NSManagedObjectID] else { return }
+                let deletedObjects: [AnyHashable: Any] = [NSDeletedObjectsKey: deleteResult]
+                NSManagedObjectContext.mergeChanges(
+                    fromRemoteContextSave: deletedObjects,
+                    into: [context]
+                )
             } catch let error as NSError {
                 print("Delete ERROR \(entity)")
                 print(error)
             }
         }
         saveContext()
+    }
+    
+    func iCloudSyncToggle(isOn: Bool) {
+        NSUbiquitousKeyValueStore.default.set(isOn, forKey: "icloud_sync")
+        // delete the zone in iCloud if user switch off iCloud sync
+        if(!isOn){
+            // replace the identifier with your container identifier
+            let container = CKContainer(identifier: "iCloud.GearShed")
+            let database = container.privateCloudDatabase
+            
+            // instruct iCloud to delete the whole zone (and all of its records)
+            database.delete(
+                withRecordZoneID: .init(zoneName: "com.apple.coredata.cloudkit.zone"),
+                completionHandler: { (zoneID, error) in
+                    if let error = error {
+                        print("deleting zone error \(error.localizedDescription)")
+                    }
+            })
+        }
     }
 }
 

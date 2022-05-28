@@ -12,6 +12,8 @@ import SwiftUI
 
 final class BackupManager: ObservableObject {
     let persistentStore: PersistentStore
+    var resultHandler: ((Result<Bool, Error>) -> Void)?
+    
     init(persistentStore: PersistentStore) {
         self.persistentStore = persistentStore
     }
@@ -105,7 +107,8 @@ final class BackupManager: ObservableObject {
         }
         return url
     }
-    func backupToiCloudDrive(items: [Item], itemDiaries: [ItemDiary], sheds: [Shed], brands: [Brand], gearlists: [Gearlist], piles: [Pile], packs: [Pack], packingBools: [PackingBool], activityTypes: [ActivityType]) {
+    
+    func backupToiCloudDrive(items: [Item], itemDiaries: [ItemDiary], sheds: [Shed], brands: [Brand], gearlists: [Gearlist], piles: [Pile], packs: [Pack], packingBools: [PackingBool], activityTypes: [ActivityType],completion: (Result<Bool, Error>) -> Void /*,withHandler handler: @escaping ((_ result: Result<Bool, Error>) -> Void)*/) {
         
         var all = AllCodableProxy (
             items: [],
@@ -172,13 +175,16 @@ final class BackupManager: ObservableObject {
             data = try encoder.encode(all)
         } catch let error as NSError {
             print("Error converting items to JSON: \(error.localizedDescription), \(error.userInfo)")
+            completion(.failure(error))
         }
         
         do {
             try data.write(to: backupURL)
+            completion(.success(true))
         } catch let error as NSError {
             print("Could not write to desktop file: \(error.localizedDescription), \(error.userInfo)")
             print(String(data: data, encoding: .utf8)!)
+            completion(.failure(error))
         }
     }
     func insertISBFromBackUp(url: URL) {

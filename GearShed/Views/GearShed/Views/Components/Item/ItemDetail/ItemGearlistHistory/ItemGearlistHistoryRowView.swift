@@ -16,6 +16,8 @@ struct ItemGearlistHistoryRowView: View {
             HStack {
                 Text(gearlist.name)
                     .formatItemNameGreen()
+                    .lineLimit(1)
+                    
                 Text("|")
                     .formatItemNameBlack()
                 Text(gearlist.startDate?.monthDayYearDateText() ?? "")

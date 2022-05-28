@@ -31,7 +31,6 @@ struct WishesView: View {
                     }
                 }
             }
-            .padding(.bottom, 150)
         }
     }
     private func sectionContent(section: SectionShedData) -> some View {

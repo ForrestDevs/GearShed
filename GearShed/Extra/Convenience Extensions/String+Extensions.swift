@@ -21,4 +21,18 @@ extension String {
     var removingHTMLOccurances: String {
         return self.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil)
     }
+    
+    var trimZero: String {
+        if self == "0" {
+            return self.replacingOccurrences(of: "0", with: "")
+        } else if self == "0.00" {
+            return self.replacingOccurrences(of: "0.00", with: "")
+        } else {
+            return self
+        }
+    }
+    
+    
+    
+    
 }

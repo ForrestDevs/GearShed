@@ -86,8 +86,10 @@ struct GearShedView: View {
             .toolbar {
                 listExpandingButton
                 viewTitle
-                //loadData
                 shareButton
+                //DEV TOOL TO QUICKLY LOAD DATA
+                //loadData
+                
             }
         }
         .navigationViewStyle(.stack)
@@ -134,7 +136,8 @@ extension GearShedView {
     private var loadData: some ToolbarContent {
         ToolbarItem (placement: .navigationBarLeading) {
             Button {
-                backupManager.insertISBFromBackUp(url: Bundle.main.url(forResource: "backup", withExtension: "json")!)
+                backupManager.insertFromBackup(url: Bundle.main.url(forResource: "backup", withExtension: "json")!)
+//                backupManager.insertISBFromBackUp(url: Bundle.main.url(forResource: "backup", withExtension: "json")!)
             } label: {
                 Image(systemName: "plus")
             }

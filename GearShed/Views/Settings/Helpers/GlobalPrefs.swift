@@ -11,7 +11,7 @@ import SwiftUI
 
 class Prefs {
     @Published var confirmationAlert: Bool = false
-    @AppStorage("pdfUserName", store: .standard) var pdfUserName: String = "Default Value"
+    @AppStorage("pdfUserName", store: .standard) var pdfUserName: String = "App User"
     @AppStorage("Weight_Unit", store: .standard) var weightUnit: String = "g"
     @AppStorage("isDarkMode", store: .standard) var isDarkMode: Bool = false
     @AppStorage("isSystemMode", store: .standard) var isSystemMode: Bool = true

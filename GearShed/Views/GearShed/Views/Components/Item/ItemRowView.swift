@@ -13,6 +13,7 @@ struct ItemRowView: View {
     @EnvironmentObject private var detailManager: DetailViewManager
     @EnvironmentObject private var persistentStore: PersistentStore
     @EnvironmentObject private var vm: GearShedViewModel
+    @EnvironmentObject private var gsData: GearShedData
     
     @State private var removeItemAnimation: Bool = false
     
@@ -79,31 +80,15 @@ extension ItemRowView {
             }
             .lineLimit(1)
             VStack (alignment: .leading, spacing: 2) {
-                Text("\(vm.itemWeightPriceText(item: item))")
-                    .formatItemWeightBlack()
-//                HStack {
-//
-//
-//                    if (Prefs.shared.weightUnit == "g") {
-//                        if (Int(item.weight) ?? 0 > 0) {
-//                            Text("\(item.weight) g")
-//                                .formatItemWeightBlack()
-//                        }
-//                    }
-//                    if (Prefs.shared.weightUnit == "lb + oz") {
-//                        if (Int(item.itemLbs) ?? 0 > 0 || Double(item.itemOZ) ?? 0.0 > 0.0) {
-//                            Text("\(item.itemLbs) lbs \(item.itemOZ) oz")
-//                                .formatItemWeightBlack()
-//                        }
-//                    }
-//                    Text("|")
-//                        .formatItemWeightBlack()
-//                    Text("$ \(item.price)")
-//                        .formatItemWeightBlack()
-//                }
-                Text(item.detail)
-                    .formatItemDetailsGrey()
-                    .lineLimit(1)
+                if !gsData.itemWeightPriceText(item: item, forPDF: false).isEmpty {
+                    Text(gsData.itemWeightPriceText(item: item, forPDF: false))
+                        .formatItemWeightBlack()
+                }
+                if !item.detail.isEmpty {
+                    Text(item.detail)
+                        .formatItemDetailsGrey()
+                        .lineLimit(1)
+                }
             }
             Divider()
         }

@@ -9,6 +9,8 @@
 import SwiftUI
 
 struct ConfirmEraseView: View {
+    
+    var completion: (() -> Void)
     @StateObject var persistentStore: PersistentStore
     @StateObject var detailManager: DetailViewManager
     @State private var eraseText: String = ""
@@ -27,12 +29,12 @@ struct ConfirmEraseView: View {
                 }
             ZStack {
                 RoundedRectangle(cornerRadius: 10)
-                    .frame(width: width / 1.2, height: height / 3.5)
+                    .frame(width: width / 1.2, height: height / 3)
                     .foregroundColor(Color.theme.background)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(lineWidth: 2)
-                            .frame(width: width / 1.2, height: height / 3.5)
+                            .frame(width: width / 1.2, height: height / 3)
                             .foregroundColor(Color.theme.green)
                     )
                 
@@ -40,7 +42,11 @@ struct ConfirmEraseView: View {
                     Text("WARNING")
                         .foregroundColor(.red)
                         .bold()
-                    Text("This will completly delete all data on this app, type 'Erase' to comfirm.")
+                    Text("""
+                        This will completly delete all data in your Gear Shed app, as well as iCloud synced data.\n
+                        If you wish to proceed please type \"Erase\" to confirm.
+                        """)
+                    .formatBlackSmall()
                     
                     TextField("Type 'Erase'", text: $eraseText)
                         .padding(7)
@@ -54,10 +60,13 @@ struct ConfirmEraseView: View {
                         Button {
                             guard eraseText == "Erase" else { return }
                             persistentStore.deleteAllEntities()
-                            Prefs.shared.confirmationAlert = true
                             withAnimation {
                                 detailManager.target = .noView
                             }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                completion()
+                            }
+                            
                         } label: {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 10)
@@ -88,7 +97,7 @@ struct ConfirmEraseView: View {
                     }
                 }
                 .padding()
-                .frame(width: width / 1.2, height: height / 3.5)
+                .frame(width: width / 1.2, height: height / 3)
                 
             }
         }

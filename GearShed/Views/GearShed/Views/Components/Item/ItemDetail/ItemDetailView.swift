@@ -58,7 +58,7 @@ struct ItemDetailView: View {
             HStack (spacing: 5) {
                 Text(item.name)
                     .formatGreenTitle()
-                    .frame(width: UIScreen.main.bounds.width * 0.9, alignment: .leading)
+//                    .frame(width: UIScreen.main.bounds.width * 0.9, alignment: .leading)
                     //.fixedSize()
                 statusIcon
             }
@@ -123,27 +123,9 @@ struct ItemDetailView: View {
     private var itemDetails: some View {
         HStack (alignment: .top) {
             VStack (alignment: .leading, spacing: 2) {
-                HStack {
-                    if (Prefs.shared.weightUnit == "g") {
-                        if let weight = item.weight {
-                            if Int(weight) ?? 0 > 0 {
-                                Text("\(weight) g")
-                                    .formatDetailsWPPBlack()
-                            }
-                        }
-                    }
-                    if (Prefs.shared.weightUnit == "lb + oz") {
-                        if (Int(item.itemLbs) ?? 0 > 0 || Double(item.itemOZ) ?? 0.0 > 0.0) {
-                            Text("\(item.itemLbs) lbs \(item.itemOZ) oz")
-                                .formatDetailsWPPBlack()
-                        }
-                    }
-                    if let price = item.price {
-                        if Int(price) ?? 0 > 0 {
-                            Text("\(Prefs.shared.currencyUnitSetting) \(price)")
-                                .formatDetailsWPPBlack()
-                        }
-                    }
+                if !gsData.itemWeightPriceText(item: item, forPDF: false).isEmpty {
+                    Text(gsData.itemWeightPriceText(item: item, forPDF: false))
+                        .formatDetailsWPPBlack()
                 }
                 HStack {
                     if let date = item.datePurchased {
@@ -153,8 +135,10 @@ struct ItemDetailView: View {
                             .formatDetailsWPPBlack()
                     }
                 }
-                Text(item.detail)
-                    .formatDetailDescriptionBlack()
+                if !item.detail.isEmpty {
+                    Text(item.detail)
+                        .formatDetailDescriptionBlack()
+                }
             }
             Spacer()
         }

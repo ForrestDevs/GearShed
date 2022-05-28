@@ -18,7 +18,7 @@ enum DetailTarget {
          showAddActivity, showModifyActivity,
          showAddActivityType, showModifyActivityType, showAddActivityFromActivityType,
          showAddPile, showModifyPile, showAddItemsToPile,
-         showAddPack, showModifyPack, showAddItemsToPack, showConfirmEraseView,
+         showAddPack, showModifyPack, showAddItemsToPack, /*showConfirmEraseView,*/
          showGearlistExport, showGearListPDF, showContent, showSecondaryContent, showTertiaryContent, noView
 }
 
@@ -107,8 +107,8 @@ struct DetailOverlay: View {
                 EditPackView(persistentStore: persistentStore, container: detailManager.selectedPack!)
             case .showAddItemsToPack:
                 AddItemsToGearListView(persistentStore: persistentStore, type: .packItem, gearlist: detailManager.selectedGearlist!, pack: detailManager.selectedPack!)
-            case .showConfirmEraseView:
-                    ConfirmEraseView(persistentStore: persistentStore, detailManager: detailManager)
+//            case .showConfirmEraseView:
+//                    ConfirmEraseView(persistentStore: persistentStore, detailManager: detailManager)
             case .showGearlistExport:
                 detailManager.tertiaryContent
             case .showGearListPDF:
@@ -179,8 +179,8 @@ struct DetailOverlay: View {
                 EditPackView(persistentStore: persistentStore, container: detailManager.selectedPack!)
             case .showAddItemsToPack:
                 AddItemsToGearListView(persistentStore: persistentStore, type: .packItem, gearlist: detailManager.selectedGearlist!, pack: detailManager.selectedPack!)
-            case .showConfirmEraseView:
-                ConfirmEraseView(persistentStore: persistentStore, detailManager: detailManager)
+//            case .showConfirmEraseView:
+//                ConfirmEraseView(persistentStore: persistentStore, detailManager: detailManager)
             case .showGearlistExport:
                 detailManager.tertiaryContent
             case .showGearListPDF:
@@ -252,8 +252,8 @@ struct DetailOverlay: View {
             case .showAddItemsToPack:
                 AddItemsToGearListView(persistentStore: persistentStore, type: .packItem, gearlist:
                     detailManager.selectedGearlist!, pack: detailManager.selectedPack!)
-            case .showConfirmEraseView:
-                ConfirmEraseView(persistentStore: persistentStore, detailManager: detailManager)
+//            case .showConfirmEraseView:
+//                ConfirmEraseView(persistentStore: persistentStore, detailManager: detailManager)
             case .showGearlistExport:
                 detailManager.tertiaryContent
             case .showGearListPDF:

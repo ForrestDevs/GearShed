@@ -640,6 +640,39 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         }
         return totalLbsOz(array: array)
     }
+    /// Function for returning the weight value for the stat bar in gearlists
+    func weightForGearlistStat(gearlist: Gearlist, type: String) -> String {
+        if type == "list" {
+            if (Prefs.shared.weightUnit == "g") { return "\(gearlistTotalGrams(gearlist: gearlist)) g" } else if (Prefs.shared.weightUnit == "lb + oz") {
+                let totalLbsOz = gearlistTotalLbsOz(gearlist: gearlist)
+                let totalLbs = totalLbsOz.lbs
+                let totalOz = totalLbsOz.oz
+                return "\(totalLbs) lbs \(totalOz) oz"
+            } else {
+                return ""
+            }
+        } else if type == "pile" {
+            if (Prefs.shared.weightUnit == "g") { return "\(gearlistPileTotalGrams(gearlist: gearlist)) g" } else if (Prefs.shared.weightUnit == "lb + oz") {
+            let totalLbsOz = gearlistPileTotalLbsOz(gearlist: gearlist)
+            let totalLbs = totalLbsOz.lbs
+            let totalOz = totalLbsOz.oz
+            return "\(totalLbs) lbs \(totalOz) oz"
+            } else {
+                return ""
+            }
+        } else if type == "pack" {
+            if (Prefs.shared.weightUnit == "g") { return "\(gearlistPackTotalGrams(gearlist: gearlist)) g" } else if (Prefs.shared.weightUnit == "lb + oz") {
+            let totalLbsOz = gearlistPackTotalLbsOz(gearlist: gearlist)
+            let totalLbs = totalLbsOz.lbs
+            let totalOz = totalLbsOz.oz
+            return "\(totalLbs) lbs \(totalOz) oz"
+            } else {
+                return ""
+            }
+        } else {
+            return ""
+        }
+    }
     //MARK: Counter Totals
     /// Function to return the total items in the pack view of a gearlist
     func gearlistPackTotalItems(gearlist: Gearlist) -> Int {
@@ -751,16 +784,35 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
             }
             return value
         }
-        func itemWeightUnit(item: Item) -> String {
-            var value: String = ""
-            guard (item.weight == "0") || (item.itemLbs == "0" && item.itemOZ == "0.00") else { return value }
-            
-            if Prefs.shared.weightUnit == "g" {
-                value = "\(item.weight) g"
+        func itemPriceText(item: Item) -> String {
+            if item.price == "0" {
+                return ""
+            } else if item.price == "" {
+                return ""
             } else {
+                return "\(Prefs.shared.currencyUnitSetting) \(item.price)"
+            }
+        }
+        func itemWeightText(item: Item, removeZeros: Bool) -> String {
+            var value: String = ""
+            if Prefs.shared.weightUnit == "g" {
+                if !removeZeros { value = "\(item.weight) g" } else {
+                    guard !(item.weight == "0" || item.weight == "") else { return value }
+                    value = "\(item.weight) g"
+                }
+            } else if Prefs.shared.weightUnit == "lb + oz" {
                 let lbs = item.itemLbs
-                let oz = item.itemLbs
-                value = "\(lbs) Lbs \(oz) Oz"
+                let oz = item.itemOZ
+                if !removeZeros { value = "\(lbs) Lbs \(oz) Oz" } else {
+                    guard !(lbs == "0" && oz == "0.00" || lbs == "" && oz == "") else { return value }
+                    if lbs == "0" || lbs == "" {
+                        value = "\(oz) oz"
+                    } else if oz == "0.00" || oz == "" {
+                        value = "\(lbs) Lbs"
+                    } else {
+                        value = "\(lbs) Lbs \(oz) Oz"
+                    }
+                }
             }
             return value
         }
@@ -779,17 +831,17 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
                 return ""
             }
         }
-        func itemWeightPriceText(item: Item) -> String {
-            let itemWeightText = itemWeightUnit(item: item)
-            let itemPriceText = item.price
+        func itemWeightPriceText(item: Item, forPDF: Bool) -> String {
+            let itemWeightText = itemWeightText(item: item, removeZeros: true)
+            let itemPriceText = itemPriceText(item: item)
             if itemWeightText.isEmpty && itemPriceText.isEmpty {
                 return ""
             } else if itemPriceText.isEmpty && !itemWeightText.isEmpty {
-                return "\(itemWeightText); "
+                if forPDF { return "\(itemWeightText); " } else { return itemWeightText }
             } else if itemWeightText.isEmpty && !itemPriceText.isEmpty {
-                return "\(itemPriceText); "
+                if forPDF { return "\(itemPriceText); " } else { return itemPriceText }
             } else if !itemWeightText.isEmpty && !itemPriceText.isEmpty {
-                return "\(itemWeightText) | \(itemPriceText); "
+                if forPDF { return "\(itemWeightText) | \(itemPriceText); " } else { return "\(itemWeightText) | \(itemPriceText)" }
             } else {
                 return ""
             }
@@ -914,7 +966,7 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
             for item in array {
                 text.append(contentsOf:
                 """
-                <li class="item">\(itemNameBrandText(item: item))\(itemWeightPriceText(item: item))\(item.detail)</li>
+                <li class="item">\(itemNameBrandText(item: item))\(itemWeightPriceText(item: item, forPDF: true))\(item.detail)</li>
                 """
                 )
             }

@@ -51,7 +51,6 @@ struct BrandItemsView: View {
                     }
                 }
             }
-            .padding(.bottom, 150)
         }
     }
     

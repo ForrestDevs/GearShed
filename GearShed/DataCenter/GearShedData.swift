@@ -18,8 +18,6 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     let persistentStore: PersistentStore
     private let itemsController: NSFetchedResultsController<Item>
     @Published var items = [Item]()
-//    private let itemImagesController: NSFetchedResultsController<ItemImage>
-//    @Published var itemImages = [ItemImage]()
     private let itemDiariesController: NSFetchedResultsController<ItemDiary>
     @Published var itemDiaries = [ItemDiary]()
     private let favItemsController: NSFetchedResultsController<Item>
@@ -38,18 +36,11 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         // MARK: Item Fetch Requests
         let itemRequest: NSFetchRequest<Item> = Item.fetchRequest()
         itemRequest.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
-        //itemRequest.predicate = NSPredicate(format: "isWishlist_ == %d", false)
-        
         itemsController = NSFetchedResultsController(fetchRequest: itemRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
-        
-//        let itemImagesRequest: NSFetchRequest<ItemImage> = ItemImage.fetchRequest()
-//        itemImagesRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
-//        itemImagesController = NSFetchedResultsController(fetchRequest: itemImagesRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
         
         let itemDiaryRequest: NSFetchRequest<ItemDiary> = ItemDiary.fetchRequest()
         itemDiaryRequest.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
         itemDiariesController = NSFetchedResultsController(fetchRequest: itemDiaryRequest, managedObjectContext: persistentStore.context, sectionNameKeyPath: nil, cacheName: nil)
-            
         
         let favItemRequest: NSFetchRequest<Item> = Item.fetchRequest()
         favItemRequest.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
@@ -84,9 +75,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         // MARK: Assign Entities to corosponding arrays
         super.init()
         itemsController.delegate = self
-        //itemImagesController.delegate = self
         itemDiariesController.delegate = self
-        
         favItemsController.delegate = self
         regretItemsController.delegate = self
         wishlistItemsController.delegate = self
@@ -99,14 +88,6 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         } catch {
             print("Failed to fetch Items")
         }
-        
-//        do {
-//            try itemImagesController.performFetch()
-//            itemImages = itemImagesController.fetchedObjects ?? []
-//        } catch {
-//            print("Failed to fetch ItemsImages")
-//        }
-        
         do {
             try itemDiariesController.performFetch()
             itemDiaries = itemDiariesController.fetchedObjects ?? []
@@ -149,6 +130,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
             print("Failed to fetch Brands")
         }
     }
+    //MARK: Data read operations
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         items = itemsController.fetchedObjects ?? []
         itemDiaries = itemDiariesController.fetchedObjects ?? []
@@ -159,7 +141,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         brands = brandsController.fetchedObjects ?? []
     }
     // MARK: Data CUD Operations
-    // Item ------------------------------------------------------------------------------------------------
+    //MARK: Item ------------------------------------------------------------------------------------------
     /// Function to create a new Item using the temp stored data.
     func addNewItem(using editableData: EditableItemData) {
         let newItem = Item(context: persistentStore.context)
@@ -168,11 +150,11 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         newItem.detail = editableData.details.trimmingCharacters(in: .whitespacesAndNewlines)
         newItem.quantity = Int(editableData.quantity)
         
-        newItem.weight = editableData.weight
-        newItem.itemLbs = editableData.lbs
-        newItem.itemOZ = editableData.oz
+        newItem.weight = editableData.weight.trimZero
+        newItem.itemLbs = editableData.lbs.trimZero
+        newItem.itemOZ = editableData.oz.trimZero
 
-        newItem.price = editableData.price
+        newItem.price = editableData.price.trimZero
         newItem.isWishlist = editableData.isWishlist
         newItem.shed = editableData.shed!
         newItem.brand = editableData.brand!
@@ -186,11 +168,11 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         item.detail = editableData.details.trimmingCharacters(in: .whitespacesAndNewlines)
         item.quantity = Int(editableData.quantity)
         
-        item.weight = editableData.weight
-        item.itemLbs = editableData.lbs
-        item.itemOZ = editableData.oz
+        item.weight = editableData.weight.trimZero
+        item.itemLbs = editableData.lbs.trimZero
+        item.itemOZ = editableData.oz.trimZero
         
-        item.price = editableData.price
+        item.price = editableData.price.trimZero
         item.isWishlist = editableData.isWishlist
         item.isFavourite = editableData.isFavourite
         item.isRegret = editableData.isRegret
@@ -212,7 +194,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         persistentStore.context.delete(item)
         persistentStore.saveContext()
     }
-    // MARK: Item Diary Stuff ---------------------------------------------------------------------------------
+    // MARK: Item Diary ----------------------------------------------------------------------------------
     /// Function to add a new ItemDiary using editableData.
     func addNewItemDiary(using editableData: EditableDiaryData) {
         let newDiary = ItemDiary(context: persistentStore.context)
@@ -243,7 +225,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         persistentStore.context.delete(diary)
         persistentStore.saveContext()
     }
-    // Brand ------------------------------------------------------------------------------------------------
+    //MARK: Brand ----------------------------------------------------------------------------------------
     /// Function to create a new Brand using the temp stored data.
     func addNewBrand(using editableData: EditableBrandData) {
         let newBrand = Brand(context: persistentStore.context)
@@ -284,10 +266,8 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         }
         // you cannot delete the unknownBrand
         //guard brand.unBrandID_ != kUnknownBrandID else { return }
-        
-        
     }
-    // Shed ------------------------------------------------------------------------------------------------
+    //MARK: Shed ----------------------------------------------------------------------------------------
     /// Function to create a new Shed using the temp stored data.
     func addNewShed(using editableData: EditableShedData) {
         let newShed = Shed(context: persistentStore.context)
@@ -341,7 +321,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         }
         //guard shed.unShedID_ != kUnknownShedID else { return }
     }
-    // Unknown Shed + Brand ---------------------------------------------------------------------------------
+    //MARK: Unknown Shed + Brand -------------------------------------------------------------------------
     /// Function to create an UnknownBrand and return it when needed.
     func createUnknownBrand() -> Brand {
         let unbranded = Brand(context: persistentStore.context)
@@ -392,7 +372,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
             fatalError("Error fetching unknown shed: \(error.localizedDescription), \(error.userInfo)")
         }
     }
-    // MARK: Data Sectioning Functions
+    // MARK: Data Sectioning Functions --------------------------------------------------------------------
     /// Function to return a 2D array with Items grouped by Shed
     func sectionByShed(itemArray: [Item]) -> [SectionShedData] {
         var completedSectionData = [SectionShedData]()
@@ -417,7 +397,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         }
         return completedSectionData
     }
-    // MARK: - Total Functions
+    // MARK: - Total Functions -----------------------------------------------------------------------------
     /// Function to return total grams of an array of items.
     func totalGrams(array: [Item]) -> String {
         var arrayString = [String]()
@@ -462,7 +442,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         let regretItems = array.filter { $0.isRegret }
         return String(regretItems.count)
     }
-    //MARK: Unlimted Upgrade Paywall Verification Methods
+    //MARK: Unlimted Upgrade Paywall Verification Methods ---------------------------------------------------
     func verifyUnlimitedGear() -> Bool {
         let canCreate = proUser() || (self.persistentStore.count(for: Item.fetchRequest()) < 30)
         if canCreate == true {
@@ -479,6 +459,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
             return false
         }
     }
+    /// Function to return a boolean value wether or not the user has bought the in app purchase. If they have it returns TRUE, otherwise FALSE.
     func proUser() -> Bool {
         let canCreate = (self.persistentStore.fullVersionUnlocked)
         if canCreate == true {
@@ -487,7 +468,8 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
             return false
         }
     }
-    //MARK: PDF Export Functions
+    
+    //MARK: Text Formatting/ Logic Functions
     func itemCount(array: [Item]) -> String {
         let count = array.count
         return String(count)
@@ -504,20 +486,53 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         }
         return value
     }
-    func itemWeightUnit(item: Item) -> String {
-        var value: String = ""
-        guard (item.weight == "0") || (item.itemLbs == "0" && item.itemOZ == "0.00") else { return value }
-        
-        if Prefs.shared.weightUnit == "g" {
-            value = "\(item.weight) g"
+    func itemPriceText(item: Item) -> String {
+        if item.price == "0" {
+            return ""
+        } else if item.price == "" {
+            return ""
         } else {
+            return "\(Prefs.shared.currencyUnitSetting) \(item.price)"
+        }
+    }
+    func itemWeightText(item: Item, removeZeros: Bool) -> String {
+        var value: String = ""
+        if Prefs.shared.weightUnit == "g" {
+            if !removeZeros { value = "\(item.weight) g" } else {
+                guard !(item.weight == "0" || item.weight == "") else { return value }
+                value = "\(item.weight) g"
+            }
+        } else if Prefs.shared.weightUnit == "lb + oz" {
             let lbs = item.itemLbs
             let oz = item.itemOZ
-            value = "\(lbs) Lbs \(oz) Oz"
+            if !removeZeros { value = "\(lbs) Lbs \(oz) Oz" } else {
+                guard !(lbs == "0" && oz == "0.00" || lbs == "" && oz == "") else { return value }
+                if lbs == "0" || lbs == "" {
+                    value = "\(oz) oz"
+                } else if oz == "0.00" || oz == "" {
+                    value = "\(lbs) Lbs"
+                } else {
+                    value = "\(lbs) Lbs \(oz) Oz"
+                }
+            }
         }
         return value
     }
-    //MARK: Text Formatting/ Logic Functions
+    func itemWeightPriceText(item: Item, forPDF: Bool) -> String {
+        let itemWeightText = itemWeightText(item: item, removeZeros: true)
+        let itemPriceText = itemPriceText(item: item)
+        if itemWeightText.isEmpty && itemPriceText.isEmpty {
+            return ""
+        } else if itemPriceText.isEmpty && !itemWeightText.isEmpty {
+            if forPDF { return "\(itemWeightText); " } else { return itemWeightText }
+        } else if itemWeightText.isEmpty && !itemPriceText.isEmpty {
+            if forPDF { return "\(itemPriceText); " } else { return itemPriceText }
+        } else if !itemWeightText.isEmpty && !itemPriceText.isEmpty {
+            if forPDF { return "\(itemWeightText) | \(itemPriceText); " } else { return "\(itemWeightText) | \(itemPriceText)" }
+        } else {
+            return ""
+        }
+    }
     func itemNameBrandText(item: Item) -> String {
         let itemName = item.name
         let itemBrand = item.brandName
@@ -533,21 +548,19 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
             return ""
         }
     }
-    func itemWeightPriceText(item: Item) -> String {
-        let itemWeightText = itemWeightUnit(item: item)
-        let itemPriceText = item.price
-        if itemWeightText.isEmpty && itemPriceText.isEmpty {
-            return ""
-        } else if itemPriceText.isEmpty && !itemWeightText.isEmpty {
-            return "\(itemWeightText); "
-        } else if itemWeightText.isEmpty && !itemPriceText.isEmpty {
-            return "$ \(itemPriceText); "
-        } else if !itemWeightText.isEmpty && !itemPriceText.isEmpty {
-            return "\(itemWeightText) | $ \(itemPriceText); "
+    func weightForStatBar(array: [Item]) -> String {
+        if (Prefs.shared.weightUnit == "g") {
+            return "\(totalGrams(array: array)) g"
+        } else if (Prefs.shared.weightUnit == "lb + oz") {
+            let totalLbsOz = totalLbsOz(array: array)
+            let totalLbs = totalLbsOz.lbs
+            let totalOz = totalLbsOz.oz
+            return "\(totalLbs) lbs \(totalOz) oz"
         } else {
             return ""
         }
     }
+    //MARK: PDF Export Functions
     //MARK: Create New HTML String and PDF
     func createHTML(pdfInt: Int) -> String {
         var shelves = [String]()
@@ -681,7 +694,7 @@ final class GearShedData: NSObject, NSFetchedResultsControllerDelegate,  Observa
             for item in array {
                 text.append(contentsOf:
                 """
-                <li class="item">\(itemNameBrandText(item: item))\(itemWeightPriceText(item: item))\(item.detail)</li>
+                <li class="item">\(itemNameBrandText(item: item))\(itemWeightPriceText(item: item, forPDF: true)) \(item.detail)</li>
                 """
                 )
             }

@@ -14,11 +14,14 @@ import UniformTypeIdentifiers
 
 struct SettingsView: View {
     @AppStorage("Weight_Unit", store: .standard) var weightUnit: String = "g"
+    @AppStorage("pdfUserName", store: .standard) var pdfUserName: String = "App User"
     @EnvironmentObject private var unlockManager: UnlockManager
     @EnvironmentObject private var detailManager: DetailViewManager
     @StateObject private var gsData: GearShedData
     @StateObject private var glData: GearlistData
     @StateObject private var backupManager: BackupManager
+    let persistentStore: PersistentStore
+    let gsbType = UTType(exportedAs: "com.GearShed.gsb", conformingTo: .json)
     //Counters
     @State private var shedsAdded: Int = 0
     @State private var brandsAdded: Int = 0
@@ -26,21 +29,26 @@ struct SettingsView: View {
     @State private var adventuresAdded: Int = 0
     @State private var activitiesAdded: Int = 0
     @State private var diariesAdded: Int = 0
-    @State private var pdfUsername: String = ""
+    //@State private var pdfUsername: String = ""
     //Sheets
+    @State private var showUpgradeSheet: Bool = false
     @State private var showExportSheet: Bool = false
     @State private var showImportSheet: Bool = false
-    @State private var showImportAlert: Bool = false
-    @State private var showUpgradeSheet: Bool = false
     //Alerts
     @State private var showSuccessfulEraseAlert: Bool = false
     @State private var showSuccessfullIAPRestore: Bool = false
     @State private var showFailureIAPRestore: Bool = false
     @State private var failureRestoreErrorTitle: String = ""
     @State private var failureRestoreErrorMessage: String = ""
-    let test = Prefs.shared
-    let persistentStore: PersistentStore
-    let gsbType = UTType(exportedAs: "com.GearShed.gsb", conformingTo: .json)
+    @State private var showImportAlert: Bool = false
+    @State private var importAlertMessage: String = ""
+    @State private var importAlertTitle: String = ""
+    @State private var showSuccessBackupWrite: Bool = false
+    @State private var showFailureBackupWrite: Bool = false
+    @State private var BackupWriteAlertTitle: String = ""
+    @State private var BackupWriteAlertMessage: String = ""
+    @State private var showEraseAllAlert: Bool = false
+
     init(persistentStore: PersistentStore) {
         let gsData = GearShedData(persistentStore: persistentStore)
         _gsData = StateObject(wrappedValue: gsData)
@@ -48,8 +56,6 @@ struct SettingsView: View {
         _glData = StateObject(wrappedValue: glData)
         let backupManager = BackupManager(persistentStore: persistentStore)
         _backupManager = StateObject(wrappedValue: backupManager)
-        let pdfUsername = Prefs.shared.pdfUserName
-        _pdfUsername = State(wrappedValue: pdfUsername)
         self.persistentStore = persistentStore
     }
     
@@ -71,58 +77,38 @@ struct SettingsView: View {
                     guard let selectedFile: URL = try result.get().first else { return }
                     if selectedFile.startAccessingSecurityScopedResource() {
                         loadData(url: selectedFile)
-                        //backupManager.insertFromBackup(url: selectedFile)
                         do {
                             selectedFile.stopAccessingSecurityScopedResource()
-                            self.showImportAlert = true
+                            importAlertTitle = "Successfully Loaded Backup"
+                            importAlertMessage = loadedBackupMessage(type: "Success")
+                            self.showImportAlert.toggle()
                         }
                     } else {
                         // Handle denied access
+                        importAlertTitle = "Error"
+                        importAlertMessage = loadedBackupMessage(type: "Denied")
+                        self.showImportAlert.toggle()
                     }
                 } catch {
                     // Handle failure.
+                    importAlertTitle = "Error"
+                    importAlertMessage = loadedBackupMessage(type: "Failure")
+                    self.showImportAlert.toggle()
                     print("Unable to read file contents")
                     print(error.localizedDescription)
                 }
             }
-            .alert(isPresented: $showImportAlert) {
-                Alert (
-                    title: Text("Successfully Loaded Backup"),
-                    message: Text(loadedBackupMessage())
-                )
-            }
-            .alert(isPresented: $showSuccessfullIAPRestore) {
-                Alert (
-                    title: Text("Success"),
-                    message: Text("Gear Shed Unlimited has been restored!")
-                )
-            }
-            .alert(isPresented: $showFailureIAPRestore) {
-                Alert (
-                    title: Text(failureRestoreErrorTitle),
-                    message: Text(failureRestoreErrorMessage)
-                )
-            }
-            .sheet(isPresented: $showExportSheet) {
-                if let data = backUpData() {
-                    DocumentPicker(URLs: data)
-                }
-            }
         }
-        //.padding(.bottom, 50)
         .navigationViewStyle(.stack)
     }
 }
 
 extension SettingsView {
-    //General Preferences
+    //MARK: General Preferences
     private var pdfUsernameSection: some View {
         HStack {
             Text("PDF Username:")
-            TextField("username", text: $pdfUsername)
-                .onChange(of: pdfUsername) { newValue in
-                    Prefs.shared.pdfUserName = newValue
-                }
+            TextField("username", text: $pdfUserName)
         }
     }
     private var weightUnitSection: some View {
@@ -156,17 +142,10 @@ extension SettingsView {
             Text("Currency Unit")
         }
     }
-    private var colorSchemeSection: some View {
-        //NOT IN USE AT THE MOMENT
-        NavigationLink {
-            ColorSchemeView()
-        } label: {
-            Text("Color Scheme")
-        }
-    }
     private var alternateAppIconSection: some View {
         NavigationLink {
             AlternateIconView()
+                .environmentObject(persistentStore)
         } label: {
             Text("Alternate App Icon")
         }
@@ -176,17 +155,16 @@ extension SettingsView {
             pdfUsernameSection
             weightUnitSection
             currencyUnitSection
-            //colorSchemeSection
             alternateAppIconSection
         } header: {
             Text("Preferences")
         }
     }
-    //Database Managemnet
+    //MARK: Database Managemnet
     private var icloudDriveBackupSection: some View {
         Button {
             if gsData.proUser() {
-                writeBackupFile()
+                iCloudBackup()
             } else {
                 self.showUpgradeSheet.toggle()
             }
@@ -196,6 +174,12 @@ extension SettingsView {
                 Text("Create iCloud Drive Backup")
             }
         }
+        .alert(isPresented: $showSuccessBackupWrite) {
+            Alert (
+                title: Text("Success"),
+                message: Text("Gear Shed has successfully backed up your data to your iCloud folder!")
+            )
+        }
     }
     private var offlineBackupSection: some View {
         Button {
@@ -204,20 +188,30 @@ extension SettingsView {
             } else {
                 self.showUpgradeSheet.toggle()
             }
-            
         } label: {
             HStack {
                 Image(systemName: "arrow.up.doc.fill")
                 Text("Create Offline Backup")
             }
         }
+        .sheet(isPresented: $showExportSheet) {
+            if let data = offlineBackup() {
+                DocumentPicker(URLs: data)
+            }
+        }
     }
     private var loadBackupSection: some View {
         Button {
             if gsData.proUser() {
-                self.showImportSheet.toggle()
-                //For testing purposes
-                //loadData(url: Bundle.main.url(forResource: "backup", withExtension: "json")!)
+                if showImportSheet {
+                    // NOTE: Fixes broken fileimporter sheet not resetting on swipedown
+                    self.showImportSheet = false
+                    DispatchQueue.main.asyncAfter(deadline: .now()+0.2) {
+                        self.showImportSheet = true
+                    }
+                } else {
+                    self.showImportSheet = true
+                }
             } else {
                 self.showUpgradeSheet.toggle()
             }
@@ -227,11 +221,24 @@ extension SettingsView {
                 Text("Load From Backup")
             }
         }
+        .alert(isPresented: $showImportAlert) {
+            Alert (
+                title: Text(importAlertTitle),
+                message: Text(importAlertMessage)
+            )
+        }
     }
     private var eraseAllContentButton: some View {
         Button {
             withAnimation {
-                detailManager.target = .showConfirmEraseView
+                detailManager.content = AnyView(
+                    ConfirmEraseView(
+                        completion:{self.showEraseAllAlert.toggle()},
+                        persistentStore: persistentStore,
+                        detailManager: detailManager
+                    )
+                )
+                detailManager.target = .showContent
             }
         } label: {
             HStack {
@@ -240,17 +247,12 @@ extension SettingsView {
             }
             .foregroundColor(.red)
         }
-        /*.alert(isPresented: test.$confirmationAlert) {
+        .alert(isPresented: $showEraseAllAlert) {
             Alert (
-                title: Text("Successfully Erased Gear Shed"),
-                message: Text("Please restart the app to continue"),
-                dismissButton: .default(Text("OK"), action: {
-                    Prefs.shared.confirmationAlert = false
-                    
-                })
-
+                title: Text("Success!"),
+                message: Text("All Gear Shed data has been deleted.")
             )
-        }*/
+        }
     }
     private var databaseManagementSection: some View {
         Section {
@@ -266,32 +268,50 @@ extension SettingsView {
             Text("Database Management")
         }
     }
-    //In App Purchases
+    //MARK: In App Purchases
     private var restorePurchasesSection: some View {
-        Button {
-            unlockManager.restorePurchases { result in
-                switch result {
-                case .success(let success):
-                    if success {
-                        self.showSuccessfullIAPRestore.toggle()
-                    } else {
-                        failureRestoreErrorTitle = "No Purchases"
-                        failureRestoreErrorMessage = """
-                                              There are no purchases to restore, or Gear Shed Unlimited is already active.\n\nIf you feel this is an error, please send us an email.
-                                              """
+        ZStack {
+            //Invisable Rectangle to seperate alerts
+            Rectangle()
+                .opacity(0)
+                .frame(width: 0, height: 0)
+                .alert(isPresented: $showFailureIAPRestore) {
+                    Alert (
+                        title: Text(failureRestoreErrorTitle),
+                        message: Text(failureRestoreErrorMessage)
+                    )
+                }
+            Button {
+                unlockManager.restorePurchases { result in
+                    switch result {
+                    case .success(let success):
+                        if success {
+                            self.showSuccessfullIAPRestore.toggle()
+                        } else {
+                            failureRestoreErrorTitle = "No Purchases"
+                            failureRestoreErrorMessage = """
+                                                  There are no purchases to restore, or Gear Shed Unlimited is already active.\n\nIf you feel this is an error, please send us an email.
+                                                  """
+                            self.showFailureIAPRestore.toggle()
+                        }
+                    case .failure(let error):
+                        failureRestoreErrorTitle = "Error"
+                        failureRestoreErrorMessage = error.localizedDescription
                         self.showFailureIAPRestore.toggle()
                     }
-                case .failure(let error):
-                    failureRestoreErrorTitle = "Error"
-                    failureRestoreErrorMessage = error.localizedDescription
-                    self.showFailureIAPRestore.toggle()
+                }
+                //unlockManager.restore()
+            } label: {
+                HStack {
+                    Image(systemName: "clock.arrow.circlepath")
+                    Text("Restore Purchases")
                 }
             }
-            unlockManager.restore()
-        } label: {
-            HStack {
-                Image(systemName: "clock.arrow.circlepath")
-                Text("Restore Purchases")
+            .alert(isPresented: $showSuccessfullIAPRestore) {
+                Alert (
+                    title: Text("Success"),
+                    message: Text("Gear Shed Unlimited has been restored!")
+                )
             }
         }
     }
@@ -302,29 +322,17 @@ extension SettingsView {
             if gsData.proUser() {
                 HStack {
                     Image(systemName: "infinity.circle")
-                    Text("Gear Shed Pro Active")
+                    Text("Gear Shed Unlimited Active")
                 }
             } else {
                 HStack {
                     Image(systemName: "lock.open")
-                    Text("Buy Gear Shed Pro")
+                    Text("Buy Gear Shed Unlimited")
                 }
             }
-            
         }
         .sheet(isPresented: $showUpgradeSheet) {
             UnlockView()
-        }
-    }
-    private var tipDeveloperSection: some View {
-        Button {
-            
-        } label: {
-            HStack {
-                Image(systemName: "dollarsign.circle.fill")
-                Text("Tip The Developer")
-            }
-            
         }
     }
     private var IAPSection: some View {
@@ -336,7 +344,7 @@ extension SettingsView {
             Text("In App purchases")
         }
     }
-    //More Info
+    //MARK: More Info
     private var aboutSection: some View {
         NavigationLink {
             AboutView()
@@ -378,14 +386,15 @@ extension SettingsView {
             Text("Version: \(UIApplication.release), Build: \(UIApplication.build)")
         }
     }
-    //Title bar
+    //MARK: Title bar
     private var viewTitle: some ToolbarContent {
         ToolbarItem (placement: .principal) {
             Text("Settings")
                 .formatGreen()
         }
     }
-    //Weight Settings Functions
+    //MARK: Weight Settings Functions
+    /// Helper function that converts an items weight from imperial to metric
     private func configureItemMassImpToMetric() {
         for item in gsData.items {
             if item.weight.isEmpty {
@@ -400,6 +409,7 @@ extension SettingsView {
         }
         persistentStore.saveContext()
     }
+    /// Helper function that converts an items weight from metric to imperial
     private func configureItemMassMetricToImp() {
         for item in gsData.items {
             if (item.itemLbs.isEmpty && item.itemOZ.isEmpty) {
@@ -413,6 +423,7 @@ extension SettingsView {
         }
         persistentStore.saveContext()
     }
+    /// Function to toggle between imperial and metric weight units, and automatically convert all items corrosponding weight
     private func toggleWeightUnit() {
         if weightUnit == "g" {
             weightUnit = "lb + oz"
@@ -422,7 +433,8 @@ extension SettingsView {
             configureItemMassImpToMetric()
         }
     }
-    //Backup and Import Functions
+    //MARK: Backup and Import Functions
+    /// Function to load a JSON backup file and insert entities to the persistent store
     private func loadData(url: URL) {
         // Get a current count on each core data entity
         let currentShedCount = gsData.sheds.count
@@ -441,70 +453,89 @@ extension SettingsView {
         self.activitiesAdded = glData.activities.count - currentActivitiesCount
         self.diariesAdded = gsData.itemDiaries.count - currentDiaryCount
     }
-    private func writeBackupFile() {
-        backupManager.backupToiCloudDrive(items: gsData.items, itemDiaries: gsData.itemDiaries, sheds: gsData.sheds, brands: gsData.brands, gearlists: glData.gearlists, piles: glData.listgroups, packs: glData.packingGroups, packingBools: glData.packingBools, activityTypes: glData.activityTypes)
+    /// Function to generate a JSON file containing the backup to be sent directly to Gear Shed's iCloud document folder
+    private func iCloudBackup() {
+        backupManager.backupToiCloudDrive(items: gsData.items, itemDiaries: gsData.itemDiaries, sheds: gsData.sheds, brands: gsData.brands, gearlists: glData.gearlists, piles: glData.listgroups, packs: glData.packingGroups, packingBools: glData.packingBools, activityTypes: glData.activityTypes) { result in
+            switch result {
+            case .success(let success):
+                if success {
+                    self.showSuccessBackupWrite.toggle()
+                }
+            case .failure(let error):
+                BackupWriteAlertTitle = "Error"
+                BackupWriteAlertMessage  = error.localizedDescription
+                self.showFailureBackupWrite.toggle()
+            }
+        }
     }
-    private func backUpData() -> [URL] {
+    /// Function to generate a JSON file containing the backup to be sent as a URL to document picker
+    private func offlineBackup() -> [URL] {
         var urls = [URL]()
         urls.append(backupManager.writeAsJSON(items: gsData.items, itemDiaries: gsData.itemDiaries, sheds: gsData.sheds, brands: gsData.brands, gearlists: glData.gearlists, piles: glData.listgroups, packs: glData.packingGroups, packingBools: glData.packingBools, activityTypes: glData.activityTypes))
         return urls
     }
-    private func loadedBackupMessage() -> String {
+    /// Function to generate the message for when a backup file is loaded
+    private func loadedBackupMessage(type: String) -> String {
         var returnText: String =  ""
-        
-        if shedsAdded != 0 {
-            if shedsAdded == 1 {
-                returnText.append(contentsOf: "\(shedsAdded) Shelf, ")
+        switch type {
+        case "Success":
+            if (shedsAdded == 0), (brandsAdded == 0), (itemsAdded == 0), (adventuresAdded == 0), (activitiesAdded == 0), (diariesAdded == 0) {
+                returnText = "There is no data to import or all data is already in your Gear Shed."
+                return returnText
             } else {
-                returnText.append(contentsOf: "\(shedsAdded) Shelves, ")
+                if shedsAdded != 0 {
+                    if shedsAdded == 1 {
+                        returnText.append(contentsOf: "\(shedsAdded) Shelf, ")
+                    } else {
+                        returnText.append(contentsOf: "\(shedsAdded) Shelves, ")
+                    }
+                }
+                if brandsAdded != 0 {
+                    if brandsAdded == 1 {
+                        returnText.append(contentsOf: "\(brandsAdded) Brand, ")
+                    } else {
+                        returnText.append(contentsOf: "\(brandsAdded) Brands, ")
+                    }
+                    
+                }
+                if itemsAdded != 0 {
+                    if itemsAdded == 1 {
+                        returnText.append(contentsOf: "\(itemsAdded) Item, ")
+                    } else {
+                        returnText.append(contentsOf: "\(itemsAdded) Items, ")
+                    }
+                }
+                if adventuresAdded != 0 {
+                    if adventuresAdded == 1 {
+                        returnText.append(contentsOf: "\(adventuresAdded) Adventure, ")
+                    } else {
+                        returnText.append(contentsOf: "\(adventuresAdded) Adventures, ")
+                    }
+                }
+                if activitiesAdded != 0 {
+                    if activitiesAdded == 1 {
+                        returnText.append(contentsOf: "\(activitiesAdded) Activity, ")
+                    } else {
+                        returnText.append(contentsOf: "\(activitiesAdded) Activities, ")
+                    }
+                }
+                if diariesAdded != 0 {
+                    if diariesAdded == 1 {
+                        returnText.append(contentsOf: "\(diariesAdded) Gear Diary, ")
+                    } else {
+                        returnText.append(contentsOf: "\(diariesAdded) Gear Diaries, ")
+                    }
+                }
+                var returnTextFinal = returnText.dropLast(2)
+                returnTextFinal.append(contentsOf: " - Were Successfully Added To Your Gear Shed")
+                return String(returnTextFinal)
             }
-            
+        case "Failure":
+           return "Failed to load backup, please check the right file was chosen."
+        case "Denied":
+            return "Failed to open file importer. Access was denied."
+        default:
+            return ""
         }
-        
-        if brandsAdded != 0 {
-            if brandsAdded == 1 {
-                returnText.append(contentsOf: "\(brandsAdded) Brand, ")
-            } else {
-                returnText.append(contentsOf: "\(brandsAdded) Brands, ")
-            }
-            
-        }
-        
-        if itemsAdded != 0 {
-            if itemsAdded == 1 {
-                returnText.append(contentsOf: "\(itemsAdded) Item, ")
-            } else {
-                returnText.append(contentsOf: "\(itemsAdded) Items, ")
-            }
-        }
-        
-        if adventuresAdded != 0 {
-            if adventuresAdded == 1 {
-                returnText.append(contentsOf: "\(adventuresAdded) Adventure, ")
-            } else {
-                returnText.append(contentsOf: "\(adventuresAdded) Adventures, ")
-            }
-        }
-        
-        if activitiesAdded != 0 {
-            if activitiesAdded == 1 {
-                returnText.append(contentsOf: "\(activitiesAdded) Activity, ")
-            } else {
-                returnText.append(contentsOf: "\(activitiesAdded) Activities, ")
-            }
-        }
-        
-        if diariesAdded != 0 {
-            if diariesAdded == 1 {
-                returnText.append(contentsOf: "\(diariesAdded) Gear Diary, ")
-            } else {
-                returnText.append(contentsOf: "\(diariesAdded) Gear Diaries, ")
-            }
-        }
-        
-        var returnTextFinal = returnText.dropLast(2)
-        returnTextFinal.append(contentsOf: "- Were Successfully Added To Your Gear Shed")
-        
-        return String(returnTextFinal)
     }
 }

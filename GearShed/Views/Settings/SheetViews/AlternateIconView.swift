@@ -9,20 +9,23 @@
 import SwiftUI
 
 struct AlternateIconView: View {
-    
-    
-    private let radius: CGFloat = 14
-    
+    @EnvironmentObject var persistentStore: PersistentStore
     @AppStorage("selectedIcon", store: .standard) var selectedIcon: String = "AppIcon"
+    @State private var showUpgradeSheet: Bool = false
+    private let radius: CGFloat = 14
     
     var body: some View {
         List {
             Button {
-                guard UIApplication.shared.supportsAlternateIcons else { return print("Does Not Allow Icon Change") }
-                selectedIcon = "AppIcon"
-                UIApplication.shared.setAlternateIconName(nil) { error in
-                    if let error = error { print(error.localizedDescription) }
-                    else { print("Success!") }
+                if persistentStore.fullVersionUnlocked {
+                    guard UIApplication.shared.supportsAlternateIcons else { return print("Does Not Allow Icon Change") }
+                    selectedIcon = "AppIcon"
+                    UIApplication.shared.setAlternateIconName(nil) { error in
+                        if let error = error { print(error.localizedDescription) }
+                        else { print("Success!") }
+                    }
+                } else {
+                    self.showUpgradeSheet.toggle()
                 }
             } label: {
                 HStack {
@@ -35,13 +38,16 @@ struct AlternateIconView: View {
                     }
                 }
             }
-            
             Button {
-                guard UIApplication.shared.supportsAlternateIcons else { return print("Does Not Allow Icon Change") }
-                selectedIcon = "DarkIcon"
-                UIApplication.shared.setAlternateIconName("DarkIcon") { error in
-                    if let error = error { print(error.localizedDescription) }
-                    else { print("Success!") }
+                if persistentStore.fullVersionUnlocked {
+                    guard UIApplication.shared.supportsAlternateIcons else { return print("Does Not Allow Icon Change") }
+                    selectedIcon = "DarkIcon"
+                    UIApplication.shared.setAlternateIconName("DarkIcon") { error in
+                        if let error = error { print(error.localizedDescription) }
+                        else { print("Success!") }
+                    }
+                } else {
+                    self.showUpgradeSheet.toggle()
                 }
             } label: {
                 HStack {
@@ -54,13 +60,16 @@ struct AlternateIconView: View {
                     }
                 }
             }
-            
             Button {
-                guard UIApplication.shared.supportsAlternateIcons else { return print("Does Not Allow Icon Change") }
-                selectedIcon = "BlueIcon"
-                UIApplication.shared.setAlternateIconName("BlueIcon") { error in
-                    if let error = error { print(error.localizedDescription) }
-                    else { print("Success!") }
+                if persistentStore.fullVersionUnlocked {
+                    guard UIApplication.shared.supportsAlternateIcons else { return print("Does Not Allow Icon Change") }
+                    selectedIcon = "BlueIcon"
+                    UIApplication.shared.setAlternateIconName("BlueIcon") { error in
+                        if let error = error { print(error.localizedDescription) }
+                        else { print("Success!") }
+                    }
+                } else {
+                    self.showUpgradeSheet.toggle()
                 }
             } label: {
                 HStack {
@@ -73,27 +82,13 @@ struct AlternateIconView: View {
                     }
                 }
             }
-//            Button {
-//                guard UIApplication.shared.supportsAlternateIcons else { return print("Does Not Allow Icon Change") }
-//                selectedIcon = "RGBIcon"
-//                UIApplication.shared.setAlternateIconName("RGBIcon") { error in
-//                    if let error = error { print(error.localizedDescription) }
-//                    else { print("Success!") }
-//                }
-//            } label: {
-//                HStack {
-//                    Image(uiImage: getAltAppIcon(iconName: "RGBIcon"))
-//                        .cornerRadius(radius)
-//                    Text("RGB")
-//                    if selectedIcon == "RGBIcon" {
-//                        Image(systemName: "checkmark")
-//                            .foregroundColor(.blue)
-//                    }
-//                }
-//            }
         }
         .listStyle(InsetGroupedListStyle())
         .navigationBarTitle("Change App Icon", displayMode: .inline)
+        .sheet(isPresented: $showUpgradeSheet) {
+            UnlockView()
+        }
+        
     }
     func getAppIcon() -> UIImage {
         var appIcon: UIImage! {

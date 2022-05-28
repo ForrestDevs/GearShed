@@ -86,22 +86,10 @@ struct StatBar: View {
                     .formatStatBarContent()
             }
             VStack (alignment: .leading, spacing: 2) {
-                // Stat for total weight in Grams
-                if (Prefs.shared.weightUnit == "g") {
-                    Text("Weight")
-                        .formatStatBarTitle()
-                    Text("\(gsData.totalGrams(array: gsData.items)) g")
-                        .formatStatBarContent()
-                }
-                if (Prefs.shared.weightUnit == "lb + oz") {
-                    Text("Weight")
-                        .formatStatBarTitle()
-                    let totalLbsOz = gsData.totalLbsOz(array: gsData.items)
-                    let totalLbs = totalLbsOz.lbs
-                    let totalOz = totalLbsOz.oz
-                    Text("\(totalLbs) lb \(totalOz) oz")
-                        .formatStatBarTitle()
-                }
+                Text("Weight")
+                    .formatStatBarTitle()
+                Text(gsData.weightForStatBar(array: gsData.items))
+                    .formatStatBarContent()
             }
             VStack (alignment: .leading, spacing: 2) {
                 Text("Invested")
@@ -132,23 +120,10 @@ struct StatBar: View {
                     .formatStatBarContent()
             }
             VStack (alignment: .leading, spacing: 2) {
-                // Stat for total weight in Grams
-                if (Prefs.shared.weightUnit == "g") {
-                    Text("Weight")
-                        .formatStatBarTitle()
-                    
-                    Text("\(gsData.totalGrams(array: gsData.favItems)) g")
-                        .formatStatBarContent()
-                }
-                if (Prefs.shared.weightUnit == "lb + oz") {
-                    Text("Weight")
-                        .formatStatBarTitle()
-                    let totalLbsOz = gsData.totalLbsOz(array: gsData.favItems)
-                    let totalLbs = totalLbsOz.lbs
-                    let totalOz = totalLbsOz.oz
-                    Text("\(totalLbs) lbs \(totalOz) oz")
-                        .formatStatBarTitle()
-                }
+                Text("Weight")
+                    .formatStatBarTitle()
+                Text(gsData.weightForStatBar(array: gsData.favItems))
+                    .formatStatBarContent()
             }
             VStack (alignment: .leading, spacing: 2) {
                 Text("Invested")
@@ -236,22 +211,10 @@ struct StatBar: View {
                     .formatStatBarContent()
             }
             VStack (alignment: .leading, spacing: 2) {
-                // Stat for total weight in Grams
-                if (Prefs.shared.weightUnit == "g") {
-                    Text("Weight")
-                        .formatStatBarTitle()
-                    Text("\(glData.gearlistTotalGrams(gearlist: gearlist!)) g")
-                        .formatStatBarContent()
-                }
-                if (Prefs.shared.weightUnit == "lb + oz") {
-                    Text("Weight")
-                        .formatStatBarTitle()
-                    let totalLbsOz = glData.gearlistTotalLbsOz(gearlist: gearlist!)
-                    let totalLbs = totalLbsOz.lbs
-                    let totalOz = totalLbsOz.oz
-                    Text("\(totalLbs) lbs \(totalOz) oz")
-                        .formatStatBarTitle()
-                }
+                Text("Weight")
+                    .formatStatBarTitle()
+                Text("\(glData.weightForGearlistStat(gearlist: gearlist!, type: "list"))")
+                    .formatStatBarContent()
             }
             Spacer()
         }
@@ -265,21 +228,10 @@ struct StatBar: View {
                     .formatStatBarContent()
             }
             VStack (alignment: .leading, spacing: 2) {
-                if (Prefs.shared.weightUnit == "g") {
-                    Text("Weight")
-                        .formatStatBarTitle()
-                    Text("\(glData.gearlistPileTotalGrams(gearlist: gearlist!)) g" )
-                        .formatStatBarContent()
-                }
-                if (Prefs.shared.weightUnit == "lb + oz") {
-                    Text("Weight")
-                        .formatStatBarTitle()
-                    let totalLbsOz = glData.gearlistPileTotalLbsOz(gearlist: gearlist!)
-                    let totalLbs = totalLbsOz.lbs
-                    let totalOz = totalLbsOz.oz
-                    Text("\(totalLbs) lbs \(totalOz) oz")
-                        .formatStatBarTitle()
-                }
+                Text("Weight")
+                    .formatStatBarTitle()
+                Text(glData.weightForGearlistStat(gearlist: gearlist!, type: "pile"))
+                    .formatStatBarContent()
             }
             Spacer()
         }
@@ -297,21 +249,10 @@ struct StatBar: View {
                     .formatStatBarContent()
             }
             VStack (alignment: .leading, spacing: 2) {
-                if (Prefs.shared.weightUnit == "g") {
-                    Text("Weight")
-                        .formatStatBarTitle()
-                    Text("\(glData.gearlistPackTotalGrams(gearlist: gearlist!)) g")
-                        .formatStatBarContent()
-                }
-                if (Prefs.shared.weightUnit == "lb + oz") {
-                    Text("Weight")
-                        .formatStatBarTitle()
-                    let totalLbsOz = glData.gearlistPackTotalLbsOz(gearlist: gearlist!)
-                    let totalLbs = totalLbsOz.lbs
-                    let totalOz = totalLbsOz.oz
-                    Text("\(totalLbs) lbs \(totalOz) oz")
-                        .formatStatBarTitle()
-                }
+                Text("Weight")
+                    .formatStatBarTitle()
+                Text(glData.weightForGearlistStat(gearlist: gearlist!, type: "pack"))
+                    .formatStatBarContent()
             }
             Spacer()
         }

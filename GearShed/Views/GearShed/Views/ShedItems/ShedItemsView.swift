@@ -55,13 +55,13 @@ struct ShedItemsView: View {
                     }
                 }
             }
-            .padding(.bottom, 150)
         }
     }
     private func sectionContent(shed: Shed) -> some View {
         ForEach (shed.items) { item in
             if gsData.showAll {
                 ItemRowView(item: item)
+                    .environmentObject(gsData)
                     .padding(.leading, 15)
             }
         }

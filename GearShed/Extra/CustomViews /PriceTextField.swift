@@ -35,7 +35,7 @@ struct PriceTextField: View {
     }
     
     func handleUserInput(for newValue: String) {
-        let trimmedText = limitOunces(newValue)
+        let trimmedText = limitPriceInput(newValue)
         if trimmedText != newValue {
             textValue = trimmedText
             editingComplete = false
@@ -43,7 +43,7 @@ struct PriceTextField: View {
             editingComplete ? (inputError = false) : (editingComplete = true)
         }
     }
-    func limitOunces(_ newValue: String) -> String {
+    func limitPriceInput(_ newValue: String) -> String {
         let filteredText = newValue.replacingOccurrences(of: "[^0123456789.]", with: "", options: .regularExpression)
         var returnString = filteredText
         var numSet = CharacterSet()

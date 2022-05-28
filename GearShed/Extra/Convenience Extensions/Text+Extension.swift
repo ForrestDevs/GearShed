@@ -75,6 +75,22 @@ extension Text {
         self.foregroundColor(Color.theme.accent)
             .font(.custom("HelveticaNeue", size: 15))
     }
+    func formatIAPTitle() -> some View {
+        self.foregroundColor(Color.theme.accent)
+            .font(.custom("HelveticaNeue", size: 20).bold())
+    }
+    func formatIAPHeader() -> some View {
+        self.foregroundColor(Color.theme.accent)
+            .font(.custom("HelveticaNeue", size: 17).bold())
+    }
+    func formatIAPItems() -> some View {
+        self.foregroundColor(Color.theme.green)
+            .font(.custom("HelveticaNeue", size: 16).bold())
+    }
+    func formatIAPFooter() -> some View {
+        self.foregroundColor(Color.gray)
+            .font(.custom("HelveticaNeue", size: 15))
+    }
     func formatGreen() -> some View {
         self.foregroundColor(Color.theme.green)
             .font(.custom("HelveticaNeue", size: 17).bold())
