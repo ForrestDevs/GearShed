@@ -8,6 +8,7 @@
 
 import StoreKit
 import SwiftUI
+import RevenueCat
 
 struct UnlockView: View {
     @Environment(\.presentationMode) var presentationMode
@@ -17,6 +18,8 @@ struct UnlockView: View {
     @State private var failureRestoreErrorTitle: String = ""
     @State private var failureRestoreErrorMessage: String = ""
     @State private var showIAPActiveAlert: Bool = false
+    
+//    @State private var currentProduct: Product
     
     var body: some View {
         NavigationView {

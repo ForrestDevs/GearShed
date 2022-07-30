@@ -455,7 +455,7 @@ extension SettingsView {
     }
     /// Function to generate a JSON file containing the backup to be sent directly to Gear Shed's iCloud document folder
     private func iCloudBackup() {
-        backupManager.backupToiCloudDrive(items: gsData.items, itemDiaries: gsData.itemDiaries, sheds: gsData.sheds, brands: gsData.brands, gearlists: glData.gearlists, piles: glData.listgroups, packs: glData.packingGroups, packingBools: glData.packingBools, activityTypes: glData.activityTypes) { result in
+        backupManager.backupToiCloudDrive(items: gsData.items, itemDiaries: gsData.itemDiaries, sheds: gsData.sheds, brands: gsData.brands, gearlists: glData.gearlists, piles: glData.listgroups, packs: glData.packingGroups, /*packingBools: glData.packingBools,*/ activityTypes: glData.activityTypes) { result in
             switch result {
             case .success(let success):
                 if success {
@@ -471,7 +471,7 @@ extension SettingsView {
     /// Function to generate a JSON file containing the backup to be sent as a URL to document picker
     private func offlineBackup() -> [URL] {
         var urls = [URL]()
-        urls.append(backupManager.writeAsJSON(items: gsData.items, itemDiaries: gsData.itemDiaries, sheds: gsData.sheds, brands: gsData.brands, gearlists: glData.gearlists, piles: glData.listgroups, packs: glData.packingGroups, packingBools: glData.packingBools, activityTypes: glData.activityTypes))
+        urls.append(backupManager.writeAsJSON(items: gsData.items, itemDiaries: gsData.itemDiaries, sheds: gsData.sheds, brands: gsData.brands, gearlists: glData.gearlists, piles: glData.listgroups, packs: glData.packingGroups, /*packingBools: glData.packingBools,*/ activityTypes: glData.activityTypes))
         return urls
     }
     /// Function to generate the message for when a backup file is loaded

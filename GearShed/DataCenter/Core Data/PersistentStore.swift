@@ -21,12 +21,8 @@ final class PersistentStore: ObservableObject {
     let defaults: UserDefaults
     /// Loads and saves whether our premium unlock has been purchased
     var fullVersionUnlocked: Bool {
-        get {
-            defaults.bool(forKey: "fullVersionUnlocked")
-        }
-        set {
-            defaults.set(newValue, forKey: "fullVersionUnlocked")
-        }
+        get { defaults.bool(forKey: "fullVersionUnlocked") }
+        set { defaults.set(newValue, forKey: "fullVersionUnlocked") }
     }
     /// Initializes a persistent store, either in memory (for temporary use such as testing and previewing),
     /// or on permanent storage (for use in regular app runs).

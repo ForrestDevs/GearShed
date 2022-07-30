@@ -5,7 +5,7 @@
 //  Created by Luke Forrest Gannon
 //  Copyright © 2022 All rights reserved.
 //
-
+import Foundation
 import Combine
 import StoreKit
 
@@ -22,7 +22,7 @@ class UnlockManager: NSObject, ObservableObject, SKPaymentTransactionObserver, S
     }
     @Published var requestState = RequestState.loading
     private let persistentStore: PersistentStore
-    private let request: SKProductsRequest
+    private let request: SKProductsRequest!
     private var loadedProducts = [SKProduct]()
     var canMakePayments: Bool { SKPaymentQueue.canMakePayments() }
     
@@ -32,8 +32,8 @@ class UnlockManager: NSObject, ObservableObject, SKPaymentTransactionObserver, S
     init(persistentStore: PersistentStore) {
         self.persistentStore = persistentStore
         // Put the IAP product IDs HERE
-        let productIDs = Set(["app.gearshed.GearShed.GearShed_Unlimited_V1_IAP"])
-        //let productIDs = Set(["app.gearshed.GearShed.ProUnlock"])
+        let productIDs = Set(["app.gearshed.GearShed.Unlimited.01"])
+        //let productIDs = Set(["app.gearshed.GearShed.GearShed_Unlimited_V1_IAP"])
         request = SKProductsRequest(productIdentifiers: productIDs)
         super.init()
         SKPaymentQueue.default().add(self)
@@ -44,6 +44,25 @@ class UnlockManager: NSObject, ObservableObject, SKPaymentTransactionObserver, S
     deinit {
         SKPaymentQueue.default().remove(self)
     }
+    
+    /// Function to fetch and validate IAP product IDs
+    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+        DispatchQueue.main.async {
+            self.loadedProducts = response.products
+            guard let unlock = self.loadedProducts.first else {
+                print("ALERT: Missing IAP Product")
+                self.requestState = .failed(StoreError.missingProduct)
+                return
+            }
+            if response.invalidProductIdentifiers.isEmpty == false {
+                print("ALERT: Received invalid product identifiers: \(response.invalidProductIdentifiers)")
+                self.requestState = .failed(StoreError.invalidIdentifiers)
+                return
+            }
+            self.requestState = .loaded(unlock)
+        }
+    }
+    
     // MARK: - SKPaymentTransactionObserver
     func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         DispatchQueue.main.async { [self] in
@@ -72,6 +91,29 @@ class UnlockManager: NSObject, ObservableObject, SKPaymentTransactionObserver, S
         }
     }
     
+    //    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+    //        DispatchQueue.main.async { [self] in
+    //            for transaction in transactions {
+    //                switch transaction.transactionState {
+    //                case .purchased, .restored:
+    //                    self.persistentStore.fullVersionUnlocked = true
+    //                    self.requestState = .purchased
+    //                    queue.finishTransaction(transaction)
+    //                case .failed:
+    //                    if let product = loadedProducts.first {
+    //                        self.requestState = .loaded(product)
+    //                    } else {
+    //                        self.requestState = .failed(transaction.error)
+    //                    }
+    //                    queue.finishTransaction(transaction)
+    //                case .deferred:
+    //                    self.requestState = .deferred
+    //                default:
+    //                    break
+    //                }
+    //            }
+    //        }
+    //    }
     
     func paymentQueueRestoreCompletedTransactionsFinished(_ queue: SKPaymentQueue) {
         if totalRestoredPurchases != 0 {
@@ -81,48 +123,12 @@ class UnlockManager: NSObject, ObservableObject, SKPaymentTransactionObserver, S
             onBuyProductHandler?(.success(false))
         }
     }
-//    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
-//        DispatchQueue.main.async { [self] in
-//            for transaction in transactions {
-//                switch transaction.transactionState {
-//                case .purchased, .restored:
-//                    self.persistentStore.fullVersionUnlocked = true
-//                    self.requestState = .purchased
-//                    queue.finishTransaction(transaction)
-//                case .failed:
-//                    if let product = loadedProducts.first {
-//                        self.requestState = .loaded(product)
-//                    } else {
-//                        self.requestState = .failed(transaction.error)
-//                    }
-//                    queue.finishTransaction(transaction)
-//                case .deferred:
-//                    self.requestState = .deferred
-//                default:
-//                    break
-//                }
-//            }
-//        }
-//    }
-    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
-        DispatchQueue.main.async {
-            self.loadedProducts = response.products
-            guard let unlock = self.loadedProducts.first else {
-                self.requestState = .failed(StoreError.missingProduct)
-                return
-            }
-            if response.invalidProductIdentifiers.isEmpty == false {
-                print("ALERT: Received invalid product identifiers: \(response.invalidProductIdentifiers)")
-                self.requestState = .failed(StoreError.invalidIdentifiers)
-                return
-            }
-            self.requestState = .loaded(unlock)
-        }
-    }
+    
     func buy(product: SKProduct) {
         let payment = SKPayment(product: product)
         SKPaymentQueue.default().add(payment)
     }
+    
     func restore() {
         SKPaymentQueue.default().restoreCompletedTransactions()
     }
@@ -132,6 +138,4 @@ class UnlockManager: NSObject, ObservableObject, SKPaymentTransactionObserver, S
         totalRestoredPurchases = 0
         SKPaymentQueue.default().restoreCompletedTransactions()
     }
-    
 }
-
