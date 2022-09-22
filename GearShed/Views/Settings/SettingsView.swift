@@ -34,6 +34,7 @@ struct SettingsView: View {
     @State private var showUpgradeSheet: Bool = false
     @State private var showExportSheet: Bool = false
     @State private var showImportSheet: Bool = false
+    @State private var showImportSheet_forBase: Bool = false
     //Alerts
     @State private var showSuccessfulEraseAlert: Bool = false
     @State private var showSuccessfullIAPRestore: Bool = false
@@ -72,11 +73,12 @@ struct SettingsView: View {
             .toolbar {
                 viewTitle
             }
-            .fileImporter(isPresented: $showImportSheet, allowedContentTypes: [gsbType, UTType.json], allowsMultipleSelection: false) { result in
+            .fileImporter(isPresented: $showImportSheet_forBase, allowedContentTypes: [gsbType, UTType.json], allowsMultipleSelection: false) { result in
                 do {
                     guard let selectedFile: URL = try result.get().first else { return }
                     if selectedFile.startAccessingSecurityScopedResource() {
-                        loadData(url: selectedFile)
+                        // New Function to only add GearShed plus Gearlist with items, no piles, no packs
+                        loadBaseGearlistandGearShed(url: selectedFile)
                         do {
                             selectedFile.stopAccessingSecurityScopedResource()
                             importAlertTitle = "Successfully Loaded Backup"
@@ -98,6 +100,32 @@ struct SettingsView: View {
                     print(error.localizedDescription)
                 }
             }
+//            .fileImporter(isPresented: $showImportSheet, allowedContentTypes: [gsbType, UTType.json], allowsMultipleSelection: false) { result in
+//                do {
+//                    guard let selectedFile: URL = try result.get().first else { return }
+//                    if selectedFile.startAccessingSecurityScopedResource() {
+//                        loadData(url: selectedFile)
+//                        do {
+//                            selectedFile.stopAccessingSecurityScopedResource()
+//                            importAlertTitle = "Successfully Loaded Backup"
+//                            importAlertMessage = loadedBackupMessage(type: "Success")
+//                            self.showImportAlert.toggle()
+//                        }
+//                    } else {
+//                        // Handle denied access
+//                        importAlertTitle = "Error"
+//                        importAlertMessage = loadedBackupMessage(type: "Denied")
+//                        self.showImportAlert.toggle()
+//                    }
+//                } catch {
+//                    // Handle failure.
+//                    importAlertTitle = "Error"
+//                    importAlertMessage = loadedBackupMessage(type: "Failure")
+//                    self.showImportAlert.toggle()
+//                    print("Unable to read file contents")
+//                    print(error.localizedDescription)
+//                }
+//            }
         }
         .navigationViewStyle(.stack)
     }
@@ -228,6 +256,29 @@ extension SettingsView {
             )
         }
     }
+    private var loadBaseGearlistandGearShedView: some View {
+        Button {
+            if gsData.proUser() {
+                if showImportSheet_forBase {
+                    // NOTE: Fixes broken fileimporter sheet not resetting on swipedown
+                    self.showImportSheet_forBase = false
+                    DispatchQueue.main.asyncAfter(deadline: .now()+0.2) {
+                        self.showImportSheet_forBase = true
+                    }
+                } else {
+                    self.showImportSheet_forBase = true
+                }
+            } else {
+                self.showUpgradeSheet.toggle()
+            }
+        } label: {
+            HStack {
+                Image(systemName: "arrow.down.doc.fill")
+                Text("Load Backup Base Gearlist and GearShed only")
+            }
+        }
+        
+    }
     private var eraseAllContentButton: some View {
         Button {
             withAnimation {
@@ -262,6 +313,8 @@ extension SettingsView {
             offlineBackupSection
             // To load a backup file into core data
             loadBackupSection
+            // To load the backup file into core data only Item, Shed, Brand and Base Gearlist
+            loadBaseGearlistandGearShedView
             // To erase all core data entities and reset settings
             eraseAllContentButton
         } header: {
@@ -453,9 +506,30 @@ extension SettingsView {
         self.activitiesAdded = glData.activities.count - currentActivitiesCount
         self.diariesAdded = gsData.itemDiaries.count - currentDiaryCount
     }
+    
+    private func loadBaseGearlistandGearShed(url: URL) {
+        // Get a current count on each core data entity
+        let currentShedCount = gsData.sheds.count
+        let currentBrandCount = gsData.brands.count
+        let currentItemCount = gsData.items.count
+        let currentAdventuresCount = glData.adventures.count
+        let currentActivitiesCount = glData.activities.count
+        let currentDiaryCount = gsData.itemDiaries.count
+        // Import Backup Data
+        backupManager.insertBaseFromBackup(url: url)
+        // Find the count of the newly added data using the difference.
+        self.shedsAdded = gsData.sheds.count - currentShedCount
+        self.brandsAdded = gsData.brands.count - currentBrandCount
+        self.itemsAdded = gsData.items.count - currentItemCount
+        self.adventuresAdded = glData.adventures.count - currentAdventuresCount
+        self.activitiesAdded = glData.activities.count - currentActivitiesCount
+        self.diariesAdded = gsData.itemDiaries.count - currentDiaryCount
+    }
+    
     /// Function to generate a JSON file containing the backup to be sent directly to Gear Shed's iCloud document folder
     private func iCloudBackup() {
-        backupManager.backupToiCloudDrive(items: gsData.items, itemDiaries: gsData.itemDiaries, sheds: gsData.sheds, brands: gsData.brands, gearlists: glData.gearlists, piles: glData.listgroups, packs: glData.packingGroups, /*packingBools: glData.packingBools,*/ activityTypes: glData.activityTypes) { result in
+//        backupManager.backupToiCloudDrive(items: gsData.items, itemDiaries: gsData.itemDiaries, sheds: gsData.sheds, brands: gsData.brands, gearlists: glData.gearlists, piles: glData.listgroups, packs: glData.packingGroups, packingBools: glData.packingBools, activityTypes: glData.activityTypes)
+        backupManager.backupToiCloudDrive(items: gsData.items, itemDiaries: gsData.itemDiaries, sheds: gsData.sheds, brands: gsData.brands, gearlists: glData.gearlists, piles: glData.listgroups, packs: glData.packingGroups, packingBools: glData.packingBools, activityTypes: glData.activityTypes) { result in
             switch result {
             case .success(let success):
                 if success {
@@ -471,7 +545,7 @@ extension SettingsView {
     /// Function to generate a JSON file containing the backup to be sent as a URL to document picker
     private func offlineBackup() -> [URL] {
         var urls = [URL]()
-        urls.append(backupManager.writeAsJSON(items: gsData.items, itemDiaries: gsData.itemDiaries, sheds: gsData.sheds, brands: gsData.brands, gearlists: glData.gearlists, piles: glData.listgroups, packs: glData.packingGroups, /*packingBools: glData.packingBools,*/ activityTypes: glData.activityTypes))
+        urls.append(backupManager.writeAsJSON(items: gsData.items, itemDiaries: gsData.itemDiaries, sheds: gsData.sheds, brands: gsData.brands, gearlists: glData.gearlists, piles: glData.listgroups, packs: glData.packingGroups, packingBools: glData.packingBools, activityTypes: glData.activityTypes))
         return urls
     }
     /// Function to generate the message for when a backup file is loaded

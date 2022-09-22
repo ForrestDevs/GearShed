@@ -80,11 +80,13 @@ struct PackingBoolCodableProxy: Codable {
     var isPacked: Bool
     var gearlist: String
     var item: String
+    var pack: String
     init(from packingBool: PackingBool) {
         self.id = packingBool.id?.uuidString ?? ""
         self.isPacked = packingBool.isPacked
         self.gearlist = packingBool.gearlist.id?.uuidString ?? ""
         self.item = packingBool.item.id?.uuidString ?? ""
+        self.pack = packingBool.pack?.id?.uuidString ?? ""
     }
 }
 

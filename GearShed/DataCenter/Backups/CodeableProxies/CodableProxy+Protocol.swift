@@ -21,7 +21,7 @@ struct AllCodableProxy: Codable {
     var gearlists: [GearlistCodableProxy]
     var piles: [PileCodableProxy]
     var packs: [PackCodableProxy]
-    //var packingBools: [PackingBoolCodableProxy]
+    var packingBools: [PackingBoolCodableProxy]
     var activityTypes: [ActivityTypeCodableProxy]
 }
 

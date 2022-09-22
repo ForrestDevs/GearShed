@@ -8,7 +8,6 @@
 
 import StoreKit
 import SwiftUI
-import RevenueCat
 
 struct UnlockView: View {
     @Environment(\.presentationMode) var presentationMode

@@ -20,7 +20,7 @@ struct ItemRowViewInPack: View {
         
     init(item: Item, gearlist: Gearlist, container: Pack) {
         let initialState = item.gearlistpackingBool(gearlist: gearlist)?.isPacked
-        _isPacked = State(initialValue: initialState!)
+        _isPacked = State(initialValue: initialState ?? false)
         self.item = item
         self.gearlist = gearlist
         self.container = container

@@ -265,7 +265,7 @@ extension AddItemsToGearListView {
                         detailManager.secondaryTarget = .noView
                     }
                 case .packItem:
-                    viewModel.updatePackItems(addingItems: itemsChecked, removingItems: itemsUnChecked, pack: pack!)
+                    viewModel.updatePackItems(addingItems: itemsChecked, removingItems: itemsUnChecked, pack: pack!, gearlist: gearlist)
                     withAnimation {
                         detailManager.secondaryTarget = .noView
                     }

@@ -39,7 +39,7 @@ final class BackupManager: ObservableObject {
             fatalError("Failed to decode backup: \(error.localizedDescription)")
         }
     }
-    func writeAsJSON (items: [Item], itemDiaries: [ItemDiary], sheds: [Shed], brands: [Brand], gearlists: [Gearlist], piles: [Pile], packs: [Pack], /*packingBools: [PackingBool],*/ activityTypes: [ActivityType]) -> URL {
+    func writeAsJSON (items: [Item], itemDiaries: [ItemDiary], sheds: [Shed], brands: [Brand], gearlists: [Gearlist], piles: [Pile], packs: [Pack], packingBools: [PackingBool], activityTypes: [ActivityType]) -> URL {
         var all = AllCodableProxy (
             items: [],
             itemDiaries: [],
@@ -48,7 +48,7 @@ final class BackupManager: ObservableObject {
             gearlists: [],
             piles: [],
             packs: [],
-            //packingBools: [],
+            packingBools: [],
             activityTypes: []
         )
         for item in items {
@@ -79,10 +79,10 @@ final class BackupManager: ObservableObject {
             let newItem = PackCodableProxy(from: pack)
             all.packs.append(newItem)
         }
-//        for bool in packingBools {
-//            let newItem = PackingBoolCodableProxy(from: bool)
-//            all.packingBools.append(newItem)
-//        }
+        for bool in packingBools {
+            let newItem = PackingBoolCodableProxy(from: bool)
+            all.packingBools.append(newItem)
+        }
         for type in activityTypes {
             let newItem = ActivityTypeCodableProxy(from: type)
             all.activityTypes.append(newItem)
@@ -108,7 +108,7 @@ final class BackupManager: ObservableObject {
         return url
     }
     
-    func backupToiCloudDrive(items: [Item], itemDiaries: [ItemDiary], sheds: [Shed], brands: [Brand], gearlists: [Gearlist], piles: [Pile], packs: [Pack], /*packingBools: [PackingBool],*/ activityTypes: [ActivityType],completion: (Result<Bool, Error>) -> Void /*,withHandler handler: @escaping ((_ result: Result<Bool, Error>) -> Void)*/) {
+    func backupToiCloudDrive(items: [Item], itemDiaries: [ItemDiary], sheds: [Shed], brands: [Brand], gearlists: [Gearlist], piles: [Pile], packs: [Pack], packingBools: [PackingBool], activityTypes: [ActivityType], completion: (Result<Bool, Error>) -> Void) {
         
         var all = AllCodableProxy (
             items: [],
@@ -118,7 +118,7 @@ final class BackupManager: ObservableObject {
             gearlists: [],
             piles: [],
             packs: [],
-            //packingBools: [],
+            packingBools: [],
             activityTypes: []
         )
         for item in items {
@@ -149,10 +149,10 @@ final class BackupManager: ObservableObject {
             let newItem = PackCodableProxy(from: pack)
             all.packs.append(newItem)
         }
-//        for bool in packingBools {
-//            let newItem = PackingBoolCodableProxy(from: bool)
-//            all.packingBools.append(newItem)
-//        }
+        for bool in packingBools {
+            let newItem = PackingBoolCodableProxy(from: bool)
+            all.packingBools.append(newItem)
+        }
         for type in activityTypes {
             let newItem = ActivityTypeCodableProxy(from: type)
             all.activityTypes.append(newItem)
@@ -223,6 +223,137 @@ final class BackupManager: ObservableObject {
         }
         persistentStore.saveContext()
     }
+    func insertBaseFromBackup(url: URL) {
+        let codable: AllCodableProxy = decode(from: url)
+        let items = codable.items
+        let itemDiaries = codable.itemDiaries
+        let sheds = codable.sheds
+        let brands = codable.brands
+        let gearlists = codable.gearlists
+        let activityTypes = codable.activityTypes
+        print("Begin Importing Items for Base Import")
+        for item in items {
+            guard (Item.object(id: UUID(uuidString: item.id)!, context: persistentStore.context) == nil) else {
+                print("Item - \(item.name) already exists")
+                continue
+            }
+            let newItem = Item(context: persistentStore.context)
+            newItem.id = UUID(uuidString: item.id)
+            newItem.name = item.name
+            newItem.detail = item.details
+            newItem.price = item.price
+            newItem.weight = item.weight
+            newItem.itemLbs = item.lbs
+            newItem.itemOZ = item.oz
+            newItem.isFavourite = item.isFavourite
+            newItem.isWishlist = item.isWishlist
+            newItem.isRegret = item.isRegret
+            if let dateString = item.datePurchased {
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "EEEE, MMM d, yyyy"
+                if let datePurchased = dateFormatter.date(from: dateString) {
+                    newItem.datePurchased = datePurchased
+                }
+            }
+            print("Successfully Imported \(newItem.name)")
+        }
+        print("Begin Importing Sheds for Base Import")
+        for shed in sheds {
+            guard (Shed.object(id: UUID(uuidString: shed.id)!, context: persistentStore.context) == nil) else {
+                print("Shed - \(shed.name) already exists")
+                continue
+            }
+            let newShed = Shed(context: persistentStore.context)
+            newShed.id = UUID(uuidString: shed.id)
+            newShed.name = shed.name
+            for item in shed.items {
+                let newitem = Item.object(id: UUID(uuidString: item)!, context: persistentStore.context)!
+                newShed.addToItems_(newitem)
+            }
+            print("Successfully Imported \(newShed.name)")
+        }
+        print("Begin Importing Brands for Base Import")
+        for brand in brands {
+            guard (Brand.object(id: UUID(uuidString: brand.id)!, context: persistentStore.context) == nil) else {
+                print("Brand - \(brand.name) already exists")
+                continue
+            }
+            let newBrand = Brand(context: persistentStore.context)
+            newBrand.id = UUID(uuidString: brand.id)
+            newBrand.name = brand.name
+            for item in brand.items {
+                let newItem = Item.object(id: UUID(uuidString: item)!, context: persistentStore.context)!
+                newBrand.addToItems_(newItem)
+            }
+            print("Successfully Imported \(newBrand.name)")
+        }
+        print("Begin Importing Gearlists for Base Import")
+        for gearlist in gearlists {
+            guard (Gearlist.object(id: UUID(uuidString: gearlist.id)!, context: persistentStore.context) == nil) else {
+                print("Gearlist - \(gearlist.name) already exists")
+                continue
+            }
+            let newGearlist = Gearlist(context: persistentStore.context)
+            newGearlist.id = UUID(uuidString: gearlist.id)
+            newGearlist.name = gearlist.name
+            newGearlist.details = gearlist.details
+            newGearlist.isAdventure = gearlist.isAdventure
+            newGearlist.isBucketlist = gearlist.isBucketlist
+            if let location = gearlist.location {
+                newGearlist.location = location
+            }
+            if let country = gearlist.country {
+                newGearlist.country = country
+            }
+            if let startDateString = gearlist.startDate {
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "EEEE, MMM d, yyyy"
+                newGearlist.startDate = dateFormatter.date(from: startDateString)
+            }
+            if let endDateString = gearlist.endDate {
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "EEEE, MMM d, yyyy"
+                newGearlist.endDate = dateFormatter.date(from: endDateString)
+            }
+            for item in gearlist.items {
+                let newItem = Item.object(id: UUID(uuidString: item)!, context: persistentStore.context)!
+                newGearlist.addToItems_(newItem)
+                print("Successfully added \(Item.object(id: UUID(uuidString: item)!, context: persistentStore.context)!.name) to Gearlist - \(gearlist.name)")
+            }
+            print("Successfully Imported \(gearlist.name)")
+        }
+        print("Begin Importing ActivityTypes for Base Import")
+        for type in activityTypes {
+            guard (ActivityType.object(id: UUID(uuidString: type.id)!, context: persistentStore.context) == nil) else {
+                print("Type - \(type.name) already exists")
+                continue
+            }
+            let newType = ActivityType(context: persistentStore.context)
+            newType.id = UUID(uuidString: type.id)
+            newType.name = type.name
+            for gearlist in type.gearlists {
+                let newGearlist = Gearlist.object(id: UUID(uuidString: gearlist)!, context: persistentStore.context)!
+                newType.addToGearlists_(newGearlist)
+            }
+        }
+        print("Begin Importing Item Diaries for Base Import")
+        for itemDiary in itemDiaries {
+            guard (ItemDiary.object(id: UUID(uuidString: itemDiary.id)!, context: persistentStore.context) == nil) else {
+                print("ItemDiary - \(itemDiary.name) already exists")
+                continue
+            }
+            let newItemDiary = ItemDiary(context: persistentStore.context)
+            newItemDiary.id = UUID(uuidString: itemDiary.id)
+            newItemDiary.name = itemDiary.name
+            newItemDiary.details = itemDiary.details
+            newItemDiary.item = Item.object(id: UUID(uuidString: itemDiary.item)!, context: persistentStore.context)!
+            newItemDiary.gearlist = Gearlist.object(id: UUID(uuidString: itemDiary.gearlist)!, context: persistentStore.context)!
+        }
+        persistentStore.saveContext()
+        
+    }
+    
+    
     func insertFromBackup(url: URL) {
         let codable: AllCodableProxy = decode(from: url)
         let items = codable.items
@@ -232,7 +363,7 @@ final class BackupManager: ObservableObject {
         let gearlists = codable.gearlists
         let piles = codable.piles
         let packs = codable.packs
-        //let packingBools = codable.packingBools
+        let packingBools = codable.packingBools
         let activityTypes = codable.activityTypes
         print("Begin Importing Items")
         for item in items {
@@ -368,17 +499,22 @@ final class BackupManager: ObservableObject {
             print("Succesfully Imported Pack")
         }
         print("Begin Importing packingBools")
-//        for packingBool in packingBools {
-//            guard (PackingBool.object(id: UUID(uuidString: packingBool.id)!, context: persistentStore.context) == nil) else {
-//                print("Packing Bool - \(packingBool.id) already exists")
-//                continue
-//            }
-//            let newPackingBool = PackingBool(context: persistentStore.context)
-//            newPackingBool.id = UUID(uuidString: packingBool.id)
-//            newPackingBool.isPacked = packingBool.isPacked
-//            newPackingBool.gearlist = Gearlist.object(id: UUID(uuidString: packingBool.gearlist)!, context: persistentStore.context)!
-//            newPackingBool.item = Item.object(id: UUID(uuidString: packingBool.item)!, context: persistentStore.context)!
-//        }
+        for packingBool in packingBools {
+            guard (PackingBool.object(id: UUID(uuidString: packingBool.id)!, context: persistentStore.context) == nil) else {
+                print("Packing Bool - \(packingBool.id) already exists")
+                continue
+            }
+            let newPackingBool = PackingBool(context: persistentStore.context)
+            newPackingBool.id = UUID(uuidString: packingBool.id)
+            newPackingBool.isPacked = packingBool.isPacked
+            newPackingBool.gearlist = Gearlist.object(id: UUID(uuidString: packingBool.gearlist)!, context: persistentStore.context)!
+            newPackingBool.item = Item.object(id: UUID(uuidString: packingBool.item)!, context: persistentStore.context)!
+            newPackingBool.pack = Pack.object(id: UUID(uuidString: packingBool.pack)!, context: persistentStore.context)!
+            
+            // Should be adding to item gearlist and pack relationship here
+            // newPackingBool.addToItem_()
+            
+        }
         print("Begin Importing ActivityTypes")
         for type in activityTypes {
             guard (ActivityType.object(id: UUID(uuidString: type.id)!, context: persistentStore.context) == nil) else {

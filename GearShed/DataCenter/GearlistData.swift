@@ -246,7 +246,7 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         }
         for item in gearlist.items {
             newGearlist.addToItems_(item)
-            createNewPackBool(gearlist: newGearlist, item: item)
+//            createNewPackBool(gearlist: newGearlist, item: item)
         }
         persistentStore.saveContext()
     }
@@ -289,7 +289,7 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     func addItemsToGearlist(gearlist: Gearlist, itemArray: [Item]) {
         for item in itemArray {
             gearlist.addToItems_(item)
-            createNewPackBool(gearlist: gearlist, item: item)
+//            createNewPackBool(gearlist: gearlist, item: item)
         }
         persistentStore.saveContext()
     }
@@ -297,7 +297,7 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     func updateGearlistItems(gearlist: Gearlist, addingItems: [Item], removingItems: [Item]) {
         for item in addingItems {
             gearlist.addToItems_(item)
-            createNewPackBool(gearlist: gearlist, item: item)
+//            createNewPackBool(gearlist: gearlist, item: item)
         }
         for item in removingItems {
             removeItemFromGearlist(item: item, gearlist: gearlist)
@@ -308,6 +308,8 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     func removeItemFromGearlist(item: Item, gearlist: Gearlist) {
         // First lets delete the items packingBool
         if let packingBool = item.gearlistpackingBool(gearlist: gearlist) {
+            print("removing item from gearlist, and deleting packingbool", packingBool.item.name, gearlist.name)
+            item.removeFromPackingBools_(packingBool)
             persistentStore.context.delete(packingBool)
         }
         // Second lets remove the item -> container relationship
@@ -331,8 +333,11 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     }
     /// Function to remove an Item from a Pack.
     func removeItemFromPack(item: Item, container: Pack) {
-        item.packPackingBool(pack: container)?.isPacked = false
-        item.packPackingBool(pack: container)?.pack = nil
+        if let packingBool = item.packPackingBool(pack: container) {
+            print("Removing item from pack and deleting packingBool", packingBool.item.name, container.name)
+            item.removeFromPackingBools_(packingBool)
+            persistentStore.context.delete(packingBool)
+        }
         container.removeFromItems_(item)
         persistentStore.saveContext()
     }
@@ -412,9 +417,21 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         persistentStore.saveContext()
     }
     /// Function to add newly selected items and remove selected items from a specifc pack
-    func updatePackItems(addingItems: [Item], removingItems: [Item], pack: Pack) {
+    func updatePackItems(addingItems: [Item], removingItems: [Item], pack: Pack, gearlist: Gearlist?) {
         for item in addingItems {
+            
+            //   Begin Testing Here This is the first function called to add an item to a pack.
+            //   Packing Bools must be tested from here
+            print("Item Added to pack", item.name)
             pack.addToItems_(item)
+            
+            if let gearlist = gearlist {
+                print("Creating First Packing Bool for item", item.name)
+                createNewPackBool(gearlist: gearlist, item: item, pack: pack)
+            }
+            
+            
+            
             item.packPackingBool(pack: pack)?.pack = pack
         }
         for item in removingItems {
@@ -426,10 +443,21 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     /// Function to keep an Items associated Pack updated and remove the reference to the old one.
     func updateItemPack(newPack: Pack?, oldPack: Pack?, item: Item, gearlist: Gearlist) {
         if let oldPack = oldPack {
+            // Delete the old packingBool Object
+            if let packingBool = item.packPackingBool(pack: oldPack) {
+                print("Deleting Old Packing Bool from item in pack", item.name, oldPack.name)
+                persistentStore.context.delete(packingBool)
+            }
+            // Remove the relationship between the old Pack and the item
             item.removeFromPacks_(oldPack)
         }
-        item.addToPacks_(newPack!)
-        item.gearlistpackingBool(gearlist: gearlist)?.pack = newPack!
+        if let newPack = newPack {
+            // Create the new packingBool Object
+            print("Creating New PackingBool for Item Change Pack", newPack.name, item.name)
+            createNewPackBool(gearlist: gearlist, item: item, pack: newPack)
+            // add the relationship between the new Pack and the item
+            item.addToPacks_(newPack)
+        }
         persistentStore.saveContext()
     }
     /// Function to edit Pack values.
@@ -441,8 +469,16 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     /// Function to delete a Pack.
     func deletePack(container: Pack) {
         for item in container.items {
-            item.packPackingBool(pack: container)?.isPacked = false
+            // First Delete the associated packing bool
+            if let packingBool = item.packPackingBool(pack: container) {
+                item.removeFromPackingBools_(packingBool)
+                print("Deleting packingbool for item", item.name, "in pack", container.name)
+                persistentStore.context.delete(packingBool)
+            }
+            // Secondly Remove the items association with the pack
+            item.removeFromPacks_(container)
         }
+        // Finally Delete the pack and save
         persistentStore.context.delete(container)
         persistentStore.saveContext()
     }
@@ -453,20 +489,29 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     }
     // MARK: PackBool Methods
     /// Function to create a new packingBool for an Item in a Gearlist.
-    func createNewPackBool(gearlist: Gearlist, item: Item) {
-        let newPackBool = PackingBool(context: persistentStore.context)
-        newPackBool.id = UUID()
-        newPackBool.isPacked = false
-        newPackBool.gearlist = gearlist
-        newPackBool.pack = nil
-        newPackBool.item = item
-        persistentStore.saveContext()
+    func createNewPackBool(gearlist: Gearlist, item: Item, pack: Pack?) {
+        if let pack = pack {
+            print("CREATENEWFUNC Start Building Pack", pack.name, item.name)
+            let newPackBool = PackingBool(context: persistentStore.context)
+            newPackBool.id = UUID()
+            newPackBool.isPacked = false
+            newPackBool.gearlist = gearlist
+            newPackBool.pack = pack
+            newPackBool.item = item
+            
+            // Add packingBool relationship to both gearlist and item
+            gearlist.addToPackingBools_(newPackBool)
+            item.addToPackingBools_(newPackBool)
+            persistentStore.saveContext()
+        }
     }
     /// Function to toggle the state of wether an Item is packed or not.
     func togglePackBoolState(packingBool: PackingBool) {
         if packingBool.isPacked == true {
+            print("PackBool for item is now false", packingBool.item.name)
             packingBool.isPacked = false
         } else {
+            print("PackBool for item is now true", packingBool.item.name)
             packingBool.isPacked = true
         }
         persistentStore.saveContext()
