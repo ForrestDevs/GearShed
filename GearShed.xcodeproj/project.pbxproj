@@ -152,6 +152,12 @@
 		08D67E1C2726815D0064F639 /* Configuration.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 08D67E1B2726815D0064F639 /* Configuration.storekit */; };
 		08ED0FE22719EAE10072CB90 /* AppTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ED0FDD2719EAE10072CB90 /* AppTabBarView.swift */; };
 		08ED7EA8283806B400F1F18C /* MailComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ED7EA7283806B400F1F18C /* MailComposeView.swift */; };
+		08F6737928DE5D8C008F80E8 /* glitchData.gsb in Resources */ = {isa = PBXBuildFile; fileRef = 08F6737828DE5D8C008F80E8 /* glitchData.gsb */; };
+		08F6737B28E2ADB4008F80E8 /* OnBodyGear+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F6737A28E2ADB4008F80E8 /* OnBodyGear+Extensions.swift */; };
+		08F6737D28E2AE8D008F80E8 /* BaseWeightGear+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F6737C28E2AE8D008F80E8 /* BaseWeightGear+Extensions.swift */; };
+		08F6737F28E2AEBE008F80E8 /* ConsumableGear+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F6737E28E2AEBE008F80E8 /* ConsumableGear+Extensions.swift */; };
+		08F6738228E2B43B008F80E8 /* GearlistOBCView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F6738128E2B43B008F80E8 /* GearlistOBCView.swift */; };
+		08F6738428E2B48B008F80E8 /* ItemRowViewInOBC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F6738328E2B48B008F80E8 /* ItemRowViewInOBC.swift */; };
 		08F99576274DD7DA00211988 /* Binding+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F99575274DD7DA00211988 /* Binding+Extension.swift */; };
 		08F99578274DF3DD00211988 /* backup.json in Resources */ = {isa = PBXBuildFile; fileRef = 08F99577274DF3DD00211988 /* backup.json */; };
 		08FE3661272CDC61000035A9 /* Text+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FE3660272CDC60000035A9 /* Text+Extension.swift */; };
@@ -315,6 +321,12 @@
 		08D67E1B2726815D0064F639 /* Configuration.storekit */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Configuration.storekit; sourceTree = "<group>"; };
 		08ED0FDD2719EAE10072CB90 /* AppTabBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppTabBarView.swift; sourceTree = "<group>"; };
 		08ED7EA7283806B400F1F18C /* MailComposeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailComposeView.swift; sourceTree = "<group>"; };
+		08F6737828DE5D8C008F80E8 /* glitchData.gsb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = glitchData.gsb; sourceTree = "<group>"; };
+		08F6737A28E2ADB4008F80E8 /* OnBodyGear+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnBodyGear+Extensions.swift"; sourceTree = "<group>"; };
+		08F6737C28E2AE8D008F80E8 /* BaseWeightGear+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BaseWeightGear+Extensions.swift"; sourceTree = "<group>"; };
+		08F6737E28E2AEBE008F80E8 /* ConsumableGear+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConsumableGear+Extensions.swift"; sourceTree = "<group>"; };
+		08F6738128E2B43B008F80E8 /* GearlistOBCView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GearlistOBCView.swift; sourceTree = "<group>"; };
+		08F6738328E2B48B008F80E8 /* ItemRowViewInOBC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemRowViewInOBC.swift; sourceTree = "<group>"; };
 		08F99575274DD7DA00211988 /* Binding+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+Extension.swift"; sourceTree = "<group>"; };
 		08F99577274DF3DD00211988 /* backup.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = backup.json; sourceTree = "<group>"; };
 		08FE3660272CDC60000035A9 /* Text+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Text+Extension.swift"; sourceTree = "<group>"; };
@@ -515,6 +527,9 @@
 				08877EEF273631C1000D7FF4 /* PackingBool+Extensions.swift */,
 				088FBF9C2746ABEE00F1BFF7 /* ActivityType+Extensions.swift */,
 				08FFCFA72749826900E27C93 /* ItemDiary+Extension.swift */,
+				08F6737A28E2ADB4008F80E8 /* OnBodyGear+Extensions.swift */,
+				08F6737C28E2AE8D008F80E8 /* BaseWeightGear+Extensions.swift */,
+				08F6737E28E2AEBE008F80E8 /* ConsumableGear+Extensions.swift */,
 			);
 			path = "List+Extensions";
 			sourceTree = "<group>";
@@ -660,6 +675,7 @@
 		08B8251C273CAF9600326CE9 /* DetailViews */ = {
 			isa = PBXGroup;
 			children = (
+				08F6738028E2B3F6008F80E8 /* OBC */,
 				08C7D928270F7F7500EC3984 /* GearlistDetailView.swift */,
 				088FBFB6274840AE00F1BFF7 /* AddItemsToGearlist */,
 				08B82523273CBFB700326CE9 /* List */,
@@ -933,6 +949,7 @@
 				08D67E1B2726815D0064F639 /* Configuration.storekit */,
 				08C7D8A3270F3D1D00EC3984 /* Assets.xcassets */,
 				08C7D8AD270F3D1D00EC3984 /* Info.plist */,
+				08F6737828DE5D8C008F80E8 /* glitchData.gsb */,
 				08C7D914270F6E1600EC3984 /* brands.json */,
 				08F99577274DF3DD00211988 /* backup.json */,
 				08371B6D271E08A20072AD94 /* tags.json */,
@@ -949,6 +966,15 @@
 				08C7D8BD270F42AD00EC3984 /* BackupManager.swift */,
 			);
 			path = Backups;
+			sourceTree = "<group>";
+		};
+		08F6738028E2B3F6008F80E8 /* OBC */ = {
+			isa = PBXGroup;
+			children = (
+				08F6738128E2B43B008F80E8 /* GearlistOBCView.swift */,
+				08F6738328E2B48B008F80E8 /* ItemRowViewInOBC.swift */,
+			);
+			path = OBC;
 			sourceTree = "<group>";
 		};
 		08F99572274DC69600211988 /* Add+Edit */ = {
@@ -1091,6 +1117,7 @@
 				087C0D1E27BDA384009899DB /* HelveticaNeueBold.ttf in Resources */,
 				0813B51C2814669C003832C9 /* pHelveticaNeueThin.ttf in Resources */,
 				084EDA11272B5C9900475891 /* HelveticaNeue.ttc in Resources */,
+				08F6737928DE5D8C008F80E8 /* glitchData.gsb in Resources */,
 				0813B5152814669C003832C9 /* pHelveticaNeueLt.ttf in Resources */,
 				0813B5162814669C003832C9 /* pHelveticaNeueBlackCond.ttf in Resources */,
 				0813B51A2814669C003832C9 /* pHelveticaNeueMed.ttf in Resources */,
@@ -1138,6 +1165,7 @@
 				0892BB6A27B19D1E00BCB902 /* PrivacyView.swift in Sources */,
 				0869ECE127A3C1B400D2ADC5 /* LaunchAnimation.swift in Sources */,
 				08BC05FF2841CF2E00409095 /* SectionTypeData.swift in Sources */,
+				08F6737F28E2AEBE008F80E8 /* ConsumableGear+Extensions.swift in Sources */,
 				080015AF272787E700E1BE4C /* RegretsView.swift in Sources */,
 				08877EF727363818000D7FF4 /* EditablePackData.swift in Sources */,
 				08D67E0C27250F5A0064F639 /* UnlockManager.swift in Sources */,
@@ -1160,6 +1188,7 @@
 				0862EA74274365C200330FBB /* BrandItemsViewModel.swift in Sources */,
 				088FBFB42748376500F1BFF7 /* ModifyActivityView.swift in Sources */,
 				0862EA6527435D5600330FBB /* GearShedViewModel.swift in Sources */,
+				08F6738228E2B43B008F80E8 /* GearlistOBCView.swift in Sources */,
 				08371B3D271B72BF0072AD94 /* Color.swift in Sources */,
 				08C7D8CB270F475A00EC3984 /* Bundle+Extensions.swift in Sources */,
 				08C7D8C9270F475A00EC3984 /* Sequence+Extensions.swift in Sources */,
@@ -1181,6 +1210,7 @@
 				08C7D912270F6DFC00EC3984 /* ShedCodableProxy.swift in Sources */,
 				08C7D8F1270F65E100EC3984 /* EmptyViewText.swift in Sources */,
 				08FFCFA82749826900E27C93 /* ItemDiary+Extension.swift in Sources */,
+				08F6738428E2B48B008F80E8 /* ItemRowViewInOBC.swift in Sources */,
 				088FBF9D2746ABEF00F1BFF7 /* ActivityType+Extensions.swift in Sources */,
 				08C7D8A9270F3D1D00EC3984 /* PersistentStore.swift in Sources */,
 				0892BB6827B1999200BCB902 /* FeedbackView.swift in Sources */,
@@ -1234,6 +1264,7 @@
 				08371B4A271BB2F30072AD94 /* GearlistData.swift in Sources */,
 				08371B72271E5B6D0072AD94 /* ItemDetailView.swift in Sources */,
 				0892BB6E27B1F6C000BCB902 /* FAQModalView.swift in Sources */,
+				08F6737D28E2AE8D008F80E8 /* BaseWeightGear+Extensions.swift in Sources */,
 				08ED0FE22719EAE10072CB90 /* AppTabBarView.swift in Sources */,
 				08C7D8FB270F66EB00EC3984 /* AddItemView.swift in Sources */,
 				08A5FB952740AD93008A5D28 /* ActivityView.swift in Sources */,
@@ -1244,6 +1275,7 @@
 				08B82525273CBFD900326CE9 /* ItemRowView-InGearlist.swift in Sources */,
 				08A5FBB02741BAF5008A5D28 /* AdventureRowView.swift in Sources */,
 				08C7D8A0270F3D1800EC3984 /* GearShedApp.swift in Sources */,
+				08F6737B28E2ADB4008F80E8 /* OnBodyGear+Extensions.swift in Sources */,
 				0853ABFA271F876F00123497 /* ModifyShedView.swift in Sources */,
 				08C7D927270F7DC200EC3984 /* ActivityRowView.swift in Sources */,
 				08371B5D271DFEA20072AD94 /* ShedItemsView.swift in Sources */,
@@ -1396,7 +1428,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.03;
+				MARKETING_VERSION = 1.04;
 				PRODUCT_BUNDLE_IDENTIFIER = app.gearshed.GearShed;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1425,7 +1457,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.03;
+				MARKETING_VERSION = 1.04;
 				PRODUCT_BUNDLE_IDENTIFIER = app.gearshed.GearShed;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

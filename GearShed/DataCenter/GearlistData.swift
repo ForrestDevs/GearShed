@@ -152,6 +152,33 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
     }
     // MARK: Data CUD Operations
     // MARK: Gearlist Methods
+    func addOBCtoGearlist(gearlist: Gearlist) {
+        let newOnBody = OnBodyGear(context: persistentStore.context)
+        newOnBody.id = UUID()
+        newOnBody.gearlist = gearlist
+        
+        let newBaseWeight = BaseWeightGear(context: persistentStore.context)
+        newBaseWeight.id = UUID()
+        newBaseWeight.gearlist = gearlist
+        
+        let newConsumable = ConsumableGear(context: persistentStore.context)
+        newConsumable.id = UUID()
+        newConsumable.gearlist = gearlist
+        
+        persistentStore.saveContext()
+    }
+    
+    func removeOBCfromGearlist(gearlist: Gearlist) {
+        let obg = gearlist.onbodygear
+        let bwg = gearlist.baseweightgear
+        let cg = gearlist.consumablegear
+        
+        persistentStore.context.delete(obg)
+        persistentStore.context.delete(bwg)
+        persistentStore.context.delete(cg)
+        persistentStore.saveContext()
+    }
+    
     /// Function to add a new Gearlist having an ID but then pass back to be created futher
     func addNewGearlistIDOnly() -> Gearlist {
         let newGearlist = Gearlist(context: persistentStore.context)
@@ -179,8 +206,10 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         } else {
             newGearlist.activityType = editableData.activityType!
         }
-    
         persistentStore.saveContext()
+        
+        addOBCtoGearlist(gearlist: newGearlist)
+        
         return newGearlist
     }
     /// Function to update a Gearlists values using the temp stored data.
@@ -218,6 +247,7 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         for pack in gearlist.packs {
             persistentStore.context.delete(pack)
         }
+        removeOBCfromGearlist(gearlist: gearlist)
         persistentStore.context.delete(gearlist)
         persistentStore.saveContext()
     }
@@ -340,6 +370,103 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
         }
         container.removeFromItems_(item)
         persistentStore.saveContext()
+    }
+    // MARK: OBC Methods
+    /// Function to add Items to a Gearlist and create an associated packingBool upon entry.
+    func addItemsToOBC(gearlist: Gearlist, itemArray: [Item], type: OBCType) {
+        for item in itemArray {
+            switch type {
+            case .onBody:
+                let obg = gearlist.onbodygear
+                obg.addToItems_(item)
+                obg.objectWillChange.send()
+            case .baseWeight:
+                let bwg = gearlist.baseweightgear
+                bwg.addToItems_(item)
+                bwg.objectWillChange.send()
+            case .consumable:
+                let cg = gearlist.consumablegear
+                cg.addToItems_(item)
+                cg.objectWillChange.send()
+            }
+        }
+        persistentStore.saveContext()
+    }
+    /// Function to update an OBC Items.
+    func updateOBCItems(gearlist: Gearlist, addingItems: [Item], removingItems: [Item], type: OBCType) {
+        for item in addingItems {
+            switch type {
+            case .onBody:
+                let obg = gearlist.onbodygear
+                obg.addToItems_(item)
+                obg.objectWillChange.send()
+            case .baseWeight:
+                let bwg = gearlist.baseweightgear
+                bwg.addToItems_(item)
+                bwg.objectWillChange.send()
+            case .consumable:
+                let cg = gearlist.consumablegear
+                cg.addToItems_(item)
+                cg.objectWillChange.send()
+            }
+        }
+        for item in removingItems {
+            switch type {
+            case .onBody:
+                let obg = gearlist.onbodygear
+                obg.removeFromItems_(item)
+                obg.objectWillChange.send()
+            case .baseWeight:
+                let bwg = gearlist.baseweightgear
+                bwg.removeFromItems_(item)
+                bwg.objectWillChange.send()
+            case .consumable:
+                let cg = gearlist.consumablegear
+                cg.removeFromItems_(item)
+                cg.objectWillChange.send()
+            }
+        }
+        persistentStore.saveContext()
+    }
+    // Function to add an item to an OBC list
+    func addItemToOBC(item: Item, gearlist: Gearlist, type: OBCType) {
+        switch type {
+        case .onBody:
+            let obg = gearlist.onbodygear
+            obg.addToItems_(item)
+            obg.objectWillChange.send()
+            persistentStore.saveContext()
+        case .baseWeight:
+            let bwg = gearlist.baseweightgear
+            bwg.addToItems_(item)
+            bwg.objectWillChange.send()
+            persistentStore.saveContext()
+        case .consumable:
+            let cg = gearlist.consumablegear
+            cg.addToItems_(item)
+            cg.objectWillChange.send()
+            persistentStore.saveContext()
+        }
+    }
+    // Function to remove an item from an OBC list
+    func removeItemFromOBC(item: Item, gearlist: Gearlist, type: OBCType) {
+        switch type {
+        case .onBody:
+            let obg = gearlist.onbodygear
+            obg.removeFromItems_(item)
+            obg.objectWillChange.send()
+            persistentStore.saveContext()
+        case .baseWeight:
+            let bwg = gearlist.baseweightgear
+            bwg.removeFromItems_(item)
+            bwg.objectWillChange.send()
+            persistentStore.saveContext()
+        case .consumable:
+            let cg = gearlist.consumablegear
+            cg.removeFromItems_(item)
+            cg.objectWillChange.send()
+            persistentStore.saveContext()
+        }
     }
     // MARK: Pile Methods
     /// Function to create a new Pile.
@@ -714,6 +841,29 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
             } else {
                 return ""
             }
+        } else if type == "obc" {
+            var item_array: [Item] = []
+            
+            for item in gearlist.onbodygear.items {
+                item_array.append(item)
+            }
+            for item in gearlist.baseweightgear.items {
+                item_array.append(item)
+            }
+            
+            for item in gearlist.consumablegear.items {
+                item_array.append(item)
+            }
+            if (Prefs.shared.weightUnit == "g") {
+                return "\(totalGrams(array: item_array)) g"
+            } else if (Prefs.shared.weightUnit == "lb + oz") {
+                let totalLbsOz = totalLbsOz(array: item_array)
+                let totalLbs = totalLbsOz.lbs
+                let totalOz = totalLbsOz.oz
+                return "\(totalLbs) lbs \(totalOz) oz"
+            } else {
+                return ""
+            }
         } else {
             return ""
         }
@@ -736,6 +886,23 @@ final class GearlistData: NSObject, NSFetchedResultsControllerDelegate,  Observa
             for _ in pile.items {
                 counter = counter + 1
             }
+        }
+        return counter
+    }
+    /// Function to return the total items in the OBC view of a gearlist
+    func gearlistOBCTotalItems(gearlist: Gearlist) -> Int {
+        var counter: Int = 0
+        let obg = gearlist.onbodygear
+        let bwg = gearlist.baseweightgear
+        let cg = gearlist.consumablegear
+        for _ in obg.items {
+            counter = counter + 1
+        }
+        for _ in bwg.items {
+            counter = counter + 1
+        }
+        for _ in cg.items {
+            counter = counter + 1
         }
         return counter
     }

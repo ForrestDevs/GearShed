@@ -145,5 +145,3 @@ struct GearlistPileView: View {
         }
     }
 }
-
-

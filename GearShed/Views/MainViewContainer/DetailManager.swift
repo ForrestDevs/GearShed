@@ -19,7 +19,9 @@ enum DetailTarget {
          showAddActivityType, showModifyActivityType, showAddActivityFromActivityType,
          showAddPile, showModifyPile, showAddItemsToPile,
          showAddPack, showModifyPack, showAddItemsToPack, /*showConfirmEraseView,*/
-         showGearlistExport, showGearListPDF, showContent, showSecondaryContent, showTertiaryContent, noView
+         showGearlistExport, showGearListPDF, showContent, showSecondaryContent, showTertiaryContent,
+         noView, showAddItemsToOnBodyGear, showAddItemsToBaseWeightGear, showAddItemsToConsumableGear
+        
 }
 
 class DetailViewManager: ObservableObject {
@@ -39,6 +41,10 @@ class DetailViewManager: ObservableObject {
     @Published var selectedActivityType: ActivityType?
     @Published var selectedPile: Pile? = nil
     @Published var selectedPack: Pack? = nil
+    
+    @Published var selectedOnBodyGear: OnBodyGear? = nil
+    @Published var selectedBaseWeightGear: BaseWeightGear? = nil
+    @Published var selectedConsumableGear: ConsumableGear? = nil
 
     init() {}
 }
@@ -119,6 +125,12 @@ struct DetailOverlay: View {
                 detailManager.secondaryContent
             case .showTertiaryContent:
                 detailManager.tertiaryContent
+            case .showAddItemsToOnBodyGear:
+                AddItemsToGearListView(persistentStore: persistentStore, type: .onBody, gearlist: detailManager.selectedGearlist!)
+            case .showAddItemsToBaseWeightGear:
+                AddItemsToGearListView(persistentStore: persistentStore, type: .baseWeight, gearlist: detailManager.selectedGearlist!)
+            case .showAddItemsToConsumableGear:
+                AddItemsToGearListView(persistentStore: persistentStore, type: .consumable, gearlist: detailManager.selectedGearlist!)
             case .noView:
                 EmptyView().opacity(0)
                 }
@@ -191,6 +203,12 @@ struct DetailOverlay: View {
                 detailManager.secondaryContent
             case .showTertiaryContent:
                 detailManager.tertiaryContent
+            case .showAddItemsToOnBodyGear:
+                AddItemsToGearListView(persistentStore: persistentStore, type: .onBody, gearlist: detailManager.selectedGearlist!)
+            case .showAddItemsToBaseWeightGear:
+                AddItemsToGearListView(persistentStore: persistentStore, type: .baseWeight, gearlist: detailManager.selectedGearlist!)
+            case .showAddItemsToConsumableGear:
+                AddItemsToGearListView(persistentStore: persistentStore, type: .consumable, gearlist: detailManager.selectedGearlist!)
             case .noView:
                 EmptyView().opacity(0)
                 }
@@ -264,6 +282,12 @@ struct DetailOverlay: View {
                 detailManager.secondaryContent
             case .showTertiaryContent:
                 detailManager.tertiaryContent
+            case .showAddItemsToOnBodyGear:
+                AddItemsToGearListView(persistentStore: persistentStore, type: .onBody, gearlist: detailManager.selectedGearlist!)
+            case .showAddItemsToBaseWeightGear:
+                AddItemsToGearListView(persistentStore: persistentStore, type: .baseWeight, gearlist: detailManager.selectedGearlist!)
+            case .showAddItemsToConsumableGear:
+                AddItemsToGearListView(persistentStore: persistentStore, type: .consumable, gearlist: detailManager.selectedGearlist!)
             case .noView:
                 EmptyView().opacity(0)
                 }

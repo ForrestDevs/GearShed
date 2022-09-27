@@ -125,15 +125,36 @@ extension Item {
         }
         return []
     }
+    
+    var onBodyGearlists: [OnBodyGear] {
+        if let onBodyGearlists = onbodygears_ as? Set<OnBodyGear> {
+            return onBodyGearlists.sorted(by: { $0.id < $1.id })
+        }
+        return []
+    }
+    var baseWeightGearlists: [BaseWeightGear] {
+        if let baseWeightGearlists = baseweightgears_ as? Set<BaseWeightGear> {
+            return baseWeightGearlists.sorted(by: { $0.id < $1.id })
+        }
+        return []
+    }
+
+    var consumableGearlists: [ConsumableGear] {
+        if let consumableGearlists = consumablegears_ as? Set<ConsumableGear> {
+            return consumableGearlists.sorted(by: { $0.id < $1.id })
+        }
+        return []
+    }
+
     var packingBools: [PackingBool] {
         if let packingBools = packingBools_ as? Set<PackingBool> {
             return packingBools.sorted(by: { $0.id < $1.id })
         }
         return []
     }
-	// the name of its associated shed
+	/// The name of an Items associated Shed
 	var shedName: String { shed_?.name_ ?? "Not Available" }
-    // the name of its associated brand
+    /// The name of an Items associated Brand
     var brandName: String { brand_?.name_ ?? "Not Available" }
     /// Function to return an Items Pack In a specifc Gearlist.
     func gearlistPack(gearlist: Gearlist) -> Pack? {
@@ -145,6 +166,21 @@ extension Item {
     func gearlistPile(gearlist: Gearlist) -> Pile? {
         let pile = piles.first(where: { $0.gearlist == gearlist })
         return pile ?? nil
+    }
+    /// Function to return an Items On Body list in a specific Gearlist
+    func gearlistOnBody(gearlist: Gearlist) -> OnBodyGear? {
+        let onBody = onBodyGearlists.first(where: { $0.gearlist == gearlist })
+        return onBody ?? nil
+    }
+    /// Function to return an Items Base Weight list in a specific Gearlist
+    func gearlistBaseWeight(gearlist: Gearlist) -> BaseWeightGear? {
+        let baseWeight = baseWeightGearlists.first(where: { $0.gearlist == gearlist })
+        return baseWeight ?? nil
+    }
+    /// Function to return an Items Consumable list in a specific Gearlist
+    func gearlistConsumable(gearlist: Gearlist) -> ConsumableGear? {
+        let consumable = consumableGearlists.first(where: { $0.gearlist == gearlist })
+        return consumable ?? nil
     }
     /// Function to find wether or not a diary exists for an item in a gearlist
     func hasExistingDiaryInGearlist(gearlist: Gearlist, item: Item) -> Bool {

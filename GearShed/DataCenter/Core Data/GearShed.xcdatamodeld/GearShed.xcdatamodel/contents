@@ -5,11 +5,21 @@
         <attribute name="name_" optional="YES" attributeType="String"/>
         <relationship name="gearlists_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Gearlist" inverseName="activityType_" inverseEntity="Gearlist"/>
     </entity>
+    <entity name="BaseWeightGear" representedClassName="BaseWeightGear" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <relationship name="gearlist_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gearlist" inverseName="baseweightgear_" inverseEntity="Gearlist"/>
+        <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="baseweightgears_" inverseEntity="Item"/>
+    </entity>
     <entity name="Brand" representedClassName="Brand" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name_" optional="YES" attributeType="String"/>
         <attribute name="unBrandID_" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="brand_" inverseEntity="Item"/>
+    </entity>
+    <entity name="ConsumableGear" representedClassName="ConsumableGear" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <relationship name="gearlist_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gearlist" inverseName="consumablegear_" inverseEntity="Gearlist"/>
+        <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="consumablegears_" inverseEntity="Item"/>
     </entity>
     <entity name="Gearlist" representedClassName="Gearlist" syncable="YES" codeGenerationType="class">
         <attribute name="country_" optional="YES" attributeType="String"/>
@@ -22,8 +32,11 @@
         <attribute name="name_" optional="YES" attributeType="String"/>
         <attribute name="startDate_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="activityType_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ActivityType" inverseName="gearlists_" inverseEntity="ActivityType"/>
+        <relationship name="baseweightgear_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BaseWeightGear" inverseName="gearlist_" inverseEntity="BaseWeightGear"/>
+        <relationship name="consumablegear_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ConsumableGear" inverseName="gearlist_" inverseEntity="ConsumableGear"/>
         <relationship name="diaries_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ItemDiary" inverseName="gearlist_" inverseEntity="ItemDiary"/>
         <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="gearlists_" inverseEntity="Item"/>
+        <relationship name="onbodygear_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="OnBodyGear" inverseName="gearlist_" inverseEntity="OnBodyGear"/>
         <relationship name="packingBools_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PackingBool" inverseName="gearlist_" inverseEntity="PackingBool"/>
         <relationship name="packs_" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Pack" inverseName="gearlist_" inverseEntity="Pack"/>
         <relationship name="piles_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Pile" inverseName="gearlist_" inverseEntity="Pile"/>
@@ -41,10 +54,13 @@
         <attribute name="price_" optional="YES" attributeType="String"/>
         <attribute name="quantity_" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="weight_" optional="YES" attributeType="String"/>
+        <relationship name="baseweightgears_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BaseWeightGear" inverseName="items_" inverseEntity="BaseWeightGear"/>
         <relationship name="brand_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Brand" inverseName="items_" inverseEntity="Brand"/>
+        <relationship name="consumablegears_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ConsumableGear" inverseName="items_" inverseEntity="ConsumableGear"/>
         <relationship name="diaries_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ItemDiary" inverseName="item_" inverseEntity="ItemDiary"/>
         <relationship name="gearlists_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Gearlist" inverseName="items_" inverseEntity="Gearlist"/>
         <relationship name="image_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ItemImage" inverseName="item_" inverseEntity="ItemImage"/>
+        <relationship name="onbodygears_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="OnBodyGear" inverseName="items_" inverseEntity="OnBodyGear"/>
         <relationship name="packingBools_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PackingBool" inverseName="item_" inverseEntity="PackingBool"/>
         <relationship name="packs_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Pack" inverseName="items_" inverseEntity="Pack"/>
         <relationship name="piles_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Pile" inverseName="items_" inverseEntity="Pile"/>
@@ -62,6 +78,11 @@
         <attribute name="img_" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
         <attribute name="imgURL_" optional="YES" attributeType="String"/>
         <relationship name="item_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Item" inverseName="image_" inverseEntity="Item"/>
+    </entity>
+    <entity name="OnBodyGear" representedClassName="OnBodyGear" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <relationship name="gearlist_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gearlist" inverseName="onbodygear_" inverseEntity="Gearlist"/>
+        <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="onbodygears_" inverseEntity="Item"/>
     </entity>
     <entity name="Pack" representedClassName="Pack" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
@@ -90,15 +111,18 @@
         <relationship name="items_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="shed_" inverseEntity="Item"/>
     </entity>
     <elements>
-        <element name="ActivityType" positionX="214.2069091796875" positionY="20.17404174804688" width="128" height="74"/>
+        <element name="ActivityType" positionX="392.711669921875" positionY="22.84210205078125" width="128" height="88"/>
         <element name="Brand" positionX="-274.284912109375" positionY="45.57496643066406" width="128" height="89"/>
-        <element name="Gearlist" positionX="214.8423461914062" positionY="127.1612243652344" width="128" height="254"/>
-        <element name="Item" positionX="-118.5619506835938" positionY="43.87983703613281" width="128" height="329"/>
-        <element name="ItemDiary" positionX="-115.8923950195312" positionY="409.0172424316406" width="128" height="104"/>
-        <element name="ItemImage" positionX="-288.908935546875" positionY="273.0596008300781" width="128" height="89"/>
-        <element name="Pack" positionX="53.39117431640625" positionY="45.292724609375" width="128" height="104"/>
-        <element name="PackingBool" positionX="51.8111572265625" positionY="172.0259704589844" width="128" height="104"/>
-        <element name="Pile" positionX="52.032470703125" positionY="291.976318359375" width="128" height="89"/>
-        <element name="Shed" positionX="-281.8968505859375" positionY="157.0187225341797" width="128" height="89"/>
+        <element name="Gearlist" positionX="234.2269897460937" positionY="114.2283630371094" width="128" height="313"/>
+        <element name="Item" positionX="-118.5619506835938" positionY="43.87983703613281" width="128" height="388"/>
+        <element name="ItemDiary" positionX="-317.3093261718749" positionY="371.2131652832031" width="128" height="104"/>
+        <element name="ItemImage" positionX="-286.9884033203125" positionY="156.3648986816406" width="128" height="89"/>
+        <element name="Pack" positionX="55.8699951171875" positionY="-15.34562683105469" width="128" height="118"/>
+        <element name="PackingBool" positionX="47.81829833984375" positionY="141.4998779296875" width="128" height="118"/>
+        <element name="Pile" positionX="61.94171142578125" positionY="379.2618103027344" width="128" height="103"/>
+        <element name="Shed" positionX="-306.5051879882812" positionY="260.4682464599609" width="128" height="89"/>
+        <element name="OnBodyGear" positionX="431.4627075195312" positionY="339.1185913085938" width="128" height="88"/>
+        <element name="ConsumableGear" positionX="425.2857055664062" positionY="234.3144226074219" width="128" height="88"/>
+        <element name="BaseWeightGear" positionX="423.0195922851562" positionY="125.2882385253906" width="128" height="88"/>
     </elements>
 </model>

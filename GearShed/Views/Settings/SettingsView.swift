@@ -274,7 +274,7 @@ extension SettingsView {
         } label: {
             HStack {
                 Image(systemName: "arrow.down.doc.fill")
-                Text("Load Backup Base Gearlist and GearShed only")
+                Text("Load Backup GearShed Only")
             }
         }
         
@@ -312,7 +312,7 @@ extension SettingsView {
             // To create a backup file of core data entities
             offlineBackupSection
             // To load a backup file into core data
-            loadBackupSection
+//            loadBackupSection
             // To load the backup file into core data only Item, Shed, Brand and Base Gearlist
             loadBaseGearlistandGearShedView
             // To erase all core data entities and reset settings
@@ -516,7 +516,7 @@ extension SettingsView {
         let currentActivitiesCount = glData.activities.count
         let currentDiaryCount = gsData.itemDiaries.count
         // Import Backup Data
-        backupManager.insertBaseFromBackup(url: url)
+        backupManager.insertISBFromBackUp(url: url)
         // Find the count of the newly added data using the difference.
         self.shedsAdded = gsData.sheds.count - currentShedCount
         self.brandsAdded = gsData.brands.count - currentBrandCount

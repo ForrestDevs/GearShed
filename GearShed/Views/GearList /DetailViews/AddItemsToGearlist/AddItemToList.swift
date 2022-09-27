@@ -9,7 +9,7 @@
 import SwiftUI
 
 enum SelectType {
-    case gearlistItem, pileItem, packItem
+    case gearlistItem, pileItem, packItem, onBody, baseWeight, consumable
 }
 
 struct AddItemsToGearListView: View {
@@ -53,6 +53,36 @@ struct AddItemsToGearListView: View {
         for item in gearlist.items {
             if item.gearlistPack(gearlist: gearlist) == nil {
                 array.append(item)
+            }
+        }
+        return array
+    }
+    func availableOBCItems(type: OBCType) -> [Item] {
+        var array = [Item]()
+        
+        for item in gearlist.items {
+            switch type {
+            case .onBody:
+                if item.gearlistBaseWeight(gearlist: gearlist) == nil && item.gearlistConsumable(gearlist: gearlist) == nil {
+                    array.append(item)
+                }
+//                if item.gearlistOnBody(gearlist: gearlist) == nil {
+//                    array.append(item)
+//                }
+            case .baseWeight:
+                if item.gearlistOnBody(gearlist: gearlist) == nil && item.gearlistConsumable(gearlist: gearlist) == nil {
+                    array.append(item)
+                }
+//                if item.gearlistBaseWeight(gearlist: gearlist) == nil {
+//                    array.append(item)
+//                }
+            case .consumable:
+                if item.gearlistBaseWeight(gearlist: gearlist) == nil && item.gearlistOnBody(gearlist: gearlist) == nil {
+                    array.append(item)
+                }
+//                if item.gearlistConsumable(gearlist: gearlist) == nil {
+//                    array.append(item)
+//                }
             }
         }
         return array
@@ -206,6 +236,105 @@ extension AddItemsToGearListView {
                             }
                         }
                     }
+                case .onBody:
+                    if availableOBCItems(type: .onBody).count == 0 {
+                        EmptyViewText(text: "There is no more gear you can add to On Body. Either add more gear to this list or move gear out of another OBC, so you can add it to this one.")
+                    } else {
+                        ForEach(itemVM.sectionByShed(itemArray: availableOBCItems(type: .onBody))) { section in
+                            Section {
+                                ForEach(section.items) { item in
+                                    SelectableItemRowView (
+                                        type: .onBody,
+                                        gearlist: gearlist,
+                                        item: item) {
+                                            handleItemSelected(item)
+                                        } respondToTapOffSelector: {
+                                            handleItemUnSelected(item)
+                                        }
+                                        .padding(.horizontal, 15)
+                                        .padding(.bottom, 5)
+                                }
+                            } header: {
+                                ZStack {
+                                    Color.theme.headerBG
+                                        .frame(maxWidth: .infinity)
+                                        .frame(height: 25)
+                                    HStack {
+                                        Text(section.title)
+                                            .font(.headline)
+                                        Spacer()
+                                    }
+                                    .padding(.horizontal, 15)
+                                }
+                            }
+                        }
+                    }
+                case .baseWeight:
+                    if availableOBCItems(type: .baseWeight).count == 0 {
+                        EmptyViewText(text: "There is no more gear you can add to Base Weight. Either add more gear to this list or move gear out of another OBC, so you can add it to this one.")
+                    } else {
+                        ForEach(itemVM.sectionByShed(itemArray: availableOBCItems(type: .baseWeight))) { section in
+                            Section {
+                                ForEach(section.items) { item in
+                                    SelectableItemRowView (
+                                        type: .baseWeight,
+                                        gearlist: gearlist,
+                                        item: item) {
+                                            handleItemSelected(item)
+                                        } respondToTapOffSelector: {
+                                            handleItemUnSelected(item)
+                                        }
+                                        .padding(.horizontal, 15)
+                                        .padding(.bottom, 5)
+                                }
+                            } header: {
+                                ZStack {
+                                    Color.theme.headerBG
+                                        .frame(maxWidth: .infinity)
+                                        .frame(height: 25)
+                                    HStack {
+                                        Text(section.title)
+                                            .font(.headline)
+                                        Spacer()
+                                    }
+                                    .padding(.horizontal, 15)
+                                }
+                            }
+                        }
+                    }
+                case .consumable:
+                    if availableOBCItems(type: .consumable).count == 0 {
+                        EmptyViewText(text: "There is no more gear you can add to Consumables. Either add more gear to this list or move gear out of another OBC, so you can add it to this one.")
+                    } else {
+                        ForEach(itemVM.sectionByShed(itemArray: availableOBCItems(type: .consumable))) { section in
+                            Section {
+                                ForEach(section.items) { item in
+                                    SelectableItemRowView (
+                                        type: .consumable,
+                                        gearlist: gearlist,
+                                        item: item) {
+                                            handleItemSelected(item)
+                                        } respondToTapOffSelector: {
+                                            handleItemUnSelected(item)
+                                        }
+                                        .padding(.horizontal, 15)
+                                        .padding(.bottom, 5)
+                                }
+                            } header: {
+                                ZStack {
+                                    Color.theme.headerBG
+                                        .frame(maxWidth: .infinity)
+                                        .frame(height: 25)
+                                    HStack {
+                                        Text(section.title)
+                                            .font(.headline)
+                                        Spacer()
+                                    }
+                                    .padding(.horizontal, 15)
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -266,6 +395,21 @@ extension AddItemsToGearListView {
                     }
                 case .packItem:
                     viewModel.updatePackItems(addingItems: itemsChecked, removingItems: itemsUnChecked, pack: pack!, gearlist: gearlist)
+                    withAnimation {
+                        detailManager.secondaryTarget = .noView
+                    }
+                case .onBody:
+                    viewModel.updateOBCItems(gearlist: gearlist, addingItems: itemsChecked, removingItems: itemsUnChecked, type: .onBody)
+                    withAnimation {
+                        detailManager.secondaryTarget = .noView
+                    }
+                case .baseWeight:
+                    viewModel.updateOBCItems(gearlist: gearlist, addingItems: itemsChecked, removingItems: itemsUnChecked, type: .baseWeight)
+                    withAnimation {
+                        detailManager.secondaryTarget = .noView
+                    }
+                case .consumable:
+                    viewModel.updateOBCItems(gearlist: gearlist, addingItems: itemsChecked, removingItems: itemsUnChecked, type: .consumable)
                     withAnimation {
                         detailManager.secondaryTarget = .noView
                     }

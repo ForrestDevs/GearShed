@@ -9,7 +9,7 @@
 import SwiftUI
 
 enum StatType {
-    case shed, brand, fav, regret, wish, adventure, activity, list, pile, pack, diary
+    case shed, brand, fav, regret, wish, adventure, activity, list, pile, pack, diary, obc
 }
 
 struct StatBar: View {
@@ -59,6 +59,9 @@ struct StatBar: View {
                     .padding(.leading)
             case .diary:
                 diaryStats
+                    .padding(.leading)
+            case .obc:
+                obcStats
                     .padding(.leading)
             }
             Rectangle()
@@ -263,6 +266,23 @@ struct StatBar: View {
                 Text("Entries")
                     .formatStatBarTitle()
                 Text("\(gearlist!.diaries.count)")
+                    .formatStatBarContent()
+            }
+            Spacer()
+        }
+    }
+    private var obcStats: some View {
+        HStack (spacing: 20) {
+            VStack (alignment: .leading, spacing: 2) {
+                Text("Items")
+                    .formatStatBarTitle()
+                Text("\(glData.gearlistOBCTotalItems(gearlist: gearlist!))")
+                    .formatStatBarContent()
+            }
+            VStack (alignment: .leading, spacing: 2) {
+                Text("Weight")
+                    .formatStatBarTitle()
+                Text(glData.weightForGearlistStat(gearlist: gearlist!, type: "obc"))
                     .formatStatBarContent()
             }
             Spacer()

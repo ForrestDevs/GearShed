@@ -59,6 +59,30 @@ extension Gearlist {
             piles.forEach({ $0.objectWillChange.send() })
         }
     }
+    // an gearlist's associated on body gear category.  this fronts a Core Data optional attribute.
+    var onbodygear: OnBodyGear {
+        get { onbodygear_! }
+        set { onbodygear_?.objectWillChange.send()
+              onbodygear_ = newValue
+              onbodygear_?.objectWillChange.send()
+        }
+    }
+    // an gearlist's associated base weight gear category.  this fronts a Core Data optional attribute.
+    var baseweightgear: BaseWeightGear {
+        get { baseweightgear_! }
+        set { baseweightgear_?.objectWillChange.send()
+              baseweightgear_ = newValue
+              baseweightgear_?.objectWillChange.send()
+        }
+    }
+    // an gearlist's associated consumable gear category.  this fronts a Core Data optional attribute.
+    var consumablegear: ConsumableGear {
+        get { consumablegear_! }
+        set { consumablegear_?.objectWillChange.send()
+              consumablegear_ = newValue
+              consumablegear_?.objectWillChange.send()
+        }
+    }
     var piles: [Pile] {
         if let piles = piles_ as? Set<Pile> {
             return piles.sorted(by: { $0.name < $1.name } )

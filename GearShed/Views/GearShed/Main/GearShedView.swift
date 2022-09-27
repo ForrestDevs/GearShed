@@ -137,7 +137,9 @@ extension GearShedView {
         ToolbarItem (placement: .navigationBarLeading) {
             Button {
                // backupManager.insertFromBackup(url: Bundle.main.url(forResource: "backup", withExtension: "json")!)
-                backupManager.insertISBFromBackUp(url: Bundle.main.url(forResource: "backup", withExtension: "json")!)
+                backupManager.insertISBFromBackUp(url: Bundle.main.url(forResource: "glitchData", withExtension: "gsb")!)
+                
+//                backupManager.insertBaseFromBackup(url: Bundle.main.url(forResource: "glitchData", withExtension: "gsb")!)
             } label: {
                 Image(systemName: "plus")
             }

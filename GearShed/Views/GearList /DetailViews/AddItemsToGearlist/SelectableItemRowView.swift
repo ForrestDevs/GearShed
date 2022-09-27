@@ -41,6 +41,15 @@ struct SelectableItemRowView: View {
         case .packItem:
             let initialValue = pack!.items.contains(item)
             _isChecked = State(initialValue: initialValue)
+        case .onBody:
+            let intialValue = gearlist!.onbodygear.items.contains(item)
+            _isChecked = State(initialValue: intialValue)
+        case .baseWeight:
+            let intialValue = gearlist!.baseweightgear.items.contains(item)
+            _isChecked = State(initialValue: intialValue)
+        case .consumable:
+            let intialValue = gearlist!.consumablegear.items.contains(item)
+            _isChecked = State(initialValue: intialValue)
         }
         self.respondToTapOnSelector = respondToTapOnSelector
         self.respondToTapOffSelector = respondToTapOffSelector
